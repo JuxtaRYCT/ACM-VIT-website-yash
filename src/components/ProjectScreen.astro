@@ -144,6 +144,58 @@ const { projects = [] } = Astro.props;
 </div>
 
 <style>
+  @media (min-width: 769px) and (max-width: 1099px) {
+    .projects-container .parent {
+      grid-template-columns: repeat(10, minmax(0, 1fr));
+    }
+
+    .projects-container .div1 {
+      grid-column: 1 / 5;
+      justify-content: flex-end;
+    }
+
+    .projects-container .div1 > div {
+      transform: scale(0.7);
+      transform-origin: center right;
+    }
+
+    .projects-container .div2,
+    .projects-container .div4,
+    .projects-container .div5,
+    .projects-container .div6 {
+      grid-column: 5 / 11;
+    }
+
+    .projects-container .div3 {
+      grid-column: 1 / 11;
+      mask-image: linear-gradient(to right, transparent 39.5%, black 40%) !important;
+      -webkit-mask-image: linear-gradient(to right, transparent 39.5%, black 40%) !important;
+    }
+
+    .projects-container .content-section {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+
+    .projects-container .content-block {
+      padding: 0.225rem;
+    }
+
+    .projects-container .description {
+      font-size: 0.8rem;
+      line-height: 1.3;
+    }
+
+    .projects-container .btn,
+    .projects-container .gh-btn {
+      font-size: 0.6rem;
+    }
+
+    .projects-container .action-buttons {
+      gap: 0.7rem;
+    }
+  }
+
   @media (max-height: 760px) {
     .projects-container .parent {
       grid-template-rows:
@@ -188,5 +240,20 @@ const { projects = [] } = Astro.props;
       gap: 1.5rem;
     }
   }
+
+  @media (min-width: 769px) and (max-width: 1099px) {
+    .projects-container .description {
+      font-size: 0.8rem;
+      line-height: 1.3;
+    }
+
+    .projects-container .btn,
+    .projects-container .gh-btn {
+      font-size: 0.6rem;
+    }
+
+    .projects-container .action-buttons {
+      gap: 0.7rem;
+    }
+  }
 </style>
-```

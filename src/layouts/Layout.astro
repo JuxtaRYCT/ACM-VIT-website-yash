@@ -61,6 +61,12 @@ const description =
     <link
       rel="preload"
       as="image"
+      href={getAssetUrl("/VIT.webp")}
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
       href={getAssetUrl("/background_pattern.webp")}
       fetchpriority="high"
     />
@@ -87,14 +93,24 @@ const description =
       style={`background-image: url('${getAssetUrl("/background_pattern.webp")}');`}
     >
     </div>
-    <img
-      src={getAssetUrl("/acm_topleft.webp")}
-      alt="ACM-VIT"
-      class="acm-logo"
-      loading="eager"
-      decoding="async"
-      fetchpriority="high"
-    />
+    <div class="brand-logos" aria-label="ACM-VIT and VIT">
+      <img
+        src={getAssetUrl("/acm_topleft.webp")}
+        alt="ACM-VIT"
+        class="acm-logo"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+      <img
+        src={getAssetUrl("/VIT.webp")}
+        alt="VIT"
+        class="vit-logo"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+    </div>
     <div class="app-root min-h-screen flex flex-col">
       <Header />
       <main class="content flex-1 relative pt-28">
@@ -225,6 +241,8 @@ const description =
 
     <script>
       (() => {
+        let variantRafId = 0;
+
         const mountVariants = () => {
           const hosts = document.querySelectorAll("[data-variant-host]");
           if (!hosts.length) {
@@ -283,11 +301,94 @@ const description =
           }
         };
 
+        const queueMountVariants = () => {
+          if (variantRafId) return;
+
+          variantRafId = requestAnimationFrame(() => {
+            variantRafId = 0;
+            mountVariants();
+          });
+        };
+
         if (document.readyState === "loading") {
           document.addEventListener("DOMContentLoaded", mountVariants);
         } else {
           mountVariants();
         }
+
+        window.addEventListener("resize", queueMountVariants, {
+          passive: true,
+        });
+        window.addEventListener("orientationchange", queueMountVariants, {
+          passive: true,
+        });
+      })();
+    </script>
+    <script>
+      (() => {
+        const root = document.documentElement;
+
+        const scaleFromWidth = (
+          width: number,
+          maxWidth: number,
+          minWidth: number,
+          maxScale: number,
+          minScale: number
+        ) => {
+          if (width >= maxWidth) return maxScale;
+          if (width <= minWidth) return minScale;
+
+          const progress = (width - minWidth) / (maxWidth - minWidth);
+          return minScale + progress * (maxScale - minScale);
+        };
+
+        const navScaleFromWidth = (width: number) => {
+          if (width > 1363) return 1;
+          if (width > 1335) {
+            return scaleFromWidth(width, 1363, 1335, 0.9, 0.8);
+          }
+          return scaleFromWidth(width, 1335, 768, 0.8, 0.75);
+        };
+
+        const applyHeaderScales = () => {
+          const width = window.innerWidth || document.documentElement.clientWidth;
+
+          root.style.setProperty(
+            "--brand-logo-scale",
+            scaleFromWidth(width, 1363, 768, 0.8, 0.55).toFixed(4)
+          );
+          root.style.setProperty(
+            "--grep-button-scale",
+            scaleFromWidth(width, 1136, 768, 0.8, 0.5).toFixed(4)
+          );
+          root.style.setProperty(
+            "--nav-bar-scale",
+            navScaleFromWidth(width).toFixed(4)
+          );
+        };
+
+        let scaleRafId = 0;
+        const queueHeaderScales = () => {
+          if (scaleRafId) return;
+          scaleRafId = requestAnimationFrame(() => {
+            scaleRafId = 0;
+            applyHeaderScales();
+          });
+        };
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", applyHeaderScales, {
+            once: true,
+          });
+        } else {
+          applyHeaderScales();
+        }
+
+        window.addEventListener("load", applyHeaderScales, { once: true });
+        window.addEventListener("resize", queueHeaderScales, { passive: true });
+        window.addEventListener("orientationchange", queueHeaderScales, {
+          passive: true,
+        });
       })();
     </script>
   </body>
@@ -317,6 +418,12 @@ const description =
     /* display: none; */
   }
 
+  :root {
+    --brand-logo-scale: 1;
+    --grep-button-scale: 1;
+    --nav-bar-scale: 1;
+  }
+
   .diamond-grid {
     position: fixed;
     top: 0;
@@ -332,14 +439,57 @@ const description =
     pointer-events: none;
   }
 
-  .acm-logo {
+  .brand-logos {
     position: fixed;
     top: 20px;
     left: 20px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: clamp(10px, 0.9vw, 16px);
+    pointer-events: none;
+    transform: scale(var(--brand-logo-scale));
+    transform-origin: top left;
+    transition:
+      opacity 180ms ease,
+      transform 160ms ease;
+  }
+
+  .acm-logo {
     width: auto;
     height: 60px;
-    z-index: 1000;
-    pointer-events: none;
+  }
+
+  .vit-logo {
+    width: auto;
+    height: 44px;
+    object-fit: contain;
+  }
+
+  @media screen and (max-width: 952px) {
+    .brand-logos {
+      transform: scale(0.7);
+    }
+  }
+
+  @media screen and (min-width: 769px) and (max-width: 952px) {
+    .brand-logos {
+      right: 20px;
+      transform: none;
+      gap: 0;
+    }
+
+    .brand-logos .acm-logo {
+      transform: scale(0.7);
+      transform-origin: top left;
+    }
+
+    .brand-logos .vit-logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%) scale(0.7);
+      transform-origin: top center;
+    }
   }
 
   .app-root {
@@ -354,11 +504,28 @@ const description =
     height: 100%;
   }
 
-  @media screen and (max-width: 768px), (pointer: coarse) {
-    .acm-logo {
-      height: 45px;
+  @media screen and (max-width: 768px) {
+    .brand-logos {
       top: 15px;
       left: 15px;
+      right: 15px;
+      width: auto;
+      justify-content: space-between;
+      gap: 0;
+      transform: none;
+    }
+
+    .brand-logos .acm-logo,
+    .brand-logos .vit-logo {
+      transform: scale(0.7);
+    }
+
+    .brand-logos .acm-logo {
+      transform-origin: top left;
+    }
+
+    .brand-logos .vit-logo {
+      transform-origin: top right;
     }
 
     .diamond-grid {
@@ -367,14 +534,30 @@ const description =
   }
 
   @media screen and (max-width: 480px) {
-    .acm-logo {
-      height: 35px;
+    .brand-logos {
       top: 10px;
       left: 10px;
+      right: 10px;
     }
 
     .diamond-grid {
       background-size: cover;
     }
+  }
+
+  @media screen and (max-width: 427px) {
+    .brand-logos {
+      transform: none;
+    }
+
+    .brand-logos .acm-logo,
+    .brand-logos .vit-logo {
+      transform: scale(0.5);
+    }
+  }
+
+  body.mobile-menu-open .brand-logos {
+    opacity: 0;
+    pointer-events: none;
   }
 </style>

@@ -378,7 +378,7 @@
   const warmCriticalAssets = async (gsap?: any) => {
     const allCandidates = collectCriticalImageCandidates();
     const isMobile =
-      window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
+      window.matchMedia("(max-width: 768px)").matches;
     const maxCritical = isMobile ? 70 : 110;
     const urls = allCandidates.slice(0, maxCritical);
 
@@ -665,7 +665,7 @@
   }
 
   /* Responsive adjustments */
-  @media (max-width: 768px), (pointer: coarse) {
+  @media (max-width: 768px) {
     .lottie-container {
       width: 250px;
       height: 250px;
