@@ -60,7 +60,7 @@ const isExternalLink = ButtonData.link.startsWith("http");
     href={ButtonData.link}
     target={isExternalLink ? "_blank" : undefined}
     rel={isExternalLink ? "noopener noreferrer" : undefined}
-    class="c2c-btn absolute top-7 right-10 z-[600] pointer-events-auto w-auto h-12 bg-[#F95F4A] rounded-[41px] flex items-center pl-[34px] pr-8 gap-3 max-md:right-4 max-md:top-3 max-md:scale-[0.5] max-md:origin-top-right transition-transform hover:scale-105 no-underline"
+    class="c2c-btn absolute top-7 right-10 z-[600] pointer-events-auto w-auto h-12 bg-[#F95F4A] rounded-[41px] flex items-center pl-[34px] pr-8 gap-3 max-md:right-4 max-md:top-3 no-underline"
   >
     <div
       class="text-[#FEFCD9] text-base font-light font-['PolySans_Trial'] uppercase"
@@ -80,9 +80,43 @@ const isExternalLink = ButtonData.link.startsWith("http");
 </div>
 
 <style>
-  @media (max-width: 768px), (pointer: coarse) {
+  @media (max-width: 768px) {
     .legend-pin {
       display: none;
+    }
+
+    .c2c-btn {
+      display: none;
+    }
+  }
+
+  .c2c-btn {
+    transform: scale(var(--grep-button-scale, 1));
+    transform-origin: top right;
+    transition: transform 180ms ease;
+  }
+
+  @media (min-width: 769px) and (max-width: 952px) {
+    .legend-pin {
+      display: none;
+    }
+  }
+
+  @media (max-width: 952px) {
+    .c2c-btn {
+      transform: scale(0.7);
+    }
+  }
+
+  @media (max-width: 1135px) {
+    .c2c-btn {
+      right: 5px;
+    }
+  }
+
+  @media (max-width: 427px) {
+    .c2c-btn {
+      transform: scale(0.6);
     }
   }
 
@@ -99,6 +133,7 @@ const isExternalLink = ButtonData.link.startsWith("http");
   gsap.registerPlugin(ScrollTrigger);
 
   const wrapper = document.querySelector(".legend-pins-wrapper");
+  const brandLogos = document.querySelector(".brand-logos");
   const homeSection = document.getElementById("home");
   const techSection = document.getElementById("tech-hero");
 
@@ -107,6 +142,10 @@ const isExternalLink = ButtonData.link.startsWith("http");
 
     const setWrapperVisibility = (show: boolean) => {
       gsap.killTweensOf(wrapper);
+      if (brandLogos) {
+        gsap.killTweensOf(brandLogos);
+      }
+
       gsap.to(wrapper, {
         opacity: show ? 1 : 0,
         duration: 0.35,
@@ -122,6 +161,14 @@ const isExternalLink = ButtonData.link.startsWith("http");
           }
         },
       });
+
+      if (brandLogos) {
+        gsap.to(brandLogos, {
+          opacity: show ? 1 : 0,
+          duration: 0.35,
+          ease: "power2.out",
+        });
+      }
     };
 
     ScrollTrigger.create({

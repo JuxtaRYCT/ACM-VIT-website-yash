@@ -266,6 +266,9 @@
   .nav-desktop {
     display: block;
     position: relative;
+    transform: scale(var(--nav-bar-scale, 1));
+    transform-origin: top center;
+    transition: transform 160ms ease;
   }
   .nav-mobile {
     display: none;
@@ -333,7 +336,7 @@
     transition-delay: 0.1s;
   }
 
-  @media (max-width: 768px), (pointer: coarse) {
+  @media (max-width: 952px) {
     body.partners-active .site-header {
       z-index: 200;
     }
@@ -377,6 +380,7 @@
     }
     .nav-desktop {
       display: none;
+      transform: none;
     }
     .nav-mobile {
       display: block;
@@ -507,9 +511,11 @@
 
       const pillRect = pill.getBoundingClientRect();
       const linkRect = targetLink.getBoundingClientRect();
+      const scaleX = pill.offsetWidth > 0 ? pillRect.width / pill.offsetWidth : 1;
+      const safeScaleX = Number.isFinite(scaleX) && scaleX > 0 ? scaleX : 1;
 
-      const relativeLeft = linkRect.left - pillRect.left;
-      const width = linkRect.width;
+      const relativeLeft = (linkRect.left - pillRect.left) / safeScaleX;
+      const width = linkRect.width / safeScaleX;
 
       blob.style.left = `${relativeLeft}px`;
       blob.style.width = `${width}px`;

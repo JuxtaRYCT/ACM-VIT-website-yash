@@ -101,7 +101,8 @@ const worksHeightMobile = works.length * 45;
             return (
               <a-work
                 class="s__scene__work s__scene__work--video js-work"
-                style="pointer-events: auto !important; cursor: pointer !important; z-index: 9999 !important;"
+                progress="1"
+                style="--progress: 1; cursor: pointer;"
               >
                 <div class="a__inner">
                   <a
@@ -396,10 +397,14 @@ const worksHeightMobile = works.length * 45;
     isPaused: boolean;
     isTouchDevice: boolean;
     touchScrollRafId: number;
+    touchViewportResizeRafId: number;
+    touchViewportRefreshTimeoutId: number;
     touchSectionTop: number;
     touchSectionHeight: number;
     touchLastScrollY: number;
     touchStableFrames: number;
+    touchLastViewportWidth: number;
+    touchSyncForce: boolean;
     loadIsStarted: boolean;
     reducedMotion: boolean;
     reducedData: boolean;
@@ -455,13 +460,18 @@ const worksHeightMobile = works.length * 45;
 
       this.isPaused = true;
       this.isTouchDevice =
-        ScrollTrigger.isTouch === 1 ||
-        window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
+        window.matchMedia("(max-width: 768px)").matches ||
+        (ScrollTrigger.isTouch === 1 &&
+          window.matchMedia("(max-width: 1024px)").matches);
       this.touchScrollRafId = 0;
+      this.touchViewportResizeRafId = 0;
+      this.touchViewportRefreshTimeoutId = 0;
       this.touchSectionTop = 0;
       this.touchSectionHeight = 0;
       this.touchLastScrollY = -1;
       this.touchStableFrames = 0;
+      this.touchLastViewportWidth = window.innerWidth || 0;
+      this.touchSyncForce = false;
       this.loadIsStarted = false;
       this.reducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
@@ -494,6 +504,15 @@ const worksHeightMobile = works.length * 45;
       emitter.on("resize", this.onResize, this);
       window.addEventListener("resize", () => this.onResize(true)); // Fallback
       window.addEventListener("scroll", this.onTouchScroll, { passive: true });
+      document.addEventListener("touchstart", this.onTouchInput, {
+        passive: true,
+      });
+      document.addEventListener("touchmove", this.onTouchInput, {
+        passive: true,
+      });
+      document.addEventListener("touchend", this.onTouchInput, {
+        passive: true,
+      });
       window.visualViewport?.addEventListener("scroll", this.onTouchScroll, {
         passive: true,
       });
@@ -530,9 +549,11 @@ const worksHeightMobile = works.length * 45;
         const width = window.innerWidth;
         if (width === this.lastWidth) return;
         this.lastWidth = width;
+        this.touchLastViewportWidth = width;
         this.isTouchDevice =
-          ScrollTrigger.isTouch === 1 ||
-          window.matchMedia("(max-width: 768px), (pointer: coarse)").matches;
+          window.matchMedia("(max-width: 768px)").matches ||
+          (ScrollTrigger.isTouch === 1 &&
+            window.matchMedia("(max-width: 1024px)").matches);
         this.reducedMotion = window.matchMedia(
           "(prefers-reduced-motion: reduce)"
         ).matches;
@@ -640,18 +661,45 @@ const worksHeightMobile = works.length * 45;
       this.queueTouchSync();
     };
 
-    onTouchViewportResize = () => {
+    onTouchInput = () => {
       if (!this.isTouchDevice || !this.tl) return;
-      this.setSize();
-      this.setMask();
-      this.setLetters();
-      this.measureTouchRange();
-      ScrollTrigger.refresh();
-      this.updateTouchTimeline(true);
       this.queueTouchSync(true);
     };
 
+    onTouchViewportResize = () => {
+      if (!this.isTouchDevice || !this.tl) return;
+      if (this.touchViewportResizeRafId) return;
+
+      this.touchViewportResizeRafId = requestAnimationFrame(() => {
+        this.touchViewportResizeRafId = 0;
+
+        const width = window.innerWidth || document.documentElement.clientWidth;
+        const widthChanged = Math.abs(width - this.touchLastViewportWidth) > 1;
+        this.touchLastViewportWidth = width;
+
+        if (widthChanged) {
+          this.onResize(true);
+          return;
+        }
+
+        this.measureTouchRange();
+        this.updateTouchTimeline(true);
+        this.queueTouchSync(true);
+
+        clearTimeout(this.touchViewportRefreshTimeoutId);
+        this.touchViewportRefreshTimeoutId = window.setTimeout(() => {
+          if (!this.isTouchDevice || !this.tl) return;
+          this.measureTouchRange();
+          ScrollTrigger.refresh();
+          this.updateTouchTimeline(true);
+        }, 180);
+      });
+    };
+
     queueTouchSync(force = false) {
+      if (force) {
+        this.touchSyncForce = true;
+      }
       if (this.touchScrollRafId) return;
 
       const sync = () => {
@@ -661,14 +709,16 @@ const worksHeightMobile = works.length * 45;
         }
 
         const scrollY = this.getCurrentScrollY();
-        const scrollChanged = Math.abs(scrollY - this.touchLastScrollY) > 0.25;
+        const scrollChanged = Math.abs(scrollY - this.touchLastScrollY) > 0.01;
         const isActive = this.isTouchSectionActive();
+        const shouldForce = this.touchSyncForce || force;
+        this.touchSyncForce = false;
 
         this.touchLastScrollY = scrollY;
         this.touchStableFrames = scrollChanged ? 0 : this.touchStableFrames + 1;
 
         if (isActive) {
-          this.updateTouchTimeline(force || scrollChanged, scrollY);
+          this.updateTouchTimeline(shouldForce || scrollChanged, scrollY);
         }
 
         if (scrollChanged || this.touchStableFrames < 8) {
@@ -683,9 +733,19 @@ const worksHeightMobile = works.length * 45;
     }
 
     stopTouchSync() {
-      if (!this.touchScrollRafId) return;
-      cancelAnimationFrame(this.touchScrollRafId);
-      this.touchScrollRafId = 0;
+      if (this.touchScrollRafId) {
+        cancelAnimationFrame(this.touchScrollRafId);
+        this.touchScrollRafId = 0;
+      }
+      if (this.touchViewportResizeRafId) {
+        cancelAnimationFrame(this.touchViewportResizeRafId);
+        this.touchViewportResizeRafId = 0;
+      }
+      if (this.touchViewportRefreshTimeoutId) {
+        clearTimeout(this.touchViewportRefreshTimeoutId);
+        this.touchViewportRefreshTimeoutId = 0;
+      }
+      this.touchSyncForce = false;
     }
 
     updateTouchTimeline(force = false, scrollY = this.getCurrentScrollY()) {
@@ -771,7 +831,15 @@ const worksHeightMobile = works.length * 45;
 
       let size = (corners.tr.x - corners.tl.x) / 2;
       const safeWidth = window.safeWidth || window.innerWidth;
-      mask.maxScale = (safeWidth / size) * 0.75;
+      const safeHeight = window.safeHeight || window.innerHeight || height;
+      const expandMargin = safeWidth > 767 ? 96 : 40;
+      const horizontalScale =
+        (safeWidth + rulerWidth + expandMargin * 2) /
+        Math.max(rulerWidth, 1);
+      const verticalScale =
+        (safeHeight + rulerHeight + expandMargin * 2) /
+        Math.max(rulerHeight, 1);
+      mask.maxScale = Math.max(horizontalScale, verticalScale) * 1.15;
 
       let dInner = `M ${corners.tl.x} ${corners.tl.y + size} A ${size} ${size} 0 0 1 ${corners.tr.x} ${corners.tr.y + size} L ${corners.br.x} ${corners.br.y - size} A ${size} ${size} 0 0 1 ${corners.bl.x} ${corners.bl.y - size} Z`;
       const linesClip = `${dOuter} ${dInner}`;
@@ -937,7 +1005,7 @@ const worksHeightMobile = works.length * 45;
       this.tl = tl;
 
       const isMobile = window.matchMedia(
-        "(max-width: 768px), (pointer: coarse)"
+        "(max-width: 768px)"
       ).matches;
 
       tl.fromTo(
@@ -1092,7 +1160,7 @@ const worksHeightMobile = works.length * 45;
 
       // Mobile Optimization: Disable canvas points
       const isMobile = window.matchMedia(
-        "(max-width: 768px), (pointer: coarse)"
+        "(max-width: 768px)"
       ).matches;
       if (isMobile || this.reducedMotion || this.reducedData) return;
 
@@ -1266,12 +1334,22 @@ const worksHeightMobile = works.length * 45;
       }
     }
 
+    @media only screen and (max-width: 767px) and (orientation: landscape),
+      only screen and (max-width: 576px) {
+      background: var(--color-secondary);
+
+      .s__mask-outer {
+        left: -150vw;
+      }
+    }
+
     .s__mask {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
+      transform-origin: 50% 50%;
       will-change: scale, transform;
       pointer-events: none !important;
 
@@ -1343,7 +1421,7 @@ const worksHeightMobile = works.length * 45;
     }
 
     .s__ruler {
-      --width: min(16.6667%, 19.625rem);
+      --width: clamp(8.5rem, 8vw, 9.5rem);
       position: absolute;
       top: 10svh;
       left: calc(50% - var(--width) / 2);
@@ -1352,12 +1430,12 @@ const worksHeightMobile = works.length * 45;
       pointer-events: none;
 
       @media only screen and (max-width: 987px) {
-        --width: 33.3333%;
+        --width: clamp(8.5rem, 18vw, 9rem);
       }
 
       @media only screen and (max-width: 767px) and (orientation: landscape),
         only screen and (max-width: 576px) {
-        --width: 50%;
+        --width: min(32vw, 8rem);
       }
     }
 
@@ -1457,7 +1535,7 @@ const worksHeightMobile = works.length * 45;
         position: absolute;
         top: 50%;
         left: 50%;
-        z-index: 2;
+        z-index: 8;
         transform: rotateY(calc(var(--progress) * -20deg))
           translate3d(
             calc(var(--progress) * (80vw + 200%) - 50%),
@@ -1465,8 +1543,15 @@ const worksHeightMobile = works.length * 45;
             calc(var(--progress) * var(--progress) * -5rem)
           )
           scale(var(--size));
+        opacity: 0;
         will-change: transform;
-        pointer-events: auto; /* Ensure clickable */
+        pointer-events: none;
+
+        &.is-inview {
+          z-index: 9;
+          opacity: 1;
+          pointer-events: auto;
+        }
 
         @media only screen and (max-width: 987px) {
           transform: rotateY(calc(var(--progress) * -20deg))
@@ -1511,7 +1596,6 @@ const worksHeightMobile = works.length * 45;
     /* content-visibility: hidden; -- REMOVED to prevent interactivity issues */
     transform-style: preserve-3d;
     will-change: transform;
-    pointer-events: auto; /* Double ensure clickable */
 
     @media only screen and (max-width: 767px) and (orientation: landscape),
       only screen and (max-width: 576px) {
