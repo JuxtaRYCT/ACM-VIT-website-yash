@@ -12,14 +12,19 @@ for (const item of domainItems) {
     description: item.description,
     themeColor: item.themeColor,
     cassetteSvg: item.cassetteSvg,
-    buttonText: item.buttonText || '',
+    buttonText: item.buttonText || "",
     techIcons: item.techIcons ?? [],
     aois: item.aois ?? [],
   };
 }
 ---
 
-<script is:inline type="application/json" id="domains-data" set:html={JSON.stringify(domainConfigs)}></script>
+<script
+  is:inline
+  type="application/json"
+  id="domains-data"
+  set:html={JSON.stringify(domainConfigs)}
+/>
 
 <section class="domains-section relative h-[300vh] motion-reduce:h-screen">
   <!-- Fixed Background Layer -->
@@ -37,7 +42,7 @@ for (const item of domainItems) {
     class="pin-container sticky top-0 flex h-screen items-center justify-center overflow-visible will-change-transform transform-gpu motion-reduce:static z-10"
   >
     <p
-      class="section-subtitle absolute top-[15%] pt-2 md:pt-4 md:top-[15%] left-1/2 z-10 max-w-[95%] md:max-w-[900px] -translate-x-1/2 px-6 md:px-8 text-center font-['PolySans_Trial',sans-serif] text-[4px] md:text-[18px] font-normal leading-[1.6] md:leading-[1.4] text-[#fefcd9] will-change-[transform,opacity] [transform-style:preserve-3d] backface-hidden"
+      class="section-subtitle absolute top-[15%] pt-2 md:pt-4 md:top-[15%] left-1/2 z-10 max-w-[95%] md:max-w-[900px] -translate-x-1/2 px-6 md:px-8 text-center font-['PolySans_Trial',sans-serif] text-[4px] md:text-[15px] lg:text-[18px] font-normal leading-[1.6] md:leading-[1.4] text-[#fefcd9] will-change-[transform,opacity] [transform-style:preserve-3d] backface-hidden"
     >
       <span class="whitespace-nowrap">
         Each domain at ACM-VIT is more than a skillset, it's a mindset.
@@ -58,12 +63,14 @@ for (const item of domainItems) {
         class="domain-item absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         data-domain="tech"
       >
-        <div class="domain-frame m-2.5 p-2.5 will-change-[transform,opacity] [transform-style:preserve-3d] backface-hidden">
+        <div
+          class="domain-frame m-2.5 p-2.5 will-change-[transform,opacity] [transform-style:preserve-3d] backface-hidden"
+        >
           <div class="cassette-wrapper">
             <img
               src={getAssetUrl("/Cassette_Tech.svg")}
               alt="Tech Development"
-              class="cassette-img block h-auto w-[160px] md:w-[300px] origin-center transform-gpu drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)] will-change-transform [image-rendering:optimizeQuality] backface-hidden"
+              class="cassette-img block h-auto w-[160px] md:w-[250px] lg:w-[300px] origin-center transform-gpu drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)] will-change-transform [image-rendering:optimizeQuality] backface-hidden"
               loading="lazy"
               decoding="async"
             />
@@ -74,12 +81,14 @@ for (const item of domainItems) {
         class="domain-item absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         data-domain="cc"
       >
-        <div class="domain-frame m-2.5 p-2.5 will-change-[transform,opacity] [transform-style:preserve-3d] backface-hidden">
+        <div
+          class="domain-frame m-2.5 p-2.5 will-change-[transform,opacity] [transform-style:preserve-3d] backface-hidden"
+        >
           <div class="cassette-wrapper">
             <img
               src={getAssetUrl("/Cassette_cc.svg")}
               alt="Competitive Coding"
-              class="cassette-img block h-auto w-[160px] md:w-[300px] origin-center transform-gpu drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)] will-change-transform [image-rendering:optimizeQuality] backface-hidden"
+              class="cassette-img block h-auto w-[160px] md:w-[250px] lg:w-[300px] origin-center transform-gpu drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)] will-change-transform [image-rendering:optimizeQuality] backface-hidden"
               loading="lazy"
               decoding="async"
             />
@@ -90,12 +99,14 @@ for (const item of domainItems) {
         class="domain-item absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         data-domain="design"
       >
-        <div class="domain-frame m-2.5 p-2.5 will-change-[transform,opacity] [transform-style:preserve-3d] backface-hidden">
+        <div
+          class="domain-frame m-2.5 p-2.5 will-change-[transform,opacity] [transform-style:preserve-3d] backface-hidden"
+        >
           <div class="cassette-wrapper">
             <img
               src={getAssetUrl("/Cassette_Design.svg")}
               alt="Design"
-              class="cassette-img block h-auto w-[160px] md:w-[300px] origin-center transform-gpu drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)] will-change-transform [image-rendering:optimizeQuality] backface-hidden"
+              class="cassette-img block h-auto w-[160px] md:w-[250px] lg:w-[300px] origin-center transform-gpu drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)] will-change-transform [image-rendering:optimizeQuality] backface-hidden"
               loading="lazy"
               decoding="async"
             />
@@ -106,12 +117,14 @@ for (const item of domainItems) {
         class="domain-item absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         data-domain="management"
       >
-        <div class="domain-frame m-2.5 p-2.5 will-change-[transform,opacity] [transform-style:preserve-3d] backface-hidden">
+        <div
+          class="domain-frame m-2.5 p-2.5 will-change-[transform,opacity] [transform-style:preserve-3d] backface-hidden"
+        >
           <div class="cassette-wrapper">
             <img
               src={getAssetUrl("/Cassette_Management.svg")}
               alt="Management"
-              class="cassette-img block h-auto w-[160px] md:w-[300px] origin-center transform-gpu drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)] will-change-transform [image-rendering:optimizeQuality] backface-hidden"
+              class="cassette-img block h-auto w-[160px] md:w-[250px] lg:w-[300px] origin-center transform-gpu drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)] will-change-transform [image-rendering:optimizeQuality] backface-hidden"
               loading="lazy"
               decoding="async"
             />
@@ -122,12 +135,14 @@ for (const item of domainItems) {
         class="domain-item absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         data-domain="research"
       >
-        <div class="domain-frame m-2.5 p-2.5 will-change-[transform,opacity] [transform-style:preserve-3d] backface-hidden">
+        <div
+          class="domain-frame m-2.5 p-2.5 will-change-[transform,opacity] [transform-style:preserve-3d] backface-hidden"
+        >
           <div class="cassette-wrapper">
             <img
               src={getAssetUrl("/Cassette_Research.svg")}
               alt="Research"
-              class="cassette-img block h-auto w-[160px] md:w-[300px] origin-center transform-gpu drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)] will-change-transform [image-rendering:optimizeQuality] backface-hidden"
+              class="cassette-img block h-auto w-[160px] md:w-[250px] lg:w-[300px] origin-center transform-gpu drop-shadow-[0_2px_4px_rgba(0,0,0,0.2)] will-change-transform [image-rendering:optimizeQuality] backface-hidden"
               loading="lazy"
               decoding="async"
             />
@@ -242,7 +257,9 @@ for (const item of domainItems) {
       import { ScrollTrigger } from "gsap/ScrollTrigger";
       import { getAssetUrl } from "../utils/cdn";
 
-      const domainConfigs = JSON.parse(document.getElementById('domains-data')!.textContent!) as Record<string, any>;
+      const domainConfigs = JSON.parse(
+        document.getElementById("domains-data")!.textContent!,
+      ) as Record<string, any>;
 
       if (typeof gsap !== "undefined") {
         gsap.registerPlugin(ScrollTrigger);
@@ -261,35 +278,75 @@ for (const item of domainItems) {
           if (initialized) return;
           initialized = true;
 
-          const vw = window.innerWidth;
-          const scale = Math.min(Math.max(vw / 1440, 0.5), 1.2);  
+          const getLayout = () => {
+            const vw = window.innerWidth;
+            const scale = Math.min(Math.max(vw / 1440, 0.5), 1.2);
+            const cassetteScale = vw <= 1300 ? 0.9 : 1;
+            const compactPositionScale = scale * (vw <= 1300 ? 0.7 : 1);
+            const exitPositionScale = scale * (vw <= 1300 ? 1.35 : 1);
+            const compactCardWidth =
+              (vw >= 1024 ? 300 : vw >= 768 ? 250 : 160) * cassetteScale;
+            const previousCompactSpacing =
+              vw < 768
+                ? 250 * cassetteScale +
+                  (360 - 250 * cassetteScale) * 0.5
+                : compactCardWidth + (360 - compactCardWidth) * 0.5;
+            const compactGapSpacing =
+              vw < 768
+                ? compactCardWidth +
+                  (previousCompactSpacing - compactCardWidth) * 0.6
+                : previousCompactSpacing;
+            const compactGridPos =
+              vw <= 1300
+                ? [
+                    { x: -compactGapSpacing, y: -90 },
+                    { x: 0, y: -90 },
+                    { x: compactGapSpacing, y: -90 },
+                    { x: -compactGapSpacing * 0.5, y: 165 },
+                    { x: compactGapSpacing * 0.5, y: 165 },
+                  ]
+                : null;
 
-          // Grid positions (2x3 layout)
-          const gridPos = [
-            { x: -500 * scale, y: -70 * scale }, // Tech
-            { x: 0, y: -70 * scale }, // CC
-            { x: 500 * scale, y: -70 * scale }, // Design
-            { x: -300 * scale, y: 200 * scale }, // Management
-            { x: 300 * scale, y: 200 * scale }, // Research
-          ];
-
-          // Horizontal line positions
-          const linePos = [
-            { x: -480 * scale, y: 0 }, // Tech
-            { x: -240 * scale, y: 0 }, // CC
-            { x: 0, y: 0 }, // Design
-            { x: 240 * scale, y: 0 }, // Management
-            { x: 480 * scale, y: 0 }, // Research
-          ];
-
-          // Zoom positions
-          const zoomPos = [
-            { x: -800 * scale, y: 0 }, // Tech : move left
-            { x: -480 * scale, y: 0 }, // CC : move left
-            { x: -240 * scale, y: 0 }, // Design : move left
-            { x: 240 * scale, y: 0 }, // Management : move right
-            { x: 480 * scale, y: 0 }, // Research : move right
-          ];
+            return {
+              cassetteScale,
+              gridPos: [
+                {
+                  x: compactGridPos?.[0].x ?? -500 * scale,
+                  y: compactGridPos?.[0].y ?? -70 * scale,
+                }, // Tech
+                {
+                  x: compactGridPos?.[1].x ?? 0,
+                  y: compactGridPos?.[1].y ?? -70 * scale,
+                }, // CC
+                {
+                  x: compactGridPos?.[2].x ?? 500 * scale,
+                  y: compactGridPos?.[2].y ?? -70 * scale,
+                }, // Design
+                {
+                  x: compactGridPos?.[3].x ?? -300 * scale,
+                  y: compactGridPos?.[3].y ?? 200 * scale,
+                }, // Management
+                {
+                  x: compactGridPos?.[4].x ?? 300 * scale,
+                  y: compactGridPos?.[4].y ?? 200 * scale,
+                }, // Research
+              ],
+              linePos: [
+                { x: -480 * compactPositionScale, y: 0 }, // Tech
+                { x: -240 * compactPositionScale, y: 0 }, // CC
+                { x: 0, y: 0 }, // Design
+                { x: 240 * compactPositionScale, y: 0 }, // Management
+                { x: 480 * compactPositionScale, y: 0 }, // Research
+              ],
+              zoomPos: [
+                { x: -900 * exitPositionScale, y: 0 }, // Tech : move left
+                { x: -620 * exitPositionScale, y: 0 }, // CC : move left
+                { x: -360 * exitPositionScale, y: 0 }, // Design : move left
+                { x: 360 * exitPositionScale, y: 0 }, // Management : move right
+                { x: 620 * exitPositionScale, y: 0 }, // Research : move right
+              ],
+            };
+          };
 
           const items = document.querySelectorAll(".domain-item");
           const frames = document.querySelectorAll(".domain-frame");
@@ -297,13 +354,31 @@ for (const item of domainItems) {
           const subtitle = document.querySelector(".section-subtitle");
           const bgLayer = document.querySelector(".domain-bg-layer");
 
-          if (!items.length || !frames.length || !grid || !subtitle || !bgLayer) return;
+          if (!items.length || !frames.length || !grid || !subtitle || !bgLayer)
+            return;
+
+          const setDomainInteractivity = (isInteractive: boolean) => {
+            items.forEach((item) => {
+              (item as HTMLElement).style.pointerEvents = isInteractive
+                ? "auto"
+                : "none";
+            });
+          };
+
+          const isDomainsSectionInView = () => {
+            const section = document.querySelector(".domains-section");
+            if (!(section instanceof HTMLElement)) return false;
+            const rect = section.getBoundingClientRect();
+            return rect.bottom > 0 && rect.top < window.innerHeight;
+          };
+
+          setDomainInteractivity(false);
 
           // Set initial state
           gsap.set(frames, {
             x: 0,
             y: 0,
-            scale: 0.6,
+            scale: () => 0.6 * getLayout().cassetteScale,
             opacity: 0,
             force3D: true,
           });
@@ -326,17 +401,30 @@ for (const item of domainItems) {
               anticipatePin: 1,
               invalidateOnRefresh: true,
               markers: false,
-              onEnter: () =>
-                gsap.to(bgLayer, { opacity: 1, duration: 0.5, delay: 0.5 }),
-              onLeave: () =>
-                gsap.to(bgLayer, { opacity: 0, duration: 0.5, delay: 0.5 }), // Fade out with delay
-              onEnterBack: () =>
-                gsap.to(bgLayer, { opacity: 1, duration: 0.5 }),
-              onLeaveBack: () =>
-                gsap.to(bgLayer, { opacity: 0, duration: 0.5 }),
+              onRefresh: (self) => {
+                setDomainInteractivity(
+                  self.isActive && isDomainsSectionInView(),
+                );
+              },
+              onEnter: () => {
+                setDomainInteractivity(true);
+                gsap.to(bgLayer, { opacity: 1, duration: 0.5, delay: 0.5 });
+              },
+              onLeave: () => {
+                setDomainInteractivity(false);
+                gsap.to(bgLayer, { opacity: 0, duration: 0.5, delay: 0.5 });
+              },
+              onEnterBack: () => {
+                setDomainInteractivity(true);
+                gsap.to(bgLayer, { opacity: 1, duration: 0.5 });
+              },
+              onLeaveBack: () => {
+                setDomainInteractivity(false);
+                gsap.to(bgLayer, { opacity: 0, duration: 0.5 });
+              },
             },
           });
-          
+
           mainTl = tl;
 
           // Phase 1: Appear and form grid
@@ -351,29 +439,29 @@ for (const item of domainItems) {
               frames,
               {
                 opacity: 1,
-                scale: 1,
+                scale: () => getLayout().cassetteScale,
                 duration: 2,
                 ease: "power2.out",
                 stagger: 0.1,
               },
-              "<+=0.2"
+              "<+=0.2",
             )
             .to(
               frames,
               {
-                x: (i) => gridPos[i].x,
-                y: (i) => gridPos[i].y,
+                x: (i) => getLayout().gridPos[i].x,
+                y: (i) => getLayout().gridPos[i].y,
                 duration: 3,
                 ease: "power2.inOut",
               },
-              "-=1"
+              "-=1",
             );
 
           // Phase 2: Form horizontal line
           tl.to(frames, {
-            x: (i) => linePos[i].x,
-            y: (i) => linePos[i].y,
-            scale: 0.7,
+            x: (i) => getLayout().linePos[i].x,
+            y: (i) => getLayout().linePos[i].y,
+            scale: () => 0.7 * getLayout().cassetteScale,
             duration: 3,
             ease: "power1.inOut",
             stagger: 0,
@@ -385,7 +473,7 @@ for (const item of domainItems) {
               duration: 2,
               ease: "power2.out",
             },
-            "<"
+            "<",
           );
 
           // Phase 3: Simplified zoom effect
@@ -396,15 +484,15 @@ for (const item of domainItems) {
           }).to(
             frames,
             {
-              x: (i) => zoomPos[i].x,
-              y: (i) => zoomPos[i].y,
+              x: (i) => getLayout().zoomPos[i].x,
+              y: (i) => getLayout().zoomPos[i].y,
               opacity: 100,
-              scale: 0.5,
+              scale: () => 0.5 * getLayout().cassetteScale,
               duration: 2,
               ease: "power2.in",
               stagger: 0.0,
             },
-            "<+=0.5"
+            "<+=0.5",
           );
 
           // Simplified hover effects
@@ -435,7 +523,11 @@ for (const item of domainItems) {
             });
 
             // Add click event handler for domain screen
-            item.addEventListener("click", () => {
+            item.addEventListener("click", (event) => {
+              event.stopPropagation();
+              if (!isDomainsSectionInView()) return;
+              if (document.getElementById("domain-screen")) return;
+
               const domain = item.getAttribute("data-domain");
               if (domain) {
                 showDomainScreen(domain);
@@ -468,7 +560,7 @@ for (const item of domainItems) {
                 duration: 0.4,
                 ease: "power2.inOut",
               },
-              0
+              0,
             );
           }
 
@@ -481,7 +573,7 @@ for (const item of domainItems) {
               ease: "power2.inOut",
               stagger: 0.02,
             },
-            0
+            0,
           ).to(
             subtitle,
             {
@@ -490,7 +582,7 @@ for (const item of domainItems) {
               duration: 0.3,
               ease: "power2.inOut",
             },
-            0.05
+            0.05,
           );
 
           setTimeout(() => {
@@ -565,7 +657,7 @@ for (const item of domainItems) {
               duration: 0.4,
               ease: "power2.out",
               delay: 0.1,
-            }
+            },
           );
         }
 
@@ -627,7 +719,7 @@ for (const item of domainItems) {
                                 const count = config.techIcons.length;
                                 const sets = Math.max(
                                   3,
-                                  Math.ceil(minItems / count)
+                                  Math.ceil(minItems / count),
                                 );
                                 const loopOffset = -100 / sets;
 
@@ -645,7 +737,7 @@ for (const item of domainItems) {
                                                     decoding="async"
                                                 />
                                             </div>
-                                        `
+                                        `,
                                           )
                                           .join("")}
                                     </div>
@@ -709,7 +801,7 @@ for (const item of domainItems) {
                                         />
                                         <span class="text-[#FEFCD9] text-sm md:text-base font-medium tracking-wide">${aoi.alt}</span>
                                     </div>
-                                `
+                                `,
                                   )
                                   .join("")}
                             </div>
@@ -751,7 +843,7 @@ for (const item of domainItems) {
                       duration: 0.3,
                       ease: "power2.out",
                     },
-                    0
+                    0,
                   );
                 }
 
@@ -766,7 +858,7 @@ for (const item of domainItems) {
                       ease: "power2.out",
                       stagger: 0.04,
                     },
-                    0.1
+                    0.1,
                   )
                   .to(
                     subtitle,
@@ -776,7 +868,7 @@ for (const item of domainItems) {
                       duration: 0.3,
                       ease: "power2.out",
                     },
-                    0.15
+                    0.15,
                   );
               },
             });
