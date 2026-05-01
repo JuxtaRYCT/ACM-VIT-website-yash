@@ -38,6 +38,8 @@ const facultyCoordinator = boardMembers.find(
         class="w-80 md:w-[30rem] lg:w-[50rem] h-auto"
         loading="lazy"
         decoding="async"
+        data-board-preload
+        data-preloader-ignore
       />
     </div>
 
@@ -55,6 +57,7 @@ const facultyCoordinator = boardMembers.find(
               googleScholarUrl={facultyCoordinator.googleScholarUrl}
               githubUrl={facultyCoordinator.githubUrl}
               isW={facultyCoordinator.isW}
+              preloadImage={true}
             />
           </div>
         </div>
@@ -77,6 +80,7 @@ const facultyCoordinator = boardMembers.find(
               googleScholarUrl={member.googleScholarUrl}
               githubUrl={member.githubUrl}
               isW={member.isW}
+              preloadImage={true}
             />
           </div>
         ))
@@ -97,6 +101,7 @@ const facultyCoordinator = boardMembers.find(
                 googleScholarUrl={member.googleScholarUrl}
                 githubUrl={member.githubUrl}
                 isW={member.isW}
+                preloadImage={true}
               />
             </div>
           ))}
@@ -150,6 +155,50 @@ const facultyCoordinator = boardMembers.find(
   }
 
   if (typeof window !== "undefined") {
+    const preloadBoardImages = () => {
+      const urls = Array.from(
+        document.querySelectorAll<HTMLImageElement>(
+          ".board-section img[data-board-preload][src]"
+        )
+      )
+        .map((img) => img.currentSrc || img.src)
+        .filter(Boolean);
+
+      Array.from(new Set(urls)).forEach((src) => {
+        const preloadLink = document.createElement("link");
+        preloadLink.rel = "preload";
+        preloadLink.as = "image";
+        preloadLink.href = src;
+        document.head.appendChild(preloadLink);
+
+        const image = new Image();
+        image.decoding = "async";
+        image.src = src;
+      });
+    };
+
+    let boardPreloadScheduled = false;
+    const scheduleBoardPreload = () => {
+      if (boardPreloadScheduled) return;
+      boardPreloadScheduled = true;
+
+      if ("requestIdleCallback" in window) {
+        (window as any).requestIdleCallback(preloadBoardImages, {
+          timeout: 900,
+        });
+      } else {
+        window.setTimeout(preloadBoardImages, 250);
+      }
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", scheduleBoardPreload, {
+        once: true,
+      });
+    } else {
+      scheduleBoardPreload();
+    }
+
     const updateCrewBtnText = () => {
       const btn = document.getElementById("crew-btn");
       if (!btn) return;

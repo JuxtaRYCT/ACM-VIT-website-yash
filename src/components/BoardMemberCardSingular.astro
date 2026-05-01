@@ -8,6 +8,7 @@ interface Props {
   googleScholarUrl?: string;
   githubUrl?: string;
   isW?: boolean;
+  preloadImage?: boolean;
 }
 
 const {
@@ -19,6 +20,7 @@ const {
   googleScholarUrl,
   githubUrl,
   isW,
+  preloadImage = false,
 } = Astro.props;
 
 import { getAssetUrl } from "../utils/cdn";
@@ -68,6 +70,8 @@ import { getAssetUrl } from "../utils/cdn";
         class="h-full w-full object-cover object-top"
         loading="lazy"
         decoding="async"
+        data-board-preload={preloadImage}
+        data-preloader-ignore={preloadImage}
       />
     </div>
 

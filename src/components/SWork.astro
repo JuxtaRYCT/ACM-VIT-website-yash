@@ -66,8 +66,33 @@ while (i < projects.length) {
   i++;
 }
 
-const worksHeight = works.length * 50;
-const worksHeightMobile = works.length * 45;
+const EVENT_MOVEMENT_SCROLL_MULTIPLIER = 5;
+const EVENT_END_WRAP_SCROLL_MULTIPLIER = 3;
+const EVENT_BASE_INTRO_DURATION = 10.0;
+const EVENT_BASE_CARDS_DELAY = 0.35;
+const EVENT_BASE_CARDS_DURATION = 0.9;
+const EVENT_BASE_CARDS_STAGGER = 0.32;
+const EVENT_BASE_END_WRAP_DURATION = 1;
+const EVENT_END_WRAP_DELAY_DURATION = 2;
+const getEventSectionScrollMultiplier = (itemCount: number) => {
+  const cardsStart = EVENT_BASE_INTRO_DURATION + EVENT_BASE_CARDS_DELAY;
+  const baseMovementDuration =
+    EVENT_BASE_CARDS_DURATION +
+    Math.max(itemCount - 1, 0) * EVENT_BASE_CARDS_STAGGER;
+  const baseTimelineDuration =
+    cardsStart + baseMovementDuration + EVENT_BASE_END_WRAP_DURATION;
+  const expandedTimelineDuration =
+    cardsStart +
+    baseMovementDuration * EVENT_MOVEMENT_SCROLL_MULTIPLIER +
+    EVENT_END_WRAP_DELAY_DURATION +
+    EVENT_BASE_END_WRAP_DURATION * EVENT_END_WRAP_SCROLL_MULTIPLIER;
+  return expandedTimelineDuration / baseTimelineDuration;
+};
+const EVENT_SECTION_SCROLL_MULTIPLIER = getEventSectionScrollMultiplier(
+  works.length
+);
+const worksHeight = works.length * 50 * EVENT_SECTION_SCROLL_MULTIPLIER;
+const worksHeightMobile = works.length * 45 * EVENT_SECTION_SCROLL_MULTIPLIER;
 ---
 
 <section
@@ -776,8 +801,32 @@ const worksHeightMobile = works.length * 45;
       }, this);
     }
 
+    getEventSectionScrollMultiplier(itemCount: number) {
+      const movementScrollMultiplier = 5;
+      const endWrapScrollMultiplier = 3;
+      const introDuration = 10.0;
+      const cardsDelay = 0.35;
+      const baseCardsDuration = 0.9;
+      const baseCardsStagger = 0.32;
+      const baseEndWrapDuration = 1;
+      const endWrapDelayDuration = 2;
+      const cardsStart = introDuration + cardsDelay;
+      const baseMovementDuration =
+        baseCardsDuration + Math.max(itemCount - 1, 0) * baseCardsStagger;
+      const baseTimelineDuration =
+        cardsStart + baseMovementDuration + baseEndWrapDuration;
+      const expandedTimelineDuration =
+        cardsStart +
+        baseMovementDuration * movementScrollMultiplier +
+        endWrapDelayDuration +
+        baseEndWrapDuration * endWrapScrollMultiplier;
+      return expandedTimelineDuration / baseTimelineDuration;
+    }
+
     setSize() {
-      const sectionHeightPerWork = this.isTouchDevice ? 45 : 50;
+      const sectionHeightPerWork =
+        (this.isTouchDevice ? 45 : 50) *
+        this.getEventSectionScrollMultiplier(this.works.length);
       this.el.style.setProperty(
         "--height",
         this.works.length * sectionHeightPerWork + "svh"
@@ -979,6 +1028,9 @@ const worksHeightMobile = works.length * 45;
       const introDuration = 10.0;
       const cardsDelay = 0.35;
       const cardsStart = introDuration + cardsDelay;
+      const movementScrollMultiplier = 5;
+      const endWrapScrollMultiplier = 3;
+      const endWrapDelayDuration = 2;
 
       const timelineConfig: gsap.TimelineVars = {
         paused: this.isTouchDevice || this.reducedMotion || this.reducedData,
@@ -1047,8 +1099,16 @@ const worksHeightMobile = works.length * 45;
         { state: 1, duration: 0.75, ease: "power4.in" },
         introDuration
       );
-      const cardsDuration = 0.9;
-      const cardsStagger = 0.32;
+      const baseCardsDuration = 0.9;
+      const baseCardsStagger = 0.32;
+      const cardsDuration = baseCardsDuration * movementScrollMultiplier;
+      const cardsStagger = baseCardsStagger * movementScrollMultiplier;
+      const baseMovementDuration =
+        baseCardsDuration + Math.max(worksEl.length - 1, 0) * baseCardsStagger;
+      const movementDuration = baseMovementDuration * movementScrollMultiplier;
+      const wrapStart = cardsStart + movementDuration + endWrapDelayDuration;
+      const wrapDuration = 0.75 * endWrapScrollMultiplier;
+      const pointsWrapDuration = 1 * endWrapScrollMultiplier;
       tl.fromTo(
         worksEl,
         { attr: { progress: 1 } },
@@ -1065,7 +1125,7 @@ const worksHeightMobile = works.length * 45;
         { animationProgress: 0 },
         {
           animationProgress: 10000,
-          duration: tl.totalDuration(),
+          duration: movementDuration,
           ease: "power1.out",
         },
         cardsStart
@@ -1075,33 +1135,33 @@ const worksHeightMobile = works.length * 45;
         { state: 1 },
         {
           state: 0,
-          duration: 0.75,
+          duration: wrapDuration,
           ease: "power4.inOut",
           immediateRender: false,
         },
-        "-=1"
+        wrapStart
       );
       tl.fromTo(
         mask.el,
         { scale: mask.maxScale },
         {
           scale: 1,
-          duration: 0.75,
+          duration: wrapDuration,
           ease: "power4.inOut",
           immediateRender: false,
         },
-        "-=1"
+        wrapStart
       );
       tl.fromTo(
         scene,
         { scale: 1 },
         {
           scale: 0.75,
-          duration: 0.75,
+          duration: wrapDuration,
           ease: "power3.inOut",
           immediateRender: false,
         },
-        "-=1"
+        wrapStart
       );
 
       if (!isMobile) {
@@ -1110,19 +1170,23 @@ const worksHeightMobile = works.length * 45;
           { clipPath: "inset(0 0rem)" },
           {
             clipPath: "inset(0 1rem)",
-            duration: 0.75,
+            duration: wrapDuration,
             ease: "power3.inOut",
             immediateRender: false,
           },
-          "-=1"
+          wrapStart
         );
       }
 
       tl.fromTo(
         this,
         { pointsProgress: 1 },
-        { pointsProgress: 0, duration: 1, ease: "power4.inOut" },
-        "-=1"
+        {
+          pointsProgress: 0,
+          duration: pointsWrapDuration,
+          ease: "power4.inOut",
+        },
+        wrapStart
       );
 
       if (this.isTouchDevice) {
