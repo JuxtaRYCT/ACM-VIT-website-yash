@@ -41,6 +41,7 @@
   gsap.registerPlugin(ScrollTrigger);
 
   const container = document.querySelector(".reveal-text-container");
+  const mobileRevealStart = "top 128%";
 
   if (container) {
     const splitTextElements = container.querySelectorAll(".split-text");
@@ -72,11 +73,11 @@
             willChange: "transform", // Hint browser
             scrollTrigger: {
               trigger: container,
-              start: "top 120%", // Adjusted to start earlier
+              start: mobileRevealStart,
               end: "bottom center",
               scrub: 1,
             },
-          }
+          },
         );
 
         // Collect all words from all spans for unified stagger
@@ -94,11 +95,11 @@
             stagger: 0.05,
             scrollTrigger: {
               trigger: container,
-              start: "top 120%", // Adjusted to start earlier
+              start: mobileRevealStart,
               end: "bottom center",
               scrub: 1,
             },
-          }
+          },
         );
       } else {
         gsap.fromTo(
@@ -119,7 +120,7 @@
               end: "bottom center",
               scrub: 1,
             },
-          }
+          },
         );
 
         // Collect all words from all spans for unified stagger
@@ -141,7 +142,7 @@
               end: "bottom center",
               scrub: 1,
             },
-          }
+          },
         );
       }
     }
