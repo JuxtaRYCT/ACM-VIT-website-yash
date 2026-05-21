@@ -121,7 +121,9 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
         video.dataset.scrollInit = "true";
 
         const startTime = parseFloat(video.dataset.startTime || "0");
-        const minStep = 1 / 240;
+        const sourceFrameRate = 60;
+        const frameDuration = 1 / sourceFrameRate;
+        const minStep = frameDuration / 4;
         const desktopSmoothQuery = window.matchMedia(
             "(min-width: 769px) and (pointer: fine)",
         );
@@ -191,8 +193,17 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
             visibilityTrigger?.kill();
             visibilityTrigger = null;
 
+            const snapToSourceFrame = (time: number) => {
+                const clamped = Math.max(startTime, Math.min(endTime, time));
+                const frameIndex = Math.round((clamped - startTime) / frameDuration);
+                return Math.max(
+                    startTime,
+                    Math.min(endTime, startTime + frameIndex * frameDuration),
+                );
+            };
+
             const commitVideoTime = (nextTime: number) => {
-                const clamped = Math.max(startTime, Math.min(endTime, nextTime));
+                const clamped = snapToSourceFrame(nextTime);
                 if (Math.abs(video.currentTime - clamped) <= minStep) return;
 
                 try {
@@ -225,8 +236,8 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
                     return;
                 }
 
-                const ease = 1 - Math.exp(-delta / 0.12);
-                const maxStep = Math.max(1 / 60, delta * 3.2);
+                const ease = 1 - Math.exp(-delta / 0.08);
+                const maxStep = frameDuration;
                 const easedStep = diff * ease;
                 const step =
                     Math.sign(diff) *

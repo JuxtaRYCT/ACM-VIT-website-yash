@@ -1459,6 +1459,8 @@ const worksHeightMobile = works.length * 45 * EVENT_SECTION_SCROLL_MULTIPLIER;
       position: relative;
       height: var(--height);
       clip-path: inset(0 -1rem);
+      overflow: clip;
+      overflow-clip-margin: 1rem;
     }
 
     .s__inner {

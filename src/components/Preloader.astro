@@ -465,7 +465,7 @@
     const allCandidates = collectCriticalImageCandidates();
     const isMobile =
       window.matchMedia("(max-width: 768px)").matches;
-    const maxCritical = isMobile ? 70 : 110;
+    const maxCritical = isMobile ? 32 : 48;
     const urls = allCandidates.slice(0, maxCritical);
 
     await preloadInBatches(urls, 8, (loaded, total) => {
@@ -507,7 +507,7 @@
     Array.from({ length: CONTACT_LAPTOP_FRAME_COUNT }, (_, index) =>
       normalizeUrl(
         getAssetUrl(
-          `/outputFolder/frame_${(index + 1).toString().padStart(4, "0")}.png`
+          `/outputFolder/frame_${(index + 1).toString().padStart(4, "0")}.avif`
         )
       )
     );
@@ -523,7 +523,7 @@
     }
 
     const urls = collectContactLaptopFrameUrls();
-    urls.slice(0, 6).forEach((url) => addPreloadHint(url, "image"));
+    urls.slice(0, 6).forEach((url) => addPreloadHint(url, "image", "image/avif"));
 
     const frameCache =
       ((window as any).__contactLaptopFrameCache as
@@ -566,24 +566,6 @@
   const warmRemainingAssets = async () => {
     if (remainingWarmupStarted) return;
     remainingWarmupStarted = true;
-
-    const schedule = (fn: () => void) => {
-      if ("requestIdleCallback" in window) {
-        (window as any).requestIdleCallback(fn, { timeout: 1200 });
-      } else {
-        window.setTimeout(fn, 350);
-      }
-    };
-
-    schedule(async () => {
-      const urls = Array.from(document.querySelectorAll("img[src]"))
-        .map((img) => img.getAttribute("src") || "")
-        .filter((url) => !!url && isLikelyImageUrl(url))
-        .map((url) => normalizeUrl(url));
-
-      const unique = Array.from(new Set(urls));
-      await preloadInBatches(unique, 4);
-    });
   };
 
   // Lottie fetches JSON via XHR/fetch under the hood.

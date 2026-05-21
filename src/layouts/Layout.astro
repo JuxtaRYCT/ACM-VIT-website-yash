@@ -6,7 +6,7 @@ import { getAssetUrl } from "../utils/cdn";
 
 const site = Astro.site ?? new URL("https://www.acmvit.in");
 const canonicalUrl = new URL(Astro.url.pathname, site);
-const ogImageUrl = new URL("/opengraph.png", site);
+const ogImageUrl = new URL("/opengraph.webp", site);
 const cdnEnv = import.meta.env.PUBLIC_CDN_URL;
 let cdnOrigin: string | null = null;
 if (cdnEnv) {
@@ -410,6 +410,7 @@ const description =
     width: 100%;
     height: 100%;
     overflow-x: hidden;
+    overscroll-behavior-y: none;
     position: relative;
     background: #0d0e0d;
     font-family:
