@@ -5,8 +5,8 @@ export default config({
     ? {
         kind: 'github',
         repo: {
-          owner: 'ACM-VIT',
-          name: 'ACM-VIT',
+          owner: (process.env.KEYSTATIC_GITHUB_REPO_OWNER || 'ACM-VIT') as any,
+          name: (process.env.KEYSTATIC_GITHUB_REPO_NAME || 'ACM-VIT') as any,
         },
       }
     : {
