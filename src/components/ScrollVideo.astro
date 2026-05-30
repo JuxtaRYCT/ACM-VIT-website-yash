@@ -28,8 +28,8 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
         preload="auto"
     >
         <!-- Intentionally bypass CDN for this asset -->
-        <source src={normalizedMp4Src} type="video/mp4" />
         <source src={normalizedWebmSrc} type="video/webm" />
+        <source src={normalizedMp4Src} type="video/mp4" />
     </video>
 
     <div class="scroll-video-overlay" data-scroll-video-overlay></div>
