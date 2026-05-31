@@ -1,4 +1,6 @@
 ---
+import { getAssetUrl } from "../utils/cdn";
+
 interface Props {
     webmSrc?: string;
     mp4Src?: string;
@@ -27,9 +29,9 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
         playsinline
         preload="auto"
     >
-        <!-- Intentionally bypass CDN for this asset -->
-        <source src={normalizedWebmSrc} type="video/webm" />
-        <source src={normalizedMp4Src} type="video/mp4" />
+        <!-- Use CDN resolved URL if configured, fallback to local path -->
+        <source src={getAssetUrl(normalizedWebmSrc)} type="video/webm" />
+        <source src={getAssetUrl(normalizedMp4Src)} type="video/mp4" />
     </video>
 
     <div class="scroll-video-overlay" data-scroll-video-overlay></div>
@@ -129,9 +131,16 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
 
         const setupScrollTrigger = () => {
             const videoDuration = video.duration;
-            if (!videoDuration || isNaN(videoDuration)) {
+            if (!videoDuration || isNaN(videoDuration) || videoDuration === Infinity) {
                 return;
             }
+
+            // We have a valid duration! Clean up all listeners to avoid multiple setups.
+            video.removeEventListener("loadedmetadata", setupScrollTrigger);
+            video.removeEventListener("durationchange", setupScrollTrigger);
+            video.removeEventListener("canplay", setupScrollTrigger);
+            video.removeEventListener("canplaythrough", setupScrollTrigger);
+            video.removeEventListener("loadeddata", setupScrollTrigger);
 
             const requestedEndTime = video.dataset.endTime
                 ? parseFloat(video.dataset.endTime)
@@ -140,6 +149,17 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
             const playDuration = Math.max(minStep, endTime - startTime);
 
             video.pause();
+
+            // Attempt to unlock the video decoder for frame-exact seeking in Safari and mobile browsers
+            const unlockVideo = async () => {
+                try {
+                    await video.play();
+                    video.pause();
+                } catch (e) {
+                    // Safe to ignore if blocked by autoplay policies
+                }
+            };
+            unlockVideo();
 
             const commitVideoTime = (nextTime: number) => {
                 const clamped = Math.max(startTime, Math.min(endTime, nextTime));
@@ -272,12 +292,16 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
             window.requestAnimationFrame(() => ScrollTrigger.refresh());
         };
 
+        // Register multiple event listeners to guarantee duration is detected
+        video.addEventListener("loadedmetadata", setupScrollTrigger);
+        video.addEventListener("durationchange", setupScrollTrigger);
+        video.addEventListener("canplay", setupScrollTrigger);
+        video.addEventListener("canplaythrough", setupScrollTrigger);
+        video.addEventListener("loadeddata", setupScrollTrigger);
+
+        // Check immediately in case video metadata/duration is already fully ready
         if (video.readyState >= 1) {
             setupScrollTrigger();
-        } else {
-            video.addEventListener("loadedmetadata", setupScrollTrigger, {
-                once: true,
-            });
         }
 
         video.pause();
