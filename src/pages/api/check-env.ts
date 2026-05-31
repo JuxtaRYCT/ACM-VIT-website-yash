@@ -11,6 +11,11 @@ export const GET: APIRoute = async (context) => {
     hasResendApiKey: !!cloudflareEnv.RESEND_API_KEY || !!process.env.RESEND_API_KEY,
     hasResendFrom: !!cloudflareEnv.RESEND_FROM || !!process.env.RESEND_FROM,
     
+    // Explicit values for debugging config mismatches
+    githubClientID: cloudflareEnv.KEYSTATIC_GITHUB_CLIENT_ID || process.env.KEYSTATIC_GITHUB_CLIENT_ID || 'undefined',
+    repoOwner: cloudflareEnv.KEYSTATIC_GITHUB_REPO_OWNER || process.env.KEYSTATIC_GITHUB_REPO_OWNER || 'undefined',
+    repoName: cloudflareEnv.KEYSTATIC_GITHUB_REPO_NAME || process.env.KEYSTATIC_GITHUB_REPO_NAME || 'undefined',
+
     // Runtime environment diagnostics
     nodeEnv: process.env.NODE_ENV || 'undefined',
     isProcessGlobalDefined: typeof process !== 'undefined',
