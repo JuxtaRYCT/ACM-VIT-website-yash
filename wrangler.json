@@ -6,10 +6,13 @@
   ],
   "main": "dist/_worker.js/index.js",
   "assets": {
-    "directory": "dist"
+    "directory": "dist",
+    "binding": "ASSETS"
   },
   "vars": {
-    "PUBLIC_CDN_URL": "https://acmvitin.s3.ap-south-1.amazonaws.com"
+    "PUBLIC_CDN_URL": "https://acmvitin.s3.ap-south-1.amazonaws.com",
+    "KEYSTATIC_GITHUB_REPO_OWNER": "pj4real",
+    "KEYSTATIC_GITHUB_REPO_NAME": "ACM-VIT-Website"
   },
   "observability": {
     "enabled": false,
