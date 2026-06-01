@@ -1,7 +1,6 @@
 ---
 // Gallery.astro
 import { getAssetUrl } from "../utils/cdn";
-import ProofGallery from "./ProofGallery.astro";
 ---
 
 <section
@@ -137,13 +136,7 @@ import ProofGallery from "./ProofGallery.astro";
       />
     </div>
   </div>
-  <ProofGallery />
 </section>
-
-<script>
-  // Ensure the function is available (if ProofGallery script hasn't run yet, though it should have)
-  // Actually, Astro scripts module hoist, so it might be fine, but let's be safe.
-</script>
 
 <style>
   .gallery-section {
