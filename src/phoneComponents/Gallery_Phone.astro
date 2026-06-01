@@ -1,5 +1,6 @@
 ---
 // Gallery_Phone.astro
+import ProofGallery from "../components/ProofGallery.astro";
 import { getAssetUrl } from "../utils/cdn";
 ---
 
@@ -109,12 +110,11 @@ import { getAssetUrl } from "../utils/cdn";
 
     <div class="px-4 w-full flex justify-center">
       <div
-        data-proof-gallery-trigger
+        onclick="window.openProofGallery()"
         class="w-[90%] max-w-[280px] h-8 bg-[#F95F4A] rounded-[41px] outline outline-1 outline-offset-[-1px] outline-yellow-50
            flex items-center justify-center hover:scale-105 transition-transform duration-200 cursor-pointer"
         role="button"
         tabindex="0"
-        aria-label="Open proof gallery"
       >
         <span
           class="text-white text-[8px] font-light font-['PolySans_Trial'] uppercase tracking-wider"
@@ -134,6 +134,7 @@ import { getAssetUrl } from "../utils/cdn";
       />
     </div>
   </div>
+  <ProofGallery />
 </section>
 
 <style>

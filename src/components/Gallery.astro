@@ -1,6 +1,7 @@
 ---
 // Gallery.astro
 import { getAssetUrl } from "../utils/cdn";
+import ProofGallery from "./ProofGallery.astro";
 ---
 
 <section
@@ -112,12 +113,11 @@ import { getAssetUrl } from "../utils/cdn";
 
     <div class="px-4">
       <div
-        data-proof-gallery-trigger
+        onclick="window.openProofGallery()"
         class="w-[484px] h-12 bg-[#F95F4A] rounded-[41px] outline outline-1 outline-offset-[-1px] outline-yellow-50
            flex items-center justify-center hover:scale-105 transition-transform duration-200 cursor-pointer"
         role="button"
         tabindex="0"
-        aria-label="Open proof gallery"
       >
         <span
           class="text-white text-base font-light font-['PolySans_Trial'] uppercase"
@@ -137,7 +137,13 @@ import { getAssetUrl } from "../utils/cdn";
       />
     </div>
   </div>
+  <ProofGallery />
 </section>
+
+<script>
+  // Ensure the function is available (if ProofGallery script hasn't run yet, though it should have)
+  // Actually, Astro scripts module hoist, so it might be fine, but let's be safe.
+</script>
 
 <style>
   .gallery-section {

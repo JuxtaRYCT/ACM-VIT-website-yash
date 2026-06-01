@@ -66,36 +66,36 @@ import { getAssetUrl } from "../utils/cdn";
         {
           [
             // ACM_25 Board pics
-            { src: "/gallery-optimized/board-01.webp", category: "ACM 25 Board", title: "Board Moment" },
-            { src: "/gallery-optimized/board-02.webp", category: "ACM 25 Board", title: "Board Moment" },
-            { src: "/gallery-optimized/board-03.webp", category: "ACM 25 Board", title: "Board Moment" },
-            { src: "/gallery-optimized/board-04.webp", category: "ACM 25 Board", title: "Board Moment" },
-            { src: "/gallery-optimized/board-05.webp", category: "ACM 25 Board", title: "Board Moment" },
+            { src: "/gallery/ACM_25 Board pics/IMG-20250302-WA0001.jpg", category: "ACM 25 Board", title: "Board Moment" },
+            { src: "/gallery/ACM_25 Board pics/IMG-20250302-WA0002.jpg", category: "ACM 25 Board", title: "Board Moment" },
+            { src: "/gallery/ACM_25 Board pics/IMG_20250228_222031430.jpg", category: "ACM 25 Board", title: "Board Moment" },
+            { src: "/gallery/ACM_25 Board pics/_DSC0054.JPG", category: "ACM 25 Board", title: "Board Moment" },
+            { src: "/gallery/ACM_25 Board pics/WhatsApp Image 2025-12-11 at 12.24.44 AM.jpeg", category: "ACM 25 Board", title: "Board Moment" },
             
             // Reverse Coding
-            { src: "/gallery-optimized/reverse-coding-01.webp", category: "Reverse Coding", title: "Event Highlight" },
-            { src: "/gallery-optimized/reverse-coding-02.webp", category: "Reverse Coding", title: "Event Highlight" },
-            { src: "/gallery-optimized/reverse-coding-03.webp", category: "Reverse Coding", title: "Event Highlight" },
-            { src: "/gallery-optimized/reverse-coding-04.webp", category: "Reverse Coding", title: "Event Highlight" },
+            { src: "/gallery/Reverse Coding/20250207_111113.jpg", category: "Reverse Coding", title: "Event Highlight" },
+            { src: "/gallery/Reverse Coding/20250207_114342.jpg", category: "Reverse Coding", title: "Event Highlight" },
+            { src: "/gallery/Reverse Coding/DSC00924.JPG", category: "Reverse Coding", title: "Event Highlight" },
+            { src: "/gallery/Reverse Coding/DSC_0254.JPG", category: "Reverse Coding", title: "Event Highlight" },
             
             // Turf
-            { src: "/gallery-optimized/turf-01.webp", category: "Turf", title: "Turf Action" },
-            { src: "/gallery-optimized/turf-02.webp", category: "Turf", title: "Turf Action" },
-            { src: "/gallery-optimized/turf-03.webp", category: "Turf", title: "Turf Action" },
+            { src: "/gallery/Turf/IMG_8061.JPG", category: "Turf", title: "Turf Action" },
+            { src: "/gallery/Turf/IMG-20250414-WA0021.jpg", category: "Turf", title: "Turf Action" },
+            { src: "/gallery/Turf/WhatsApp Image 2025-12-11 at 12.23.47 AM.jpeg", category: "Turf", title: "Turf Action" },
 
             // Nightslip
-            { src: "/gallery-optimized/nightslip-01.webp", category: "Nightslip", title: "Nightslip Vibes" },
-            { src: "/gallery-optimized/nightslip-02.webp", category: "Nightslip", title: "Nightslip Vibes" },
-            { src: "/gallery-optimized/nightslip-03.webp", category: "Nightslip", title: "Nightslip Vibes" },
+            { src: "/gallery/Nightslip/DSC00719.JPG", category: "Nightslip", title: "Nightslip Vibes" },
+            { src: "/gallery/Nightslip/DSC00754.JPG", category: "Nightslip", title: "Nightslip Vibes" },
+            { src: "/gallery/Nightslip/DSC00816.JPG", category: "Nightslip", title: "Nightslip Vibes" },
             
             // Women's Day
-            { src: "/gallery-optimized/womens-day-01.webp", category: "Women's Day", title: "Celebration" },
-            { src: "/gallery-optimized/womens-day-02.webp", category: "Women's Day", title: "Celebration" },
-            { src: "/gallery-optimized/womens-day-03.webp", category: "Women's Day", title: "Celebration" },
+            { src: "/gallery/Women_s day/DSC00852.JPG", category: "Women's Day", title: "Celebration" },
+            { src: "/gallery/Women_s day/DSC02199.JPG", category: "Women's Day", title: "Celebration" },
+            { src: "/gallery/Women_s day/DSC02591.JPG", category: "Women's Day", title: "Celebration" },
 
             // ACM_26 Board
-            { src: "/gallery-optimized/board-26-01.webp", category: "ACM 26 Board", title: "New Board" },
-            { src: "/gallery-optimized/board-26-02.webp", category: "ACM 26 Board", title: "New Board" },
+            { src: "/gallery/ACM_26 Board/WhatsApp Image 2025-12-11 at 12.27.04 AM.jpeg", category: "ACM 26 Board", title: "New Board" },
+            { src: "/gallery/ACM_26 Board/WhatsApp Image 2025-12-11 at 12.27.05 AM.jpeg", category: "ACM 26 Board", title: "New Board" },
           ].map((item, i) => {
             const isPink = i % 2 === 0;
             return (
@@ -211,3 +211,105 @@ import { getAssetUrl } from "../utils/cdn";
     opacity: 1 !important;
   }
 </style>
+
+<script>
+  import { gsap } from "gsap";
+
+  const modal = document.getElementById("proof-gallery-modal");
+  const closeBtn = document.getElementById("proof-gallery-close");
+  const gridContainer = document.getElementById("proof-gallery-grid-container");
+  const galleryItems = document.querySelectorAll(".gallery-item");
+
+  let isOpen = false;
+
+  function openGallery() {
+    if (isOpen) return;
+    isOpen = true;
+
+    // Push history state to handle back button
+    history.pushState({ galleryOpen: true }, "", "#gallery-view");
+
+    // Make visible
+    if (modal) {
+      modal.classList.add("modal-open");
+
+      // Animate entrance
+      const tl = gsap.timeline();
+
+      tl.fromTo(
+        modal,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.3, ease: "power2.out" }
+      ).fromTo(
+        galleryItems,
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.05,
+          duration: 0.5,
+          ease: "back.out(1.2)",
+        },
+        "-=0.1"
+      );
+    }
+
+    // Disable body scroll
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeGallery() {
+    if (!isOpen) return;
+    isOpen = false;
+
+    if (modal) {
+      // Animate exit
+      gsap.to(modal, {
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.in",
+        onComplete: () => {
+          modal.classList.remove("modal-open");
+          // Reset items for next open
+          gsap.set(galleryItems, { clearProps: "all" });
+        },
+      });
+    }
+
+    // Enable body scroll
+    document.body.style.overflow = "";
+  }
+
+  // Global expose for triggers
+  (window as any).openProofGallery = openGallery;
+
+  // Event Listeners
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      // Use history.back() to trigger popstate and keep history clean
+      history.back();
+    });
+  }
+
+  // Handle escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && isOpen) {
+      history.back();
+    }
+  });
+
+  // Handle back button
+  window.addEventListener("popstate", (event) => {
+    // If we pop state and we think we are open, we should likely close.
+    // However, if we just opened, we pushed state.
+    // So popping state usually means going back.
+    if (isOpen) {
+      closeGallery();
+    }
+  });
+
+  // Re-attach listeners on view transitions (optional safety)
+  document.addEventListener('astro:page-load', () => {
+      // Logic if needed for view transitions, but for now this is static
+  });
+</script>

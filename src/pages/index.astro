@@ -5,7 +5,6 @@ import Domains from "../components/Domains.astro";
 import DomainsPhone from "../phoneComponents/Domains_Phone.astro";
 import Layout from "../layouts/Layout.astro";
 import Gallery from "../components/Gallery.astro";
-import ProofGallery from "../components/ProofGallery.astro";
 import Board from "../components/Board.astro";
 import "../styles/globals.css";
 import Partners from "../components/Partners.astro";
@@ -75,6 +74,7 @@ const videoEndTime = undefined; // Use full video duration (set to specific seco
 
 <Layout>
     <ScrollVideo
+        webmSrc="/ACMWebsiteVid.webm"
         mp4Src="/ACMWebsiteVid.mp4"
         startTime={videoStartTime}
         endTime={videoEndTime}
@@ -166,7 +166,6 @@ const videoEndTime = undefined; // Use full video duration (set to specific seco
                 <Gallery_Phone />
             </template>
         </div>
-        <ProofGallery />
     </section>
 
     <section id="contact" class="page-section">

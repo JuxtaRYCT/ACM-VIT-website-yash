@@ -405,8 +405,6 @@ const worksHeightMobile = works.length * 45;
     touchStableFrames: number;
     touchLastViewportWidth: number;
     touchSyncForce: boolean;
-    nativeTimelineRafId: number;
-    nativeTimelineForce: boolean;
     loadIsStarted: boolean;
     reducedMotion: boolean;
     reducedData: boolean;
@@ -474,8 +472,6 @@ const worksHeightMobile = works.length * 45;
       this.touchStableFrames = 0;
       this.touchLastViewportWidth = window.innerWidth || 0;
       this.touchSyncForce = false;
-      this.nativeTimelineRafId = 0;
-      this.nativeTimelineForce = false;
       this.loadIsStarted = false;
       this.reducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
@@ -508,9 +504,6 @@ const worksHeightMobile = works.length * 45;
       emitter.on("resize", this.onResize, this);
       window.addEventListener("resize", () => this.onResize(true)); // Fallback
       window.addEventListener("scroll", this.onTouchScroll, { passive: true });
-      window.addEventListener("scroll", this.onNativeScroll, {
-        passive: true,
-      });
       document.addEventListener("touchstart", this.onTouchInput, {
         passive: true,
       });
@@ -521,9 +514,6 @@ const worksHeightMobile = works.length * 45;
         passive: true,
       });
       window.visualViewport?.addEventListener("scroll", this.onTouchScroll, {
-        passive: true,
-      });
-      window.visualViewport?.addEventListener("scroll", this.onNativeScroll, {
         passive: true,
       });
       window.visualViewport?.addEventListener(
@@ -582,8 +572,6 @@ const worksHeightMobile = works.length * 45;
           this.queueTouchSync(true);
         } else {
           this.stopTouchSync();
-          this.measureTouchRange();
-          this.queueNativeTimelineSync(true);
         }
       }
     }
@@ -591,11 +579,6 @@ const worksHeightMobile = works.length * 45;
     onIntersect(e: CustomEvent<{ isIntersecting: boolean }>) {
       this.isPaused = !e.detail.isIntersecting;
       emitter.off("tick", this.tick, this);
-
-      if (!this.isPaused) {
-        this.measureTouchRange();
-        this.queueNativeTimelineSync(true);
-      }
 
       if (this.isTouchDevice) {
         this.queueTouchSync(true);
@@ -676,11 +659,6 @@ const worksHeightMobile = works.length * 45;
     onTouchScroll = () => {
       if (!this.isTouchDevice || !this.tl) return;
       this.queueTouchSync();
-    };
-
-    onNativeScroll = () => {
-      if (!this.tl || this.reducedMotion || this.reducedData) return;
-      this.queueNativeTimelineSync();
     };
 
     onTouchInput = () => {
@@ -768,30 +746,6 @@ const worksHeightMobile = works.length * 45;
         this.touchViewportRefreshTimeoutId = 0;
       }
       this.touchSyncForce = false;
-    }
-
-    queueNativeTimelineSync(force = false) {
-      if (force) {
-        this.nativeTimelineForce = true;
-      }
-      if (this.nativeTimelineRafId) return;
-
-      this.nativeTimelineRafId = requestAnimationFrame(() => {
-        this.nativeTimelineRafId = 0;
-        if (!this.tl || this.reducedMotion || this.reducedData) return;
-
-        const shouldForce = this.nativeTimelineForce || force;
-        this.nativeTimelineForce = false;
-        const scrollY = this.getCurrentScrollY();
-        this.measureTouchRange();
-        const nextProgress = this.getTouchTimelineProgress(scrollY);
-
-        if (shouldForce || Math.abs(nextProgress - this.tl.progress()) > 0.0005) {
-          this.tl.progress(nextProgress, false);
-        }
-
-        this.syncScrollEffects(shouldForce, scrollY);
-      });
     }
 
     updateTouchTimeline(force = false, scrollY = this.getCurrentScrollY()) {
@@ -1175,9 +1129,6 @@ const worksHeightMobile = works.length * 45;
         this.measureTouchRange();
         this.updateTouchTimeline(true);
         this.queueTouchSync(true);
-      } else if (!this.reducedMotion && !this.reducedData) {
-        this.measureTouchRange();
-        this.queueNativeTimelineSync(true);
       }
 
       if (this.reducedMotion || this.reducedData) {

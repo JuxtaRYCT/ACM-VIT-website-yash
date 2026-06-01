@@ -130,19 +130,22 @@
 </style>
 
 <script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
   import { getAssetUrl } from "../utils/cdn";
+
+  gsap.registerPlugin(ScrollTrigger);
 
   const canvas = document.querySelector("#laptop-canvas") as HTMLCanvasElement;
   const context = canvas?.getContext("2d", { alpha: true });
   const section = document.querySelector(".laptop-section");
 
-  const frameCount = 63;
+  const frameCount = 125;
   const narrowQuery = "(max-width: 1024px)";
   let maxCacheSize = frameCount;
-  let preloadRadius = 6;
+  let preloadRadius = 8;
   const pendingFrames = new Set<number>();
   const frameCache = new Map<number, HTMLImageElement>();
-  let allFramesWarmStarted = false;
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;
@@ -153,13 +156,13 @@
 
   const updatePerfSettings = () => {
     const isNarrow = window.matchMedia(narrowQuery).matches;
-    maxCacheSize = frameCount;
-    preloadRadius = isNarrow ? 3 : 6;
+    maxCacheSize = isNarrow ? Math.min(12, frameCount) : frameCount;
+    preloadRadius = isNarrow ? 3 : 8;
   };
 
   const currentFrame = (index: number) =>
     getAssetUrl(
-      `/outputFolder-fast/frame_${(index + 1).toString().padStart(4, "0")}.webp`
+      `/outputFolder/frame_${(index + 1).toString().padStart(4, "0")}.png`
     );
 
   const clampFrame = (index: number) =>
@@ -237,36 +240,31 @@
     }
   };
 
-  const warmAllFrames = () => {
-    if (allFramesWarmStarted) return;
-    allFramesWarmStarted = true;
+  let preloadAllScheduled = false;
+  const preloadAllFrames = async () => {
+    const concurrency = Math.min(6, frameCount);
+    let nextIndex = 0;
 
-    let nextFrame = 0;
     const worker = async () => {
-      while (nextFrame < frameCount) {
-        const frame = nextFrame;
-        nextFrame += 1;
-        await loadFrame(frame);
+      while (nextIndex < frameCount) {
+        const index = nextIndex;
+        nextIndex += 1;
+        await loadFrame(index);
       }
     };
 
-    const workers = Array.from({ length: 4 }, () => worker());
-    void Promise.all(workers);
+    await Promise.all(
+      Array.from({ length: concurrency }, () => worker())
+    );
   };
 
-  const getNearestCachedFrame = (target: number) => {
-    let nearestFrame = -1;
-    let nearestDistance = Infinity;
-
-    for (const key of frameCache.keys()) {
-      const distance = Math.abs(key - target);
-      if (distance < nearestDistance) {
-        nearestFrame = key;
-        nearestDistance = distance;
-      }
-    }
-
-    return nearestFrame;
+  const schedulePreloadAll = () => {
+    if (prefersReducedMotion || preloadAllScheduled) return;
+    if (window.matchMedia(narrowQuery).matches) return;
+    preloadAllScheduled = true;
+    window.setTimeout(() => {
+      void preloadAllFrames();
+    }, 200);
   };
 
   let lastRenderedFrame = -1;
@@ -276,28 +274,23 @@
   const render = () => {
     if (!context || !canvas) return;
     const frame = clampFrame(laptop.frame);
-    let renderedFrame = frame;
-    let img = frameCache.get(renderedFrame);
+    const img = frameCache.get(frame);
     if (!img) {
       void loadFrame(frame).then((loaded) => {
         if (loaded && frame === clampFrame(laptop.frame)) render();
       });
-      const fallbackFrame = getNearestCachedFrame(frame);
-      if (fallbackFrame === -1) return;
-      renderedFrame = fallbackFrame;
-      img = frameCache.get(renderedFrame);
-      if (!img) return;
+      return;
     }
 
     if (
-      renderedFrame === lastRenderedFrame &&
+      frame === lastRenderedFrame &&
       canvas.width === lastCanvasWidth &&
       canvas.height === lastCanvasHeight
     ) {
       return;
     }
 
-    lastRenderedFrame = renderedFrame;
+    lastRenderedFrame = frame;
     lastCanvasWidth = canvas.width;
     lastCanvasHeight = canvas.height;
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -305,73 +298,12 @@
     queueFrames(frame);
   };
 
-  const clamp01 = (value: number) => Math.max(0, Math.min(1, value));
-
-  const smoothstep = (start: number, end: number, value: number) => {
-    const progress = clamp01((value - start) / Math.max(0.001, end - start));
-    return progress * progress * (3 - 2 * progress);
-  };
-
-  const getSectionProgress = () => {
-    if (!(section instanceof HTMLElement)) return 0;
-    const rect = section.getBoundingClientRect();
-    const viewportHeight =
-      window.innerHeight || document.documentElement.clientHeight || 1;
-    const travel = Math.max(1, rect.height - viewportHeight);
-    return clamp01(-rect.top / travel);
-  };
-
-  const applyOverlayProgress = (progress: number) => {
-    const heading = document.querySelector(
-      ".contact-heading"
-    ) as HTMLElement | null;
-    const formOverlay = document.querySelector(
-      ".contact-form-overlay"
-    ) as HTMLElement | null;
-
-    const headingFade = smoothstep(0.35, 0.5, progress);
-    if (heading) {
-      heading.style.opacity = `${1 - headingFade}`;
-      heading.style.transform = `translate(-50%, calc(-50% - ${headingFade * 50}px))`;
-    }
-
-    const formFade = smoothstep(0.62, 0.82, progress);
-    if (formOverlay) {
-      formOverlay.style.opacity = `${formFade}`;
-      formOverlay.style.pointerEvents = formFade > 0.9 ? "auto" : "none";
-    }
-  };
-
-  const updateFromScroll = () => {
-    const progress = getSectionProgress();
-    const frameProgress = smoothstep(0.05, 0.86, progress);
-    laptop.frame = frameProgress * (frameCount - 1);
-    render();
-    applyOverlayProgress(progress);
-  };
-
-  let activeLoopRafId = 0;
-  const runActiveLoop = () => {
-    activeLoopRafId = 0;
-    updateFromScroll();
-    if (isSectionNearViewport()) {
-      activeLoopRafId = requestAnimationFrame(runActiveLoop);
-    }
-  };
-
-  const startActiveLoop = () => {
-    if (activeLoopRafId) return;
-    activeLoopRafId = requestAnimationFrame(runActiveLoop);
-  };
-
   const initSequence = async () => {
     if (!canvas || !context) return;
     resizeCanvas();
-    void loadFrame(0).then(() => {
-      if (clampFrame(laptop.frame) === 0) render();
-    });
-    warmAllFrames();
+    await loadFrame(0);
     render();
+    schedulePreloadAll();
 
     if (prefersReducedMotion) {
       const formOverlay = document.querySelector(
@@ -391,22 +323,47 @@
       return;
     }
 
-    updateFromScroll();
-    startActiveLoop();
-    window.addEventListener("scroll", startActiveLoop, { passive: true });
-    document.addEventListener("scroll", startActiveLoop, {
-      capture: true,
-      passive: true,
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".laptop-section",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.5,
+      },
     });
-    document.body?.addEventListener("scroll", startActiveLoop, {
-      passive: true,
-    });
-    window.visualViewport?.addEventListener("scroll", startActiveLoop, {
-      passive: true,
-    });
-    window.visualViewport?.addEventListener("resize", startActiveLoop, {
-      passive: true,
-    });
+
+    tl.to(laptop, {
+      frame: 0,
+      duration: 0.5,
+      onUpdate: render,
+    })
+      .to(laptop, {
+        frame: frameCount - 1,
+        snap: "frame",
+        ease: "none",
+        duration: 2,
+        onUpdate: render,
+      })
+      .to(
+        ".contact-heading",
+        {
+          opacity: 0,
+          y: -50,
+          duration: (20 / frameCount) * 2,
+          ease: "none",
+        },
+        `<+${(40 / frameCount) * 2}`
+      )
+      .to(
+        ".contact-form-overlay",
+        {
+          opacity: 1,
+          pointerEvents: "auto",
+          duration: 0.5,
+          ease: "power2.inOut",
+        },
+        `<+${(40 / frameCount) * 2}`
+      );
   };
 
   let started = false;
@@ -414,13 +371,6 @@
     if (started) return;
     started = true;
     initSequence();
-  };
-
-  const isSectionNearViewport = () => {
-    if (!(section instanceof HTMLElement)) return false;
-    const rect = section.getBoundingClientRect();
-    const margin = 240;
-    return rect.top < window.innerHeight + margin && rect.bottom > -margin;
   };
 
   if (section && "IntersectionObserver" in window) {
@@ -434,22 +384,6 @@
       { rootMargin: "200px" }
     );
     observer.observe(section);
-
-    const checkSectionVisibility = () => {
-      if (isSectionNearViewport()) {
-        startWhenVisible();
-        observer.disconnect();
-      }
-    };
-
-    requestAnimationFrame(checkSectionVisibility);
-    window.setTimeout(checkSectionVisibility, 250);
-    window.setTimeout(checkSectionVisibility, 1000);
-    window.setTimeout(checkSectionVisibility, 2500);
-    window.addEventListener("scroll", checkSectionVisibility, { passive: true });
-    window.addEventListener("hashchange", checkSectionVisibility, {
-      passive: true,
-    });
   } else {
     startWhenVisible();
   }
@@ -457,7 +391,7 @@
   window.addEventListener("resize", () => {
     resizeCanvas();
     lastRenderedFrame = -1;
-    startActiveLoop();
+    render();
   });
 
   // Form handling

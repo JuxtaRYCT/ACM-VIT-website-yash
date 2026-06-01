@@ -9,17 +9,13 @@ interface Props {
 }
 
 const {
-    webmSrc,
+    webmSrc = "/ACMWebsiteVid.webm",
     mp4Src = "/ACMWebsiteVid.mp4",
     startTime = 0,
     endTime = undefined,
 } = Astro.props;
 
-const normalizedWebmSrc = webmSrc
-    ? webmSrc.startsWith("/")
-        ? webmSrc
-        : `/${webmSrc}`
-    : undefined;
+const normalizedWebmSrc = webmSrc.startsWith("/") ? webmSrc : `/${webmSrc}`;
 const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
 ---
 
@@ -31,10 +27,10 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
         data-end-time={endTime ?? ""}
         muted
         playsinline
-        preload="metadata"
+        preload="auto"
     >
         <!-- Use CDN resolved URL if configured, fallback to local path -->
-        {normalizedWebmSrc && <source src={getAssetUrl(normalizedWebmSrc)} type="video/webm" />}
+        <source src={getAssetUrl(normalizedWebmSrc)} type="video/webm" />
         <source src={getAssetUrl(normalizedMp4Src)} type="video/mp4" />
     </video>
 
@@ -130,7 +126,6 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
         let targetTime = startTime;
         let renderedTime = startTime;
         let rafId = 0;
-        let nativeScrubRafId = 0;
         let lastFrameAt = 0;
         let useSmoothDesktopScrub = desktopSmoothQuery.matches;
 
@@ -241,42 +236,6 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
                 scheduleVideoRender();
             };
 
-            const getScrollTop = () =>
-                window.scrollY ||
-                window.pageYOffset ||
-                document.documentElement.scrollTop ||
-                document.body.scrollTop ||
-                0;
-
-            const getNativeProgress = () => {
-                const rect = container.getBoundingClientRect();
-                const scrollTop = getScrollTop();
-                const containerTop = rect.top + scrollTop;
-                const scrollDistance = Math.max(
-                    1,
-                    container.offsetHeight - window.innerHeight,
-                );
-                return Math.max(
-                    0,
-                    Math.min(1, (scrollTop - containerTop) / scrollDistance),
-                );
-            };
-
-            const syncNativeScrub = (force = false) => {
-                nativeScrubRafId = 0;
-                applyVideoTime(
-                    startTime + getNativeProgress() * playDuration,
-                    force,
-                );
-            };
-
-            const queueNativeScrub = (force = false) => {
-                if (nativeScrubRafId) return;
-                nativeScrubRafId = requestAnimationFrame(() =>
-                    syncNativeScrub(force),
-                );
-            };
-
             desktopSmoothQuery.addEventListener?.(
                 "change",
                 handleDesktopModeChange,
@@ -301,7 +260,6 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
                         startTime + self.progress * playDuration,
                         true,
                     );
-                    queueNativeScrub(true);
                 },
             });
 
@@ -332,30 +290,6 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
             });
 
             window.requestAnimationFrame(() => ScrollTrigger.refresh());
-            queueNativeScrub(true);
-            window.addEventListener("scroll", () => queueNativeScrub(), {
-                passive: true,
-            });
-            document.addEventListener("scroll", () => queueNativeScrub(), {
-                capture: true,
-                passive: true,
-            });
-            window.visualViewport?.addEventListener(
-                "scroll",
-                () => queueNativeScrub(),
-                { passive: true },
-            );
-            window.addEventListener("resize", () => queueNativeScrub(true), {
-                passive: true,
-            });
-            window.addEventListener(
-                "app:variants-mounted",
-                () => {
-                    queueNativeScrub(true);
-                    window.setTimeout(() => queueNativeScrub(true), 150);
-                },
-                { passive: true },
-            );
         };
 
         // Register multiple event listeners to guarantee duration is detected

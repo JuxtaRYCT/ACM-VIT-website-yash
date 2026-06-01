@@ -27,9 +27,9 @@
   let fakeProgressTimer = 0;
   let remainingWarmupStarted = false;
 
-  const CRITICAL_WARMUP_TIMEOUT = 2500;
+  const CRITICAL_WARMUP_TIMEOUT = 7500;
   const VARIANTS_WAIT_TIMEOUT = 1600;
-  const VIDEO_WARM_TIMEOUT = 1800;
+  const VIDEO_WARM_TIMEOUT = 10000;
   const COMPLETION_ANIMATION_TIMEOUT = 4000;
 
   const getGsap = async () => {
@@ -135,12 +135,14 @@
       window.setTimeout(done, VARIANTS_WAIT_TIMEOUT);
     });
 
-  const isVideoMetadataReady = (video: HTMLVideoElement) => {
-    if (video.readyState >= 1 && video.duration && isFinite(video.duration)) {
-      return true;
-    }
+  const isVideoBufferedEnough = (video: HTMLVideoElement) => {
+    if (video.readyState >= 4) return true;
     const duration = video.duration;
-    return !!duration && isFinite(duration);
+    if (!duration || !isFinite(duration)) return video.readyState >= 3;
+    const buffered = video.buffered;
+    if (!buffered.length) return false;
+    const end = buffered.end(buffered.length - 1);
+    return end / duration >= 0.995;
   };
 
   const warmScrollVideo = (timeoutMs = VIDEO_WARM_TIMEOUT) =>
@@ -154,13 +156,13 @@
         return;
       }
 
-      if (video.dataset.warmed === "true" && isVideoMetadataReady(video)) {
+      if (video.dataset.warmed === "true" && isVideoBufferedEnough(video)) {
         resolve();
         return;
       }
 
-      if (video.getAttribute("preload") !== "metadata") {
-        video.setAttribute("preload", "metadata");
+      if (video.getAttribute("preload") !== "auto") {
+        video.setAttribute("preload", "auto");
       }
 
       let settled = false;
@@ -170,17 +172,26 @@
         if (settled) return;
         settled = true;
         if (timeoutId) window.clearTimeout(timeoutId);
-        video.removeEventListener("loadedmetadata", onReady);
+        video.removeEventListener("canplaythrough", onReady);
         video.removeEventListener("loadeddata", onReady);
+        video.removeEventListener("canplay", onReady);
+        video.removeEventListener("progress", onProgress);
         video.removeEventListener("error", onError);
-        if (isVideoMetadataReady(video)) {
+        if (isVideoBufferedEnough(video)) {
           video.dataset.warmed = "true";
         }
         resolve();
       };
 
       const onReady = () => {
-        if (isVideoMetadataReady(video) || video.readyState >= 1) {
+        if (isVideoBufferedEnough(video) || video.readyState >= 3) {
+          video.dataset.warmed = "true";
+          done();
+        }
+      };
+
+      const onProgress = () => {
+        if (isVideoBufferedEnough(video)) {
           video.dataset.warmed = "true";
           done();
         }
@@ -188,14 +199,16 @@
 
       const onError = () => done();
 
-      if (isVideoMetadataReady(video)) {
+      if (isVideoBufferedEnough(video)) {
         video.dataset.warmed = "true";
         resolve();
         return;
       }
 
-      video.addEventListener("loadedmetadata", onReady, { once: true });
+      video.addEventListener("canplaythrough", onReady, { once: true });
       video.addEventListener("loadeddata", onReady, { once: true });
+      video.addEventListener("canplay", onReady, { once: true });
+      video.addEventListener("progress", onProgress);
       video.addEventListener("error", onError, { once: true });
       timeoutId = window.setTimeout(done, timeoutMs);
 
@@ -249,8 +262,8 @@
     const images = Array.from(document.querySelectorAll("img[src]")) as HTMLImageElement[];
     images.forEach((img) => {
       const rect = img.getBoundingClientRect();
-      const inNearRange = rect.top < vh * 2 && rect.bottom > -vh;
-      const inSoonRange = rect.top < vh * 1.25 && rect.bottom > -vh;
+      const inNearRange = rect.top < vh * 8 && rect.bottom > -vh;
+      const inSoonRange = rect.top < vh * 4 && rect.bottom > -vh;
       const inView = rect.top < vh && rect.bottom > 0;
       const isCritical = img.matches(criticalSelector);
 
@@ -267,6 +280,12 @@
         upsert(src, priority);
       }
 
+      if (inSoonRange || isCritical) {
+        img.loading = "eager";
+        if (!img.getAttribute("fetchpriority")) {
+          img.setAttribute("fetchpriority", "high");
+        }
+      }
     });
 
     const bgElements = Array.from(
@@ -274,7 +293,7 @@
     ) as HTMLElement[];
     bgElements.forEach((el) => {
       const rect = el.getBoundingClientRect();
-      const inNearRange = rect.top < vh * 2 && rect.bottom > -vh;
+      const inNearRange = rect.top < vh * 8 && rect.bottom > -vh;
       if (!inNearRange) return;
 
       const inlineStyle = el.getAttribute("style");
@@ -360,10 +379,10 @@
     const allCandidates = collectCriticalImageCandidates();
     const isMobile =
       window.matchMedia("(max-width: 768px)").matches;
-    const maxCritical = isMobile ? 18 : 24;
+    const maxCritical = isMobile ? 70 : 110;
     const urls = allCandidates.slice(0, maxCritical);
 
-    await preloadInBatches(urls, 3, (loaded, total) => {
+    await preloadInBatches(urls, 8, (loaded, total) => {
       const normalized = total ? loaded / total : 1;
       if (gsap) {
         setProgress(gsap, 10 + normalized * 78, 0.15);
@@ -374,6 +393,24 @@
   const warmRemainingAssets = async () => {
     if (remainingWarmupStarted) return;
     remainingWarmupStarted = true;
+
+    const schedule = (fn: () => void) => {
+      if ("requestIdleCallback" in window) {
+        (window as any).requestIdleCallback(fn, { timeout: 1200 });
+      } else {
+        window.setTimeout(fn, 350);
+      }
+    };
+
+    schedule(async () => {
+      const urls = Array.from(document.querySelectorAll("img[src]"))
+        .map((img) => img.getAttribute("src") || "")
+        .filter((url) => !!url && isLikelyImageUrl(url))
+        .map((url) => normalizeUrl(url));
+
+      const unique = Array.from(new Set(urls));
+      await preloadInBatches(unique, 4);
+    });
   };
 
   // Lottie fetches JSON via XHR/fetch under the hood.
