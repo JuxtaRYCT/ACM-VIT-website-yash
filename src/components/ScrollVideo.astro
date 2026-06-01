@@ -9,13 +9,17 @@ interface Props {
 }
 
 const {
-    webmSrc = "/ACMWebsiteVid.webm",
+    webmSrc,
     mp4Src = "/ACMWebsiteVid.mp4",
     startTime = 0,
     endTime = undefined,
 } = Astro.props;
 
-const normalizedWebmSrc = webmSrc.startsWith("/") ? webmSrc : `/${webmSrc}`;
+const normalizedWebmSrc = webmSrc
+    ? webmSrc.startsWith("/")
+        ? webmSrc
+        : `/${webmSrc}`
+    : undefined;
 const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
 ---
 
@@ -30,7 +34,7 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
         preload="metadata"
     >
         <!-- Use CDN resolved URL if configured, fallback to local path -->
-        <source src={getAssetUrl(normalizedWebmSrc)} type="video/webm" />
+        {normalizedWebmSrc && <source src={getAssetUrl(normalizedWebmSrc)} type="video/webm" />}
         <source src={getAssetUrl(normalizedMp4Src)} type="video/mp4" />
     </video>
 

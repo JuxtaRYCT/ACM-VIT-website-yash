@@ -136,12 +136,13 @@
   const context = canvas?.getContext("2d", { alpha: true });
   const section = document.querySelector(".laptop-section");
 
-  const frameCount = 125;
+  const frameCount = 63;
   const narrowQuery = "(max-width: 1024px)";
   let maxCacheSize = frameCount;
-  let preloadRadius = 4;
+  let preloadRadius = 6;
   const pendingFrames = new Set<number>();
   const frameCache = new Map<number, HTMLImageElement>();
+  let allFramesWarmStarted = false;
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;
@@ -152,13 +153,13 @@
 
   const updatePerfSettings = () => {
     const isNarrow = window.matchMedia(narrowQuery).matches;
-    maxCacheSize = isNarrow ? Math.min(12, frameCount) : frameCount;
-    preloadRadius = isNarrow ? 2 : 4;
+    maxCacheSize = frameCount;
+    preloadRadius = isNarrow ? 3 : 6;
   };
 
   const currentFrame = (index: number) =>
     getAssetUrl(
-      `/outputFolder/frame_${(index + 1).toString().padStart(4, "0")}.webp`
+      `/outputFolder-fast/frame_${(index + 1).toString().padStart(4, "0")}.webp`
     );
 
   const clampFrame = (index: number) =>
@@ -236,6 +237,38 @@
     }
   };
 
+  const warmAllFrames = () => {
+    if (allFramesWarmStarted) return;
+    allFramesWarmStarted = true;
+
+    let nextFrame = 0;
+    const worker = async () => {
+      while (nextFrame < frameCount) {
+        const frame = nextFrame;
+        nextFrame += 1;
+        await loadFrame(frame);
+      }
+    };
+
+    const workers = Array.from({ length: 4 }, () => worker());
+    void Promise.all(workers);
+  };
+
+  const getNearestCachedFrame = (target: number) => {
+    let nearestFrame = -1;
+    let nearestDistance = Infinity;
+
+    for (const key of frameCache.keys()) {
+      const distance = Math.abs(key - target);
+      if (distance < nearestDistance) {
+        nearestFrame = key;
+        nearestDistance = distance;
+      }
+    }
+
+    return nearestFrame;
+  };
+
   let lastRenderedFrame = -1;
   let lastCanvasWidth = 0;
   let lastCanvasHeight = 0;
@@ -243,23 +276,28 @@
   const render = () => {
     if (!context || !canvas) return;
     const frame = clampFrame(laptop.frame);
-    const img = frameCache.get(frame);
+    let renderedFrame = frame;
+    let img = frameCache.get(renderedFrame);
     if (!img) {
       void loadFrame(frame).then((loaded) => {
         if (loaded && frame === clampFrame(laptop.frame)) render();
       });
-      return;
+      const fallbackFrame = getNearestCachedFrame(frame);
+      if (fallbackFrame === -1) return;
+      renderedFrame = fallbackFrame;
+      img = frameCache.get(renderedFrame);
+      if (!img) return;
     }
 
     if (
-      frame === lastRenderedFrame &&
+      renderedFrame === lastRenderedFrame &&
       canvas.width === lastCanvasWidth &&
       canvas.height === lastCanvasHeight
     ) {
       return;
     }
 
-    lastRenderedFrame = frame;
+    lastRenderedFrame = renderedFrame;
     lastCanvasWidth = canvas.width;
     lastCanvasHeight = canvas.height;
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -332,6 +370,7 @@
     void loadFrame(0).then(() => {
       if (clampFrame(laptop.frame) === 0) render();
     });
+    warmAllFrames();
     render();
 
     if (prefersReducedMotion) {
