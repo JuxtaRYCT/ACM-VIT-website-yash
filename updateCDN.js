@@ -31,6 +31,26 @@ const {
 } = fs;
 const { resolve, join, extname } = path;
 
+const UPLOAD_CONCURRENCY_LIMIT =
+  Number(process.env.UPLOAD_CONCURRENCY_LIMIT) || 5;
+const limit = pLimit(UPLOAD_CONCURRENCY_LIMIT);
+const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
+const OUTPUT_DIR = process.env.ASTRO_OUTPUT_DIR || "./dist";
+const DISTRIBUTION_ID = process.env.AWS_DISTRIBUTION_ID;
+
+const hasAwsCredentials =
+  process.env.AWS_ACCESS_KEY_ID &&
+  process.env.AWS_SECRET_ACCESS_KEY &&
+  process.env.AWS_REGION &&
+  BUCKET_NAME;
+
+if (!hasAwsCredentials) {
+  console.log(
+    "Skipped CDN sync. Set AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, and AWS_BUCKET_NAME to upload build assets."
+  );
+  process.exit(0);
+}
+
 const AWS_CONFIG = {
   region: process.env.AWS_REGION,
   credentials: {
@@ -41,18 +61,6 @@ const AWS_CONFIG = {
 
 const s3Client = new S3Client(AWS_CONFIG);
 const cloudfrontClient = new CloudFrontClient(AWS_CONFIG);
-
-const UPLOAD_CONCURRENCY_LIMIT =
-  Number(process.env.UPLOAD_CONCURRENCY_LIMIT) || 5;
-const limit = pLimit(UPLOAD_CONCURRENCY_LIMIT);
-const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
-const OUTPUT_DIR = process.env.ASTRO_OUTPUT_DIR || "./dist";
-const DISTRIBUTION_ID = process.env.AWS_DISTRIBUTION_ID;
-
-if (!BUCKET_NAME) {
-  console.error("❌ Missing AWS_BUCKET_NAME in environment.");
-  process.exit(1);
-}
 
 const LONG_CACHE_CONTROL = "public, max-age=31556926, immutable";
 const SHORT_CACHE_CONTROL = "public, max-age=0, must-revalidate";
@@ -69,11 +77,11 @@ const normalizeS3Key = (key) => key.replace(/\\/g, "/");
 const getMimeType = (filePath) =>
   mime.lookup(filePath) || "application/octet-stream";
 
-// List all files in S3 bucket
-const listFiles = async () => {
+// List all files in S3 bucket with their sizes
+const listS3Files = async () => {
   try {
     let continuationToken;
-    const files = [];
+    const files = new Map(); // Key -> Size
 
     do {
       const { Contents, IsTruncated, NextContinuationToken } =
@@ -85,7 +93,9 @@ const listFiles = async () => {
         );
 
       if (Contents) {
-        files.push(...Contents.map((file) => ({ Key: file.Key })));
+        for (const file of Contents) {
+          files.set(file.Key, file.Size);
+        }
       }
 
       continuationToken = IsTruncated ? NextContinuationToken : undefined;
@@ -94,28 +104,54 @@ const listFiles = async () => {
     return files;
   } catch (error) {
     console.error("❌ Failed to list S3 files:", error);
-    return [];
+    return new Map();
   }
 };
 
-// Delete all old files from S3 bucket
-const deleteFiles = async () => {
-  const filesToDelete = await listFiles();
-  if (filesToDelete.length === 0) {
-    console.log("✅ No old files to delete in S3.");
+// Recursively get all local files and their details
+const getLocalFiles = async (dir, rootKey = "", filesList = []) => {
+  const filenames = await readdir(dir);
+  await Promise.all(
+    filenames.map(async (filename) => {
+      const filePath = join(dir, filename);
+      const fileStats = await getStats(filePath);
+      const key = normalizeS3Key(join(rootKey, filename));
+
+      if (fileStats.isFile()) {
+        filesList.push({ filePath, key, size: fileStats.size });
+      } else if (fileStats.isDirectory()) {
+        await getLocalFiles(filePath, key, filesList);
+      }
+    })
+  );
+  return filesList;
+};
+
+// Delete specific obsolete files from S3 bucket
+const deleteObsoleteFiles = async (keysToDelete) => {
+  if (keysToDelete.length === 0) {
+    console.log("✅ No old obsolete files to delete in S3.");
     return;
   }
 
   try {
-    await s3Client.send(
-      new DeleteObjectsCommand({
-        Bucket: BUCKET_NAME,
-        Delete: { Objects: filesToDelete },
-      })
-    );
-    console.log(`🗑️ Deleted ${filesToDelete.length} old files from ${BUCKET_NAME}`);
+    // S3 delete objects supports up to 1000 keys at once
+    const chunks = [];
+    for (let i = 0; i < keysToDelete.length; i += 1000) {
+      chunks.push(keysToDelete.slice(i, i + 1000));
+    }
+
+    for (const chunk of chunks) {
+      await s3Client.send(
+        new DeleteObjectsCommand({
+          Bucket: BUCKET_NAME,
+          Delete: { Objects: chunk },
+        })
+      );
+    }
+    console.log(`🗑️ Pruned ${keysToDelete.length} obsolete files from S3 bucket ${BUCKET_NAME}`);
   } catch (error) {
-    console.error("❌ Failed to delete old files:", error);
+    console.error("❌ Failed to prune obsolete S3 files:", error.message);
   }
 };
 
@@ -144,45 +180,6 @@ const uploadFile = async (filePath, key) => {
     console.error(`❌ Upload failed for ${filePath}:`, err.message);
     errors.push({ filePath, key });
     return null;
-  }
-};
-
-// Upload a directory recursively with proper waiting
-const uploadDirectory = async (directoryPath, rootKey = "") => {
-  try {
-    const dirPath = resolve(directoryPath);
-    const dirStats = await getStats(dirPath);
-    if (!dirStats.isDirectory())
-      throw new Error(`${dirPath} is not a directory`);
-
-    console.info(`📂 Uploading directory: ${dirPath}...`);
-    const filenames = await readdir(dirPath);
-
-    // Collect and await all uploads
-    const uploadedFiles = await Promise.all(
-      filenames.map(async (filename) => {
-        const filePath = join(dirPath, filename);
-        const fileStats = await getStats(filePath);
-        const key = normalizeS3Key(join(rootKey, filename)); // Preserve full path
-
-        if (fileStats.isFile()) {
-          return await limit(() => uploadFile(filePath, key));
-        }
-        if (fileStats.isDirectory()) {
-          // 🔥 Fix: Ensure recursive calls return all uploaded files
-          return await uploadDirectory(filePath, key);
-        }
-        return null;
-      })
-    );
-
-    return uploadedFiles.flat().filter(Boolean); // Ensure all uploads finish
-  } catch (error) {
-    console.error(
-      `❌ Error uploading directory ${directoryPath}:`,
-      error.message
-    );
-    return [];
   }
 };
 
@@ -240,27 +237,65 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 // Main Deployment Function
 (async () => {
   try {
-    console.time("S3 Cleanup");
-    await deleteFiles();
-    console.timeEnd("S3 Cleanup");
+    console.time("S3 Indexing");
+    const s3Files = await listS3Files();
+    console.log(`📂 Found ${s3Files.size} existing files in S3 bucket.`);
+    
+    const localFiles = await getLocalFiles(OUTPUT_DIR);
+    console.log(`📁 Found ${localFiles.length} local files in build output.`);
+    console.timeEnd("S3 Indexing");
 
-    console.time("S3 Upload");
+    // 1. Identify files to upload (new or changed size)
+    const filesToUpload = localFiles.filter((localFile) => {
+      const s3Size = s3Files.get(localFile.key);
+      if (s3Size === undefined) return true; // File doesn't exist in S3
+      if (s3Size !== localFile.size) return true; // Size mismatch (file changed)
+      return false; // Already matches exactly, skip!
+    });
 
-    await uploadDirectory(OUTPUT_DIR);
+    console.log(`⏭️  Skipping ${localFiles.length - filesToUpload.length} unchanged files.`);
+    console.log(`⚡ Uploading ${filesToUpload.length} new/changed files to S3...`);
 
-    while (errors.length > 0) {
-      await sleep(1000);
-      await retryUploads();
+    if (filesToUpload.length > 0) {
+      console.time("S3 Upload");
+      await Promise.all(
+        filesToUpload.map(({ filePath, key }) =>
+          limit(() => uploadFile(filePath, key))
+        )
+      );
+
+      while (errors.length > 0) {
+        await sleep(1000);
+        await retryUploads();
+      }
+      console.timeEnd("S3 Upload");
+    } else {
+      console.log("✅ No new uploads required!");
     }
 
-    console.timeEnd("S3 Upload");
+    // 2. Identify and prune obsolete files no longer present in local build
+    const localKeysSet = new Set(localFiles.map((f) => f.key));
+    const keysToDelete = Array.from(s3Files.keys())
+      .filter((s3Key) => !localKeysSet.has(s3Key))
+      .map((key) => ({ Key: key }));
 
-    console.time("CloudFront Invalidation");
-    await invalidateCloudFrontCache();
-    console.timeEnd("CloudFront Invalidation");
+    if (keysToDelete.length > 0) {
+      console.time("S3 Cleanup");
+      await deleteObsoleteFiles(keysToDelete);
+      console.timeEnd("S3 Cleanup");
+    }
+
+    // 3. Invalidate CloudFront (only if anything changed)
+    if (filesToUpload.length > 0 || keysToDelete.length > 0) {
+      console.time("CloudFront Invalidation");
+      await invalidateCloudFrontCache();
+      console.timeEnd("CloudFront Invalidation");
+    } else {
+      console.log("✅ Distribution in sync. Invalidation skipped.");
+    }
 
     console.log("🚀 Deployment completed successfully!");
-    process.exit(0); // Explicitly exit after all uploads are complete
+    process.exit(0);
   } catch (error) {
     console.error("❌ Deployment failed:", error);
     process.exit(1);

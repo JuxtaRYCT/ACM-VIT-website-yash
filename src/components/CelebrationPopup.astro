@@ -54,7 +54,6 @@ import { getAssetUrl } from "../utils/cdn";
 
 <script>
   (() => {
-    const POPUP_STORAGE_KEY = "acm-vit-celebration-award-popup-shown";
     const OPEN_DELAY_MS = 450;
 
     const initCelebrationPopup = () => {
@@ -63,14 +62,11 @@ import { getAssetUrl } from "../utils/cdn";
 
       const closeTargets = popup.querySelectorAll("[data-popup-close]");
       const openPopup = () => {
-        if (localStorage.getItem(POPUP_STORAGE_KEY)) return;
-
         popup.hidden = false;
         requestAnimationFrame(() => {
           popup.dataset.state = "open";
         });
         document.body.style.overflow = "hidden";
-        localStorage.setItem(POPUP_STORAGE_KEY, "true");
       };
 
       const closePopup = () => {
@@ -92,7 +88,6 @@ import { getAssetUrl } from "../utils/cdn";
       });
 
       const scheduleOpen = () => {
-        if (localStorage.getItem(POPUP_STORAGE_KEY)) return;
         window.setTimeout(openPopup, OPEN_DELAY_MS);
       };
 

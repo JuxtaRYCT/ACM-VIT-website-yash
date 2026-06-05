@@ -3,7 +3,7 @@ import { Resend } from "resend";
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   const data = await request.json();
   const { firstName, lastName, email, phone, message, sessionPreference } = data;
 
@@ -16,9 +16,15 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
-  // Check for credentials
-  const resendApiKey = import.meta.env.RESEND_API_KEY;
-  const resendFrom = import.meta.env.RESEND_FROM;
+  const runtimeEnv = locals.runtime?.env ?? {};
+  const resendApiKey =
+    runtimeEnv.RESEND_API_KEY ??
+    import.meta.env.RESEND_API_KEY ??
+    process.env.RESEND_API_KEY;
+  const resendFrom =
+    runtimeEnv.RESEND_FROM ??
+    import.meta.env.RESEND_FROM ??
+    process.env.RESEND_FROM;
 
   if (!resendApiKey || !resendFrom) {
     console.error("Missing RESEND_API_KEY or RESEND_FROM environment variable");
