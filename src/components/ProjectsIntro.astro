@@ -25,6 +25,7 @@
 <style>
   .projects-intro-section {
     min-height: 100svh;
+    box-sizing: border-box;
     padding: clamp(5rem, 12vw, 8rem) clamp(1rem, 5vw, 1.5rem);
     overflow: hidden;
   }
@@ -49,10 +50,10 @@
 
   @media (max-width: 768px) {
     .projects-intro-section {
-      align-items: flex-start;
-      min-height: auto;
-      padding-top: clamp(5rem, 18vw, 6.75rem);
-      padding-bottom: clamp(4rem, 16vw, 6rem);
+      align-items: center;
+      min-height: 100svh;
+      padding-top: clamp(5.5rem, 14svh, 7rem);
+      padding-bottom: clamp(5.5rem, 14svh, 7rem);
     }
 
     .reveal-text-container {

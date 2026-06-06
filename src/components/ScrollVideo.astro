@@ -29,15 +29,9 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
         playsinline
         preload="auto"
     >
-        <!-- Desktop scroll-scrubbing is smoother with H.264 hardware decode. -->
-        <source
-            src={getAssetUrl(normalizedMp4Src)}
-            type="video/mp4"
-            media="(min-width: 769px) and (pointer: fine)"
-        />
-        <!-- Use CDN resolved URL if configured, fallback to local path -->
-        <source src={getAssetUrl(normalizedWebmSrc)} type="video/webm" />
+        <!-- H.264 is the primary source so every device gets the frame-dense encode. -->
         <source src={getAssetUrl(normalizedMp4Src)} type="video/mp4" />
+        <source src={getAssetUrl(normalizedWebmSrc)} type="video/webm" />
     </video>
 
     <div class="scroll-video-overlay" data-scroll-video-overlay></div>
