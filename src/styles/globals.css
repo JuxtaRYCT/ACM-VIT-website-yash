@@ -53,86 +53,197 @@ body.scroll-video-active .diamond-grid {
     color: white;
 }
 
-/* Font Definitions */
-/* Standard */
+/* PolySans - Standard */
 @font-face {
-    font-family: "PolySans Trial";
-    src: url("../assets/fonts/PolySans-trial/PolySans-trial/Standard/PolySansTrial-Slim.otf")
-        format("opentype");
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
+  font-family: "PolySans Trial";
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/Standard/PolySans-Slim.otf") format("opentype");
 }
 
 @font-face {
-    font-family: "PolySans Trial";
-    src: url("../assets/fonts/PolySans-trial/PolySans-trial/Standard/PolySansTrial-Neutral.otf")
-        format("opentype");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
+  font-family: "PolySans Trial";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/Standard/PolySans-Neutral.otf") format("opentype");
 }
 
 @font-face {
-    font-family: "PolySans Trial";
-    src: url("../assets/fonts/PolySans-trial/PolySans-trial/Standard/PolySansTrial-Median.otf")
-        format("opentype");
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
+  font-family: "PolySans Trial";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/Standard/PolySans-Median.otf") format("opentype");
 }
 
 @font-face {
-    font-family: "PolySans Trial";
-    src: url("../assets/fonts/PolySans-trial/PolySans-trial/Standard/PolySansTrial-Bulky.otf")
-        format("opentype");
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-}
-
-/* Mono - used in Board/Cards */
-@font-face {
-    font-family: "PolySans Slim";
-    src: url("../assets/fonts/PolySans-trial/PolySans-trial/Mono/PolySansTrial-SlimMono.otf")
-        format("opentype");
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
+  font-family: "PolySans Trial";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/Standard/PolySans-Bulky.otf") format("opentype");
 }
 
 @font-face {
-    font-family: "PolySans Mono"; /* Renamed from Trial to distinguish or keep as is? Original was "PolySans Trial" locally which conflicts. Let's use specific names or keep local mappings global */
-    src: url("../assets/fonts/PolySans-trial/PolySans-trial/Mono/PolySansTrial-NeutralMono.otf")
-        format("opentype");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
+  font-family: "PolySans Trial";
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url("../assets/fonts/Standard/PolySansItalic-SlimItalic.otf") format("opentype");
 }
 
 @font-face {
-    font-family: "PolySans Medium";
-    src: url("../assets/fonts/PolySans-trial/PolySans-trial/Mono/PolySansTrial-MedianMono.otf")
-        format("opentype");
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
+  font-family: "PolySans Trial";
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url("../assets/fonts/Standard/PolySansItalic-NeutralItalic.otf") format("opentype");
 }
 
 @font-face {
-    font-family: "PolySans Bold";
-    src: url("../assets/fonts/PolySans-trial/PolySans-trial/Mono/PolySansTrial-BulkyMono.otf")
-        format("opentype");
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
+  font-family: "PolySans Trial";
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url("../assets/fonts/Standard/PolySansItalic-MedianItalic.otf") format("opentype");
 }
 
 @font-face {
-    font-family: "PolySans Bulky Wide";
-    src: url("../assets/fonts/PolySans-trial/PolySans-trial/Wide/PolySansTrial-BulkyWide.otf")
-        format("opentype");
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
+  font-family: "PolySans Trial";
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url("../assets/fonts/Standard/PolySansItalic-BulkyItalic.otf") format("opentype");
+}
+
+/* PolySans - Mono */
+@font-face {
+  font-family: "PolySans Slim";
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/Mono/PolySans-SlimMono.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "PolySans Mono";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/Mono/PolySans-NeutralMono.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "PolySans Medium";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/Mono/PolySans-MedianMono.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "PolySans Bold";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/Mono/PolySans-BulkyMono.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "PolySans Slim";
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url("../assets/fonts/Mono/PolySansItalic-SlimMonoItalic.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "PolySans Mono";
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url("../assets/fonts/Mono/PolySansItalic-NeutralMonoItalic.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "PolySans Medium";
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url("../assets/fonts/Mono/PolySansItalic-MedianMonoItalic.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "PolySans Bold";
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url("../assets/fonts/Mono/PolySansItalic-BulkyMonoItalic.otf") format("opentype");
+}
+
+/* PolySans - Wide */
+@font-face {
+  font-family: "PolySans Slim Wide";
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/Wide/PolySans-SlimWide.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "PolySans Wide";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/Wide/PolySans-NeutralWide.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "PolySans Median Wide";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/Wide/PolySans-MedianWide.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "PolySans Bulky Wide";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/Wide/PolySans-BulkyWide.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "PolySans Slim Wide";
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url("../assets/fonts/Wide/PolySansItalic-SlimWideItalic.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "PolySans Wide";
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url("../assets/fonts/Wide/PolySansItalic-NeutralWideItalic.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "PolySans Median Wide";
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url("../assets/fonts/Wide/PolySansItalic-MedianWideItalic.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "PolySans Bulky Wide";
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url("../assets/fonts/Wide/PolySansItalic-BulkyWideItalic.otf") format("opentype");
 }
