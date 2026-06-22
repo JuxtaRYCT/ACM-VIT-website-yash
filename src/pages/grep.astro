@@ -3,7 +3,7 @@ export const prerender = true;
 import { getAssetUrl } from "../utils/cdn";
 import viewerScript from "../scripts/grep-viewer.ts?url";
 
-const pdfUrl = getAssetUrl("/grep-v0.pdf");
+const pdfUrl = getAssetUrl("/docs/grep-v0.pdf");
 ---
 
 <!doctype html>
@@ -18,7 +18,7 @@ const pdfUrl = getAssetUrl("/grep-v0.pdf");
       class="grep-viewer"
       data-grep-viewer
       data-pdf-url={pdfUrl}
-      data-pdf-fallback="/grep-v0.pdf"
+      data-pdf-fallback="/docs/grep-v0.pdf"
     >
       <div class="grep-stage" data-grep-stage>
         <div class="book-page book-left">

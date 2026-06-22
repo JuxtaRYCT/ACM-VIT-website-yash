@@ -62,14 +62,14 @@ for (const item of domainItems) {
 
 <section
   class="domains-mobile-section min-h-screen relative pt-8 pb-16 px-4 flex flex-col items-center justify-center overflow-hidden"
-  style={`background-image: url('${getAssetUrl("/background_pattern.webp")}'); background-size: cover; background-position: center; background-repeat: no-repeat;`}
+  style={`background-image: url('${getAssetUrl("/backgrounds/background_pattern.webp")}'); background-size: cover; background-position: center; background-repeat: no-repeat;`}
 >
   <!-- Fixed Background Layer -->
   <div
     class="absolute inset-0 z-0 pointer-events-none opacity-0 domain-mobile-bg-layer"
   >
     <img
-      src={getAssetUrl("/glow_ball_red.webp")}
+      src={getAssetUrl("/backgrounds/glow_ball_red.webp")}
       alt=""
       class="w-full h-full object-cover scale-125 will-change-transform transform-gpu"
       style="backface-visibility: hidden;"
@@ -102,7 +102,7 @@ for (const item of domainItems) {
         data-domain="tech"
       >
         <img
-          src={getAssetUrl("/Cassette_Tech.webp")}
+          src={getAssetUrl("/cassettes/Cassette_Tech.webp")}
           alt="Tech Development"
           class="mobile-cassette-img w-full h-auto block drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)] rounded-[20px]"
           loading="lazy"
@@ -114,7 +114,7 @@ for (const item of domainItems) {
         data-domain="cc"
       >
         <img
-          src={getAssetUrl("/Cassette_cc.webp")}
+          src={getAssetUrl("/cassettes/Cassette_cc.webp")}
           alt="Competitive Coding"
           class="mobile-cassette-img w-full h-auto block drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)] rounded-[20px]"
           loading="lazy"
@@ -126,7 +126,7 @@ for (const item of domainItems) {
         data-domain="design"
       >
         <img
-          src={getAssetUrl("/Cassette_Design.webp")}
+          src={getAssetUrl("/cassettes/Cassette_Design.webp")}
           alt="Design"
           class="mobile-cassette-img w-full h-auto block drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)] rounded-[20px]"
           loading="lazy"
@@ -138,7 +138,7 @@ for (const item of domainItems) {
         data-domain="management"
       >
         <img
-          src={getAssetUrl("/Cassette_Management.webp")}
+          src={getAssetUrl("/cassettes/Cassette_Management.webp")}
           alt="Management"
           class="mobile-cassette-img w-full h-auto block drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)] rounded-[20px]"
           loading="lazy"
@@ -150,7 +150,7 @@ for (const item of domainItems) {
         data-domain="research"
       >
         <img
-          src={getAssetUrl("/Cassette_Research.webp")}
+          src={getAssetUrl("/cassettes/Cassette_Research.webp")}
           alt="Research"
           class="mobile-cassette-img w-full h-auto block drop-shadow-[0_4px_8px_rgba(0,0,0,0.3)] rounded-[20px]"
           loading="lazy"
@@ -307,7 +307,7 @@ for (const item of domainItems) {
       themeColors.tech;
 
     return `
-            <div class="min-h-screen text-white" style="background-color: #000000; background-image: url('${getAssetUrl("/background_pattern.webp")}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+            <div class="min-h-screen text-white" style="background-color: #000000; background-image: url('${getAssetUrl("/backgrounds/background_pattern.webp")}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
                 <!-- Mobile Back Button -->
                 <div class="fixed top-4 right-4 z-50">
                     <button 

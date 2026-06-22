@@ -7,7 +7,7 @@ export interface Partner {
 export const partners: Partner[] = [
   {
     title: "Partner 1",
-    imageUrl: "/github-icon.webp",
+    imageUrl: "/icons/github-icon.webp",
     link: "#",
   },
   {

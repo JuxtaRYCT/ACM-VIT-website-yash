@@ -306,19 +306,19 @@
       urls.forEach((url) => upsert(url, 4));
     });
 
-    upsert(getAssetUrl("/background_pattern.webp"), 7);
-    upsert(getAssetUrl("/glow_ball_red.webp"), 7);
-    upsert(getAssetUrl("/acm_topleft.webp"), 9);
-    upsert(getAssetUrl("/acmw-bento.webp"), 5);
-    upsert(getAssetUrl("/acmw-bento-phone.webp"), 5);
+    upsert(getAssetUrl("/backgrounds/background_pattern.webp"), 7);
+    upsert(getAssetUrl("/backgrounds/glow_ball_red.webp"), 7);
+    upsert(getAssetUrl("/logos/acm_topleft.webp"), 9);
+    upsert(getAssetUrl("/acmw/acmw-bento.webp"), 5);
+    upsert(getAssetUrl("/acmw/acmw-bento-phone.webp"), 5);
     upsert(getAssetUrl("/about/Cassette.webp"), 6);
     upsert(getAssetUrl("/about/2.webp"), 6);
     upsert(getAssetUrl("/about/3.webp"), 6);
-    upsert(getAssetUrl("/Cassette_Tech.webp"), 6);
-    upsert(getAssetUrl("/Cassette_cc.webp"), 6);
-    upsert(getAssetUrl("/Cassette_Design.webp"), 6);
-    upsert(getAssetUrl("/Cassette_Management.webp"), 6);
-    upsert(getAssetUrl("/Cassette_Research.webp"), 6);
+    upsert(getAssetUrl("/cassettes/Cassette_Tech.webp"), 6);
+    upsert(getAssetUrl("/cassettes/Cassette_cc.webp"), 6);
+    upsert(getAssetUrl("/cassettes/Cassette_Design.webp"), 6);
+    upsert(getAssetUrl("/cassettes/Cassette_Management.webp"), 6);
+    upsert(getAssetUrl("/cassettes/Cassette_Research.webp"), 6);
 
     return Array.from(map.entries())
       .sort((a, b) => b[1] - a[1])

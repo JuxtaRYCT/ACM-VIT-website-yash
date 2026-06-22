@@ -2,7 +2,7 @@
   "items": [
     {
       "title": "Partner 1",
-      "imageUrl": "/github-icon.webp",
+      "imageUrl": "/icons/github-icon.webp",
       "link": "#"
     },
     { "title": "Partner 2", "imageUrl": "/partners/2.webp", "link": "#" },

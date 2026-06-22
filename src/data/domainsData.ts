@@ -4,7 +4,7 @@ export const domainConfigs = {
         title: "TECH",
         description: "We build tools that people actually use in a world driven by digital experiences. From frontend finesse to backend logic, we focus on developing full-stack applications that solve real problems. We collaborate on real-world projects, explore the latest technologies, and grow as developers through hands-on experience. It's where curiosity turns into code and ideas turn into seamless digital experiences.",
         themeColor: "tech",
-        cassetteSvg: "/Cassette_Tech.webp",
+        cassetteSvg: "/cassettes/Cassette_Tech.webp",
         buttonText: "Areas of Interest (AOIs)",
         techIcons: [
             { src: "/domains/app/android.webp", alt: "Android" },
@@ -26,7 +26,7 @@ export const domainConfigs = {
             { src: "/domains/web/postgresql.webp", alt: "PostgreSQL" },
             { src: "/domains/web/postman.webp", alt: "Postman" },
             { src: "/domains/web/prisma.webp", alt: "Prisma" },
-            { src: "/domains/web/redis.webp", alt: "Redis" },    
+            { src: "/domains/web/icons/redis.webp", alt: "Redis" },    
             { src: "/domains/web/tailwindcss.webp", alt: "TailwindCSS" }
         ],
         aois: [
@@ -41,7 +41,7 @@ export const domainConfigs = {
         title: "COMPETITIVE CODING",
         description: "We see competitive programming as a game of logic, strategy, and precision, far beyond just writing code. We host contests, craft cryptic challenges, and build problem sets that push us to think algorithmically. Whether we're solving our first problem or chasing the next rating jump, we do it together - discussing, debating, and decoding as a team. In this space, sharpening skills becomes second nature and way more fun. Every problem we solve makes us a little sharper and a lot more confident.",
         themeColor: "competitive",
-        cassetteSvg: "/Cassette_cc.webp",
+        cassetteSvg: "/cassettes/Cassette_cc.webp",
         buttonText: "",
         techIcons: [
             { src: "/domains/cc/codeforces_icon 1.webp", alt: "Codeforces" },
@@ -54,7 +54,7 @@ export const domainConfigs = {
         title: "DESIGN",
         description: "We craft visual experiences that bring our ideas and events to life - from UI/UX design and motion graphics to social media posts and video edits. With a focus on aesthetics, usability, and storytelling, we shape how the world sees ACM. Whether it's building brand identity or designing user-first interfaces, we blend art with purpose to create meaningful designs. Every pixel, frame, and layout is intentional, because great design isn't just seen, it's felt.",
         themeColor: "design",
-        cassetteSvg: "/Cassette_Design.webp",
+        cassetteSvg: "/cassettes/Cassette_Design.webp",
         buttonText: "Areas of Interest (AOIs)",
         techIcons: [
             { src: "/domains/design/ae.webp", alt: "AE" },
@@ -76,7 +76,7 @@ export const domainConfigs = {
         title: "RESEARCH",
         description: "Curiosity, collaboration, and a passion for exploration drive everything we do. We explore cutting-edge technologies, work across disciplines, and drive innovation through hands-on mentorship and real-world problem solving. From crafting thought-provoking challenges for our flagship events to publishing insightful blogs, we turn questions into breakthroughs. We also host the System's Reading Group (SRG), a peer-led initiative to deep-dive into foundational research. With interests spanning AI, cybersecurity, quantum computing, and more, we're always pushing boundaries through learning and discovery.",
         themeColor: "research",
-        cassetteSvg: "/Cassette_Research.webp",
+        cassetteSvg: "/cassettes/Cassette_Research.webp",
         buttonText: "Areas of Interest (AOIs)",
         techIcons: [
             { src: "/domains/research/icons8-google-colab 1.webp", alt: "Collab" },
@@ -102,7 +102,7 @@ export const domainConfigs = {
         title: "MANAGEMENT",
         description: "Nothing comes together on its own, and we're the ones ensuring every part is in place. We handle sponsorships, logistics, outreach, and content with precision and intent. Some days it's drafting timelines and emails, other days it's finding the perfect hook or navigating last-minute surprises. We work across teams, juggle priorities, and keep the chaos in check. It's this quiet consistency that ensures every event runs smoothly, start to finish.",
         themeColor: "management",
-        cassetteSvg: "/Cassette_Management.webp",
+        cassetteSvg: "/cassettes/Cassette_Management.webp",
         buttonText: "",
         techIcons: [
             { src: "/domains/management/slack.webp", alt: "Slack" },
