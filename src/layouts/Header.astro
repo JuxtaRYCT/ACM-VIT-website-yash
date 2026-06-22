@@ -6,124 +6,52 @@
   class="site-header fixed top-5 left-0 right-0 z-50 w-full px-4 py-2 pointer-events-none"
 >
   <div
-    class="header-inner relative max-w-4xl mx-auto flex justify-center pointer-events-auto"
+    class="header-inner relative max-w-fit mx-auto flex justify-center pointer-events-auto"
   >
     <nav>
       <!-- Desktop nav -->
       <div class="nav-desktop">
-        <div
-          class="header-pill relative flex items-center justify-center w-fit px-8 overflow-hidden"
-          style="height:50px;border-radius:41px;border:1px solid #FEFCD9;background:rgba(0,0,0,0.35);backdrop-filter:blur(4px);"
-        >
-          <!-- The Blob -->
-          <div
-            id="nav-blob"
-            class="absolute top-0 bottom-0 bg-[#F95F4A] rounded-[41px] transition-all duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] opacity-0 -z-10"
-            style="left: 0; width: 0;"
+        <div class="header-pill">
+          <a href="#about" class="nav-item" data-section="about">
+            <span class="nav-dot"></span>
+            <span class="nav-label">About</span>
+          </a>
+          <a href="#domains" class="nav-item" data-section="domains">
+            <span class="nav-dot"></span>
+            <span class="nav-label">Domains</span>
+          </a>
+          <a href="#events" class="nav-item" data-section="events">
+            <span class="nav-dot"></span>
+            <span class="nav-label">Events</span>
+          </a>
+          <a href="#projects" class="nav-item" data-section="projects">
+            <span class="nav-dot"></span>
+            <span class="nav-label">Projects</span>
+          </a>
+          <a href="#acm-w" class="nav-item" data-section="acm-w">
+            <span class="nav-dot"></span>
+            <span class="nav-label">ACM-W</span>
+          </a>
+          <button
+            class="nav-item more-toggle"
+            data-section="more"
+            aria-controls="desktopMoreMenu"
+            aria-expanded="false"
           >
-          </div>
-
-          <!-- Dynamic Title for MORE sections -->
-          <div
-            id="dynamic-title"
-            class="absolute inset-0 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300"
-          >
-            <div
-              class="justify-start text-white text-base font-light font-['PolySans_Trial'] uppercase"
-            >
-            </div>
-          </div>
-
-          <ul
-            class="nav-list relative z-10 flex items-center gap-2 md:gap-4 text-[13.5px] md:text-[14.8px] font-mono uppercase text-white"
-            style="white-space:nowrap;align-items:center;letter-spacing:0.04em;"
-          >
-            <li>
-              <a
-                href="#about"
-                class="nav-link inline-block px-3 py-1 hover:text-white transition-colors"
-                >ABOUT</a
-              >
-            </li>
-            <li>
-              <a
-                href="#domains"
-                class="nav-link inline-block px-3 py-1 hover:text-white transition-colors"
-                >DOMAINS</a
-              >
-            </li>
-            <li>
-              <a
-                href="#events"
-                class="nav-link inline-block px-3 py-1 hover:text-white transition-colors"
-                >EVENTS</a
-              >
-            </li>
-            <li>
-              <a
-                href="#projects"
-                class="nav-link inline-block px-3 py-1 hover:text-white transition-colors"
-                >PROJECTS</a
-              >
-            </li>
-            <li>
-              <a
-                href="#acm-w"
-                class="nav-link inline-block px-3 py-1 hover:text-white transition-colors"
-                >ACM-W</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                role="button"
-                class="more-toggle inline-block px-3 py-1 more-link hover:opacity-80 transition-opacity"
-                aria-controls="desktopMoreMenu"
-                aria-expanded="false">MORE</a
-              >
-            </li>
-          </ul>
+            <span class="nav-dot"></span>
+            <span class="nav-label">More</span>
+          </button>
         </div>
       </div>
 
       <!-- Desktop More dropdown -->
-      <div id="desktopMoreMenu" class="more-menu w-[220px]">
-        <ul class="mobile-more-list">
-          <li>
-            <a
-              href="#blogs"
-              class="text-yellow-50 uppercase font-['PolySans_Trial'] text-[11px]"
-              >Blogs</a
-            >
-          </li>
-          <li>
-            <a
-              href="#partners"
-              class="text-yellow-50 uppercase font-['PolySans_Trial'] text-[11px]"
-              >Partners</a
-            >
-          </li>
-          <li>
-            <a
-              href="#contact"
-              class="text-yellow-50 uppercase font-['PolySans_Trial'] text-[11px]"
-              >Contact Us</a
-            >
-          </li>
-          <li>
-            <a
-              href="#community"
-              class="text-yellow-50 uppercase font-['PolySans_Trial'] text-[11px]"
-              >Community</a
-            >
-          </li>
-          <li>
-            <a
-              href="#team"
-              class="text-yellow-50 uppercase font-['PolySans_Trial'] text-[11px]"
-              >Team</a
-            >
-          </li>
+      <div id="desktopMoreMenu" class="more-menu">
+        <ul class="more-list">
+          <li><a href="#blogs">Blogs</a></li>
+          <li><a href="#partners">Partners</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+          <li><a href="#community">Community</a></li>
+          <li><a href="#team">Team</a></li>
         </ul>
       </div>
 
@@ -204,65 +132,164 @@
 </header>
 
 <style>
+  /* ── Pill container ── */
   .header-pill {
     display: flex;
     align-items: center;
-    justify-content: center;
-    transition:
-      width 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
-      background-color 0.3s ease,
-      border-color 0.3s ease;
+    gap: 0;
+    padding: 10px 16px;
+    background: rgba(6, 2, 2, 0.82);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(254, 252, 217, 0.14);
+    border-radius: 100px;
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
-  /* Dynamic Mode Styles */
-  .header-pill.dynamic-mode {
-    width: 112px; /* w-28 */
-    background-color: #f95f4a !important;
-    border-color: #fefcd9;
+  /* ── Each nav item ── */
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 5px 10px;
+    border-radius: 100px;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    background: transparent;
+    transition: gap 0.38s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .header-pill.dynamic-mode.pink-mode {
-    background-color: #ff007a !important;
+  .nav-item.active {
+    gap: 8px;
   }
 
-  .header-pill.dynamic-mode .nav-list {
+  /* ── Dot ── */
+  .nav-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(254, 252, 217, 0.32);
+    flex-shrink: 0;
+    transition: background 0.35s ease, transform 0.35s ease;
+  }
+
+  .nav-item.active .nav-dot {
+    background: #fefcd9;
+  }
+
+  .nav-item:hover:not(.active) .nav-dot {
+    background: rgba(254, 252, 217, 0.6);
+  }
+
+  /* ── Label: hidden until active, expands via max-width ── */
+  .nav-label {
+    font-size: 13px;
+    font-family: "PolySans Trial", sans-serif;
+    color: #fefcd9;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 400;
+    white-space: nowrap;
+    max-width: 0;
+    overflow: hidden;
     opacity: 0;
+    transition:
+      max-width 0.38s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.22s ease;
+  }
+
+  .nav-item.active .nav-label {
+    max-width: 200px;
+    opacity: 1;
+  }
+
+  /* ── Pink mode for ACM-W ── */
+  .nav-item.active.pink-mode .nav-dot {
+    background: #ff007a;
+  }
+
+  .nav-item.active.pink-mode .nav-label {
+    color: #ff007a;
+  }
+
+  /* ── More dropdown ── */
+  .more-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) translateY(8px) scale(0.96);
+    transform-origin: top center;
+    width: 180px;
+    border: 1px solid rgba(254, 252, 217, 0.14);
+    border-radius: 18px;
+    background: rgba(6, 2, 2, 0.88);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    padding: 10px 12px;
+    box-shadow:
+      0 12px 32px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    z-index: 60;
+    opacity: 0;
+    transition:
+      opacity 0.18s ease,
+      transform 0.24s cubic-bezier(0.22, 0.61, 0.36, 1);
     pointer-events: none;
   }
 
-  .header-pill.dynamic-mode #dynamic-title {
+  .more-menu.open {
     opacity: 1;
-  }
-
-  /* Hover state for dynamic mode - revert to full menu */
-  .header-pill.dynamic-mode:hover {
-    width: var(--full-width, auto) !important;
-    background-color: rgba(0, 0, 0, 0.35) !important;
-    border-color: #fefcd9;
-  }
-
-  .header-pill.dynamic-mode:hover .nav-list {
-    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
     pointer-events: auto;
-    transition-delay: 0.1s;
   }
 
-  .header-pill.dynamic-mode:hover #dynamic-title {
+  .more-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+
+  .more-list a {
+    text-decoration: none;
+    color: rgba(254, 252, 217, 0.75);
+    font-family: "PolySans Trial", sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transition: color 0.2s ease;
+    display: block;
+    padding: 2px 4px;
+  }
+
+  .more-list a:hover {
+    color: #f95f4a;
+  }
+
+  .more-list li {
     opacity: 0;
-    transition-delay: 0s;
+    transform: translateY(6px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.25s ease;
   }
-  .nav-list a {
-    position: relative;
-    z-index: 10;
-    color: #fefcd9;
-    transition: color 0.3s ease;
+
+  .more-menu.open .more-list li {
+    opacity: 1;
+    transform: translateY(0);
   }
-  .nav-list a.more-link {
-    color: #f95f4a !important;
-  }
-  .nav-list li {
-    white-space: nowrap;
-  }
+
+  .more-menu.open .more-list li:nth-child(1) { transition-delay: 0.02s; }
+  .more-menu.open .more-list li:nth-child(2) { transition-delay: 0.06s; }
+  .more-menu.open .more-list li:nth-child(3) { transition-delay: 0.10s; }
+  .more-menu.open .more-list li:nth-child(4) { transition-delay: 0.14s; }
+  .more-menu.open .more-list li:nth-child(5) { transition-delay: 0.18s; }
+
+  /* ── Layout ── */
   .nav-desktop {
     display: block;
     position: relative;
@@ -270,72 +297,14 @@
     transform-origin: top center;
     transition: transform 160ms ease;
   }
+
   .nav-mobile {
     display: none;
     position: relative;
-    pointer-events: auto; /* Ensure button is clickable */
-  }
-
-  /* 'More' dropdown */
-  .more-menu {
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0; /* stick to right */
-    left: auto;
-    border: 1px solid #fefcd9;
-    border-radius: 16px;
-    background: rgba(0, 0, 0, 0.35);
-    backdrop-filter: blur(4px);
-    padding: 10px 12px;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
-    z-index: 60;
-    /* animation base state */
-    opacity: 0;
-    transform: translateY(8px) scale(0.96);
-    transform-origin: top right;
-    transition:
-      opacity 0.18s ease,
-      transform 0.24s cubic-bezier(0.22, 0.61, 0.36, 1);
-    pointer-events: none;
-  }
-  .more-menu.open {
-    opacity: 1;
-    transform: translateY(0) scale(1);
     pointer-events: auto;
   }
-  .mobile-more-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 6px;
-    text-align: left;
-  }
-  .mobile-more-list a {
-    text-decoration: none;
-    letter-spacing: 0.04em;
-  }
-  .more-menu .mobile-more-list li {
-    opacity: 0;
-    transform: translateY(6px);
-    transition:
-      opacity 0.2s ease,
-      transform 0.25s ease;
-  }
-  .more-menu.open .mobile-more-list li {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .more-menu.open .mobile-more-list li:nth-child(1) {
-    transition-delay: 0.02s;
-  }
-  .more-menu.open .mobile-more-list li:nth-child(2) {
-    transition-delay: 0.06s;
-  }
-  .more-menu.open .mobile-more-list li:nth-child(3) {
-    transition-delay: 0.1s;
-  }
 
+  /* ── Mobile breakpoints ── */
   @media (max-width: 952px) {
     body.partners-active .site-header {
       z-index: 200;
@@ -423,15 +392,9 @@
 <script>
   // @ts-nocheck
   document.addEventListener("DOMContentLoaded", () => {
-    // BLOB NAVIGATION LOGIC
-    const blob = document.getElementById("nav-blob");
-    const navLinks = document.querySelectorAll(".nav-desktop .nav-link");
-    const sections = document.querySelectorAll("section[id], footer[id]"); // Include footer
-    const moreToggle = document.querySelector(".nav-desktop .more-toggle");
-    const pill = document.querySelector(".header-pill");
-    const dynamicTitle = document.querySelector("#dynamic-title div"); // Changed to div
+    const sections = document.querySelectorAll("section[id], footer[id]");
 
-    // Mobile Menu Logic
+    // Mobile Menu
     const mobileMenuBtn = document.getElementById("mobile-menu-btn");
     const mobileMenuOverlay = document.getElementById("mobile-menu-overlay");
     const mobileMenuClose = document.getElementById("mobile-menu-close");
@@ -447,47 +410,11 @@
       }
     }
 
-    if (mobileMenuBtn) {
-      mobileMenuBtn.addEventListener("click", () => toggleMobileMenu(true));
-    }
-    if (mobileMenuClose) {
-      mobileMenuClose.addEventListener("click", () => toggleMobileMenu(false));
-    }
-    mobileNavLinks.forEach((link) => {
-      link.addEventListener("click", () => toggleMobileMenu(false));
-    });
+    if (mobileMenuBtn) mobileMenuBtn.addEventListener("click", () => toggleMobileMenu(true));
+    if (mobileMenuClose) mobileMenuClose.addEventListener("click", () => toggleMobileMenu(false));
+    mobileNavLinks.forEach((link) => link.addEventListener("click", () => toggleMobileMenu(false)));
 
-    // Capture initial full width for restoration
-    let fullWidth = pill ? pill.offsetWidth : 0;
-    if (pill) {
-      pill.style.setProperty("--full-width", `${fullWidth}px`);
-      // Update full width on resize
-      window.addEventListener("resize", () => {
-        // Temporarily remove dynamic class to measure
-        const wasDynamic = pill.classList.contains("dynamic-mode");
-        if (wasDynamic) pill.classList.remove("dynamic-mode");
-
-        const navList = document.querySelector(".nav-list");
-        if (navList) {
-          // 32px padding-left + 32px padding-right (px-8 = 2rem = 32px)
-          const w = navList.offsetWidth + 64;
-          pill.style.setProperty("--full-width", `${w}px`);
-        }
-
-        if (wasDynamic) pill.classList.add("dynamic-mode");
-        currentSectionId = null;
-        scheduleNavUpdate();
-      });
-    }
-
-    // IDs that live under the "MORE" dropdown
-    const moreSectionIds = [
-      "blogs",
-      "partners",
-      "contact",
-      "community",
-      "team",
-    ];
+    // Section → nav-item mapping
     const idMapping = {
       work: "events",
       "igniting-minds-section": "about",
@@ -497,136 +424,62 @@
       "community-conduct": "community",
       "community-speaker": "community",
     };
-    let currentSectionId = null;
-    let rafPending = false;
-    let lastScrollY = window.scrollY || window.pageYOffset;
-    let scrollDirection = "down";
 
-    // Function to update blob position
-    function updateBlob(targetLink) {
-      if (!targetLink || !blob) return;
+    const moreSectionIds = ["blogs", "partners", "contact", "community", "team"];
 
-      const pill = document.querySelector(".header-pill");
-      if (!pill) return;
+    const moreSectionLabels = {
+      blogs: "Blogs",
+      partners: "Partners",
+      contact: "Contact",
+      community: "Community",
+      team: "Team",
+    };
 
-      const pillRect = pill.getBoundingClientRect();
-      const linkRect = targetLink.getBoundingClientRect();
-      const scaleX = pill.offsetWidth > 0 ? pillRect.width / pill.offsetWidth : 1;
-      const safeScaleX = Number.isFinite(scaleX) && scaleX > 0 ? scaleX : 1;
-
-      const relativeLeft = (linkRect.left - pillRect.left) / safeScaleX;
-      const width = linkRect.width / safeScaleX;
-
-      blob.style.left = `${relativeLeft}px`;
-      blob.style.width = `${width}px`;
-      blob.style.opacity = "1";
-
-      // Color logic
-      const href = targetLink.getAttribute("href");
-      if (href === "#acm-w") {
-        blob.style.backgroundColor = "#FF007A";
-      } else {
-        blob.style.backgroundColor = "#F95F4A";
-      }
-    }
-
-    // Function to hide blob
-    function hideBlob() {
-      if (blob) blob.style.opacity = "0";
-    }
-
-    function setDynamicMode(isDynamic, sectionId) {
-      if (!pill) return;
-
-      if (isDynamic) {
-        pill.classList.add("dynamic-mode");
-        if (sectionId === "acm-w") {
-          pill.classList.add("pink-mode");
-        } else {
-          pill.classList.remove("pink-mode");
+    // ── Dot nav active state ──
+    function setActiveItem(navSection, labelOverride = null) {
+      const items = document.querySelectorAll(".nav-desktop .nav-item");
+      items.forEach((item) => {
+        item.classList.remove("active", "pink-mode");
+        // Reset more button label
+        if (item.dataset.section === "more") {
+          item.querySelector(".nav-label").textContent = "More";
         }
+      });
 
-        if (dynamicTitle) {
-          let text = sectionId;
-          let isLongText = false;
+      if (!navSection) return;
 
-          if (sectionId.startsWith("community-")) {
-            // Format: Community: Outreach
-            const sub = sectionId.replace("community-", "");
-            let displaySub = sub;
-            if (sub === "outreach") displaySub = "Outreach";
-            else if (sub === "sdg") displaySub = "SDG";
-            else if (sub === "conduct") displaySub = "Code of Conduct";
-            else if (sub === "speaker") displaySub = "Speakers";
+      const target = document.querySelector(
+        `.nav-desktop .nav-item[data-section="${navSection}"]`
+      );
+      if (!target) return;
 
-            text = `Community: ${displaySub}`;
-            isLongText = true;
-          }
-
-          dynamicTitle.textContent = text;
-          dynamicTitle.style.whiteSpace = "nowrap";
-
-          if (isLongText) {
-            // Measure text width
-            const font = "16px PolySans_Trial";
-            const tempSpan = document.createElement("span");
-            tempSpan.style.fontFamily = "'PolySans_Trial', sans-serif";
-            tempSpan.style.fontSize = "16px";
-            tempSpan.style.fontWeight = "300";
-            tempSpan.style.textTransform = "uppercase";
-            tempSpan.style.visibility = "hidden";
-            tempSpan.style.position = "absolute";
-            tempSpan.style.whiteSpace = "nowrap";
-            tempSpan.textContent = text;
-            document.body.appendChild(tempSpan);
-            const width = tempSpan.offsetWidth;
-            document.body.removeChild(tempSpan);
-
-            const totalWidth = width + 55;
-
-            pill.style.setProperty("width", `${totalWidth}px`);
-            pill.style.setProperty("padding-left", "0px"); // Reset to avoid double padding if width includes it? Actually my logic sets width including padding.
-            // Wait, transition: width 0.3s. If I set width explicit, it should animate.
-          } else {
-            pill.style.setProperty("width", "112px");
-          }
-        }
-        hideBlob();
-      } else {
-        pill.classList.remove("dynamic-mode");
-        pill.classList.remove("pink-mode");
-        // Clear inline styles so it returns to original CSS/auto width
-        pill.style.removeProperty("width");
-        pill.style.removeProperty("padding-left");
-      }
+      target.classList.add("active");
+      if (navSection === "acm-w") target.classList.add("pink-mode");
+      if (labelOverride) target.querySelector(".nav-label").textContent = labelOverride;
     }
 
     function applyNavState(sectionId) {
-      if (!sectionId) return;
-
-      if (sectionId === "footer") {
-        setDynamicMode(false);
-        hideBlob();
-        return;
-      }
-
-      if (moreSectionIds.includes(sectionId) || sectionId.startsWith("community-")) {
-        setDynamicMode(true, sectionId);
+      if (!sectionId || sectionId === "footer") {
+        setActiveItem(null);
         return;
       }
 
       const mappedId = idMapping[sectionId] || sectionId;
-      setDynamicMode(false);
 
-      const activeLink = document.querySelector(
-        `.nav-desktop .nav-link[href="#${mappedId}"]`
-      );
-      if (activeLink) {
-        updateBlob(activeLink);
-      } else {
-        hideBlob();
+      if (moreSectionIds.includes(mappedId)) {
+        const label = moreSectionLabels[mappedId] || "More";
+        setActiveItem("more", label);
+        return;
       }
+
+      setActiveItem(mappedId);
     }
+
+    // ── Scroll tracking ──
+    let currentSectionId = null;
+    let rafPending = false;
+    let lastScrollY = window.scrollY || window.pageYOffset;
+    let scrollDirection = "down";
 
     function getActiveSection() {
       const focusLine = window.innerHeight * 0.3;
@@ -649,27 +502,10 @@
           distance = focusLine - rect.bottom;
           position = "above";
         }
-
         if (distance < closestDistance) {
           closestDistance = distance;
           closestSection = section;
           closestPosition = position;
-        } else if (distance === closestDistance && closestSection) {
-          if (
-            scrollDirection === "down" &&
-            position === "below" &&
-            closestPosition !== "below"
-          ) {
-            closestSection = section;
-            closestPosition = position;
-          } else if (
-            scrollDirection === "up" &&
-            position === "above" &&
-            closestPosition !== "above"
-          ) {
-            closestSection = section;
-            closestPosition = position;
-          }
         }
       });
 
@@ -697,23 +533,14 @@
       requestAnimationFrame(updateActiveSection);
     }
 
-    // Intersection Observer to track sections
-    const observerOptions = {
-      root: null,
-      rootMargin: "-20% 0px -60% 0px", // Trigger when section is near top/center
-      threshold: 0,
-    };
-
-    const observer = new IntersectionObserver(() => {
-      scheduleNavUpdate();
-    }, observerOptions);
-
-    sections.forEach((section) => observer.observe(section));
+    const observer = new IntersectionObserver(
+      () => scheduleNavUpdate(),
+      { root: null, rootMargin: "-20% 0px -60% 0px", threshold: 0 }
+    );
+    sections.forEach((s) => observer.observe(s));
     window.addEventListener("scroll", scheduleNavUpdate, { passive: true });
 
-    // Removed manual hover listener as requested
-
-    // EXISTING DROPDOWN LOGIC
+    // ── More dropdown ──
     const toggles = Array.from(document.querySelectorAll(".more-toggle"));
     const moreMenuLinks = document.querySelectorAll("#desktopMoreMenu a");
 
@@ -733,7 +560,6 @@
     };
 
     const allMenus = () => toggles.map(getMenuFor).filter(Boolean);
-
     const closeAll = () =>
       toggles.forEach((tg) => {
         const m = getMenuFor(tg);
@@ -745,59 +571,30 @@
     toggles.forEach((tg) => {
       const menu = getMenuFor(tg);
       if (!menu) return;
+
       tg.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
         suppressNextDocClick = true;
-        setTimeout(() => {
-          suppressNextDocClick = false;
-        }, 0);
+        setTimeout(() => { suppressNextDocClick = false; }, 0);
         const expanded = tg.getAttribute("aria-expanded") === "true";
         toggles.forEach((ot) => {
-          if (ot !== tg) {
-            const otherMenu = getMenuFor(ot);
-            if (otherMenu) closeMenu(ot, otherMenu);
-          }
+          if (ot !== tg) { const om = getMenuFor(ot); if (om) closeMenu(ot, om); }
         });
-        if (expanded) {
-          closeMenu(tg, menu);
-        } else {
-          openMenu(tg, menu);
-        }
+        expanded ? closeMenu(tg, menu) : openMenu(tg, menu);
       });
 
       let hoverTimer = null;
-      const startCloseTimer = () => {
-        hoverTimer = setTimeout(() => {
-          closeMenu(tg, menu);
-        }, 220);
-      };
-      const clearCloseTimer = () => {
-        if (hoverTimer) {
-          clearTimeout(hoverTimer);
-          hoverTimer = null;
-        }
-      };
+      const startCloseTimer = () => { hoverTimer = setTimeout(() => closeMenu(tg, menu), 220); };
+      const clearCloseTimer = () => { if (hoverTimer) { clearTimeout(hoverTimer); hoverTimer = null; } };
 
-      tg.addEventListener("mouseenter", () => {
-        openMenu(tg, menu);
-      });
-      tg.addEventListener("mouseleave", () => {
-        startCloseTimer();
-      });
-      menu.addEventListener("mouseenter", () => {
-        clearCloseTimer();
-      });
-      menu.addEventListener("mouseleave", () => {
-        startCloseTimer();
-      });
+      tg.addEventListener("mouseenter", () => openMenu(tg, menu));
+      tg.addEventListener("mouseleave", () => startCloseTimer());
+      menu.addEventListener("mouseenter", () => clearCloseTimer());
+      menu.addEventListener("mouseleave", () => startCloseTimer());
     });
 
-    moreMenuLinks.forEach((link) => {
-      link.addEventListener("click", () => {
-        closeAll();
-      });
-    });
+    moreMenuLinks.forEach((link) => link.addEventListener("click", () => closeAll()));
 
     document.addEventListener("click", (e) => {
       if (suppressNextDocClick) return;
@@ -808,10 +605,9 @@
       if (!withinToggle && !withinMenu) closeAll();
     });
 
-    // Smooth-scroll
+    // ── Smooth scroll ──
     document.addEventListener("click", (e) => {
-      const el =
-        e.target instanceof Element ? e.target.closest('a[href^="#"]') : null;
+      const el = e.target instanceof Element ? e.target.closest('a[href^="#"]') : null;
       if (!el) return;
       const href = el.getAttribute("href");
       if (!href || href.length < 2) return;
@@ -822,11 +618,10 @@
       closeAll();
       target.scrollIntoView({ behavior: "smooth", block: "start" });
       history.replaceState(null, "", `#${id}`);
-
-      // Manually update blob on click
       applyNavState(id);
       currentSectionId = id;
     });
+
     scheduleNavUpdate();
   });
 </script>
