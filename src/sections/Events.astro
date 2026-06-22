@@ -935,8 +935,10 @@ const worksHeightMobile = works.length * 45;
 
           el.style.top = ghost.y + "px";
           el.style.left = ghost.x + "px";
+          // Sparse subset floats above event cards (inview cards are z-index 9)
+          const isAboveCard = i % 9 === 0 && j % 3 !== 1;
           el.style.zIndex = String(
-            j !== 1 && j !== 2 && (j + letters.length + i) % 5 === 0 ? 3 : 1
+            isAboveCard ? 11 : (j !== 1 && j !== 2 && (j + letters.length + i) % 5 === 0 ? 3 : 1)
           );
           el.style.setProperty("--ix", String(ghost.i));
           el.style.setProperty(
@@ -1042,7 +1044,7 @@ const worksHeightMobile = works.length * 45;
         this,
         { state: 0 },
         { state: 1, duration: 0.75, ease: "power4.in" },
-        introDuration
+        0
       );
       const cardsDuration = 0.9;
       const cardsStagger = 0.32;
@@ -1065,7 +1067,7 @@ const worksHeightMobile = works.length * 45;
           duration: tl.totalDuration(),
           ease: "power1.out",
         },
-        cardsStart
+        0
       );
       tl.fromTo(
         this,
@@ -1294,7 +1296,7 @@ const worksHeightMobile = works.length * 45;
     --color-white: #fff0eb;
 
     --font-family-fraktion: "Fraktion Mono", monospace;
-    --font-family-bigger: "Bigger Display", sans-serif;
+    --font-family-bigger: "PolySans Bulky Wide", sans-serif;
   }
 
   /* --- SWork Styles --- */
@@ -1419,7 +1421,7 @@ const worksHeightMobile = works.length * 45;
     }
 
     .s__ruler {
-      --width: clamp(8.5rem, 8vw, 9.5rem);
+      --width: clamp(11rem, 12vw, 14rem);
       position: absolute;
       top: 10svh;
       left: calc(50% - var(--width) / 2);
@@ -1428,12 +1430,12 @@ const worksHeightMobile = works.length * 45;
       pointer-events: none;
 
       @media only screen and (max-width: 987px) {
-        --width: clamp(8.5rem, 18vw, 9rem);
+        --width: clamp(11rem, 22vw, 13rem);
       }
 
       @media only screen and (max-width: 767px) and (orientation: landscape),
         only screen and (max-width: 576px) {
-        --width: min(32vw, 8rem);
+        --width: min(42vw, 11rem);
       }
     }
 
