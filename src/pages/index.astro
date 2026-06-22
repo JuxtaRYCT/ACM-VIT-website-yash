@@ -1,34 +1,42 @@
 ---
 export const prerender = true;
-import ProjectScreen from "../components/ProjectScreen.astro";
-import Domains from "../components/Domains.astro";
-import DomainsPhone from "../phoneComponents/DomainsPhone.astro";
 import Layout from "../layouts/Layout.astro";
-import Gallery from "../components/Gallery.astro";
-import Board from "../components/Board.astro";
 import "../styles/globals.css";
-import Partners from "../components/Partners.astro";
-import AcmWMotto from "../components/AcmWMotto.astro";
-import AcmWContent from "../components/AcmWContent.astro";
 import { reader } from "../utils/reader";
-import Events from "../components/SWork.astro";
-import ContactUs from "../components/ContactUs.astro";
-import ContactUsPhone from "../phoneComponents/ContactUsPhone.astro";
-import AcmWBento from "../components/AcmWBento.astro";
-import ProjectScreenPhone from "../phoneComponents/ProjectScreenPhone.astro";
-import GalleryPhone from "../phoneComponents/GalleryPhone.astro";
-import Hero from "../components/Hero.astro";
-import LegendPins from "../components/LegendPins.astro";
-import BecauseTechMatters from "../components/BecauseTechMatters.astro";
-import About from "../components/About.astro";
-import AboutPhone from "../phoneComponents/AboutPhone.astro";
-import Footer from "../components/Footer.astro";
-import Blogs from "../components/Blogs.astro";
-import IgnitingMinds from "../components/IgnitingMindsSection.astro";
-import CodeOfConduct from "../components/CodeOfConduct.astro";
-import DistinguishedSpeaker from "../components/DistinguishedSpeaker.astro";
-import ProjectsIntro from "../components/ProjectsIntro.astro";
-import ScrollVideo from "../components/ScrollVideo.astro";
+
+// Sections
+import Hero from "../sections/Hero.astro";
+import About from "../sections/About.astro";
+import IgnitingMinds from "../sections/IgnitingMinds.astro";
+import CodeOfConduct from "../sections/CodeOfConduct.astro";
+import DistinguishedSpeaker from "../sections/DistinguishedSpeaker.astro";
+import Domains from "../sections/Domains.astro";
+import Events from "../sections/Events.astro";
+import ProjectsIntro from "../sections/ProjectsIntro.astro";
+import Projects from "../sections/Projects.astro";
+import AcmWMotto from "../sections/AcmWMotto.astro";
+import AcmWContent from "../sections/AcmWContent.astro";
+import AcmWBento from "../sections/AcmWBento.astro";
+import Board from "../sections/Board.astro";
+import Blogs from "../sections/Blogs.astro";
+import Partners from "../sections/Partners.astro";
+import Gallery from "../sections/Gallery.astro";
+import ContactUs from "../sections/ContactUs.astro";
+import BecauseTechMatters from "../sections/BecauseTechMatters.astro";
+
+// Responsive variants
+import AboutPhone from "../responsive/AboutPhone.astro";
+import DomainsPhone from "../responsive/DomainsPhone.astro";
+import ProjectScreenPhone from "../responsive/ProjectScreenPhone.astro";
+import GalleryPhone from "../responsive/GalleryPhone.astro";
+import ContactUsPhone from "../responsive/ContactUsPhone.astro";
+
+// UI components
+import LegendPins from "../components/ui/LegendPins.astro";
+import ScrollVideo from "../components/ui/ScrollVideo.astro";
+
+// Layout components
+import Footer from "../layouts/Footer.astro";
 
 const projectsCms = await reader.singletons.projects.read();
 const projectsData = (projectsCms?.items ?? [])
@@ -123,7 +131,7 @@ const videoEndTime = undefined; // Use full video duration (set to specific seco
     <section id="projects" class="page-section">
         <div data-variant-host>
             <template data-variant="desktop">
-                <ProjectScreen projects={projectsData} />
+                <Projects projects={projectsData} />
             </template>
             <template data-variant="mobile">
                 <ProjectScreenPhone projects={projectsData} />

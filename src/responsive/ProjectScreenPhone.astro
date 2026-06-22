@@ -1,5 +1,5 @@
 ---
-import Cassette from "../components/Cassette.astro";
+import Cassette from "../components/ui/Cassette.astro";
 import { getAssetUrl } from "../utils/cdn";
 
 export interface Props {
@@ -105,7 +105,7 @@ const { projects = [] } = Astro.props;
               >
                 <img
                   src={getAssetUrl(
-                    `/${projectData.buttons.icons[0].type}-icon.webp`
+                    `/icons/${projectData.buttons.icons[0].type}-icon.webp`
                   )}
                   alt={projectData.buttons.icons[0].type}
                   width="20"
@@ -196,39 +196,4 @@ const { projects = [] } = Astro.props;
     }
   }
 
-  @font-face {
-    font-family: "PolySans Trial";
-    src: url("../assets/fonts/Mono/PolySans-SlimMono.otf")
-      format("opentype");
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: "PolySans Trial";
-    src: url("../assets/fonts/Mono/PolySans-NeutralMono.otf")
-      format("opentype");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: "PolySans Trial";
-    src: url("../assets/fonts/Mono/PolySans-MedianMono.otf")
-      format("opentype");
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: "PolySans Trial";
-    src: url("../assets/fonts/Mono/PolySans-BulkyMono.otf")
-      format("opentype");
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-  }
 </style>

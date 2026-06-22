@@ -1,5 +1,5 @@
 ---
-import Cassette from "./Cassette.astro";
+import Cassette from "../components/ui/Cassette.astro";
 import { getAssetUrl } from "../utils/cdn";
 
 export interface Props {
@@ -116,7 +116,7 @@ const { projects = [] } = Astro.props;
                   aria-label={icon.type}
                 >
                   <img
-                    src={getAssetUrl(`/${icon.type}-icon.webp`)}
+                    src={getAssetUrl(`/icons/${icon.type}-icon.webp`)}
                     alt={icon.type}
                     width="24"
                     style={`filter: brightness(0) saturate(100%) invert(${icon.iconColor === "#FEFCD9" ? "96%" : "0%"});`}

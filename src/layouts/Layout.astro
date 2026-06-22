@@ -1,7 +1,7 @@
 ---
-import CelebrationPopup from "../components/CelebrationPopup.astro";
-import Preloader from "../components/Preloader.astro";
-import Header from "../components/Header.astro";
+import CelebrationPopup from "../components/overlays/CelebrationPopup.astro";
+import Preloader from "./Preloader.astro";
+import Header from "./Header.astro";
 import { getAssetUrl } from "../utils/cdn";
 
 const site = Astro.site ?? new URL("https://www.acmvit.in");
