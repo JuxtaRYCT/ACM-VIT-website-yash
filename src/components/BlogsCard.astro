@@ -1,13 +1,13 @@
 ---
 interface Props {
-  bgurl: string;
+  bgUrl: string;
   link: string;
 }
 
 import { getAssetUrl } from "../utils/cdn";
-const { bgurl, link } = Astro.props;
+const { bgUrl, link } = Astro.props;
 
-const imageUrl = bgurl.startsWith("http") ? bgurl : getAssetUrl(bgurl);
+const imageUrl = bgUrl.startsWith("http") ? bgUrl : getAssetUrl(bgUrl);
 ---
 
 <a

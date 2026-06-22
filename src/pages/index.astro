@@ -2,7 +2,7 @@
 export const prerender = true;
 import ProjectScreen from "../components/ProjectScreen.astro";
 import Domains from "../components/Domains.astro";
-import DomainsPhone from "../phoneComponents/Domains_Phone.astro";
+import DomainsPhone from "../phoneComponents/DomainsPhone.astro";
 import Layout from "../layouts/Layout.astro";
 import Gallery from "../components/Gallery.astro";
 import Board from "../components/Board.astro";
@@ -12,16 +12,16 @@ import AcmWMotto from "../components/AcmWMotto.astro";
 import AcmWContent from "../components/AcmWContent.astro";
 import { reader } from "../utils/reader";
 import Events from "../components/SWork.astro";
-import ContactUS from "../components/ContactUs.astro";
-import ContactUSPhone from "../phoneComponents/ContactUs_Phone.astro";
+import ContactUs from "../components/ContactUs.astro";
+import ContactUsPhone from "../phoneComponents/ContactUsPhone.astro";
 import AcmWBento from "../components/AcmWBento.astro";
-import ProjectsScreenPhone from "../phoneComponents/ProjectScreen-Phone.astro";
-import Gallery_Phone from "../phoneComponents/Gallery_Phone.astro";
-import Hero from "../components/hero.astro";
+import ProjectScreenPhone from "../phoneComponents/ProjectScreenPhone.astro";
+import GalleryPhone from "../phoneComponents/GalleryPhone.astro";
+import Hero from "../components/Hero.astro";
 import LegendPins from "../components/LegendPins.astro";
 import BecauseTechMatters from "../components/BecauseTechMatters.astro";
 import About from "../components/About.astro";
-import About_Phone from "../phoneComponents/About_Phone.astro";
+import AboutPhone from "../phoneComponents/AboutPhone.astro";
 import Footer from "../components/Footer.astro";
 import Blogs from "../components/Blogs.astro";
 import IgnitingMinds from "../components/IgnitingMindsSection.astro";
@@ -93,7 +93,7 @@ const videoEndTime = undefined; // Use full video duration (set to specific seco
                     <About />
                 </template>
                 <template data-variant="mobile">
-                    <About_Phone />
+                    <AboutPhone />
                 </template>
             </div>
         </section>
@@ -126,7 +126,7 @@ const videoEndTime = undefined; // Use full video duration (set to specific seco
                 <ProjectScreen projects={projectsData} />
             </template>
             <template data-variant="mobile">
-                <ProjectsScreenPhone projects={projectsData} />
+                <ProjectScreenPhone projects={projectsData} />
             </template>
         </div>
         <div class="w-full flex justify-center py-10">
@@ -163,7 +163,7 @@ const videoEndTime = undefined; // Use full video duration (set to specific seco
                 <Gallery />
             </template>
             <template data-variant="mobile">
-                <Gallery_Phone />
+                <GalleryPhone />
             </template>
         </div>
     </section>
@@ -174,10 +174,10 @@ const videoEndTime = undefined; // Use full video duration (set to specific seco
             data-variant-query="(max-width: 1024px), (pointer: coarse)"
         >
             <template data-variant="desktop">
-                <ContactUS />
+                <ContactUs />
             </template>
             <template data-variant="mobile">
-                <ContactUSPhone />
+                <ContactUsPhone />
             </template>
         </div>
     </section>

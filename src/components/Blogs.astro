@@ -59,11 +59,11 @@ async function fetchHashnodeCover(url: string): Promise<string | null> {
 const blogsWithImages = await Promise.all(
   blogData.map(async (blog) => {
     if (blog.cover) {
-      return { link: blog.link, bgurl: blog.cover };
+      return { link: blog.link, bgUrl: blog.cover };
     }
 
     const hashnodeCover = await fetchHashnodeCover(blog.link);
-    return { link: blog.link, bgurl: hashnodeCover || fallbackCover };
+    return { link: blog.link, bgUrl: hashnodeCover || fallbackCover };
   })
 );
 ---

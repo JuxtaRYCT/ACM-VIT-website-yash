@@ -4,11 +4,11 @@ import { reader } from "../utils/reader";
 import { getAssetUrl } from "../utils/cdn";
 
 const siteConfig = await reader.singletons.siteConfig.read();
-const ButtonData = {
+const buttonData = {
   text: siteConfig?.buttonText ?? "CHECK OUT GREP",
   link: siteConfig?.buttonLink ?? "/grep",
 };
-const isExternalLink = ButtonData.link.startsWith("http");
+const isExternalLink = buttonData.link.startsWith("http");
 ---
 
 <div
@@ -57,7 +57,7 @@ const isExternalLink = ButtonData.link.startsWith("http");
   </div>
 
   <a
-    href={ButtonData.link}
+    href={buttonData.link}
     target={isExternalLink ? "_blank" : undefined}
     rel={isExternalLink ? "noopener noreferrer" : undefined}
     class="c2c-btn absolute top-7 right-10 z-[600] pointer-events-auto w-auto h-12 bg-[#F95F4A] rounded-[41px] flex items-center pl-[34px] pr-8 gap-3 max-md:right-4 max-md:top-3 no-underline"
@@ -65,7 +65,7 @@ const isExternalLink = ButtonData.link.startsWith("http");
     <div
       class="text-[#FEFCD9] text-base font-light font-['PolySans_Trial'] uppercase"
     >
-      {ButtonData.text}
+      {buttonData.text}
     </div>
     <div class="w-6 h-6 relative overflow-hidden">
       <img
