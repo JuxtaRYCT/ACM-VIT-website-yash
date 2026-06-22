@@ -31,11 +31,11 @@
         { "src": "/domains/web/tailwindcss.webp", "alt": "TailwindCSS" }
       ],
       "aois": [
-        { "src": "/AOIs/tech/app.webp", "alt": "App Development" },
-        { "src": "/AOIs/tech/foss.webp", "alt": "FOSS" },
-        { "src": "/AOIs/tech/gamedev.webp", "alt": "Game Dev" },
-        { "src": "/AOIs/tech/web.webp", "alt": "Web Development" },
-        { "src": "/AOIs/tech/devops.webp", "alt": "DevOps" }
+        { "src": "/aois/tech/app.webp", "alt": "App Development" },
+        { "src": "/aois/tech/foss.webp", "alt": "FOSS" },
+        { "src": "/aois/tech/gamedev.webp", "alt": "Game Dev" },
+        { "src": "/aois/tech/web.webp", "alt": "Web Development" },
+        { "src": "/aois/tech/devops.webp", "alt": "DevOps" }
       ]
     },
     {
@@ -69,11 +69,11 @@
         { "src": "/domains/design/blender.webp", "alt": "Blender" }
       ],
       "aois": [
-        { "src": "/AOIs/design/3D.webp", "alt": "3D Design" },
-        { "src": "/AOIs/design/illustrations.webp", "alt": "Illustrations" },
-        { "src": "/AOIs/design/motion-graphics.webp", "alt": "Motion Graphics" },
-        { "src": "/AOIs/design/uiux.webp", "alt": "UI/UX" },
-        { "src": "/AOIs/design/video-editing.webp", "alt": "Video Editing" }
+        { "src": "/aois/design/3D.webp", "alt": "3D Design" },
+        { "src": "/aois/design/illustrations.webp", "alt": "Illustrations" },
+        { "src": "/aois/design/motion-graphics.webp", "alt": "Motion Graphics" },
+        { "src": "/aois/design/uiux.webp", "alt": "UI/UX" },
+        { "src": "/aois/design/video-editing.webp", "alt": "Video Editing" }
       ]
     },
     {
@@ -95,12 +95,12 @@
         { "src": "/domains/research/qiskit 1.webp", "alt": "Qiskit" }
       ],
       "aois": [
-        { "src": "/AOIs/research/aiml.webp", "alt": "AI/ML" },
-        { "src": "/AOIs/research/bioinfo.webp", "alt": "Bioinformatics" },
-        { "src": "/AOIs/research/blockchain.webp", "alt": "Blockchain" },
-        { "src": "/AOIs/research/cybersec.webp", "alt": "Cybersecurity" },
-        { "src": "/AOIs/research/iot.webp", "alt": "IoT" },
-        { "src": "/AOIs/research/quantum.webp", "alt": "Quantum Computing" }
+        { "src": "/aois/research/aiml.webp", "alt": "AI/ML" },
+        { "src": "/aois/research/bioinfo.webp", "alt": "Bioinformatics" },
+        { "src": "/aois/research/blockchain.webp", "alt": "Blockchain" },
+        { "src": "/aois/research/cybersec.webp", "alt": "Cybersecurity" },
+        { "src": "/aois/research/iot.webp", "alt": "IoT" },
+        { "src": "/aois/research/quantum.webp", "alt": "Quantum Computing" }
       ]
     },
     {

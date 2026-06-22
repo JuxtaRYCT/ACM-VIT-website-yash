@@ -138,25 +138,22 @@ const worksHeightMobile = works.length * 45;
       <canvas class="s__canvas js-canvas"></canvas>
     </div><!-- .s__inner -->
 
-    <div
-      class="s__mask-outer"
-      style="pointer-events: none !important; z-index: 10;"
-    >
-      <div class="s__mask js-mask" style="pointer-events: none !important;">
-        <svg
-          class="s__mask__svg js-mask-svg"
-          style="pointer-events: none !important;"
-        >
-          <path class="s__mask__path-inner js-mask-path-inner" d=""></path>
-          <path class="s__mask__path-outer js-mask-path-outer" d=""></path>
-          <path class="s__mask__path-lines js-mask-path-lines" d=""></path>
-        </svg>
-      </div><!-- .s__mask -->
-    </div><!-- .s__mask-outer -->
-
     <div class="s__ruler js-ruler"></div>
     <EventDetails />
   </div><!-- .s__outer -->
+
+  <div class="s__mask-outer" style="pointer-events: none !important;">
+    <div class="s__mask js-mask" style="pointer-events: none !important;">
+      <svg
+        class="s__mask__svg js-mask-svg"
+        style="pointer-events: none !important;"
+      >
+        <path class="s__mask__path-inner js-mask-path-inner" d=""></path>
+        <path class="s__mask__path-outer js-mask-path-outer" d=""></path>
+        <path class="s__mask__path-lines js-mask-path-lines" d=""></path>
+      </svg>
+    </div><!-- .s__mask -->
+  </div><!-- .s__mask-outer -->
 </section>
 
 <script>
@@ -976,7 +973,7 @@ const worksHeightMobile = works.length * 45;
         tl.kill();
       }
 
-      const introDuration = 10.0;
+      const introDuration = 0.75;
       const cardsDelay = 0.35;
       const cardsStart = introDuration + cardsDelay;
 
@@ -1328,7 +1325,8 @@ const worksHeightMobile = works.length * 45;
       height: 100svh;
       overflow: hidden;
       pointer-events: none !important;
-      z-index: 10; /* Ensure it's above but click-through */
+      z-index: 10;
+      margin-top: calc(var(--height) * -1);
       * {
         pointer-events: none !important;
       }
