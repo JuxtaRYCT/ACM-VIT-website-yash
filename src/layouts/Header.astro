@@ -1,5 +1,53 @@
 ---
 // Header.astro
+import { getAssetUrl } from "../utils/cdn";
+
+interface DropdownItem {
+  title: string;
+  desc: string;
+  href: string;
+  img: string;
+  color?: string;
+}
+
+const dropdowns: Record<string, DropdownItem[]> = {
+  about: [
+    { title: "ACM-VIT", desc: "Our chapter's mission & culture", href: "#about-acmvit", img: "/about/about-acmvit.webp" },
+    { title: "VIT University", desc: "One of India's top tech universities", href: "#about-vit", img: "/about/about-vit.webp" },
+    { title: "ACM Global", desc: "World's largest computing society", href: "#about-acm", img: "/about/about-acm.webp" },
+  ],
+  community: [
+    { title: "Outreach", desc: "Beyond The Norm workshops for schools", href: "#community-outreach", img: "/outreach/outreach-event.webp" },
+    { title: "SDG Initiative", desc: "Digital learning for rural communities", href: "#community-sdg", img: "/outreach/beyond-norm-logo.webp" },
+    { title: "International Award", desc: "Outstanding School Service", href: "#community-award", img: "/ui/acm-celeb.png" },
+    { title: "Code of Conduct", desc: "ACM ethical principles & values", href: "#community-conduct", img: "/logos/acm-logo-black.webp" },
+    { title: "Distinguished Speakers", desc: "Industry leader keynotes", href: "#community-speaker", img: "/community/peter-robinson.webp" },
+  ],
+  domains: [
+    { title: "Tech", desc: "App Dev, Web, FOSS, DevOps", href: "#domains", img: "/cassettes/Cassette_Tech.webp", color: "#9B51E0" },
+    { title: "Competitive Coding", desc: "Codeforces, ICPC, C++", href: "#domains", img: "/cassettes/Cassette_cc.webp", color: "#B4E35B" },
+    { title: "Design", desc: "UI/UX, Motion Graphics, 3D", href: "#domains", img: "/cassettes/Cassette_Design.webp", color: "#FF7777" },
+    { title: "Research", desc: "AI/ML, Blockchain, Quantum", href: "#domains", img: "/cassettes/Cassette_Research.webp", color: "#9AF3FF" },
+    { title: "Management", desc: "Operations & coordination", href: "#domains", img: "/cassettes/Cassette_Management.webp", color: "#008080" },
+  ],
+  events: [
+    { title: "Code2Create", desc: "Flagship 24-hour hackathon", href: "#events", img: "/events/c2c-cassette.webp" },
+    { title: "Cryptic Hunt", desc: "Online cryptographic treasure hunt", href: "#events", img: "/events/cryptic-hunt-cassette.webp" },
+    { title: "inspiHer", desc: "Celebrating women in technology", href: "#events", img: "/events/inspiher-cassette.webp" },
+    { title: "Forktober", desc: "Open source contribution drive", href: "#events", img: "/events/forktober-cassette.webp" },
+    { title: "The Neural Hack", desc: "Deep dive into AI & ML", href: "#events", img: "/events/neural-hack-cassette.webp" },
+  ],
+  "acm-w": [
+    { title: "Our Mission", desc: "Supporting women in computing", href: "#acm-w", img: "/logos/acmw-logo.webp" },
+    { title: "Initiatives", desc: "Programs & activities", href: "#acm-w-content", img: "/acmw/acmwmotto.webp" },
+    { title: "Showcase", desc: "Highlights of our work", href: "#acm-w-bento", img: "/acmw/acmw-bento.webp" },
+  ],
+  team: [
+    { title: "Faculty", desc: "Dr. Aswani Kumar Cherukuri", href: "#team", img: "/board/items/0/imageUrl.webp" },
+    { title: "Board", desc: "Core leadership team", href: "#team", img: "/team/the_team.webp" },
+    { title: "ACM-W Board", desc: "Women's chapter leadership", href: "#team", img: "/team/full-core.webp" },
+  ],
+};
 ---
 
 <header
@@ -56,6 +104,37 @@
             <span class="nav-dot"></span>
             <span class="nav-label">Contact</span>
           </a>
+        </div>
+
+        <!-- Megamenu dropdown -->
+        <div class="nav-megamenu" id="navMegamenu">
+          {Object.entries(dropdowns).map(([key, items]) => (
+            <div class="megamenu-panel" data-panel={key}>
+              <div class="megamenu-grid">
+                {items.map((item, i) => (
+                  <a
+                    href={item.href}
+                    class="megamenu-tile"
+                    data-tilt
+                    style={`--tile-i: ${i}; ${item.color ? `--tile-color: ${item.color}` : ''}`}
+                  >
+                    {item.color && <span class="tile-color-bar" />}
+                    <div class="tile-text">
+                      <span class="tile-title">{item.title}</span>
+                      <span class="tile-desc">{item.desc}</span>
+                    </div>
+                    <img
+                      class="tile-img"
+                      src={getAssetUrl(item.img)}
+                      alt={item.title}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -269,8 +348,9 @@
     animation-delay: calc(0.55s + var(--dot-i, 0) * 0.03s);
   }
 
-  /* Hover state */
-  .header-pill:hover {
+  /* Hover state — also triggered by .pill-menu-open when megamenu is visible */
+  .header-pill:hover,
+  .header-pill.pill-menu-open {
     --glass-border: rgba(249, 95, 74, 1.0);
     --glass-bg: rgba(6, 2, 2, 0.32);
     box-shadow:
@@ -299,7 +379,8 @@
   }
 
   /* Hover on pill — expand all items */
-  .header-pill:hover .nav-item {
+  .header-pill:hover .nav-item,
+  .header-pill.pill-menu-open .nav-item {
     gap: 7px;
   }
 
@@ -325,12 +406,14 @@
     box-shadow: 0 0 8px rgba(254, 252, 217, 0.5);
   }
 
-  .header-pill:hover .nav-item:not(.active) .nav-dot {
+  .header-pill:hover .nav-item:not(.active) .nav-dot,
+  .header-pill.pill-menu-open .nav-item:not(.active) .nav-dot {
     background: rgba(254, 252, 217, 0.5);
     transform: scale(1.15);
   }
 
-  .header-pill:hover .nav-item.active .nav-dot {
+  .header-pill:hover .nav-item.active .nav-dot,
+  .header-pill.pill-menu-open .nav-item.active .nav-dot {
     transform: scale(1.2);
   }
 
@@ -352,7 +435,8 @@
   }
 
   /* Show all labels on pill hover */
-  .header-pill:hover .nav-label {
+  .header-pill:hover .nav-label,
+  .header-pill.pill-menu-open .nav-label {
     max-width: 120px;
     opacity: 0.8;
   }
@@ -364,8 +448,216 @@
   }
 
   /* On hover + active: full opacity */
-  .header-pill:hover .nav-item.active .nav-label {
+  .header-pill:hover .nav-item.active .nav-label,
+  .header-pill.pill-menu-open .nav-item.active .nav-label {
     opacity: 1;
+  }
+
+  /* ── Megamenu dropdown ── */
+  .nav-megamenu {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 50%;
+    transform: translateX(-50%) translateY(10px) scale(0.96);
+    transform-origin: top center;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 60;
+    width: max(680px, 100%);
+    transition:
+      opacity 0.25s cubic-bezier(0.25, 0.1, 0.25, 1),
+      transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  .nav-megamenu.open {
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+
+  .megamenu-panel {
+    display: none;
+    background: rgba(6, 2, 2, 0.22);
+    backdrop-filter: blur(32px) saturate(220%);
+    -webkit-backdrop-filter: blur(32px) saturate(220%);
+    border: 1px solid rgba(249, 95, 74, 0.55);
+    border-radius: 22px;
+    padding: 14px;
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.55),
+      0 0 20px rgba(249, 95, 74, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .megamenu-panel::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .megamenu-panel.active {
+    display: block;
+  }
+
+  /* Bento grid */
+  .megamenu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* 5-item panels: last 2 tiles span wider */
+  .megamenu-panel[data-panel="community"] .megamenu-grid,
+  .megamenu-panel[data-panel="domains"] .megamenu-grid,
+  .megamenu-panel[data-panel="events"] .megamenu-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .megamenu-panel[data-panel="community"] .megamenu-tile,
+  .megamenu-panel[data-panel="domains"] .megamenu-tile,
+  .megamenu-panel[data-panel="events"] .megamenu-tile {
+    grid-column: span 2;
+  }
+
+  .megamenu-panel[data-panel="community"] .megamenu-tile:nth-child(4),
+  .megamenu-panel[data-panel="community"] .megamenu-tile:nth-child(5),
+  .megamenu-panel[data-panel="domains"] .megamenu-tile:nth-child(4),
+  .megamenu-panel[data-panel="domains"] .megamenu-tile:nth-child(5),
+  .megamenu-panel[data-panel="events"] .megamenu-tile:nth-child(4),
+  .megamenu-panel[data-panel="events"] .megamenu-tile:nth-child(5) {
+    grid-column: span 3;
+  }
+
+  /* Tile stagger */
+  .nav-megamenu.open .megamenu-tile {
+    animation: tileSlideIn 0.28s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+    animation-delay: calc(var(--tile-i, 0) * 0.05s);
+  }
+
+  @keyframes tileSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* ── Bento tile ── */
+  .megamenu-tile {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+    border-radius: 14px;
+    text-decoration: none;
+    border: 1px solid rgba(254, 252, 217, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    overflow: hidden;
+    min-height: 90px;
+    will-change: transform;
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      background 0.25s ease;
+  }
+
+  .megamenu-tile:hover {
+    background: rgba(249, 95, 74, 0.06);
+    border-color: rgba(249, 95, 74, 0.30);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), 0 0 12px rgba(249, 95, 74, 0.06);
+  }
+
+  /* Domain color top bar */
+  .tile-color-bar {
+    position: absolute;
+    top: 0;
+    left: 16px;
+    right: 16px;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: var(--tile-color, #F95F4A);
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+  }
+
+  .megamenu-tile:hover .tile-color-bar {
+    opacity: 1;
+  }
+
+  /* Tile text area */
+  .tile-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 14px 0 14px 16px;
+    min-width: 0;
+  }
+
+  .tile-title {
+    color: #fefcd9;
+    font-family: "PolySans Trial", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    transition: color 0.2s ease;
+  }
+
+  .tile-desc {
+    color: rgba(254, 252, 217, 0.45);
+    font-family: "PolySans Trial", sans-serif;
+    font-size: 11px;
+    line-height: 1.35;
+    transition: color 0.2s ease;
+  }
+
+  .megamenu-tile:hover .tile-title {
+    color: #F95F4A;
+  }
+
+  .megamenu-tile:hover .tile-desc {
+    color: rgba(254, 252, 217, 0.65);
+  }
+
+  /* Tile image */
+  .tile-img {
+    width: 90px;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    flex-shrink: 0;
+    border-radius: 0 13px 13px 0;
+    opacity: 0.55;
+    transform: rotate(-3deg) scale(1.08) translateX(4px);
+    filter: saturate(0.7);
+    transition:
+      opacity 0.35s cubic-bezier(0.25, 0.1, 0.25, 1),
+      transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1),
+      filter 0.35s ease;
+  }
+
+  .megamenu-tile:hover .tile-img {
+    opacity: 1;
+    transform: rotate(0deg) scale(1.14) translateX(0px);
+    filter: saturate(1.1);
   }
 
   /* ── Pink mode for ACM-W ── */
@@ -439,6 +731,9 @@
     .nav-desktop {
       display: none;
       transform: none;
+    }
+    .nav-megamenu {
+      display: none;
     }
     .nav-mobile {
       display: block;
@@ -616,8 +911,104 @@
 
     scheduleNavUpdate();
 
-    // ── Bubble intro animation ──
+    // ── Megamenu interaction ──
+    const megamenu = document.getElementById("navMegamenu");
+    const megamenuPanels = megamenu ? megamenu.querySelectorAll(".megamenu-panel") : [];
+    const sectionsWithDropdowns = ["about", "community", "domains", "events", "acm-w", "team"];
+    let megamenuTimer = null;
+    let currentPanel = null;
+
     const pill = document.getElementById("headerPill");
+
+    function showMegamenu(section) {
+      if (!megamenu) return;
+      megamenuPanels.forEach((p) => p.classList.remove("active"));
+      const panel = megamenu.querySelector(`[data-panel="${section}"]`);
+      if (!panel) return;
+      panel.classList.add("active");
+      currentPanel = section;
+      megamenu.classList.add("open");
+      if (pill) pill.classList.add("pill-menu-open");
+    }
+
+    function hideMegamenu() {
+      if (!megamenu) return;
+      megamenu.classList.remove("open");
+      currentPanel = null;
+      if (pill) pill.classList.remove("pill-menu-open");
+      setTimeout(() => {
+        if (!currentPanel) {
+          megamenuPanels.forEach((p) => p.classList.remove("active"));
+        }
+      }, 280);
+    }
+
+    function startHideTimer() {
+      megamenuTimer = setTimeout(hideMegamenu, 180);
+    }
+
+    function cancelHideTimer() {
+      if (megamenuTimer) {
+        clearTimeout(megamenuTimer);
+        megamenuTimer = null;
+      }
+    }
+
+    // Nav item hover → show panel
+    document.querySelectorAll(".nav-desktop .nav-item").forEach((item) => {
+      const section = item.getAttribute("data-section");
+      if (!sectionsWithDropdowns.includes(section)) return;
+
+      item.addEventListener("mouseenter", () => {
+        cancelHideTimer();
+        showMegamenu(section);
+      });
+      item.addEventListener("mouseleave", () => {
+        startHideTimer();
+      });
+    });
+
+    // Megamenu hover → keep open
+    if (megamenu) {
+      megamenu.addEventListener("mouseenter", () => {
+        cancelHideTimer();
+      });
+      megamenu.addEventListener("mouseleave", () => {
+        startHideTimer();
+      });
+    }
+
+    // Close megamenu on scroll
+    window.addEventListener("scroll", () => {
+      if (currentPanel) hideMegamenu();
+    }, { passive: true });
+
+    // Close megamenu when clicking a tile
+    if (megamenu) {
+      megamenu.querySelectorAll(".megamenu-tile").forEach((tile) => {
+        tile.addEventListener("click", () => {
+          hideMegamenu();
+        });
+      });
+    }
+
+    // ── Tilt micro-interaction ──
+    document.querySelectorAll("[data-tilt]").forEach((tile) => {
+      tile.addEventListener("mousemove", (e) => {
+        const rect = tile.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        const rotateX = (0.5 - y) * 8;
+        const rotateY = (x - 0.5) * 8;
+        tile.style.transform =
+          `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+      });
+      tile.addEventListener("mouseleave", () => {
+        tile.style.transform = "";
+      });
+    });
+
+    // ── Bubble intro animation ──
     if (pill) {
       let introFired = false;
       function triggerPillIntro() {
