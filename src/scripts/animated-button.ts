@@ -17,20 +17,15 @@ function initAnimatedButtons() {
 
     let triggered = false;
 
-    const triggerEl =
-      anchor.closest("section") ||
-      anchor.closest("[class*='frame']") ||
-      anchor;
-
     ScrollTrigger.create({
-      trigger: triggerEl,
-      start: "top 70%",
+      trigger: anchor,
+      start: "top 95%",
       once: true,
       onEnter: () => {
         if (triggered) return;
         triggered = true;
 
-        gsap.delayedCall(0.5, () => {
+        gsap.delayedCall(1, () => {
           const tl = gsap.timeline();
 
           // Phase 1: Circle rises from below with scale

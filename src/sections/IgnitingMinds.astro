@@ -1,6 +1,7 @@
 ---
 import "../styles/globals.css";
 import { getAssetUrl } from "../utils/cdn";
+import AnimatedButton from "../components/ui/AnimatedButton.astro";
 ---
 
 <div class="min-h-screen overflow-x-hidden">
@@ -245,15 +246,11 @@ import { getAssetUrl } from "../utils/cdn";
               outreach, student initiatives, and chapter-led experiences built
               with the same intent that defines the rest of ACM-VIT.
             </p>
-            <a
+            <AnimatedButton
+              text="Check Out The Awards And More"
               href="https://www.acm.org/chapters/student-chapter-excellence-awards"
               target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-3 text-[#FFFDD0] text-xs sm:text-sm font-mono uppercase tracking-[0.18em] border border-white/12 px-4 py-3 transition-colors duration-300 hover:border-[#FF5F4A] hover:text-[#FF5F4A]"
-            >
-              check out the awards and more 
-              <span aria-hidden="true" class="text-[#FF5F4A]">↗</span>
-            </a>
+            />
           </div>
         </div>
       </div>

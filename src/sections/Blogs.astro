@@ -1,5 +1,6 @@
 ---
 import BlogsCard from "../components/ui/BlogsCard.astro";
+import AnimatedButton from "../components/ui/AnimatedButton.astro";
 import { reader } from "../utils/reader";
 import { getAssetUrl } from "../utils/cdn";
 
@@ -190,21 +191,11 @@ const blogsWithImages = await Promise.all(
   </div>
 
   <div class="flex justify-center w-full mt-8">
-    <a
+    <AnimatedButton
+      text="Still Curious? Dive Deeper into Our Brainwaves"
       href="https://blog.acmvit.in"
       target="_blank"
-      rel="noopener noreferrer"
-      class="w-[80%] sm:w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl px-5 py-2 sm:px-8 sm:py-4 rounded-[41px] border border-[#F95F4A] text-center hover:bg-[#F95F4A] hover:text-white transition-all duration-300 cursor-pointer group block"
-    >
-      <div
-        class="text-white group-hover:text-white text-sm sm:text-base font-light font-['PolySans_Trial'] uppercase tracking-wide"
-      >
-        <span class="block md:hidden">Still Curious? Dive Deeper</span>
-        <span class="hidden md:block"
-          >Still Curious? Dive Deeper into Our Brainwaves</span
-        >
-      </div>
-    </a>
+    />
   </div>
 </div>
 

@@ -1,6 +1,7 @@
 ---
 // AMMW Content
 import { getAssetUrl } from "../utils/cdn";
+import AnimatedButton from "../components/ui/AnimatedButton.astro";
 ---
 
 <section
@@ -58,17 +59,12 @@ import { getAssetUrl } from "../utils/cdn";
     </div>
 
     <!-- Learn More Button -->
-    <a
+    <AnimatedButton
+      text="LEARN MORE"
       href="https://women.acm.org"
       target="_blank"
-      rel="noopener noreferrer"
-      class="border border-primary-pink text-white px-8 py-3 rounded-full text-sm hover:cursor-pointer hover:scale-105 transition-transform duration-300 ease-in-out font-polysans
-                max-[640px]:text-[0.85rem]
-                max-[480px]:py-[0.55rem] max-[480px]:px-4 max-[480px]:text-[0.8rem]
-                inline-block text-center"
-    >
-      LEARN MORE
-    </a>
+      iconBg="#ff007a"
+    />
   </div>
 </section>
 
