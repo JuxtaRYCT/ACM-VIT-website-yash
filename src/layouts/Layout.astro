@@ -1,5 +1,4 @@
 ---
-import CelebrationPopup from "../components/overlays/CelebrationPopup.astro";
 import Preloader from "./Preloader.astro";
 import Header from "./Header.astro";
 import { getAssetUrl } from "../utils/cdn";
@@ -87,7 +86,7 @@ const description =
   </head>
   <body>
     <Preloader />
-    <CelebrationPopup />
+
     <div
       class="diamond-grid"
       style={`background-image: url('${getAssetUrl("/backgrounds/background_pattern.webp")}');`}

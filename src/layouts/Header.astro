@@ -11,48 +11,52 @@
     <nav>
       <!-- Desktop nav -->
       <div class="nav-desktop">
-        <div class="header-pill">
-          <a href="#about" class="nav-item" data-section="about">
+        <div class="header-pill" id="headerPill">
+          <a href="#about" class="nav-item" data-section="about" style="--dot-i:0">
             <span class="nav-dot"></span>
             <span class="nav-label">About</span>
           </a>
-          <a href="#domains" class="nav-item" data-section="domains">
+          <a href="#community" class="nav-item" data-section="community" style="--dot-i:1">
+            <span class="nav-dot"></span>
+            <span class="nav-label">Community</span>
+          </a>
+          <a href="#domains" class="nav-item" data-section="domains" style="--dot-i:2">
             <span class="nav-dot"></span>
             <span class="nav-label">Domains</span>
           </a>
-          <a href="#events" class="nav-item" data-section="events">
+          <a href="#events" class="nav-item" data-section="events" style="--dot-i:3">
             <span class="nav-dot"></span>
             <span class="nav-label">Events</span>
           </a>
-          <a href="#projects" class="nav-item" data-section="projects">
+          <a href="#projects" class="nav-item" data-section="projects" style="--dot-i:4">
             <span class="nav-dot"></span>
             <span class="nav-label">Projects</span>
           </a>
-          <a href="#acm-w" class="nav-item" data-section="acm-w">
+          <a href="#acm-w" class="nav-item" data-section="acm-w" style="--dot-i:5">
             <span class="nav-dot"></span>
             <span class="nav-label">ACM-W</span>
           </a>
-          <button
-            class="nav-item more-toggle"
-            data-section="more"
-            aria-controls="desktopMoreMenu"
-            aria-expanded="false"
-          >
+          <a href="#team" class="nav-item" data-section="team" style="--dot-i:6">
             <span class="nav-dot"></span>
-            <span class="nav-label">More</span>
-          </button>
+            <span class="nav-label">Team</span>
+          </a>
+          <a href="#blogs" class="nav-item" data-section="blogs" style="--dot-i:7">
+            <span class="nav-dot"></span>
+            <span class="nav-label">Blogs</span>
+          </a>
+          <a href="#partners" class="nav-item" data-section="partners" style="--dot-i:8">
+            <span class="nav-dot"></span>
+            <span class="nav-label">Partners</span>
+          </a>
+          <a href="#gallery" class="nav-item" data-section="gallery" style="--dot-i:9">
+            <span class="nav-dot"></span>
+            <span class="nav-label">Gallery</span>
+          </a>
+          <a href="#contact" class="nav-item" data-section="contact" style="--dot-i:10">
+            <span class="nav-dot"></span>
+            <span class="nav-label">Contact</span>
+          </a>
         </div>
-      </div>
-
-      <!-- Desktop More dropdown -->
-      <div id="desktopMoreMenu" class="more-menu">
-        <ul class="more-list">
-          <li><a href="#blogs">Blogs</a></li>
-          <li><a href="#partners">Partners</a></li>
-          <li><a href="#contact">Contact Us</a></li>
-          <li><a href="#community">Community</a></li>
-          <li><a href="#team">Team</a></li>
-        </ul>
       </div>
 
       <!-- Mobile nav -->
@@ -104,15 +108,16 @@
             {
               [
                 "about",
+                "community",
                 "domains",
                 "events",
                 "projects",
                 "acm-w",
+                "team",
                 "blogs",
                 "partners",
+                "gallery",
                 "contact",
-                "community",
-                "team",
               ].map((item) => (
                 <li>
                   <a
@@ -132,24 +137,155 @@
 </header>
 
 <style>
+  /* ── Bubble intro keyframes ── */
+
+  /* Phase 1: drop in as a circle from above + bounce */
+  @keyframes pillDrop {
+    0% {
+      transform: translateY(-36px) scale(0.7);
+      /* all 4 sides = calc(50% - 19px): top/bottom% resolve against height,
+         left/right% against width → always 38×38px centered → perfect circle */
+      clip-path: inset(calc(50% - 19px) calc(50% - 19px) calc(50% - 19px) calc(50% - 19px) round 999px);
+      opacity: 0;
+    }
+    28% {
+      opacity: 1;
+      transform: translateY(7px) scale(1.05);
+      clip-path: inset(calc(50% - 19px) calc(50% - 19px) calc(50% - 19px) calc(50% - 19px) round 999px);
+    }
+    46% {
+      transform: translateY(-2px) scale(0.98);
+      clip-path: inset(calc(50% - 19px) calc(50% - 19px) calc(50% - 19px) calc(50% - 19px) round 999px);
+    }
+    60% {
+      transform: translateY(0) scale(1);
+      clip-path: inset(calc(50% - 19px) calc(50% - 19px) calc(50% - 19px) calc(50% - 19px) round 999px);
+    }
+    /* Phase 2: expand sideways then settle */
+    80% {
+      transform: translateY(0) scaleY(1.02);
+      clip-path: inset(0 -6px 0 -6px round 100px);
+    }
+    92% {
+      transform: translateY(0) scaleY(1);
+      clip-path: inset(0 1px 0 1px round 100px);
+    }
+    100% {
+      transform: translateY(0) scaleY(1);
+      clip-path: inset(0 0px 0 0px round 100px);
+      opacity: 1;
+    }
+  }
+
+  @keyframes navDotsAppear {
+    from {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
   /* ── Pill container ── */
   .header-pill {
+    /* astro-liquid-glass tokens (scoped to pill) */
+    --glass-bg: rgba(6, 2, 2, 0.22);
+    --glass-blur: 32px;
+    --glass-saturate: 220%;
+    --glass-border: rgba(249, 95, 74, 0.75);
+    --glass-highlight: rgba(255, 255, 255, 0.18);
+    --glass-shadow: rgba(0, 0, 0, 0.5);
+    --lens-edge-light: transparent;
+    --lens-edge-dark: transparent;
+
+    /* astro-liquid-glass .glass base styles (ported from package) */
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    position: relative;
+
     display: flex;
     align-items: center;
     gap: 0;
     padding: 10px 16px;
-    background: rgba(6, 2, 2, 0.82);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    border: 1px solid rgba(254, 252, 217, 0.14);
     border-radius: 100px;
     box-shadow:
-      0 8px 32px rgba(0, 0, 0, 0.45),
-      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      0 8px 32px var(--glass-shadow),
+      0 0 18px rgba(249, 95, 74, 0.10),
+      0 0 6px rgba(249, 95, 74, 0.08),
+      inset 0 1px 0 var(--glass-highlight),
+      inset 0 0 12px rgba(249, 95, 74, 0.04);
+    transition:
+      box-shadow 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+      border-color 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+      padding 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+    /* Hidden until triggered */
+    opacity: 0;
+    clip-path: inset(calc(50% - 19px) calc(50% - 19px) calc(50% - 19px) calc(50% - 19px) round 999px);
+  }
+
+  /* astro-liquid-glass lens-edge light effect (::before) + top highlight (::after) */
+  .header-pill::before,
+  .header-pill::after {
+    border-radius: inherit;
+    content: "";
+    pointer-events: none;
+    position: absolute;
+  }
+
+  /* Diagonal lens refraction — light top-left, dark bottom-right */
+  .header-pill::before {
+    background: linear-gradient(
+      135deg,
+      var(--lens-edge-light) 0%,
+      transparent 40%,
+      transparent 60%,
+      var(--lens-edge-dark) 100%
+    );
+    inset: 0;
+    opacity: 0.85;
+  }
+
+  /* Top inner highlight — like a glass rim catching light */
+  .header-pill::after {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent);
+    height: 50%;
+    left: 0;
+    right: 0;
+    top: 0;
+  }
+
+  /* Playing state — triggered by JS after preloader */
+  .header-pill.pill-intro-play {
+    animation: pillDrop 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  /* Dots appear after pill expands */
+  .header-pill.pill-intro-play .nav-dot {
+    animation: navDotsAppear 0.35s ease both;
+    animation-delay: calc(0.55s + var(--dot-i, 0) * 0.03s);
+  }
+
+  /* Hover state */
+  .header-pill:hover {
+    --glass-border: rgba(249, 95, 74, 1.0);
+    --glass-bg: rgba(6, 2, 2, 0.32);
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.55),
+      0 0 24px rgba(249, 95, 74, 0.14),
+      0 0 8px rgba(249, 95, 74, 0.10),
+      inset 0 1px 0 rgba(255, 255, 255, 0.07),
+      inset 0 0 16px rgba(249, 95, 74, 0.06);
+    padding: 10px 20px;
   }
 
   /* ── Each nav item ── */
   .nav-item {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     gap: 0;
@@ -159,7 +295,12 @@
     text-decoration: none;
     border: none;
     background: transparent;
-    transition: gap 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: gap 0.38s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  /* Hover on pill — expand all items */
+  .header-pill:hover .nav-item {
+    gap: 7px;
   }
 
   .nav-item.active {
@@ -171,22 +312,31 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: rgba(254, 252, 217, 0.32);
+    background: rgba(254, 252, 217, 0.28);
     flex-shrink: 0;
-    transition: background 0.35s ease, transform 0.35s ease;
+    transition:
+      background 0.35s cubic-bezier(0.25, 0.1, 0.25, 1),
+      transform 0.38s cubic-bezier(0.25, 0.1, 0.25, 1),
+      box-shadow 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
 
   .nav-item.active .nav-dot {
     background: #fefcd9;
+    box-shadow: 0 0 8px rgba(254, 252, 217, 0.5);
   }
 
-  .nav-item:hover:not(.active) .nav-dot {
-    background: rgba(254, 252, 217, 0.6);
+  .header-pill:hover .nav-item:not(.active) .nav-dot {
+    background: rgba(254, 252, 217, 0.5);
+    transform: scale(1.15);
   }
 
-  /* ── Label: hidden until active, expands via max-width ── */
+  .header-pill:hover .nav-item.active .nav-dot {
+    transform: scale(1.2);
+  }
+
+  /* ── Label: hidden until active or pill hovered ── */
   .nav-label {
-    font-size: 13px;
+    font-size: 12px;
     font-family: "PolySans Trial", sans-serif;
     color: #fefcd9;
     text-transform: uppercase;
@@ -197,97 +347,36 @@
     overflow: hidden;
     opacity: 0;
     transition:
-      max-width 0.38s cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 0.22s ease;
+      max-width 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+      opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
 
+  /* Show all labels on pill hover */
+  .header-pill:hover .nav-label {
+    max-width: 120px;
+    opacity: 0.8;
+  }
+
+  /* Active label always visible, full opacity */
   .nav-item.active .nav-label {
-    max-width: 200px;
+    max-width: 120px;
+    opacity: 1;
+  }
+
+  /* On hover + active: full opacity */
+  .header-pill:hover .nav-item.active .nav-label {
     opacity: 1;
   }
 
   /* ── Pink mode for ACM-W ── */
   .nav-item.active.pink-mode .nav-dot {
     background: #ff007a;
+    box-shadow: 0 0 8px rgba(255, 0, 122, 0.5);
   }
 
   .nav-item.active.pink-mode .nav-label {
     color: #ff007a;
   }
-
-  /* ── More dropdown ── */
-  .more-menu {
-    position: absolute;
-    top: calc(100% + 10px);
-    left: 50%;
-    transform: translateX(-50%) translateY(8px) scale(0.96);
-    transform-origin: top center;
-    width: 180px;
-    border: 1px solid rgba(254, 252, 217, 0.14);
-    border-radius: 18px;
-    background: rgba(6, 2, 2, 0.88);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    padding: 10px 12px;
-    box-shadow:
-      0 12px 32px rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.04);
-    z-index: 60;
-    opacity: 0;
-    transition:
-      opacity 0.18s ease,
-      transform 0.24s cubic-bezier(0.22, 0.61, 0.36, 1);
-    pointer-events: none;
-  }
-
-  .more-menu.open {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0) scale(1);
-    pointer-events: auto;
-  }
-
-  .more-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 6px;
-  }
-
-  .more-list a {
-    text-decoration: none;
-    color: rgba(254, 252, 217, 0.75);
-    font-family: "PolySans Trial", sans-serif;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    transition: color 0.2s ease;
-    display: block;
-    padding: 2px 4px;
-  }
-
-  .more-list a:hover {
-    color: #f95f4a;
-  }
-
-  .more-list li {
-    opacity: 0;
-    transform: translateY(6px);
-    transition:
-      opacity 0.2s ease,
-      transform 0.25s ease;
-  }
-
-  .more-menu.open .more-list li {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .more-menu.open .more-list li:nth-child(1) { transition-delay: 0.02s; }
-  .more-menu.open .more-list li:nth-child(2) { transition-delay: 0.06s; }
-  .more-menu.open .more-list li:nth-child(3) { transition-delay: 0.10s; }
-  .more-menu.open .more-list li:nth-child(4) { transition-delay: 0.14s; }
-  .more-menu.open .more-list li:nth-child(5) { transition-delay: 0.18s; }
 
   /* ── Layout ── */
   .nav-desktop {
@@ -417,33 +506,20 @@
     // Section → nav-item mapping
     const idMapping = {
       work: "events",
-      "igniting-minds-section": "about",
-      "projects-intro": "projects",
+      "igniting-minds-section": "community",
       "community-outreach": "community",
       "community-sdg": "community",
       "community-conduct": "community",
       "community-speaker": "community",
-    };
-
-    const moreSectionIds = ["blogs", "partners", "contact", "community", "team"];
-
-    const moreSectionLabels = {
-      blogs: "Blogs",
-      partners: "Partners",
-      contact: "Contact",
-      community: "Community",
-      team: "Team",
+      "community-award": "community",
+      "projects-intro": "projects",
     };
 
     // ── Dot nav active state ──
-    function setActiveItem(navSection, labelOverride = null) {
+    function setActiveItem(navSection) {
       const items = document.querySelectorAll(".nav-desktop .nav-item");
       items.forEach((item) => {
         item.classList.remove("active", "pink-mode");
-        // Reset more button label
-        if (item.dataset.section === "more") {
-          item.querySelector(".nav-label").textContent = "More";
-        }
       });
 
       if (!navSection) return;
@@ -455,7 +531,6 @@
 
       target.classList.add("active");
       if (navSection === "acm-w") target.classList.add("pink-mode");
-      if (labelOverride) target.querySelector(".nav-label").textContent = labelOverride;
     }
 
     function applyNavState(sectionId) {
@@ -463,15 +538,7 @@
         setActiveItem(null);
         return;
       }
-
       const mappedId = idMapping[sectionId] || sectionId;
-
-      if (moreSectionIds.includes(mappedId)) {
-        const label = moreSectionLabels[mappedId] || "More";
-        setActiveItem("more", label);
-        return;
-      }
-
       setActiveItem(mappedId);
     }
 
@@ -479,14 +546,12 @@
     let currentSectionId = null;
     let rafPending = false;
     let lastScrollY = window.scrollY || window.pageYOffset;
-    let scrollDirection = "down";
 
     function getActiveSection() {
       const focusLine = window.innerHeight * 0.3;
       let activeSection = null;
       let closestSection = null;
       let closestDistance = Infinity;
-      let closestPosition = null;
 
       sections.forEach((section) => {
         const rect = section.getBoundingClientRect();
@@ -494,18 +559,14 @@
           activeSection = section;
         }
         let distance = 0;
-        let position = null;
         if (rect.top > focusLine) {
           distance = rect.top - focusLine;
-          position = "below";
         } else if (rect.bottom < focusLine) {
           distance = focusLine - rect.bottom;
-          position = "above";
         }
         if (distance < closestDistance) {
           closestDistance = distance;
           closestSection = section;
-          closestPosition = position;
         }
       });
 
@@ -515,10 +576,7 @@
     function updateActiveSection() {
       rafPending = false;
       const scrollY = window.scrollY || window.pageYOffset;
-      if (scrollY !== lastScrollY) {
-        scrollDirection = scrollY > lastScrollY ? "down" : "up";
-        lastScrollY = scrollY;
-      }
+      lastScrollY = scrollY;
       const activeSection = getActiveSection();
       if (!activeSection) return;
       const id = activeSection.getAttribute("id");
@@ -540,71 +598,6 @@
     sections.forEach((s) => observer.observe(s));
     window.addEventListener("scroll", scheduleNavUpdate, { passive: true });
 
-    // ── More dropdown ──
-    const toggles = Array.from(document.querySelectorAll(".more-toggle"));
-    const moreMenuLinks = document.querySelectorAll("#desktopMoreMenu a");
-
-    const getMenuFor = (tg) => {
-      const id = tg.getAttribute("aria-controls");
-      return id ? document.getElementById(id) : null;
-    };
-
-    const openMenu = (tg, menu) => {
-      tg.setAttribute("aria-expanded", "true");
-      menu.classList.add("open");
-    };
-
-    const closeMenu = (tg, menu) => {
-      tg.setAttribute("aria-expanded", "false");
-      menu.classList.remove("open");
-    };
-
-    const allMenus = () => toggles.map(getMenuFor).filter(Boolean);
-    const closeAll = () =>
-      toggles.forEach((tg) => {
-        const m = getMenuFor(tg);
-        if (m) closeMenu(tg, m);
-      });
-
-    let suppressNextDocClick = false;
-
-    toggles.forEach((tg) => {
-      const menu = getMenuFor(tg);
-      if (!menu) return;
-
-      tg.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        suppressNextDocClick = true;
-        setTimeout(() => { suppressNextDocClick = false; }, 0);
-        const expanded = tg.getAttribute("aria-expanded") === "true";
-        toggles.forEach((ot) => {
-          if (ot !== tg) { const om = getMenuFor(ot); if (om) closeMenu(ot, om); }
-        });
-        expanded ? closeMenu(tg, menu) : openMenu(tg, menu);
-      });
-
-      let hoverTimer = null;
-      const startCloseTimer = () => { hoverTimer = setTimeout(() => closeMenu(tg, menu), 220); };
-      const clearCloseTimer = () => { if (hoverTimer) { clearTimeout(hoverTimer); hoverTimer = null; } };
-
-      tg.addEventListener("mouseenter", () => openMenu(tg, menu));
-      tg.addEventListener("mouseleave", () => startCloseTimer());
-      menu.addEventListener("mouseenter", () => clearCloseTimer());
-      menu.addEventListener("mouseleave", () => startCloseTimer());
-    });
-
-    moreMenuLinks.forEach((link) => link.addEventListener("click", () => closeAll()));
-
-    document.addEventListener("click", (e) => {
-      if (suppressNextDocClick) return;
-      const t = e.target;
-      if (!(t instanceof Node)) return;
-      const withinToggle = toggles.some((tg) => tg.contains(t));
-      const withinMenu = allMenus().some((m) => m.contains(t));
-      if (!withinToggle && !withinMenu) closeAll();
-    });
-
     // ── Smooth scroll ──
     document.addEventListener("click", (e) => {
       const el = e.target instanceof Element ? e.target.closest('a[href^="#"]') : null;
@@ -615,7 +608,6 @@
       const target = document.getElementById(id);
       if (!target) return;
       e.preventDefault();
-      closeAll();
       target.scrollIntoView({ behavior: "smooth", block: "start" });
       history.replaceState(null, "", `#${id}`);
       applyNavState(id);
@@ -623,5 +615,26 @@
     });
 
     scheduleNavUpdate();
+
+    // ── Bubble intro animation ──
+    const pill = document.getElementById("headerPill");
+    if (pill) {
+      let introFired = false;
+      function triggerPillIntro() {
+        if (introFired) return;
+        introFired = true;
+        pill.classList.add("pill-intro-play");
+      }
+
+      // Fire after preloader done, with a small settle delay
+      window.addEventListener("preloader:done", () => {
+        setTimeout(triggerPillIntro, 60);
+      }, { once: true });
+
+      // Fallback: fire 2.5s after load if preloader event never fires
+      window.addEventListener("load", () => {
+        setTimeout(triggerPillIntro, 2500);
+      }, { once: true });
+    }
   });
 </script>
