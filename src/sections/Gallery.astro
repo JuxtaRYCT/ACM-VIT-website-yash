@@ -2,10 +2,11 @@
 // Gallery.astro
 import { getAssetUrl } from "../utils/cdn";
 import ProofGallery from "../components/overlays/ProofGallery.astro";
+import AnimatedButton from "../components/ui/AnimatedButton.astro";
 ---
 
 <section
-  class="gallery-section relative w-full pt-16 pb-0 sm:pt-24 sm:pb-0 overflow-hidden"
+  class="gallery-section relative w-full pt-16 pb-0 sm:pt-24 sm:pb-0"
 >
   <div class="gallery-frame relative w-full overflow-hidden">
     <img
@@ -15,22 +16,12 @@ import ProofGallery from "../components/overlays/ProofGallery.astro";
       loading="lazy"
       decoding="async"
     />
-    <!-- Button overlaid on image, below the GALLERY text (~45% from top) -->
-    <div class="absolute left-0 right-0 top-[35%] z-10 flex justify-center px-4">
-      <div
-        onclick="window.openProofGallery()"
-        class="w-[484px] max-w-[90vw] h-12 bg-[#F95F4A] rounded-[41px] outline outline-1 outline-offset-[-1px] outline-yellow-50
-           flex items-center justify-center hover:scale-105 transition-transform duration-200 cursor-pointer"
-        role="button"
-        tabindex="0"
-      >
-        <span
-          class="text-white text-base font-light font-['PolySans_Trial'] uppercase"
-        >
-          Proof We Actually Do Stuff - View Photos!
-        </span>
-      </div>
-    </div>
+  </div>
+  <div class="gallery-btn-row">
+    <AnimatedButton
+      text="Proof We Actually Do Stuff - View Photos!"
+      onclick="window.openProofGallery()"
+    />
   </div>
   <ProofGallery />
 </section>
@@ -55,6 +46,13 @@ import ProofGallery from "../components/overlays/ProofGallery.astro";
 
   .gallery-section img {
     -webkit-user-drag: none;
+  }
+
+  .gallery-btn-row {
+    position: relative;
+    z-index: 10;
+    margin-top: -40%;
+    margin-bottom: 20%;
   }
 
   .gallery-frame::after {

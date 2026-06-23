@@ -1,0 +1,95 @@
+---
+interface Props {
+  text: string;
+  href?: string;
+  onclick?: string;
+  target?: string;
+  class?: string;
+  icon?: string;
+}
+
+const { text, href, onclick, target, class: className = "", icon = "+" } = Astro.props;
+const isExternal = href?.startsWith("http");
+const Tag = href ? "a" : "div";
+---
+
+<div class="anim-btn-anchor" data-anim-btn>
+  <Tag
+    href={href}
+    onclick={onclick}
+    target={target || (isExternal ? "_blank" : undefined)}
+    rel={isExternal ? "noopener noreferrer" : undefined}
+    class:list={["anim-btn", className]}
+    role={!href ? "button" : undefined}
+    tabindex={!href ? "0" : undefined}
+  >
+    <span class="anim-btn-label">{text}</span>
+    <span class="anim-btn-icon">{icon}</span>
+  </Tag>
+</div>
+
+<style>
+  .anim-btn-anchor {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .anim-btn {
+    height: 48px;
+    width: 48px;
+    border-radius: 100px;
+    background: rgba(30, 30, 30, 0.85);
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 4px;
+    opacity: 0;
+    will-change: transform, width, opacity;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    transition: box-shadow 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  .anim-btn:hover {
+    box-shadow: 0 8px 30px rgba(249, 95, 74, 0.25);
+  }
+
+  .anim-btn.is-expanded {
+    width: auto;
+    padding: 4px 4px 4px 1.75rem;
+    justify-content: flex-end;
+  }
+
+  .anim-btn-label {
+    color: white;
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    pointer-events: none;
+    opacity: 0;
+    margin-right: 0.75rem;
+  }
+
+  .anim-btn-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f95f4a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 300;
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+</style>
