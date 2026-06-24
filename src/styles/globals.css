@@ -53,6 +53,397 @@ body.scroll-video-active .diamond-grid {
     color: white;
 }
 
+/* ═══════════════════════════════════════════════════════
+   LIGHT MODE THEME — Warm peach palette (Juan Mora inspired)
+   ═══════════════════════════════════════════════════════ */
+
+/* Smooth transition between themes */
+html, body {
+  transition: background-color 0.5s ease, color 0.4s ease;
+}
+
+/* ── Base ── */
+html[data-theme="light"],
+html[data-theme="light"] body {
+  background: #F2CEAE !important;
+}
+
+html[data-theme="light"] .diamond-grid {
+  opacity: 0.04 !important;
+  filter: invert(1);
+}
+
+html[data-theme="light"] .brand-logos img {
+  filter: brightness(0) opacity(0.8);
+  transition: filter 0.4s ease;
+}
+
+/* ── Global text color overrides (all text goes dark) ── */
+html[data-theme="light"] .text-white:not(.anim-btn-icon) {
+  color: #1a1a1a !important;
+}
+html[data-theme="light"] .text-\[\#FEFCD9\],
+html[data-theme="light"] .text-\[\#fefcd9\],
+html[data-theme="light"] .text-\[\#FFFDD0\],
+html[data-theme="light"] .text-yellow-50 {
+  color: #1a1a1a !important;
+}
+html[data-theme="light"] .text-gray-300 {
+  color: #4a4a4a !important;
+}
+html[data-theme="light"] .text-gray-400,
+html[data-theme="light"] .text-neutral-400 {
+  color: #7a7a7a !important;
+}
+html[data-theme="light"] .text-gray-900 {
+  color: #1a1a1a !important;
+}
+html[data-theme="light"] .text-zinc-100 {
+  color: #3d3d3d !important;
+}
+
+/* ── Global border overrides ── */
+html[data-theme="light"] .border-white\/10 {
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+html[data-theme="light"] .border-\[\#fefcd9\],
+html[data-theme="light"] .border-\[\#FEFCD9\] {
+  border-color: rgba(26, 26, 26, 0.2) !important;
+}
+html[data-theme="light"] .border-zinc-700,
+html[data-theme="light"] .border-zinc-100 {
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+html[data-theme="light"] .outline-white {
+  outline-color: rgba(0, 0, 0, 0.1) !important;
+}
+html[data-theme="light"] .border-\[\#999999\]\/50,
+html[data-theme="light"] .border-dashed.border-\[\#999999\]\/50 {
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+/* ── Background overrides ── */
+/* Overlays use bg-[#050505]/95 (with opacity modifier) — different class, unaffected */
+html[data-theme="light"] .bg-\[\#050505\],
+html[data-theme="light"] .bg-\[\#060606\] {
+  background: transparent !important;
+}
+
+/* ── Header pill (glass morphism) ── */
+html[data-theme="light"] .header-pill {
+  --glass-bg: rgba(255, 240, 220, 0.72);
+  --glass-border: rgba(249, 95, 74, 0.4);
+  --glass-shadow: rgba(0, 0, 0, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    0 0 18px rgba(249, 95, 74, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 0 12px rgba(249, 95, 74, 0.02) !important;
+}
+
+html[data-theme="light"] .header-pill:hover,
+html[data-theme="light"] .header-pill.pill-menu-open {
+  --glass-bg: rgba(255, 240, 220, 0.88);
+  --glass-border: rgba(249, 95, 74, 0.65);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.1),
+    0 0 24px rgba(249, 95, 74, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 0 16px rgba(249, 95, 74, 0.03) !important;
+}
+
+html[data-theme="light"] .nav-label {
+  color: #2d2d2d !important;
+}
+html[data-theme="light"] .nav-dot {
+  background: rgba(26, 26, 26, 0.18) !important;
+}
+html[data-theme="light"] .nav-item.active .nav-dot {
+  background: #1a1a1a !important;
+  box-shadow: 0 0 8px rgba(26, 26, 26, 0.15) !important;
+}
+html[data-theme="light"] .header-pill:hover .nav-item:not(.active) .nav-dot,
+html[data-theme="light"] .header-pill.pill-menu-open .nav-item:not(.active) .nav-dot {
+  background: rgba(26, 26, 26, 0.3) !important;
+}
+html[data-theme="light"] .header-pill:hover .nav-item.active .nav-dot,
+html[data-theme="light"] .header-pill.pill-menu-open .nav-item.active .nav-dot {
+  background: #1a1a1a !important;
+}
+html[data-theme="light"] .pill-progress {
+  background: rgba(26, 26, 26, 0.06) !important;
+}
+/* Pink mode dot stays pink */
+html[data-theme="light"] .nav-item.active.pink-mode .nav-dot {
+  background: #ff007a !important;
+  box-shadow: 0 0 8px rgba(255, 0, 122, 0.3) !important;
+}
+html[data-theme="light"] .nav-item.active.pink-mode .nav-label {
+  color: #ff007a !important;
+}
+
+/* ── Megamenu ── */
+html[data-theme="light"] .megamenu-panel {
+  background: rgba(250, 225, 200, 0.95) !important;
+  border-color: rgba(249, 95, 74, 0.25) !important;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.08),
+    0 0 20px rgba(249, 95, 74, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+}
+html[data-theme="light"] .megamenu-panel::after {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent) !important;
+}
+html[data-theme="light"] .megamenu-tile {
+  background: rgba(255, 255, 255, 0.4) !important;
+  border-color: rgba(0, 0, 0, 0.05) !important;
+}
+html[data-theme="light"] .megamenu-tile:hover {
+  background: rgba(249, 95, 74, 0.08) !important;
+  border-color: rgba(249, 95, 74, 0.2) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06) !important;
+}
+html[data-theme="light"] .tile-title {
+  color: #1a1a1a !important;
+}
+html[data-theme="light"] .tile-desc {
+  color: rgba(26, 26, 26, 0.5) !important;
+}
+html[data-theme="light"] .megamenu-tile:hover .tile-title {
+  color: #f95f4a !important;
+}
+html[data-theme="light"] .megamenu-tile:hover .tile-desc {
+  color: rgba(26, 26, 26, 0.7) !important;
+}
+html[data-theme="light"] .tile-img {
+  opacity: 0.65 !important;
+  filter: saturate(0.8) !important;
+}
+html[data-theme="light"] .megamenu-tile:hover .tile-img {
+  opacity: 1 !important;
+  filter: saturate(1.1) !important;
+}
+
+/* ACM-W pink megamenu */
+html[data-theme="light"] .megamenu-panel[data-panel="acm-w"] {
+  border-color: rgba(255, 0, 122, 0.25) !important;
+}
+html[data-theme="light"] .megamenu-panel[data-panel="acm-w"] .megamenu-tile:hover {
+  background: rgba(255, 0, 122, 0.06) !important;
+  border-color: rgba(255, 0, 122, 0.2) !important;
+}
+html[data-theme="light"] .megamenu-panel[data-panel="acm-w"] .megamenu-tile:hover .tile-title {
+  color: #ff007a !important;
+}
+
+/* ── Mobile menu ── */
+html[data-theme="light"] #mobile-menu-overlay {
+  background: rgba(242, 206, 174, 0.98) !important;
+}
+html[data-theme="light"] #mobile-menu-btn {
+  background: rgba(255, 240, 220, 0.7) !important;
+  border-color: rgba(26, 26, 26, 0.2) !important;
+}
+html[data-theme="light"] #mobile-menu-btn svg {
+  stroke: #1a1a1a !important;
+}
+html[data-theme="light"] #mobile-menu-close {
+  color: #1a1a1a !important;
+}
+html[data-theme="light"] .mobile-nav-link {
+  color: #1a1a1a !important;
+}
+html[data-theme="light"] .mobile-nav-link:hover {
+  color: #f95f4a !important;
+}
+
+/* ── AnimatedButton (inverted for light mode) ── */
+html[data-theme="light"] .anim-btn {
+  background: #1a1a1a !important;
+}
+html[data-theme="light"] .anim-btn-label {
+  color: #FEFCD9 !important;
+}
+html[data-theme="light"] .anim-btn:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18) !important;
+}
+
+/* ── Scroll video light overlay (hero + about sit on dark video) ── */
+html[data-theme="light"] .scroll-video {
+  filter: brightness(1.8) saturate(0.5) !important;
+}
+html[data-theme="light"] .scroll-video.visible {
+  opacity: 0.35 !important;
+}
+
+/* ── Events section light mode ── */
+html[data-theme="light"] {
+  --color-secondary: #F2CEAE;
+  --color-shadow: #d4a882;
+  --color-white: #1a1a1a;
+}
+html[data-theme="light"] .s-work {
+  background: #f95f4a !important;
+}
+html[data-theme="light"] .s-work .s__inner {
+  background: #F2CEAE !important;
+  color: #1a1a1a !important;
+}
+html[data-theme="light"] .s-work .s__mask__path-outer,
+html[data-theme="light"] .s-work .s__mask__path-inner {
+  fill: #f95f4a !important;
+  stroke: #d4a882 !important;
+}
+html[data-theme="light"] .s-work .s__mask__path-lines {
+  stroke: #d4a882 !important;
+}
+html[data-theme="light"] a-work {
+  background: #E8BFA3 !important;
+}
+html[data-theme="light"] a-work .a__caption {
+  color: #f95f4a !important;
+}
+
+/* ── Domains ── */
+html[data-theme="light"] .outline-\[\#FEFCD9\] {
+  outline-color: rgba(26, 26, 26, 0.25) !important;
+}
+
+/* ── Blogs ── */
+html[data-theme="light"] .border-\[\#fefcd9\] {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* ── Contact form ── */
+html[data-theme="light"] #contact input,
+html[data-theme="light"] #contact textarea,
+html[data-theme="light"] #contact select {
+  background: rgba(255, 255, 255, 0.45) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  color: #1a1a1a !important;
+}
+html[data-theme="light"] #contact input::placeholder,
+html[data-theme="light"] #contact textarea::placeholder {
+  color: rgba(26, 26, 26, 0.4) !important;
+}
+
+/* ── LegendPins text shadow adjustment ── */
+html[data-theme="light"] [style*="text-shadow"] {
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6) !important;
+}
+
+/* ── Footer ── */
+html[data-theme="light"] footer .bg-gradient-to-b {
+  opacity: 0.15 !important;
+}
+html[data-theme="light"] footer img:not([alt="Footer Background"]) {
+  filter: brightness(0.2);
+  transition: filter 0.3s ease;
+}
+html[data-theme="light"] footer img[alt="Footer Background"] {
+  filter: invert(0.85) sepia(0.3) saturate(0.5) hue-rotate(-10deg);
+  opacity: 0.6;
+}
+
+/* ── Preloader ── */
+html[data-theme="light"] .preloader,
+html[data-theme="light"] [class*="preloader"] {
+  background-color: #F2CEAE !important;
+}
+html[data-theme="light"] .progress-bar {
+  background-color: rgba(0, 0, 0, 0.08) !important;
+}
+html[data-theme="light"] .progress-fill {
+  background: #1a1a1a !important;
+}
+
+/* ── Domains cassette wrapper ── */
+html[data-theme="light"] .cassette-wrapper::after {
+  background: #F2CEAE !important;
+}
+
+/* ── Selection stays the same ── */
+
+/* ── Theme toggle button ── */
+.theme-toggle {
+  position: fixed;
+  top: 28px;
+  right: 24px;
+  z-index: 1001;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(254, 252, 217, 0.25);
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FEFCD9;
+  transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+  pointer-events: auto;
+}
+.theme-toggle:hover {
+  border-color: rgba(249, 95, 74, 0.5);
+  background: rgba(0, 0, 0, 0.35);
+  transform: scale(1.08);
+}
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+html[data-theme="light"] .theme-toggle {
+  border-color: rgba(26, 26, 26, 0.15);
+  background: rgba(255, 255, 255, 0.4);
+  color: #1a1a1a;
+}
+html[data-theme="light"] .theme-toggle:hover {
+  border-color: rgba(249, 95, 74, 0.4);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+/* Icon visibility */
+.theme-toggle .icon-sun { display: none; }
+.theme-toggle .icon-moon { display: block; }
+html[data-theme="light"] .theme-toggle .icon-sun { display: block; }
+html[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
+@media (max-width: 952px) {
+  .theme-toggle {
+    top: 18px;
+    right: 72px;
+    width: 36px;
+    height: 36px;
+  }
+  body.hero-in-view .theme-toggle {
+    top: auto;
+    bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+    right: auto;
+    left: calc(50% + 35px);
+  }
+}
+
+@media (max-width: 480px) {
+  .theme-toggle {
+    top: 14px;
+    right: 56px;
+    width: 32px;
+    height: 32px;
+  }
+  body.hero-in-view .theme-toggle {
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    left: calc(50% + 28px);
+  }
+}
+
+body.mobile-menu-open .theme-toggle {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* PolySans - Standard */
 @font-face {
   font-family: "PolySans Trial";
