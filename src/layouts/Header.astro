@@ -2,6 +2,17 @@
 // Header.astro
 import { getAssetUrl } from "../utils/cdn";
 
+export interface Props {
+  /** When set, replaces the dot nav with a compact subpage pill (page title + back button). */
+  pageTitle?: string;
+  /** Where the back button navigates. Defaults to "/#<pageTitle lowercase>". */
+  backHref?: string;
+}
+
+const { pageTitle, backHref } = Astro.props;
+const isSubpage = !!pageTitle;
+const resolvedBackHref = backHref || `/#${(pageTitle || '').toLowerCase().replace(/\s+/g, '-')}`;
+
 interface DropdownItem {
   title: string;
   desc: string;
@@ -67,7 +78,22 @@ const dropdowns: Record<string, DropdownItem[]> = {
     <nav>
       <!-- Desktop nav -->
       <div class="nav-desktop">
-        <div class="header-pill" id="headerPill">
+        <!-- SVG gooey metaball filter (hidden, referenced by CSS) -->
+        <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;pointer-events:none;">
+          <defs>
+            <filter id="gooey-filter">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
+              <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -9" result="gooey" />
+              <feComposite in="SourceGraphic" in2="gooey" operator="atop" />
+            </filter>
+          </defs>
+        </svg>
+        <div class="pill-island-wrap" id="pillIslandWrap">
+        <div class={`header-pill ${isSubpage ? 'subpage-mode' : ''}`} id="headerPill" data-subpage={isSubpage ? 'true' : undefined}>
+          {/* Subpage title — shown only on subpages, hidden when nav expands */}
+          {isSubpage && (
+            <span class="subpage-island-label">{pageTitle}</span>
+          )}
           <a href="/#about" class="nav-item" data-section="about" style="--dot-i:0">
             <span class="nav-dot"></span>
             <span class="nav-label">About</span>
@@ -116,6 +142,18 @@ const dropdowns: Record<string, DropdownItem[]> = {
           <div class="pill-progress" id="pillProgress">
             <div class="pill-progress__fill" id="pillProgressFill"></div>
           </div>
+        </div>
+
+        {/* Back button bubble — separate from pill, Dynamic Island style */}
+        {isSubpage && (
+          <a href={resolvedBackHref} class="subpage-back-bubble" aria-label="Back to home">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M3 19V5" stroke="#FEFCD9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M13 6L7 12L13 18" stroke="#FEFCD9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M7 12H21" stroke="#FEFCD9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        )}
         </div>
 
         <!-- Megamenu dropdown -->
@@ -231,6 +269,32 @@ const dropdowns: Record<string, DropdownItem[]> = {
 </header>
 
 <style>
+  /* ── Gooey metaball wrapper ── */
+  .pill-island-wrap {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .pill-island-wrap.gooey-active {
+    filter: url(#gooey-filter);
+  }
+
+  /* During gooey: solid bg, kill glass effects (SVG filter needs opaque shapes) */
+  .pill-island-wrap.gooey-active .header-pill,
+  .pill-island-wrap.gooey-active .subpage-back-bubble {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .pill-island-wrap.gooey-active .header-pill::before,
+  .pill-island-wrap.gooey-active .header-pill::after,
+  .pill-island-wrap.gooey-active .subpage-back-bubble::before {
+    display: none !important;
+  }
+
   /* ── Bubble intro (GSAP + Flip) ── */
   .header-pill.pill-collapsed {
     width: 44px;
@@ -721,9 +785,133 @@ const dropdowns: Record<string, DropdownItem[]> = {
     filter: saturate(1.1) drop-shadow(0 4px 12px rgba(255, 0, 122, 0.12));
   }
 
+  /* ── Subpage Dynamic Island ── */
+
+  /* Light mode: dark fill on both subpage pills */
+  html[data-theme="light"] .header-pill.subpage-mode {
+    --glass-bg: rgba(20, 20, 24, 0.85);
+    --glass-border: rgba(20, 20, 24, 0.3);
+    --glass-highlight: rgba(255, 255, 255, 0.10);
+    --glass-shadow: rgba(0, 0, 0, 0.15);
+  }
+
+  html[data-theme="light"] .header-pill.subpage-mode .subpage-island-label {
+    color: #FEFCD9;
+  }
+
+  /* Island label — page title inside pill */
+  .subpage-island-label {
+    font-family: 'PolySans Trial', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #FEFCD9;
+    white-space: nowrap;
+    position: relative;
+    z-index: 1;
+    padding: 0 4px;
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+  }
+
+  /* After intro: label visible — GSAP controls this */
+
+  /* Subpage pill resting state — orange background (applied by GSAP via inline styles) */
+
+  /* In subpage mode: hide nav items by default */
+  .header-pill.subpage-mode .nav-item {
+    max-width: 0;
+    opacity: 0;
+    padding: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transition: max-width 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
+                opacity 0.25s ease,
+                padding 0.3s ease;
+  }
+
+  .header-pill.subpage-mode .pill-progress {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* On hover: expand nav items, hide island label, revert to glass bg */
+  .header-pill.subpage-mode.subpage-expanded,
+  .header-pill.subpage-mode.pill-menu-open {
+    --glass-bg: rgba(6, 2, 2, 0.32) !important;
+    --glass-border: rgba(249, 95, 74, 1.0) !important;
+  }
+
+  .header-pill.subpage-mode.subpage-expanded .nav-item,
+  .header-pill.subpage-mode.pill-menu-open .nav-item {
+    max-width: 150px;
+    opacity: 1;
+    padding: 5px 10px;
+    pointer-events: auto;
+  }
+
+  .header-pill.subpage-mode.subpage-expanded .subpage-island-label,
+  .header-pill.subpage-mode.pill-menu-open .subpage-island-label {
+    max-width: 0 !important;
+    opacity: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Back button bubble — orange filled */
+  .subpage-back-bubble {
+    --glass-bg: #F95F4A;
+    --glass-blur: 32px;
+    --glass-saturate: 220%;
+    --glass-border: rgba(254, 252, 217, 0.35);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    border: 1px solid var(--glass-border);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.5),
+      0 0 18px rgba(249, 95, 74, 0.10),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    cursor: pointer;
+    text-decoration: none;
+    margin-left: 8px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  /* Glass highlight on bubble */
+  .subpage-back-bubble::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), transparent 60%);
+    pointer-events: none;
+  }
+
+  .subpage-back-bubble:hover {
+    --glass-border: rgba(254, 252, 217, 0.5);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55),
+                0 0 24px rgba(249, 95, 74, 0.20),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    transform: scale(1.08);
+  }
+
   /* ── Layout ── */
   .nav-desktop {
-    display: block;
+    display: flex;
+    align-items: center;
     position: relative;
     transform: scale(var(--nav-bar-scale, 1));
     transform-origin: top center;
@@ -1086,6 +1274,123 @@ const dropdowns: Record<string, DropdownItem[]> = {
     // ── Bubble intro animation (GSAP) ──
     if (pill) {
       let introFired = false;
+
+      // ── Subpage intro: circle drop → Flip expand → gooey breakoff ──
+      if (pill.dataset.subpage === 'true') {
+        introFired = true;
+
+        const gooeyWrap = document.getElementById('pillIslandWrap');
+        const backBubble = document.querySelector('.subpage-back-bubble');
+        const label = pill.querySelector('.subpage-island-label');
+        const bubbleIcon = backBubble ? backBubble.querySelector('svg') : null;
+        const solidDark = 'rgba(18, 14, 14, 0.92)';
+
+        // Start as collapsed circle
+        pill.classList.add('pill-collapsed');
+        pill.style.transition = 'none';
+        gsap.set(pill, { opacity: 0, y: -24, scale: 0.7 });
+        if (label) gsap.set(label, { opacity: 0, maxWidth: 0, padding: 0 });
+        if (backBubble) {
+          gsap.set(backBubble, {
+            opacity: 0, x: -30, marginLeft: 0,
+            background: solidDark,
+            backdropFilter: 'none', webkitBackdropFilter: 'none',
+            borderColor: 'transparent', boxShadow: 'none',
+          });
+        }
+        if (bubbleIcon) gsap.set(bubbleIcon, { opacity: 0 });
+
+        const dropTl = gsap.timeline({ delay: 0.25 });
+
+        // Phase 1: Circle drops in
+        dropTl.to(pill, {
+          opacity: 1, y: 8, scale: 1.05,
+          duration: 0.35, ease: 'power2.out',
+        })
+        // Phase 2: Bounce back
+        .to(pill, { y: -5, scale: 1, duration: 0.2, ease: 'power2.inOut' })
+        // Phase 3: Settle
+        .to(pill, { y: 0, duration: 0.15, ease: 'power2.out' })
+        // Phase 4: Flip expand circle → pill
+        .add(() => {
+          if (label) gsap.set(label, { opacity: 1, maxWidth: 200, padding: '0 4px' });
+
+          const state = Flip.getState(pill);
+          pill.classList.remove('pill-collapsed');
+          pill.classList.add('pill-intro-play');
+
+          Flip.from(state, {
+            duration: 0.4,
+            ease: 'power3.out',
+            clearProps: 'all',
+            onComplete() {
+              // Phase 5: Gooey breakoff — bubble breaks from pill edge
+              pill.style.transition = 'none';
+              pill.style.background = solidDark;
+              pill.style.backdropFilter = 'none';
+              pill.style.webkitBackdropFilter = 'none';
+              pill.style.borderColor = 'transparent';
+              pill.style.boxShadow = 'none';
+
+              if (backBubble) gsap.set(backBubble, { opacity: 1 });
+              if (gooeyWrap) gooeyWrap.classList.add('gooey-active');
+
+              const breakTl = gsap.timeline({
+                onComplete() {
+                  pill.style.transition = '';
+                  pill.style.background = '';
+                  pill.style.backdropFilter = '';
+                  pill.style.webkitBackdropFilter = '';
+                  pill.style.borderColor = '';
+                  pill.style.boxShadow = '';
+                  if (backBubble) {
+                    gsap.set(backBubble, {
+                      clearProps: 'x,marginLeft,background,backdropFilter,webkitBackdropFilter,borderColor,boxShadow',
+                    });
+                  }
+                },
+              });
+
+              // Bubble slides out — gooey metaball bridge
+              breakTl.to(backBubble, {
+                x: 0, marginLeft: 8,
+                duration: 0.2, ease: 'power3.out',
+              })
+              // Bridge snap — restore pill to glass
+              .add(() => {
+                if (gooeyWrap) gooeyWrap.classList.remove('gooey-active');
+                pill.style.background = '';
+                pill.style.backdropFilter = '';
+                pill.style.webkitBackdropFilter = '';
+                pill.style.boxShadow = '';
+                pill.style.borderColor = '';
+              }, '<0.15')
+              // Bubble dark → orange
+              .to(backBubble, {
+                background: '#F95F4A',
+                borderColor: 'rgba(254, 252, 217, 0.35)',
+                duration: 0.15, ease: 'power2.out',
+              }, '<0.02')
+              // Show back arrow icon
+              .to(bubbleIcon, {
+                opacity: 1, duration: 0.15, ease: 'power2.out',
+              }, '<0.04');
+            },
+          });
+        });
+
+        // ── Subpage hover: pill only (not bubble), debounced ──
+        let hoverTimer = null;
+        pill.addEventListener('mouseenter', () => {
+          clearTimeout(hoverTimer);
+          pill.classList.add('subpage-expanded');
+        });
+        pill.addEventListener('mouseleave', () => {
+          hoverTimer = setTimeout(() => {
+            pill.classList.remove('subpage-expanded');
+          }, 150);
+        });
+      }
 
       function triggerPillIntro() {
         if (introFired) return;

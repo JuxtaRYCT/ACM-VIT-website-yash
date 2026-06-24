@@ -1,0 +1,163 @@
+---
+export const prerender = true;
+import Layout from "../layouts/Layout.astro";
+import "../styles/globals.css";
+import "../styles/projects.css";
+import { getAssetUrl } from "../utils/cdn";
+import Cassette from "../components/ui/Cassette.astro";
+import Footer from "../layouts/Footer.astro";
+
+const projects = [
+  {
+    name: "ACMOne",
+    color: "#F95F4A",
+    image: "/projects/items/0/cassetteSrc.webp",
+    alt: "ACMOne",
+    url: "https://acmone.acmvit.in",
+    sizePercent: 85,
+    sizeAxis: "width" as const,
+    offsetY: -5,
+  },
+  {
+    name: "ExamCooker",
+    color: "#2664e4",
+    image: "/projects/items/1/cassetteSrc.webp",
+    alt: "ExamCooker",
+    url: "https://examcooker.acmvit.in",
+    sizePercent: 80,
+    sizeAxis: "width" as const,
+    offsetY: -3,
+  },
+  {
+    name: "CLI-RPG",
+    color: "#16A34A",
+    image: "/projects/items/2/cassetteSrc.webp",
+    alt: "CLI RPG",
+    url: "https://cli-rpg.acmvit.in",
+    sizePercent: 75,
+    sizeAxis: "width" as const,
+    offsetY: -5,
+  },
+  {
+    name: "UniPool",
+    color: "#7100FF",
+    image: "/projects/items/3/cassetteSrc.webp",
+    alt: "UniPool",
+    url: "https://unipool.acmvit.in",
+    sizePercent: 80,
+    sizeAxis: "width" as const,
+    offsetY: -3,
+  },
+  {
+    name: "Localhost",
+    color: "#eb5757",
+    image: "/projects/items/4/cassetteSrc.webp",
+    alt: "Localhost",
+    url: "https://localhost.acmvit.in",
+    sizePercent: 85,
+    sizeAxis: "width" as const,
+    offsetY: -5,
+  },
+  {
+    name: "OCS",
+    color: "#8710DB",
+    image: "/projects/items/5/cassetteSrc.webp",
+    alt: "OCS Website",
+    url: "https://os.acmvit.in",
+    sizePercent: 80,
+    sizeAxis: "width" as const,
+    offsetY: -3,
+  },
+];
+---
+
+<Layout pageTitle="Projects" backHref="/#projects">
+  <section class="proj-page">
+    <!-- Tubelight (dark mode only) -->
+    <div class="proj-tubelight-wrap">
+      <img
+        id="proj-tubelight"
+        src={getAssetUrl("/effects/white_tubelight.webp")}
+        alt=""
+        class="proj-tubelight"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+
+    <!-- Tagline -->
+    <p class="proj-tagline">Not prototypes. Not demos. We make the real thing.</p>
+
+    <!-- Grid -->
+    <div class="proj-grid">
+      {projects.map((proj) => (
+        <a
+          href={proj.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="proj-card"
+          style={`--card-glow: ${proj.color};`}
+        >
+          <div class="proj-card-inner">
+            <Cassette
+              color={proj.color}
+              overlaySrc={proj.image}
+              alt={proj.alt}
+              overlaySizePercent={proj.sizePercent}
+              overlaySizeAxis={proj.sizeAxis}
+              offsetYPercent={proj.offsetY}
+            />
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <!-- Bottom glow -->
+    <div class="proj-bottom-glow">
+      <div class="proj-tubelight-wrap proj-tubelight-wrap--bottom">
+        <img
+          id="proj-tubelight-bottom"
+          src={getAssetUrl("/effects/white_tubelight.webp")}
+          alt=""
+          class="proj-tubelight"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<style>
+  .proj-card::after {
+    box-shadow: 0 0 30px 8px var(--card-glow, transparent);
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const tubelights = [
+      document.getElementById("proj-tubelight"),
+      document.getElementById("proj-tubelight-bottom"),
+    ].filter(Boolean);
+
+    tubelights.forEach((el) => {
+      const tl = gsap.timeline({ delay: 0.3 });
+
+      tl.to(el, { opacity: 0.3, duration: 0.05, ease: "none" })
+        .to(el, { opacity: 0, duration: 0.05, ease: "none" })
+        .to(el, { opacity: 0.5, duration: 0.08, ease: "none" })
+        .to(el, { opacity: 0.1, duration: 0.05, ease: "none" })
+        .to(el, { opacity: 0.6, duration: 0.1, ease: "none" })
+        .to(el, { opacity: 0.2, duration: 0.06, ease: "none" })
+        .to(el, { opacity: 0.7, duration: 0.12, ease: "none" })
+        .to(el, { opacity: 0.3, duration: 0.05, ease: "none" })
+        .to(el, { opacity: 0.8, duration: 0.3, ease: "power2.out" })
+        .to(el, { opacity: 0.75, duration: 0.15, ease: "sine.inOut", yoyo: true, repeat: 1 });
+    });
+  });
+</script>
