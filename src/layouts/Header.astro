@@ -1113,16 +1113,11 @@ const dropdowns: Record<string, DropdownItem[]> = {
       if (sessionStorage.getItem("preloaderShown")) {
         setTimeout(triggerPillIntro, 500);
       } else {
-        // First visit — 500ms after preloader finishes
+        // First visit — wait for preloader to fully finish
         window.addEventListener("preloader:done", () => {
           setTimeout(triggerPillIntro, 500);
         }, { once: true });
       }
-
-      // Fallback: always fire after load
-      window.addEventListener("load", () => {
-        setTimeout(triggerPillIntro, 1800);
-      }, { once: true });
     }
 
     // ── Scroll progress bar ──

@@ -1059,12 +1059,16 @@ const worksHeightMobile = works.length * 45;
         },
         cardsStart
       );
+
+      // Closing animations start after all cards finish
+      const cardsEnd = cardsStart + (worksEl.length - 1) * cardsStagger + cardsDuration;
+
       tl.fromTo(
         this,
         { animationProgress: 0 },
         {
           animationProgress: 10000,
-          duration: tl.totalDuration(),
+          duration: cardsEnd + 1,
           ease: "power1.out",
         },
         0
@@ -1078,7 +1082,7 @@ const worksHeightMobile = works.length * 45;
           ease: "power4.inOut",
           immediateRender: false,
         },
-        "-=1"
+        cardsEnd
       );
       tl.fromTo(
         mask.el,
@@ -1089,7 +1093,7 @@ const worksHeightMobile = works.length * 45;
           ease: "power4.inOut",
           immediateRender: false,
         },
-        "-=1"
+        cardsEnd
       );
       tl.fromTo(
         scene,
@@ -1100,7 +1104,7 @@ const worksHeightMobile = works.length * 45;
           ease: "power3.inOut",
           immediateRender: false,
         },
-        "-=1"
+        cardsEnd
       );
 
       if (!isMobile) {
@@ -1113,7 +1117,7 @@ const worksHeightMobile = works.length * 45;
             ease: "power3.inOut",
             immediateRender: false,
           },
-          "-=1"
+          cardsEnd
         );
       }
 
@@ -1121,7 +1125,7 @@ const worksHeightMobile = works.length * 45;
         this,
         { pointsProgress: 1 },
         { pointsProgress: 0, duration: 1, ease: "power4.inOut" },
-        "-=1"
+        cardsEnd
       );
 
       if (this.isTouchDevice) {

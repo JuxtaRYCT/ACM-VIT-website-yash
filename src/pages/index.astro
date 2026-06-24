@@ -27,6 +27,7 @@ import DomainsPhone from "../responsive/DomainsPhone.astro";
 import ProjectScreenPhone from "../responsive/ProjectScreenPhone.astro";
 import GalleryPhone from "../responsive/GalleryPhone.astro";
 import ContactUsPhone from "../responsive/ContactUsPhone.astro";
+import AnimatedButton from "../components/ui/AnimatedButton.astro";
 
 // UI components
 import LegendPins from "../components/ui/LegendPins.astro";
@@ -132,14 +133,11 @@ const videoEndTime = undefined; // Use full video duration (set to specific seco
             </template>
         </div>
         <div class="w-full flex justify-center py-10">
-            <a
+            <AnimatedButton
+                text="Checkout all cool projects"
                 href="https://github.com/ACM-VIT"
                 target="_blank"
-                rel="noopener noreferrer"
-                class="inline-block text-white text-sm sm:text-lg border-2 border-[#F95F4A] hover:bg-[#F95F4A]/10 hover:cursor-pointer py-2 px-5 sm:py-4 sm:px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-['PolySans_Trial'] uppercase"
-            >
-                Checkout all cool projects
-            </a>
+            />
         </div>
     </section>
 
