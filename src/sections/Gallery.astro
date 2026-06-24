@@ -12,7 +12,14 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
     <img
       src={getAssetUrl("/gallery/gallery-hero.png")}
       alt="ACM-VIT Gallery"
-      class="gallery-image w-full object-cover"
+      class="gallery-image gallery-image-dark w-full object-cover"
+      loading="lazy"
+      decoding="async"
+    />
+    <img
+      src={getAssetUrl("/gallery/gallery-light.jpg")}
+      alt="ACM-VIT Gallery"
+      class="gallery-image gallery-image-light w-full object-cover"
       loading="lazy"
       decoding="async"
     />
@@ -72,7 +79,28 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
     transition: filter 0.3s ease;
   }
 
+  .gallery-image-light {
+    display: none;
+  }
+
+  :global(html[data-theme="light"]) .gallery-image-dark {
+    display: none;
+  }
+
+  :global(html[data-theme="light"]) .gallery-image-light {
+    display: block;
+    filter: none;
+  }
+
   .gallery-frame:hover .gallery-image {
     filter: grayscale(0.2);
+  }
+
+  :global(html[data-theme="light"]) .gallery-frame::after {
+    background: linear-gradient(
+      180deg,
+      rgba(245, 237, 228, 0) 40%,
+      rgba(245, 237, 228, 0.55) 100%
+    );
   }
 </style>

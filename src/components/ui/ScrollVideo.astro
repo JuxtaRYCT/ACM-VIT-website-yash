@@ -4,6 +4,7 @@ import { getAssetUrl } from "../../utils/cdn";
 interface Props {
     webmSrc?: string;
     mp4Src?: string;
+    lightWebmSrc?: string;
     startTime?: number;
     endTime?: number;
 }
@@ -11,27 +12,41 @@ interface Props {
 const {
     webmSrc = "/videos/ACMWebsiteVid.webm",
     mp4Src = "/videos/ACMWebsiteVid.mp4",
+    lightWebmSrc = "/videos/light_bg.webm",
     startTime = 0,
     endTime = undefined,
 } = Astro.props;
 
 const normalizedWebmSrc = webmSrc.startsWith("/") ? webmSrc : `/${webmSrc}`;
 const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
+const normalizedLightWebmSrc = lightWebmSrc.startsWith("/") ? lightWebmSrc : `/${lightWebmSrc}`;
 ---
 
 <div class="scroll-video-container" data-scroll-video-container>
     <video
-        class="scroll-video"
+        class="scroll-video scroll-video-dark"
         data-scroll-video
+        data-scroll-video-dark
         data-start-time={startTime}
         data-end-time={endTime ?? ""}
         muted
         playsinline
         preload="auto"
     >
-        <!-- Use CDN resolved URL if configured, fallback to local path -->
         <source src={getAssetUrl(normalizedWebmSrc)} type="video/webm" />
         <source src={getAssetUrl(normalizedMp4Src)} type="video/mp4" />
+    </video>
+
+    <video
+        class="scroll-video scroll-video-light"
+        data-scroll-video-light
+        data-start-time={startTime}
+        data-end-time={endTime ?? ""}
+        muted
+        playsinline
+        preload="auto"
+    >
+        <source src={getAssetUrl(normalizedLightWebmSrc)} type="video/webm" />
     </video>
 
     <div class="scroll-video-overlay" data-scroll-video-overlay></div>
@@ -67,6 +82,21 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
         opacity: 1;
     }
 
+    /* Light mode: swap visibility without killing decoder */
+    :global(html[data-theme="light"]) .scroll-video-dark {
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
+    .scroll-video-light {
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    :global(html[data-theme="light"]) .scroll-video-light {
+        visibility: visible;
+    }
+
     .scroll-video-overlay {
         position: fixed;
         top: 0;
@@ -96,24 +126,8 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
 
     gsap.registerPlugin(ScrollTrigger);
 
-    function initScrollVideo() {
-        const container = document.querySelector(
-            "[data-scroll-video-container]",
-        ) as HTMLElement;
-        const video = document.querySelector(
-            "[data-scroll-video]",
-        ) as HTMLVideoElement;
-        const overlay = document.querySelector(
-            "[data-scroll-video-overlay]",
-        ) as HTMLElement;
-
-        if (!container || !video) {
-            return;
-        }
-
-        if (video.dataset.scrollInit === "true") {
-            return;
-        }
+    function createVideoScrubber(video: HTMLVideoElement, container: HTMLElement, overlay: HTMLElement | null) {
+        if (!video || video.dataset.scrollInit === "true") return;
         video.dataset.scrollInit = "true";
 
         const startTime = parseFloat(video.dataset.startTime || "0");
@@ -135,7 +149,6 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
                 return;
             }
 
-            // We have a valid duration! Clean up all listeners to avoid multiple setups.
             video.removeEventListener("loadedmetadata", setupScrollTrigger);
             video.removeEventListener("durationchange", setupScrollTrigger);
             video.removeEventListener("canplay", setupScrollTrigger);
@@ -150,13 +163,12 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
 
             video.pause();
 
-            // Attempt to unlock the video decoder for frame-exact seeking in Safari and mobile browsers
             const unlockVideo = async () => {
                 try {
                     await video.play();
                     video.pause();
                 } catch (e) {
-                    // Safe to ignore if blocked by autoplay policies
+                    // Safe to ignore
                 }
             };
             unlockVideo();
@@ -164,7 +176,6 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
             const commitVideoTime = (nextTime: number) => {
                 const clamped = Math.max(startTime, Math.min(endTime, nextTime));
                 if (Math.abs(video.currentTime - clamped) <= minStep) return;
-
                 try {
                     video.currentTime = clamped;
                 } catch {
@@ -195,8 +206,8 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
                     return;
                 }
 
-                const ease = 1 - Math.exp(-delta / 0.12);
-                const maxStep = Math.max(1 / 60, delta * 3.2);
+                const ease = 1 - Math.exp(-delta / 0.18);
+                const maxStep = Math.max(1 / 60, delta * 2.0);
                 const easedStep = diff * ease;
                 const step =
                     Math.sign(diff) *
@@ -292,20 +303,178 @@ const normalizedMp4Src = mp4Src.startsWith("/") ? mp4Src : `/${mp4Src}`;
             window.requestAnimationFrame(() => ScrollTrigger.refresh());
         };
 
-        // Register multiple event listeners to guarantee duration is detected
         video.addEventListener("loadedmetadata", setupScrollTrigger);
         video.addEventListener("durationchange", setupScrollTrigger);
         video.addEventListener("canplay", setupScrollTrigger);
         video.addEventListener("canplaythrough", setupScrollTrigger);
         video.addEventListener("loadeddata", setupScrollTrigger);
 
-        // Check immediately in case video metadata/duration is already fully ready
         if (video.readyState >= 1) {
             setupScrollTrigger();
         }
 
         video.pause();
         video.currentTime = startTime;
+    }
+
+    function createPlaybackScrubber(video: HTMLVideoElement, container: HTMLElement, overlay: HTMLElement | null) {
+        if (!video || video.dataset.scrollInit === "true") return;
+        video.dataset.scrollInit = "true";
+
+        const startTime = parseFloat(video.dataset.startTime || "0");
+
+        const setupScrollTrigger = () => {
+            const videoDuration = video.duration;
+            if (!videoDuration || isNaN(videoDuration) || videoDuration === Infinity) return;
+
+            video.removeEventListener("loadedmetadata", setupScrollTrigger);
+            video.removeEventListener("durationchange", setupScrollTrigger);
+            video.removeEventListener("canplay", setupScrollTrigger);
+            video.removeEventListener("canplaythrough", setupScrollTrigger);
+            video.removeEventListener("loadeddata", setupScrollTrigger);
+
+            const endTime = video.dataset.endTime
+                ? parseFloat(video.dataset.endTime)
+                : videoDuration;
+            const playDuration = endTime - startTime;
+
+            video.pause();
+            video.currentTime = startTime;
+
+            let targetTime = startTime;
+            let isPlaying = false;
+            let rafId = 0;
+
+            const tick = () => {
+                rafId = 0;
+                const current = video.currentTime;
+                const diff = targetTime - current;
+                const absDiff = Math.abs(diff);
+
+                // Close enough — pause
+                if (absDiff < 0.03) {
+                    video.playbackRate = 1;
+                    if (isPlaying) {
+                        video.pause();
+                        isPlaying = false;
+                    }
+                    return;
+                }
+
+                // Too far behind — seek (e.g. scrolled backward fast)
+                if (diff < -0.5) {
+                    video.currentTime = targetTime;
+                    video.pause();
+                    isPlaying = false;
+                    return;
+                }
+
+                // Scrolling backward slowly
+                if (diff < 0) {
+                    video.currentTime = targetTime;
+                    if (isPlaying) {
+                        video.pause();
+                        isPlaying = false;
+                    }
+                    return;
+                }
+
+                // Forward — play and adjust rate to catch up
+                // Map distance to playback rate: small diff = slow, large diff = fast
+                const rate = Math.min(Math.max(absDiff * 3, 0.2), 4);
+                video.playbackRate = rate;
+
+                if (!isPlaying) {
+                    video.play().catch(() => {});
+                    isPlaying = true;
+                }
+
+                rafId = requestAnimationFrame(tick);
+            };
+
+            const schedule = () => {
+                if (!rafId) rafId = requestAnimationFrame(tick);
+            };
+
+            ScrollTrigger.create({
+                trigger: container,
+                start: "top top",
+                end: "bottom bottom",
+                scrub: true,
+                invalidateOnRefresh: true,
+                onUpdate: (self) => {
+                    targetTime = startTime + self.progress * playDuration;
+                    targetTime = Math.max(startTime, Math.min(endTime, targetTime));
+                    schedule();
+                },
+            });
+
+            ScrollTrigger.create({
+                trigger: container,
+                start: "top 90%",
+                end: "bottom 60%",
+                onEnter: () => {
+                    video.classList.add("visible");
+                    overlay?.classList.add("visible");
+                    document.body.classList.add("scroll-video-active");
+                },
+                onLeave: () => {
+                    video.classList.remove("visible");
+                    overlay?.classList.remove("visible");
+                    document.body.classList.remove("scroll-video-active");
+                    video.pause();
+                    isPlaying = false;
+                },
+                onEnterBack: () => {
+                    video.classList.add("visible");
+                    overlay?.classList.add("visible");
+                    document.body.classList.add("scroll-video-active");
+                },
+                onLeaveBack: () => {
+                    video.classList.remove("visible");
+                    overlay?.classList.remove("visible");
+                    document.body.classList.remove("scroll-video-active");
+                    video.pause();
+                    isPlaying = false;
+                },
+            });
+
+            window.requestAnimationFrame(() => ScrollTrigger.refresh());
+        };
+
+        video.addEventListener("loadedmetadata", setupScrollTrigger);
+        video.addEventListener("durationchange", setupScrollTrigger);
+        video.addEventListener("canplay", setupScrollTrigger);
+        video.addEventListener("canplaythrough", setupScrollTrigger);
+        video.addEventListener("loadeddata", setupScrollTrigger);
+
+        if (video.readyState >= 1) setupScrollTrigger();
+
+        video.pause();
+        video.currentTime = startTime;
+    }
+
+    function initScrollVideo() {
+        const container = document.querySelector(
+            "[data-scroll-video-container]",
+        ) as HTMLElement;
+        const overlay = document.querySelector(
+            "[data-scroll-video-overlay]",
+        ) as HTMLElement;
+
+        if (!container) return;
+
+        // Dark video — seek-based scrubber (works fine with its keyframes)
+        const darkVideo = document.querySelector(
+            "[data-scroll-video-dark]",
+        ) as HTMLVideoElement;
+        if (darkVideo) createVideoScrubber(darkVideo, container, overlay);
+
+        // Light video — playback-rate scrubber (smooth frame playback)
+        const lightVideo = document.querySelector(
+            "[data-scroll-video-light]",
+        ) as HTMLVideoElement;
+        if (lightVideo) createPlaybackScrubber(lightVideo, container, overlay);
     }
 
     if (document.readyState === "loading") {

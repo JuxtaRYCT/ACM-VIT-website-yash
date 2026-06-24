@@ -390,6 +390,26 @@ const dropdowns: Record<string, DropdownItem[]> = {
     transform: scale(1.2);
   }
 
+  /* ── Nav item hover — orange highlight ── */
+  .nav-item:hover .nav-dot {
+    background: #f95f4a !important;
+    box-shadow: 0 0 8px rgba(249, 95, 74, 0.5);
+    transform: scale(1.25);
+  }
+  .nav-item:hover .nav-label {
+    color: #f95f4a !important;
+    opacity: 1 !important;
+  }
+
+  /* ACM-W hover — pink */
+  .nav-item[data-section="acm-w"]:hover .nav-dot {
+    background: #ff007a !important;
+    box-shadow: 0 0 8px rgba(255, 0, 122, 0.5);
+  }
+  .nav-item[data-section="acm-w"]:hover .nav-label {
+    color: #ff007a !important;
+  }
+
   /* ── Label: hidden until active or pill hovered ── */
   .nav-label {
     font-size: 12px;
@@ -404,7 +424,8 @@ const dropdowns: Record<string, DropdownItem[]> = {
     opacity: 0;
     transition:
       max-width 0.4s cubic-bezier(0.25, 0.1, 0.25, 1),
-      opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+      opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+      color 0.25s ease;
   }
 
   /* Show all labels on pill hover */
