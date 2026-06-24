@@ -16,7 +16,7 @@ const { title, imageUrl, link } = Astro.props;
     <img
       src={getAssetUrl("/cassettes/partner-casette.webp")}
       alt="Partner Casette Boilerplate"
-      class="w-full h-auto object-cover absolute pointer-events-none rounded-lg mb-4"
+      class="partner-casette-bg w-full h-auto object-cover absolute pointer-events-none rounded-lg mb-4"
       loading="lazy"
       decoding="async"
     />
@@ -31,3 +31,9 @@ const { title, imageUrl, link } = Astro.props;
     />
   </div>
 </div>
+
+<style>
+  :global(html[data-theme="light"]) .partner-casette-bg {
+    filter: invert(1) brightness(0.15);
+  }
+</style>

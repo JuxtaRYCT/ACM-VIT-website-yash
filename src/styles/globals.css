@@ -358,6 +358,11 @@ html[data-theme="light"] .progress-fill {
   background: #1a1a1a !important;
 }
 
+/* ── Partners cassette image ── */
+html[data-theme="light"] #partners-svg {
+  filter: invert(1) brightness(0.15);
+}
+
 /* ── Domains cassette wrapper ── */
 html[data-theme="light"] .cassette-wrapper::after {
   background: #F2CEAE !important;
