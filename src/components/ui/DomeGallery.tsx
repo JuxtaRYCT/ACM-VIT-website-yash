@@ -21,6 +21,7 @@ type DomeGalleryProps = {
   imageBorderRadius?: string;
   openedImageBorderRadius?: string;
   grayscale?: boolean;
+  autoRotateSpeed?: number;
 };
 
 type ItemDef = {
@@ -155,7 +156,8 @@ export default function DomeGallery({
   openedImageHeight = '400px',
   imageBorderRadius = '30px',
   openedImageBorderRadius = '30px',
-  grayscale = true
+  grayscale = true,
+  autoRotateSpeed = 0
 }: DomeGalleryProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
@@ -680,6 +682,31 @@ export default function DomeGallery({
     };
   }, []);
 
+  // Auto-rotation (time-delta based for smooth, jitter-free spin)
+  useEffect(() => {
+    if (!autoRotateSpeed || autoRotateSpeed === 0) return;
+    let raf: number;
+    let lastTime = 0;
+    const degreesPerSecond = autoRotateSpeed * 60; // convert per-frame to per-second
+    const tick = (time: number) => {
+      if (lastTime === 0) { lastTime = time; }
+      const dt = Math.min(time - lastTime, 50); // cap at 50ms to avoid jumps
+      lastTime = time;
+      const isIdle = !draggingRef.current && !focusedElRef.current && !inertiaRAF.current;
+      if (isIdle) {
+        const delta = (degreesPerSecond * dt) / 1000;
+        rotationRef.current.y += delta;
+        applyTransform(rotationRef.current.x, rotationRef.current.y);
+      } else {
+        // Reset lastTime so we don't get a big jump when resuming
+        lastTime = 0;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [autoRotateSpeed]);
+
   const cssStyles = `
     .sphere-root {
       --radius: 520px;
@@ -723,12 +750,16 @@ export default function DomeGallery({
       margin: auto;
       transform-origin: 50% 50%;
       backface-visibility: hidden;
-      transition: transform 300ms;
-      transform: rotateY(calc(var(--rot-y) * (var(--offset-x) + ((var(--item-size-x) - 1) / 2)) + var(--rot-y-delta, 0deg))) 
-                 rotateX(calc(var(--rot-x) * (var(--offset-y) - ((var(--item-size-y) - 1) / 2)) + var(--rot-x-delta, 0deg))) 
+      transition: none;
+      transform: rotateY(calc(var(--rot-y) * (var(--offset-x) + ((var(--item-size-x) - 1) / 2)) + var(--rot-y-delta, 0deg)))
+                 rotateX(calc(var(--rot-x) * (var(--offset-y) - ((var(--item-size-y) - 1) / 2)) + var(--rot-x-delta, 0deg)))
                  translateZ(var(--radius));
     }
-    
+
+    .sphere-root[data-enlarging="true"] .sphere-item {
+      transition: transform 300ms;
+    }
+
     .sphere-root[data-enlarging="true"] .scrim {
       opacity: 1 !important;
       pointer-events: all !important;
@@ -749,7 +780,7 @@ export default function DomeGallery({
       cursor: pointer;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
-      transition: transform 300ms;
+      transition: none;
       pointer-events: auto;
       -webkit-transform: translateZ(0);
       transform: translateZ(0);

@@ -5,6 +5,9 @@ import "../styles/globals.css";
 import { getAssetUrl } from "../utils/cdn";
 
 import IgnitingMinds from "../sections/IgnitingMinds.astro";
+import HourOfCode from "../sections/HourOfCode.astro";
+import KickStartLearn from "../sections/KickStartLearn.astro";
+import CommunityPrograms from "../sections/CommunityPrograms.astro";
 import CodeOfConduct from "../sections/CodeOfConduct.astro";
 import DistinguishedSpeaker from "../sections/DistinguishedSpeaker.astro";
 
@@ -46,7 +49,7 @@ import Footer from "../layouts/Footer.astro";
           <div class="flex gap-10 text-[#FFFDD0]">
             <div>
               <span class="text-3xl md:text-4xl font-bold tracking-tight"
-                >5+</span
+                >10+</span
               >
               <p class="text-gray-500 font-mono text-[0.65rem] mt-1 uppercase">
                 Initiatives
@@ -62,10 +65,10 @@ import Footer from "../layouts/Footer.astro";
             </div>
             <div>
               <span class="text-3xl md:text-4xl font-bold tracking-tight"
-                >1</span
+                >16</span
               >
               <p class="text-gray-500 font-mono text-[0.65rem] mt-1 uppercase">
-                Int'l Award
+                Years of Impact
               </p>
             </div>
           </div>
@@ -96,37 +99,107 @@ import Footer from "../layouts/Footer.astro";
             <span class="card-num">01</span>
             <h3 class="card-title">Outreach</h3>
             <p class="card-subtitle">Beyond The Norm</p>
-            <p class="card-desc">
-              Interactive workshops bringing computing to school students
-              through flowcharts & digital logic.
-            </p>
             <span class="card-arrow" aria-hidden="true">&#8599;</span>
           </div>
         </a>
 
-        <!-- 02 SDG -->
+        <!-- 02 Hour of Code -->
+        <a
+          href="#community-hoc"
+          class="community-card card-has-img group"
+          style="--card-i:1"
+        >
+          <img
+            src={getAssetUrl("/community/hour-of-code.png")}
+            alt="Hour of Code"
+            class="card-bg-img"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="card-overlay"></div>
+          <div class="card-content">
+            <span class="card-num">02</span>
+            <h3 class="card-title">Hour of Code</h3>
+            <p class="card-subtitle">Making Tech Accessible</p>
+            <span class="card-arrow" aria-hidden="true">&#8599;</span>
+          </div>
+        </a>
+
+        <!-- 03 KSL -->
+        <a
+          href="#community-ksl"
+          class="community-card card-gradient group"
+          style="--card-i:2"
+        >
+          <div class="card-content">
+            <span class="card-num">03</span>
+            <h3 class="card-title">Kick Start Learn</h3>
+            <p class="card-subtitle">Fresher Launchpad</p>
+            <span class="card-arrow" aria-hidden="true">&#8599;</span>
+          </div>
+        </a>
+
+        <!-- 04 Summer Bootcamp -->
+        <a
+          href="#community-bootcamp"
+          class="community-card card-gradient group"
+          style="--card-i:3"
+        >
+          <div class="card-content">
+            <span class="card-num">04</span>
+            <h3 class="card-title">Summer Bootcamp</h3>
+            <p class="card-subtitle">Online Learning</p>
+            <span class="card-arrow" aria-hidden="true">&#8599;</span>
+          </div>
+        </a>
+
+        <!-- 05 Forktober -->
+        <a
+          href="#community-forktober"
+          class="community-card card-gradient group"
+          style="--card-i:4"
+        >
+          <div class="card-content">
+            <span class="card-num">05</span>
+            <h3 class="card-title">Forktober Fest</h3>
+            <p class="card-subtitle">Open Source Month</p>
+            <span class="card-arrow" aria-hidden="true">&#8599;</span>
+          </div>
+        </a>
+
+        <!-- 06 Open Source -->
+        <a
+          href="#community-opensource"
+          class="community-card card-gradient group"
+          style="--card-i:5"
+        >
+          <div class="card-content">
+            <span class="card-num">06</span>
+            <h3 class="card-title">Open Source Culture</h3>
+            <p class="card-subtitle">GSoC / GSoD / MLH</p>
+            <span class="card-arrow" aria-hidden="true">&#8599;</span>
+          </div>
+        </a>
+
+        <!-- 07 SDG -->
         <a
           href="#community-sdg"
           class="community-card card-gradient group"
-          style="--card-i:1"
+          style="--card-i:6"
         >
           <div class="card-content">
-            <span class="card-num">02</span>
-            <h3 class="card-title">SDG</h3>
-            <p class="card-subtitle">Quality Education</p>
-            <p class="card-desc">
-              Aligned with UN SDG 4, reducing the digital learning gap in rural
-              communities through technology.
-            </p>
+            <span class="card-num">07</span>
+            <h3 class="card-title">SDG Initiative</h3>
+            <p class="card-subtitle">Tech for Social Good</p>
             <span class="card-arrow" aria-hidden="true">&#8599;</span>
           </div>
         </a>
 
-        <!-- 03 Award -->
+        <!-- 08 Award -->
         <a
           href="#community-award"
           class="community-card card-has-img group"
-          style="--card-i:2"
+          style="--card-i:7"
         >
           <img
             src={getAssetUrl("/ui/acm-celeb.png")}
@@ -137,40 +210,18 @@ import Footer from "../layouts/Footer.astro";
           />
           <div class="card-overlay"></div>
           <div class="card-content">
-            <span class="card-num">03</span>
+            <span class="card-num">08</span>
             <h3 class="card-title">Int'l Award</h3>
             <p class="card-subtitle">Outstanding Service</p>
-            <p class="card-desc">
-              ACM International Chapter Award recognizing community-first work
-              across student initiatives.
-            </p>
             <span class="card-arrow" aria-hidden="true">&#8599;</span>
           </div>
         </a>
 
-        <!-- 04 Code of Conduct -->
-        <a
-          href="#community-conduct"
-          class="community-card card-gradient group"
-          style="--card-i:3"
-        >
-          <div class="card-content">
-            <span class="card-num">04</span>
-            <h3 class="card-title">Code of Conduct</h3>
-            <p class="card-subtitle">Ethics & Values</p>
-            <p class="card-desc">
-              Our commitment to ACM ethical principles, professional conduct,
-              and computing for the public good.
-            </p>
-            <span class="card-arrow" aria-hidden="true">&#8599;</span>
-          </div>
-        </a>
-
-        <!-- 05 Distinguished Speakers -->
+        <!-- 09 Distinguished Speakers -->
         <a
           href="#community-speaker"
           class="community-card card-has-img card-wide group"
-          style="--card-i:4"
+          style="--card-i:8"
         >
           <img
             src={getAssetUrl("/community/peter-robinson.webp")}
@@ -181,13 +232,37 @@ import Footer from "../layouts/Footer.astro";
           />
           <div class="card-overlay"></div>
           <div class="card-content">
-            <span class="card-num">05</span>
+            <span class="card-num">09</span>
             <h3 class="card-title">Distinguished Speakers</h3>
             <p class="card-subtitle">Industry Leader Keynotes</p>
-            <p class="card-desc">
-              Sessions from world-renowned researchers and industry leaders in
-              computing and technology.
-            </p>
+            <span class="card-arrow" aria-hidden="true">&#8599;</span>
+          </div>
+        </a>
+
+        <!-- 10 Code of Conduct -->
+        <a
+          href="#community-conduct"
+          class="community-card card-gradient group"
+          style="--card-i:9"
+        >
+          <div class="card-content">
+            <span class="card-num">10</span>
+            <h3 class="card-title">Code of Conduct</h3>
+            <p class="card-subtitle">Ethics & Values</p>
+            <span class="card-arrow" aria-hidden="true">&#8599;</span>
+          </div>
+        </a>
+
+        <!-- 11 CASA -->
+        <a
+          href="#community-casa"
+          class="community-card card-gradient group"
+          style="--card-i:10"
+        >
+          <div class="card-content">
+            <span class="card-num">11</span>
+            <h3 class="card-title">CASA</h3>
+            <p class="card-subtitle">Student Well-being</p>
             <span class="card-arrow" aria-hidden="true">&#8599;</span>
           </div>
         </a>
@@ -206,6 +281,9 @@ import Footer from "../layouts/Footer.astro";
 
   <!-- Full Sections -->
   <IgnitingMinds />
+  <HourOfCode />
+  <KickStartLearn />
+  <CommunityPrograms />
   <CodeOfConduct />
   <DistinguishedSpeaker />
 
@@ -230,7 +308,7 @@ import Footer from "../layouts/Footer.astro";
   .community-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.75rem;
   }
 
   @media (min-width: 640px) {
@@ -241,22 +319,11 @@ import Footer from "../layouts/Footer.astro";
 
   @media (min-width: 1024px) {
     .community-grid {
-      grid-template-columns: repeat(6, 1fr);
+      grid-template-columns: repeat(4, 1fr);
     }
-    .community-card:nth-child(1) {
+
+    .community-card.card-wide {
       grid-column: span 2;
-    }
-    .community-card:nth-child(2) {
-      grid-column: span 2;
-    }
-    .community-card:nth-child(3) {
-      grid-column: span 2;
-    }
-    .community-card:nth-child(4) {
-      grid-column: span 2;
-    }
-    .community-card:nth-child(5) {
-      grid-column: span 4;
     }
   }
 
@@ -264,20 +331,20 @@ import Footer from "../layouts/Footer.astro";
   .community-card {
     position: relative;
     overflow: hidden;
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    min-height: 300px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    min-height: 200px;
     display: flex;
     text-decoration: none;
     transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
     animation: cardReveal 0.6s ease both;
-    animation-delay: calc(var(--card-i, 0) * 0.08s);
+    animation-delay: calc(var(--card-i, 0) * 0.05s);
   }
 
   @keyframes cardReveal {
     from {
       opacity: 0;
-      transform: translateY(16px);
+      transform: translateY(12px);
     }
     to {
       opacity: 1;
@@ -286,11 +353,11 @@ import Footer from "../layouts/Footer.astro";
   }
 
   .community-card:hover {
-    border-color: rgba(255, 95, 74, 0.4);
+    border-color: rgba(255, 95, 74, 0.35);
     box-shadow:
-      0 20px 60px rgba(0, 0, 0, 0.3),
-      0 0 40px rgba(255, 95, 74, 0.06);
-    transform: translateY(-4px);
+      0 16px 48px rgba(0, 0, 0, 0.3),
+      0 0 30px rgba(255, 95, 74, 0.05);
+    transform: translateY(-3px);
   }
 
   /* ── Image card ── */
@@ -304,7 +371,7 @@ import Footer from "../layouts/Footer.astro";
   }
 
   .community-card:hover .card-bg-img {
-    transform: scale(1.08);
+    transform: scale(1.06);
   }
 
   .card-overlay {
@@ -312,9 +379,9 @@ import Footer from "../layouts/Footer.astro";
     inset: 0;
     background: linear-gradient(
       to top,
-      rgba(0, 0, 0, 0.92) 0%,
-      rgba(0, 0, 0, 0.55) 40%,
-      rgba(0, 0, 0, 0.25) 100%
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0.5) 40%,
+      rgba(0, 0, 0, 0.2) 100%
     );
     transition: background 0.5s ease;
   }
@@ -322,21 +389,21 @@ import Footer from "../layouts/Footer.astro";
   .community-card:hover .card-overlay {
     background: linear-gradient(
       to top,
-      rgba(0, 0, 0, 0.88) 0%,
-      rgba(0, 0, 0, 0.4) 40%,
-      rgba(0, 0, 0, 0.15) 100%
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(0, 0, 0, 0.35) 40%,
+      rgba(0, 0, 0, 0.1) 100%
     );
   }
 
-  /* ── Gradient card (no image) ── */
+  /* ── Gradient card ── */
   .card-gradient {
     background: linear-gradient(
       145deg,
-      rgba(255, 95, 74, 0.08) 0%,
-      rgba(13, 14, 13, 0.6) 50%,
-      rgba(255, 95, 74, 0.04) 100%
+      rgba(255, 95, 74, 0.06) 0%,
+      rgba(13, 14, 13, 0.5) 50%,
+      rgba(255, 95, 74, 0.03) 100%
     );
-    border-color: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.05);
   }
 
   .card-gradient::before {
@@ -345,7 +412,7 @@ import Footer from "../layouts/Footer.astro";
     inset: 0;
     background: radial-gradient(
       ellipse at 30% 80%,
-      rgba(255, 95, 74, 0.06) 0%,
+      rgba(255, 95, 74, 0.05) 0%,
       transparent 60%
     );
     pointer-events: none;
@@ -355,9 +422,9 @@ import Footer from "../layouts/Footer.astro";
   .card-gradient:hover {
     background: linear-gradient(
       145deg,
-      rgba(255, 95, 74, 0.12) 0%,
-      rgba(13, 14, 13, 0.5) 50%,
-      rgba(255, 95, 74, 0.06) 100%
+      rgba(255, 95, 74, 0.1) 0%,
+      rgba(13, 14, 13, 0.45) 50%,
+      rgba(255, 95, 74, 0.05) 100%
     );
   }
 
@@ -368,65 +435,56 @@ import Footer from "../layouts/Footer.astro";
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 1.5rem;
+    padding: 1.25rem;
     width: 100%;
   }
 
   @media (min-width: 768px) {
     .card-content {
-      padding: 2rem;
+      padding: 1.5rem;
     }
   }
 
   .card-num {
     color: #ff5f4a;
     font-family: "PolySans Mono", monospace;
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    margin-bottom: 0.75rem;
-    opacity: 0.7;
+    margin-bottom: 0.5rem;
+    opacity: 0.6;
   }
 
   .card-title {
     font-family: "PolySans Trial", sans-serif;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: #fffdd0;
     text-transform: uppercase;
     letter-spacing: -0.02em;
-    line-height: 1;
-    margin-bottom: 0.25rem;
+    line-height: 1.1;
+    margin-bottom: 0.15rem;
   }
 
   @media (min-width: 768px) {
     .card-title {
-      font-size: 1.75rem;
+      font-size: 1.35rem;
     }
   }
 
   .card-subtitle {
     color: #ff5f4a;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-family: "Inter", sans-serif;
     font-weight: 600;
-    margin-bottom: 0.75rem;
-  }
-
-  .card-desc {
-    color: #9ca3af;
-    font-family: "PolySans Mono", monospace;
-    font-size: 0.7rem;
-    line-height: 1.7;
-    max-width: 340px;
   }
 
   .card-arrow {
     position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
+    top: 1.25rem;
+    right: 1.25rem;
     color: #ff5f4a;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     opacity: 0;
     transform: translate(-4px, 4px);
     transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -437,7 +495,7 @@ import Footer from "../layouts/Footer.astro";
     transform: translate(0, 0);
   }
 
-  /* ── Wide card (speakers) on tablet ── */
+  /* ── Wide card on tablet ── */
   @media (min-width: 640px) and (max-width: 1023px) {
     .card-wide {
       grid-column: span 2;

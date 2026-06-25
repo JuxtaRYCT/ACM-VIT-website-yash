@@ -1,0 +1,170 @@
+---
+import DomeGallery from "../components/ui/DomeGallery";
+import AnimatedButton from "../components/ui/AnimatedButton.astro";
+import { getAssetUrl } from "../utils/cdn";
+
+const domeImages = [
+  { src: getAssetUrl("/gallery/Reverse Coding/20250207_111113.webp"), alt: "Reverse Coding event" },
+  { src: getAssetUrl("/gallery/Nightslip/DSC00719.webp"), alt: "Nightslip event" },
+  { src: getAssetUrl("/community/hour-of-code.png"), alt: "Hour of Code classroom" },
+  { src: getAssetUrl("/gallery/ACM_25 Board pics/IMG-20250302-WA0001.webp"), alt: "ACM Board 2025" },
+  { src: getAssetUrl("/gallery/Turf/IMG_8061.webp"), alt: "Turf day" },
+  { src: getAssetUrl("/outreach/outreach-event.webp"), alt: "Outreach event" },
+  { src: getAssetUrl("/gallery/Women_s day/DSC02199.webp"), alt: "Women's Day celebration" },
+  { src: getAssetUrl("/gallery/Nightslip/DSC00754.webp"), alt: "Nightslip" },
+  { src: getAssetUrl("/gallery/Reverse Coding/20250207_132059.webp"), alt: "Coding competition" },
+  { src: getAssetUrl("/gallery/Women_s day/DSC02591.webp"), alt: "Women's Day" },
+  { src: getAssetUrl("/gallery/ACM_25 Board pics/IMG-20250302-WA0002.webp"), alt: "ACM Board" },
+  { src: getAssetUrl("/gallery/Nightslip/DSC00816.webp"), alt: "Night event" },
+  { src: getAssetUrl("/gallery/Reverse Coding/DSC_0254.webp"), alt: "Event" },
+  { src: getAssetUrl("/gallery/Nightslip/DSC00823.webp"), alt: "Community gathering" },
+];
+---
+
+<section class="community-landing relative w-full overflow-hidden">
+  <!-- DomeGallery background -->
+  <div class="dome-container absolute z-0" style="inset: -10%; width: 120%; height: 120%;">
+    <DomeGallery
+      client:visible
+      images={domeImages}
+      grayscale={true}
+      overlayBlurColor="transparent"
+      segments={35}
+      fit={0.55}
+      imageBorderRadius="12px"
+      dragDampening={3}
+      maxVerticalRotationDeg={8}
+      autoRotateSpeed={0.15}
+    />
+  </div>
+
+  <!-- Content overlay -->
+  <div class="community-overlay relative z-10 h-full flex flex-col pointer-events-none">
+    <!-- Chapter label -->
+    <div class="flex items-center justify-center gap-3 pt-8 md:pt-12">
+      <div class="chapter-pill">
+        <span>CHAPTER-4 : IGNITING MINDS</span>
+      </div>
+      <a
+        href="/community"
+        class="skip-btn pointer-events-auto"
+        aria-label="Go to community page"
+      >
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="2" width="2.5" height="10" fill="currentColor"/>
+          <path d="M5.5 7L12 2.5V11.5L5.5 7Z" fill="currentColor"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Text overlay -->
+    <div class="flex-1 flex items-center px-6 md:px-16 lg:px-24">
+      <p class="community-text max-w-[900px]">
+        at acm-vit, technology is more than just code - it's a tool to
+        uplift, empower, and create meaningful change. our
+        community-driven initiatives aim to spark curiosity,
+        strengthen digital literacy, and bring the power of
+        technology closer to those who need it most. here's how
+        we're taking that step forward.
+      </p>
+    </div>
+
+    <!-- Button -->
+    <div class="pb-12 md:pb-16 pointer-events-auto">
+      <AnimatedButton text="Explore our community initiatives" href="/community" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .community-landing {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 600px;
+    background: transparent;
+  }
+
+  .dome-container {
+    opacity: 0;
+    animation: domeReveal 1.2s ease 0.3s forwards;
+  }
+
+  @keyframes domeReveal {
+    from { opacity: 0; }
+    to { opacity: 0.45; }
+  }
+
+  .chapter-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1.5rem;
+    background: #FF5F4A;
+    border-radius: 100px;
+    font-family: "PolySans Mono", "Inter", monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: white;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .skip-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.3s ease;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    pointer-events: auto;
+    flex-shrink: 0;
+  }
+
+  .skip-btn:hover {
+    border-color: #FF5F4A;
+    color: #FF5F4A;
+    background: rgba(255, 95, 74, 0.1);
+  }
+
+  .community-text {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: clamp(0.95rem, 1.8vw, 1.5rem);
+    line-height: 1.45;
+    color: #FF5F4A;
+    font-weight: 400;
+    text-transform: lowercase;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: textReveal 0.8s ease 0.6s forwards;
+  }
+
+  @keyframes textReveal {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .chapter-pill {
+      font-size: 0.55rem;
+      padding: 0.4rem 1rem;
+      letter-spacing: 0.1em;
+    }
+
+    .skip-btn {
+      width: 34px;
+      height: 34px;
+    }
+  }
+</style>
