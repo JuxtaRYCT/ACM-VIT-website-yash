@@ -3,6 +3,8 @@ import Layout from "../../../layouts/Layout.astro";
 import Footer from "../../../layouts/Footer.astro";
 import ReadingProgress from "../../../components/blog/ReadingProgress.astro";
 import TableOfContents from "../../../components/blog/TableOfContents";
+import BlogDock from "../../../components/blog/BlogDock";
+import TextHighlighter from "../../../components/blog/TextHighlighter";
 import { getPost } from "../../../lib/blog";
 import type { BlogSource } from "../../../lib/blog/types";
 import { getAssetUrl } from "../../../utils/cdn";
@@ -34,11 +36,6 @@ const hasContent = post.contentHtml.length > 100;
   <ReadingProgress />
 
   <article class="blog-reader relative overflow-hidden pt-8 md:pt-12 pb-0">
-    <div
-      class="absolute inset-0 pointer-events-none opacity-[0.04]"
-      style={`background-image: url(${getAssetUrl("/backgrounds/background_pattern.webp")}); background-size: cover;`}
-    ></div>
-
     <div class="max-w-[1400px] mx-auto px-6 md:px-10 relative z-10">
       {/* Back link */}
       <a
@@ -53,7 +50,7 @@ const hasContent = post.contentHtml.length > 100;
 
       {/* Cover image */}
       {post.coverImage && (
-        <div class="relative rounded-2xl overflow-hidden mb-10 border border-white/6">
+        <div class="blog-cover relative rounded-2xl overflow-hidden mb-10 border border-white/6">
           <img
             src={post.coverImage}
             alt={post.title}
@@ -70,7 +67,7 @@ const hasContent = post.contentHtml.length > 100;
         {post.tags.length > 0 && (
           <div class="flex flex-wrap gap-2 mb-4">
             {post.tags.slice(0, 5).map((tag) => (
-              <span class="px-2.5 py-1 rounded-md text-[10px] font-mono uppercase tracking-wider bg-[#F95F4A]/10 text-[#F95F4A] border border-[#F95F4A]/15">
+              <span class="blog-tag">
                 {tag}
               </span>
             ))}
@@ -118,7 +115,7 @@ const hasContent = post.contentHtml.length > 100;
   {/* Content + TOC layout */}
   <section class="blog-body relative z-10 pb-24">
     <div class="max-w-[1400px] mx-auto px-6 md:px-10">
-      <div class="blog-layout flex gap-12">
+      <div class="blog-layout grid gap-12 lg:grid-cols-[minmax(0,1fr)_18rem] items-start">
         {/* Main content */}
         <div class="blog-layout__content flex-1 min-w-0">
           {hasContent ? (
@@ -145,13 +142,17 @@ const hasContent = post.contentHtml.length > 100;
 
         {/* Sidebar TOC */}
         {hasContent && post.headings.length > 0 && (
-          <aside class="blog-layout__sidebar hidden lg:block w-64 flex-shrink-0">
+          <aside class="blog-layout__sidebar hidden lg:block w-64 flex-shrink-0 lg:sticky lg:top-28 self-start">
             <TableOfContents headings={post.headings} client:load />
           </aside>
         )}
       </div>
     </div>
   </section>
+
+  {/* Interactive tools */}
+  <BlogDock slug={slug} title={post.title} client:load />
+  <TextHighlighter slug={slug} client:load />
 
   <Footer />
 </Layout>
@@ -178,5 +179,19 @@ const hasContent = post.contentHtml.length > 100;
       ease: 'power3.out',
       delay: 0.5,
     });
+  }
+
+  // Handle broken cover images
+  const coverImg = document.querySelector('.blog-cover img') as HTMLImageElement;
+  if (coverImg) {
+    coverImg.addEventListener('error', () => {
+      const cover = coverImg.closest('.blog-cover') as HTMLElement;
+      if (cover) cover.style.display = 'none';
+    });
+    // Check if already failed (cached error)
+    if (coverImg.complete && coverImg.naturalWidth === 0) {
+      const cover = coverImg.closest('.blog-cover') as HTMLElement;
+      if (cover) cover.style.display = 'none';
+    }
   }
 </script>

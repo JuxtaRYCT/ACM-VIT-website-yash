@@ -192,16 +192,35 @@ export async function getHashnodeContent(slug: string): Promise<string> {
 
 /** Clean up extracted HTML content. */
 function cleanContentHtml(html: string): string {
-  return html
-    // Remove script tags
+  let cleaned = html
+    // Remove non-content structural elements
     .replace(/<script[\s\S]*?<\/script>/gi, '')
-    // Remove style tags
     .replace(/<style[\s\S]*?<\/style>/gi, '')
-    // Remove class attributes (we'll style with our own CSS)
+    .replace(/<nav[\s\S]*?<\/nav>/gi, '')
+    .replace(/<header[\s\S]*?<\/header>/gi, '')
+    .replace(/<footer[\s\S]*?<\/footer>/gi, '')
+    .replace(/<aside[\s\S]*?<\/aside>/gi, '')
+    .replace(/<button[\s\S]*?<\/button>/gi, '')
+    .replace(/<svg[\s\S]*?<\/svg>/gi, '')
+    // Remove class/data attributes (we style with our own CSS)
     .replace(/\s+class="[^"]*"/gi, '')
-    // Remove data attributes
     .replace(/\s+data-[a-z-]+="[^"]*"/gi, '')
     // Clean up extra whitespace
     .replace(/\n{3,}/g, '\n\n')
     .trim();
+
+  // Strip leading metadata (date, reading time, author card, cover image)
+  // that Hashnode includes in <article> before actual content
+  cleaned = stripLeadingMetadata(cleaned);
+
+  return cleaned;
+}
+
+/** Strip metadata elements that appear before the first heading in scraped content. */
+function stripLeadingMetadata(html: string): string {
+  const headingMatch = html.match(/<h[1-6]\b/i);
+  if (headingMatch?.index && headingMatch.index > 20 && headingMatch.index < 3000) {
+    return html.substring(headingMatch.index);
+  }
+  return html;
 }
