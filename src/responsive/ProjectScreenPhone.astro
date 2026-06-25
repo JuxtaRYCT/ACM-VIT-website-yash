@@ -60,8 +60,8 @@ const { projects = [] } = Astro.props;
         <div class="mobile-layout flex flex-col w-full">
           {/* Top Text Block with border */}
           <div class="moving-border-box-b p-6">
-            <div class="content-section text-[var(--textColor)]">
-              <p class="description font-['PolySans_Trial'] text-[11px] sm:text-xs leading-[1.55] m-0 uppercase text-[var(--textColor)] font-light break-words">
+            <div class="content-section text-(--textColor)">
+              <p class="description font-['PolySans_Trial'] text-[11px] sm:text-xs leading-[1.55] m-0 uppercase text-(--textColor) font-light wrap-break-word">
                 {projectData.textContent.blocks[0]}
               </p>
             </div>
@@ -81,8 +81,8 @@ const { projects = [] } = Astro.props;
 
           {/* Bottom Text Block with border */}
           <div class="moving-border-box-b p-6">
-            <div class="content-section text-[var(--textColor)]">
-              <p class="description font-['PolySans_Trial'] text-[11px] sm:text-xs leading-[1.55] m-0 uppercase text-[var(--textColor)] font-light break-words">
+            <div class="content-section text-(--textColor)">
+              <p class="description font-['PolySans_Trial'] text-[11px] sm:text-xs leading-[1.55] m-0 uppercase text-(--textColor) font-light wrap-break-word">
                 {projectData.textContent.blocks[1]}
               </p>
             </div>

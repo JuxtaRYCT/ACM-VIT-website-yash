@@ -12,12 +12,12 @@ const isExternalLink = buttonData.link.startsWith("http");
 ---
 
 <div
-  class="legend-pins-wrapper absolute top-0 left-0 w-full h-screen pointer-events-none z-[60]"
+  class="legend-pins-wrapper absolute top-0 left-0 w-full h-screen pointer-events-none z-60"
   aria-hidden="false"
 >
   <!-- Left Legend -->
   <div
-    class="legend-pin left-legend absolute bottom-8 z-[60] font-['PolySans_Trial',sans-serif] text-[#FEFCD9] max-w-[42vw] left-8 max-lg:bottom-7 max-md:max-w-[80vw] max-md:left-4 max-md:bottom-24"
+    class="legend-pin left-legend absolute bottom-8 z-60 font-['PolySans_Trial',sans-serif] text-[#FEFCD9] max-w-[42vw] left-8 max-lg:bottom-7 max-md:max-w-[80vw] max-md:left-4 max-md:bottom-24"
   >
     <div class="legend-left-inner inline-flex flex-col gap-1">
       <div
@@ -34,7 +34,7 @@ const isExternalLink = buttonData.link.startsWith("http");
   </div>
   <!-- Right Legend -->
   <div
-    class="legend-pin right-legend absolute bottom-8 z-[60] font-['PolySans_Trial',sans-serif] text-[#FEFCD9] max-w-[42vw] right-8 text-right flex justify-end max-lg:bottom-7 max-md:left-4 max-md:right-auto max-md:text-left max-md:justify-start max-md:bottom-6 max-md:max-w-[80vw]"
+    class="legend-pin right-legend absolute bottom-8 z-60 font-['PolySans_Trial',sans-serif] text-[#FEFCD9] max-w-[42vw] right-8 text-right flex justify-end max-lg:bottom-7 max-md:left-4 max-md:right-auto max-md:text-left max-md:justify-start max-md:bottom-6 max-md:max-w-[80vw]"
   >
     <div class="legend-right-inner inline-flex flex-col gap-1">
       <div
@@ -60,7 +60,7 @@ const isExternalLink = buttonData.link.startsWith("http");
     href={buttonData.link}
     target={isExternalLink ? "_blank" : undefined}
     rel={isExternalLink ? "noopener noreferrer" : undefined}
-    class="c2c-btn absolute top-7 right-10 z-[600] pointer-events-auto w-auto h-12 bg-[#F95F4A] rounded-[41px] flex items-center pl-[34px] pr-8 gap-3 max-md:right-4 max-md:top-3 no-underline"
+    class="c2c-btn absolute top-7 right-10 z-600 pointer-events-auto w-auto h-12 bg-[#F95F4A] rounded-[41px] flex items-center pl-[34px] pr-8 gap-3 max-md:right-4 max-md:top-3 no-underline"
   >
     <div
       class="text-[#FEFCD9] text-base font-light font-['PolySans_Trial'] uppercase"

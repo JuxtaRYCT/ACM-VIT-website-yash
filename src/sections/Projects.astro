@@ -74,9 +74,9 @@ const { projects = [] } = Astro.props;
           </div>
 
           <div class="div4 col-start-6 col-end-10 row-start-1 row-end-3">
-            <div class="content-section text-[var(--textColor)] flex flex-col gap-5 justify-center px-5 h-full">
+            <div class="content-section text-(--textColor) flex flex-col gap-5 justify-center px-5 h-full">
               <div class="content-block border-none p-2.5 relative my-1">
-                <p class="description font-['PolySans_Trial'] text-base leading-[1.4] m-0 text-[var(--textColor)] font-light break-words">
+                <p class="description font-['PolySans_Trial'] text-base leading-[1.4] m-0 text-(--textColor) font-light wrap-break-word">
                   {projectData.textContent.blocks[0]}
                 </p>
               </div>
@@ -90,7 +90,7 @@ const { projects = [] } = Astro.props;
                 href={projectData.buttons.visitWebsite.url || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="btn primary px-[18px] py-[10px] border rounded-[25px] font-['PolySans_Trial'] text-xs font-light uppercase cursor-pointer transition-all duration-300 break-words hover:-translate-y-[3px] hover:shadow-[0_8px_20px_var(--hoverShadow)] no-underline flex items-center justify-center"
+                class="btn primary px-[18px] py-2.5 border rounded-[25px] font-['PolySans_Trial'] text-xs font-light uppercase cursor-pointer transition-all duration-300 wrap-break-word hover:-translate-y-[3px] hover:shadow-[0_8px_20px_var(--hoverShadow)] no-underline flex items-center justify-center"
                 style={`
             background: ${projectData.buttons.visitWebsite.backgroundColor};
             color: ${projectData.buttons.visitWebsite.textColor};
@@ -106,7 +106,7 @@ const { projects = [] } = Astro.props;
                   href={icon.url || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="gh-btn icon-btn w-11 h-11 rounded-full flex items-center justify-center p-0 border font-['PolySans_Trial'] text-xs font-light uppercase cursor-pointer transition-all duration-300 break-words hover:-translate-y-[3px] hover:shadow-[0_8px_20px_var(--hoverShadow)]"
+                  class="gh-btn icon-btn w-11 h-11 rounded-full flex items-center justify-center p-0 border font-['PolySans_Trial'] text-xs font-light uppercase cursor-pointer transition-all duration-300 wrap-break-word hover:-translate-y-[3px] hover:shadow-[0_8px_20px_var(--hoverShadow)]"
                   style={`
               background: ${icon.backgroundColor};
               color: ${icon.textColor};
@@ -129,9 +129,9 @@ const { projects = [] } = Astro.props;
           </div>
 
           <div class="div6 col-start-6 col-end-10 row-start-4 row-end-6">
-            <div class="content-section text-[var(--textColor)] flex flex-col gap-5 justify-center px-5 h-full">
+            <div class="content-section text-(--textColor) flex flex-col gap-5 justify-center px-5 h-full">
               <div class="content-block border-none p-2.5 relative my-1">
-                <p class="description font-['PolySans_Trial'] text-base leading-[1.4] m-0 text-[var(--textColor)] font-light break-words">
+                <p class="description font-['PolySans_Trial'] text-base leading-[1.4] m-0 text-(--textColor) font-light wrap-break-word">
                   {projectData.textContent.blocks[1]}
                 </p>
               </div>
