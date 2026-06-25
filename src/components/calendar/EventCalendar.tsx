@@ -22,8 +22,8 @@ function formatTime(t: string) {
   return `${h % 12 || 12}:${String(m).padStart(2, '0')} ${ampm}`;
 }
 
-function getEventsForDate(date: string, filters: Set<EventDomain>) {
-  const events = SAMPLE_EVENTS.filter(e => e.date === date);
+function getEventsForDate(date: string, filters: Set<EventDomain>, allEvents: CalendarEvent[]) {
+  const events = allEvents.filter(e => e.date === date);
   if (filters.size === 0) return events;
   return events.filter(e => filters.has(e.domain));
 }
@@ -137,6 +137,16 @@ function EventDetailCard({ event, onClose }: { event: CalendarEvent; onClose: ()
           </div>
 
           <p className="cal-label-desc">{event.description}</p>
+
+          {event.href && (
+            <a
+              href={event.href}
+              className="cal-label-link"
+              style={{ color: colors.text, borderColor: colors.border }}
+            >
+              Read Blog →
+            </a>
+          )}
         </div>
       </div>
     </div>
@@ -148,7 +158,29 @@ export default function EventCalendar() {
   const [viewMode, setViewMode] = useState<'month' | 'week'>('month');
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
   const [activeFilters, setActiveFilters] = useState<Set<EventDomain>>(new Set());
+  const [allEvents, setAllEvents] = useState<CalendarEvent[]>(SAMPLE_EVENTS);
   const today = new Date();
+
+  // Fetch blog dates and merge into calendar events
+  useEffect(() => {
+    fetch('/api/blog-dates')
+      .then(res => res.json())
+      .then((blogDates: { title: string; date: string; url: string; source: string }[]) => {
+        const blogEvents: CalendarEvent[] = blogDates.map((b, i) => ({
+          id: `blog-${i}`,
+          title: b.title,
+          date: b.date,
+          startTime: '00:00',
+          endTime: '23:59',
+          domain: 'blog' as EventDomain,
+          description: `Blog post published on ${b.source === 'hashnode' ? 'Hashnode' : 'Medium'}`,
+          location: b.source === 'hashnode' ? 'blog.acmvit.in' : 'medium.com/acmvit',
+          href: b.url,
+        }));
+        setAllEvents([...SAMPLE_EVENTS, ...blogEvents]);
+      })
+      .catch(() => { /* keep static events on failure */ });
+  }, []);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -251,7 +283,7 @@ export default function EventCalendar() {
       <div className={`cal-grid ${viewMode === 'week' ? 'cal-grid-week' : ''}`}>
         {cells.map(({ date, isCurrentMonth }, i) => {
           const dateStr = formatDate(date);
-          const events = getEventsForDate(dateStr, activeFilters);
+          const events = getEventsForDate(dateStr, activeFilters, allEvents);
           const hasEvents = events.length > 0;
           const todayFlag = isToday(date);
 
@@ -310,7 +342,7 @@ export default function EventCalendar() {
             <span className="cal-reel cal-reel-right" />
           </div>
         </div>
-        {SAMPLE_EVENTS
+        {allEvents
           .filter(e => new Date(e.date) >= new Date(formatDate(currentDate)))
           .sort((a, b) => a.date.localeCompare(b.date))
           .slice(0, 5)

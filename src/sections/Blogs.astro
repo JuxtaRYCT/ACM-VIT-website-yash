@@ -1,72 +1,21 @@
 ---
 import BlogsCard from "../components/ui/BlogsCard.astro";
 import AnimatedButton from "../components/ui/AnimatedButton.astro";
-import { reader } from "../utils/reader";
 import { getAssetUrl } from "../utils/cdn";
-
-const blogsData = await reader.singletons.blogs.read();
-const blogData = blogsData?.items ?? [];
+import { getAllPosts } from "../lib/blog";
 
 const fallbackCover = "/blogs/placeholder.webp";
-const HASHNODE_HOST = "blog.acmvit.in";
-const HASHNODE_ENDPOINT = "https://gql.hashnode.com";
 
-async function fetchHashnodeCover(url: string): Promise<string | null> {
-  try {
-    const parsed = new URL(url);
-    const slug = parsed.pathname.replace(/^\/|\/$/g, "");
-    if (!slug) return null;
-
-    const query = `
-      query PostBySlug($host: String!, $slug: String!) {
-        publication(host: $host) {
-          post(slug: $slug) {
-            coverImage {
-              url
-            }
-          }
-        }
-      }
-    `;
-
-    const response = await fetch(HASHNODE_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "User-Agent": "Mozilla/5.0 (compatible; AstroBot/1.0)",
-      },
-      body: JSON.stringify({
-        query,
-        variables: { host: HASHNODE_HOST, slug },
-      }),
-    });
-
-    if (!response.ok) return null;
-    const payload = await response.json();
-    const post = payload?.data?.publication?.post;
-    if (!post) return null;
-
-    if (typeof post.coverImage === "string") return post.coverImage;
-    if (post.coverImage && typeof post.coverImage.url === "string") {
-      return post.coverImage.url;
-    }
-  } catch (error) {
-    console.warn(`Failed to fetch Hashnode cover for ${url}:`, error);
-  }
-
-  return null;
+let blogsWithImages: { link: string; bgUrl: string }[] = [];
+try {
+  const posts = await getAllPosts();
+  blogsWithImages = posts.slice(0, 8).map((post) => ({
+    link: `/blogs/${post.source}/${post.slug}`,
+    bgUrl: post.coverImage || fallbackCover,
+  }));
+} catch {
+  blogsWithImages = [];
 }
-
-const blogsWithImages = await Promise.all(
-  blogData.map(async (blog) => {
-    if (blog.cover) {
-      return { link: blog.link, bgUrl: blog.cover };
-    }
-
-    const hashnodeCover = await fetchHashnodeCover(blog.link);
-    return { link: blog.link, bgUrl: hashnodeCover || fallbackCover };
-  })
-);
 ---
 
 <div
@@ -193,8 +142,7 @@ const blogsWithImages = await Promise.all(
   <div class="flex justify-center w-full mt-8">
     <AnimatedButton
       text="Still curious? Dive deeper into our brainwaves"
-      href="https://blog.acmvit.in"
-      target="_blank"
+      href="/blogs"
     />
   </div>
 </div>

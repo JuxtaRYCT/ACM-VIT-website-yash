@@ -521,6 +521,26 @@
   overflow: hidden;
 }
 
+.cal-label-link {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 12px;
+  font-size: 0.7rem;
+  font-family: 'PolySans Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border: 1px solid;
+  border-radius: 999px;
+  text-decoration: none;
+  position: relative;
+  z-index: 1;
+  transition: opacity 0.2s ease;
+}
+
+.cal-label-link:hover {
+  opacity: 0.8;
+}
+
 /* ── Upcoming Events ── */
 .cal-upcoming {
   margin-top: 2rem;

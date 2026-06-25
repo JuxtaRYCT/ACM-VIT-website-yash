@@ -1,4 +1,4 @@
-export type EventDomain = 'tech' | 'design' | 'research' | 'management' | 'cc';
+export type EventDomain = 'tech' | 'design' | 'research' | 'management' | 'cc' | 'blog';
 
 export interface CalendarEvent {
   id: string;
@@ -9,6 +9,8 @@ export interface CalendarEvent {
   domain: EventDomain;
   description: string;
   location: string;
+  /** Internal link for blog events. */
+  href?: string;
 }
 
 export const DOMAIN_COLORS: Record<EventDomain, { bg: string; text: string; border: string; label: string; cassette: string }> = {
@@ -17,6 +19,7 @@ export const DOMAIN_COLORS: Record<EventDomain, { bg: string; text: string; bord
   research:   { bg: 'rgba(154, 243, 255, 0.2)', text: '#9AF3FF', border: '#9AF3FF', label: 'Research',           cassette: '/cassettes/Cassette_Research.webp' },
   management: { bg: 'rgba(0, 180, 180, 0.2)',   text: '#00B4B4', border: '#00B4B4', label: 'Management',         cassette: '/cassettes/Cassette_Management.webp' },
   cc:         { bg: 'rgba(180, 227, 91, 0.2)',   text: '#B4E35B', border: '#B4E35B', label: 'Competitive Coding', cassette: '/cassettes/Cassette_cc.webp' },
+  blog:       { bg: 'rgba(249, 95, 74, 0.2)',    text: '#F95F4A', border: '#F95F4A', label: 'Blog Post',          cassette: '/cassettes/Cassette_Tech.webp' },
 };
 
 export const SAMPLE_EVENTS: CalendarEvent[] = [
