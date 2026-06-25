@@ -10,22 +10,22 @@ const { title, imageUrl, link } = Astro.props;
 ---
 
 <div
-  class="w-[80vw] h-[50vw] sm:w-[30vw] sm:h-[18.75vw] lg:w-[20vw] lg:h-[12.5vw] rounded-lg shadow-lg flex flex-col items-center justify-center relative"
+  class="partner-casette-shell w-[80vw] h-[49vw] sm:w-[30vw] sm:h-[18.4vw] lg:w-[20vw] lg:h-[12.25vw] shadow-lg flex flex-col items-center justify-center relative"
 >
-  <div class="w-full h-[80%] z-0 absolute">
+  <div class="partner-casette-frame z-0 absolute inset-0">
     <img
       src={getAssetUrl("/cassettes/partner-casette.webp")}
       alt="Partner Casette Boilerplate"
-      class="partner-casette-bg w-full h-auto object-cover absolute pointer-events-none rounded-lg mb-4"
+      class="partner-casette-bg w-full h-full object-contain object-center pointer-events-none"
       loading="lazy"
       decoding="async"
     />
   </div>
-  <div class="z-10 h-full w-full flex justify-center items-center">
+  <div class="z-10 h-full w-full flex justify-center items-center p-[10%]">
     <img
       src={imageUrl}
       alt={title}
-      class="object-contain h-[60%] w-[60%]"
+      class="partner-casette-logo object-contain h-full w-full max-h-[60%] max-w-[60%]"
       loading="lazy"
       decoding="async"
     />
@@ -33,7 +33,32 @@ const { title, imageUrl, link } = Astro.props;
 </div>
 
 <style>
+  .partner-casette-shell {
+    overflow: hidden;
+    background: transparent;
+    border-radius: 16px;
+  }
+
+  .partner-casette-frame {
+    pointer-events: none;
+    border-radius: inherit;
+    overflow: hidden;
+  }
+
+  .partner-casette-bg {
+    border-radius: inherit;
+  }
+
   :global(html[data-theme="light"]) .partner-casette-bg {
-    filter: invert(1) brightness(0.15);
+    filter: none;
+  }
+
+  :global(html[data-theme="light"]) .partner-casette-shell {
+    background-color: #1a1a1a;
+  }
+
+  :global(html[data-theme="light"]) .partner-casette-logo[src$=".svg"] {
+    filter: brightness(0) saturate(100%) invert(52%) sepia(95%) saturate(1678%)
+      hue-rotate(341deg) brightness(102%) contrast(98%);
   }
 </style>
