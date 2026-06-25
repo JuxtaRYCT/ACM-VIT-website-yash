@@ -28,6 +28,7 @@ if (cdnEnv) {
 const title = "ACM-VIT";
 const description =
   "ACM-VIT is the official student chapter of the Association for Computing Machinery at VIT Vellore, focused on building impactful technology, encouraging innovation, and growing a collaborative student community.";
+const isLandingPage = Astro.url.pathname === "/";
 ---
 
 <!doctype html>
@@ -66,12 +67,16 @@ const description =
       href={getAssetUrl("/logos/acm_topleft.webp")}
       fetchpriority="high"
     />
-    <link
-      rel="preload"
-      as="image"
-      href={getAssetUrl("/logos/VIT.webp")}
-      fetchpriority="high"
-    />
+    {
+      isLandingPage && (
+        <link
+          rel="preload"
+          as="image"
+          href={getAssetUrl("/logos/VIT.webp")}
+          fetchpriority="high"
+        />
+      )
+    }
     <link
       rel="preload"
       as="image"
@@ -108,7 +113,7 @@ const description =
       style={`background-image: url('${getAssetUrl("/backgrounds/background_pattern.webp")}');`}
     >
     </div>
-    <div class="brand-logos" aria-label="ACM-VIT and VIT">
+    <div class="brand-logos" aria-label={isLandingPage ? "ACM-VIT and VIT" : "ACM-VIT"}>
       <img
         src={getAssetUrl("/logos/acm_topleft.webp")}
         alt="ACM-VIT"
@@ -117,14 +122,18 @@ const description =
         decoding="async"
         fetchpriority="high"
       />
-      <img
-        src={getAssetUrl("/logos/VIT.webp")}
-        alt="VIT"
-        class="vit-logo"
-        loading="eager"
-        decoding="async"
-        fetchpriority="high"
-      />
+      {
+        isLandingPage && (
+          <img
+            src={getAssetUrl("/logos/VIT.webp")}
+            alt="VIT"
+            class="vit-logo"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+          />
+        )
+      }
     </div>
     <!-- Theme toggle -->
     <button id="theme-toggle" class="theme-toggle" aria-label="Toggle light/dark mode">

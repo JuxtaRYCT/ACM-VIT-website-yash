@@ -1,18 +1,146 @@
 import { gsap } from "gsap";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { Flip } from "gsap/Flip";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  type CSSProperties,
+  type KeyboardEvent,
+  type PointerEvent,
+} from "react";
+
+gsap.registerPlugin(Flip);
 
 interface Props {
   slug: string;
   title: string;
 }
 
-const LISTENING_SPEED_OPTIONS = [0.75, 1, 1.25, 1.5];
+const LISTENING_SPEED_OPTIONS = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
 
 const btnBase =
-  "w-9 h-9 flex items-center justify-center rounded-full border-none bg-transparent cursor-pointer transition-all duration-200 active:scale-[0.92]";
+  "dock-control w-9 h-9 flex items-center justify-center rounded-full border-none bg-transparent cursor-pointer transition-all duration-200 active:scale-[0.92]";
+
+function formatSpeed(speed: number): string {
+  return `${speed.toFixed(speed === 1 ? 0 : 2).replace(/0+$/,"").replace(/\.$/, "")}x`;
+}
+
+function nearestSpeedIndex(speed: number): number {
+  const exact = LISTENING_SPEED_OPTIONS.indexOf(speed);
+  if (exact !== -1) return exact;
+
+  return LISTENING_SPEED_OPTIONS.reduce((nearest, option, index) => (
+    Math.abs(option - speed) < Math.abs(LISTENING_SPEED_OPTIONS[nearest] - speed)
+      ? index
+      : nearest
+  ), 0);
+}
+
+function ElasticSpeedSlider({
+  value,
+  onChange,
+}: {
+  value: number;
+  onChange: (value: number) => void;
+}) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [dragPosition, setDragPosition] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const maxIndex = LISTENING_SPEED_OPTIONS.length - 1;
+  const selectedIndex = nearestSpeedIndex(value);
+  const visualPosition = dragPosition ?? selectedIndex;
+  const boundedVisualPosition = Math.min(maxIndex, Math.max(0, visualPosition));
+  const visualPercent = (visualPosition / maxIndex) * 100;
+  const boundedVisualPercent = (boundedVisualPosition / maxIndex) * 100;
+  const activeIndex = isDragging ? Math.round(boundedVisualPosition) : selectedIndex;
+  const elasticPull = isDragging
+    ? Math.min(1, Math.abs(visualPosition - boundedVisualPosition))
+    : 0;
+  const trackStyle = {
+    "--elastic-pull": elasticPull.toFixed(3),
+    "--elastic-origin": visualPosition < 0 ? "right" : "left",
+  } as CSSProperties;
+
+  const updateFromClientX = useCallback((clientX: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const rect = track.getBoundingClientRect();
+    const raw = ((clientX - rect.left) / rect.width) * maxIndex;
+    const bounded = Math.min(maxIndex, Math.max(0, raw));
+    const overflow =
+      raw < 0 ? raw : raw > maxIndex ? raw - maxIndex : 0;
+
+    setDragPosition(bounded + overflow * 0.22);
+  }, [maxIndex]);
+
+  const commitDrag = useCallback(() => {
+    const position = Math.min(maxIndex, Math.max(0, dragPosition ?? selectedIndex));
+    const nextIndex = Math.round(position);
+    onChange(LISTENING_SPEED_OPTIONS[nextIndex]);
+    setDragPosition(null);
+    setIsDragging(false);
+  }, [dragPosition, maxIndex, onChange, selectedIndex]);
+
+  const handlePointerDown = useCallback((event: PointerEvent<HTMLDivElement>) => {
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setIsDragging(true);
+    updateFromClientX(event.clientX);
+  }, [updateFromClientX]);
+
+  const handleKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    event.preventDefault();
+    const delta = event.key === "ArrowRight" ? 1 : -1;
+    const nextIndex = Math.min(maxIndex, Math.max(0, selectedIndex + delta));
+    onChange(LISTENING_SPEED_OPTIONS[nextIndex]);
+  }, [maxIndex, onChange, selectedIndex]);
+
+  return (
+    <div
+      className={`dock-control elastic-speed-slider ${isDragging ? "is-dragging" : ""}`}
+      role="slider"
+      aria-label="Listening speed"
+      aria-valuemin={LISTENING_SPEED_OPTIONS[0]}
+      aria-valuemax={LISTENING_SPEED_OPTIONS[maxIndex]}
+      aria-valuenow={value}
+      aria-valuetext={formatSpeed(value)}
+      tabIndex={0}
+      title={`Speed: ${formatSpeed(value)}`}
+      onPointerDown={handlePointerDown}
+      onPointerMove={(event) => {
+        if (isDragging) updateFromClientX(event.clientX);
+      }}
+      onPointerUp={commitDrag}
+      onPointerCancel={commitDrag}
+      onKeyDown={handleKeyDown}
+    >
+      <span className="elastic-speed-value">{formatSpeed(value)}</span>
+      <div className="elastic-speed-track" ref={trackRef} style={trackStyle}>
+        <div
+          className="elastic-speed-fill"
+          style={{ width: `${boundedVisualPercent}%` }}
+        />
+        {LISTENING_SPEED_OPTIONS.map((speed, index) => (
+          <span
+            key={speed}
+            className={`elastic-speed-stop ${index <= activeIndex ? "is-active" : ""}`}
+            style={{ left: `${(index / maxIndex) * 100}%` }}
+          />
+        ))}
+        <span
+          className="elastic-speed-thumb"
+          style={{ left: `${visualPercent}%` }}
+        />
+      </div>
+    </div>
+  );
+}
 
 export default function BlogDock({ slug, title }: Props) {
   const [isListening, setIsListening]   = useState(false);
+  const [showSpeedControl, setShowSpeedControl] = useState(false);
   const [showNotes, setShowNotes]       = useState(false);
   const [notes, setNotes]               = useState("");
   const [copied, setCopied]             = useState(false);
@@ -21,6 +149,8 @@ export default function BlogDock({ slug, title }: Props) {
   const [listeningSpeed, setListeningSpeed] = useState(1);
   const speakingRef = useRef(false);
   const dockRef     = useRef<HTMLDivElement>(null);
+  const speedControlRef = useRef<HTMLDivElement>(null);
+  const speedVisibleRef = useRef(false);
   const storageKey  = `acm-blog-${slug}`;
 
   // ── Load saved state + voices ──────────────────────────
@@ -28,7 +158,9 @@ export default function BlogDock({ slug, title }: Props) {
     try {
       const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
       if (saved.notes) setNotes(saved.notes);
-      if (typeof saved.listeningSpeed === "number") setListeningSpeed(saved.listeningSpeed);
+      if (typeof saved.listeningSpeed === "number") {
+        setListeningSpeed(LISTENING_SPEED_OPTIONS[nearestSpeedIndex(saved.listeningSpeed)]);
+      }
     } catch {}
 
     setIsDark(document.documentElement.getAttribute("data-theme") !== "light");
@@ -54,31 +186,67 @@ export default function BlogDock({ slug, title }: Props) {
     return () => observer.disconnect();
   }, []);
 
-  // ── GSAP entrance on the INNER div only ───────────────
+  // ── AnimatedButton-style entrance on the INNER div only ─
   // The outer div holds `left-1/2 -translate-x-1/2` for centering.
-  // GSAP only animates the inner div (y / opacity / scale) so it
-  // never overwrites the centering transform on the outer div.
+  // GSAP only animates the inner div/pill so it never overwrites the
+  // centering transform on the outer div.
   useEffect(() => {
     if (!dockRef.current) return;
     const pill     = dockRef.current.querySelector<HTMLElement>(".dock-pill");
-    const controls = dockRef.current.querySelectorAll<HTMLElement>(".dock-btn");
+    const controls = dockRef.current.querySelectorAll<HTMLElement>(".dock-control");
+    const dividers = dockRef.current.querySelectorAll<HTMLElement>(".dock-divider");
+    if (!pill) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        dockRef.current,
-        { opacity: 0, y: 28, scale: 0.94 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "power3.out" },
-      );
-      if (pill) {
-        gsap.fromTo(pill, { y: 10 }, { y: 0, duration: 0.55, ease: "power3.out", delay: 0.08 });
-      }
-      if (controls.length > 0) {
-        gsap.fromTo(
-          controls,
-          { opacity: 0, y: 8, scale: 0.92 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.35, stagger: 0.04, ease: "power2.out", delay: 0.18 },
-        );
-      }
+      const naturalRect = pill.getBoundingClientRect();
+      const naturalWidth = naturalRect.width;
+      const naturalHeight = naturalRect.height;
+
+      gsap.set(dockRef.current, { opacity: 1 });
+      gsap.set(pill, {
+        opacity: 0,
+        y: 24,
+        scale: 0.7,
+        width: naturalHeight,
+        height: naturalHeight,
+        overflow: "hidden",
+      });
+      gsap.set([controls, dividers], { opacity: 0 });
+
+      const tl = gsap.timeline();
+      tl.to(pill, {
+        opacity: 1,
+        y: -6,
+        scale: 1.05,
+        duration: 0.35,
+        ease: "power2.out",
+      })
+        .to(pill, {
+          y: 0,
+          scale: 1,
+          duration: 0.25,
+          ease: "power3.out",
+        })
+        .add(() => {
+          const state = Flip.getState(pill);
+          pill.style.width = `${naturalWidth}px`;
+
+          Flip.from(state, {
+            duration: 0.5,
+            ease: "power3.out",
+            onComplete: () => {
+              pill.style.width = "";
+              pill.style.height = "";
+              pill.style.overflow = "";
+              gsap.to([controls, dividers], {
+                opacity: 1,
+                duration: 0.3,
+                stagger: 0.025,
+                ease: "power2.out",
+              });
+            },
+          });
+        }, "-=0.08");
     }, dockRef);
     return () => ctx.revert();
   }, []);
@@ -87,6 +255,56 @@ export default function BlogDock({ slug, title }: Props) {
   useEffect(() => {
     return () => { if (speakingRef.current) speechSynthesis.cancel(); };
   }, []);
+
+  useEffect(() => {
+    const speedControl = speedControlRef.current;
+
+    if (isListening) {
+      if (!showSpeedControl) {
+        setShowSpeedControl(true);
+        return;
+      }
+      if (!speedControl || speedVisibleRef.current) return;
+
+      speedVisibleRef.current = true;
+      gsap.killTweensOf(speedControl);
+      gsap.fromTo(
+        speedControl,
+        {
+          width: 0,
+          opacity: 0,
+          x: -10,
+          scaleX: 0.88,
+        },
+        {
+          width: "auto",
+          opacity: 1,
+          x: 0,
+          scaleX: 1,
+          duration: 0.42,
+          ease: "power3.out",
+          clearProps: "width,x,scaleX",
+        },
+      );
+      return;
+    }
+
+    if (!showSpeedControl || !speedControl) return;
+
+    speedVisibleRef.current = false;
+    gsap.killTweensOf(speedControl);
+    gsap.to(speedControl, {
+      width: 0,
+      opacity: 0,
+      x: -8,
+      scaleX: 0.92,
+      duration: 0.24,
+      ease: "power2.inOut",
+      onComplete: () => {
+        setShowSpeedControl(false);
+      },
+    });
+  }, [isListening, showSpeedControl]);
 
   // ── Helpers ────────────────────────────────────────────
   const saveNotes = useCallback((text: string) => {
@@ -100,16 +318,13 @@ export default function BlogDock({ slug, title }: Props) {
     } catch {}
   }, [listeningSpeed, storageKey]);
 
-  const cycleListeningSpeed = useCallback(() => {
-    setListeningSpeed((cur) => {
-      const next = LISTENING_SPEED_OPTIONS[(LISTENING_SPEED_OPTIONS.indexOf(cur) + 1) % LISTENING_SPEED_OPTIONS.length];
-      try {
-        const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
-        saved.listeningSpeed = next;
-        localStorage.setItem(storageKey, JSON.stringify(saved));
-      } catch {}
-      return next;
-    });
+  const saveListeningSpeed = useCallback((next: number) => {
+    setListeningSpeed(next);
+    try {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+      saved.listeningSpeed = next;
+      localStorage.setItem(storageKey, JSON.stringify(saved));
+    } catch {}
   }, [storageKey]);
 
   const toggleListen = useCallback(() => {
@@ -170,42 +385,32 @@ export default function BlogDock({ slug, title }: Props) {
     else { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 2000); }
   }, [title]);
 
-  const renderMarkdown = (text: string): string =>
-    text
-      .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-      .replace(/^### (.*)$/gm,"<h4>$1</h4>").replace(/^## (.*)$/gm,"<h3>$1</h3>").replace(/^# (.*)$/gm,"<h2>$1</h2>")
-      .replace(/\*\*(.*?)\*\*/g,"<strong>$1</strong>").replace(/\*(.*?)\*/g,"<em>$1</em>")
-      .replace(/`(.*?)`/g,"<code>$1</code>").replace(/^- (.*)$/gm,"&bull; $1<br>")
-      .replace(/\n\n/g,"<br><br>").replace(/\n/g,"<br>");
-
   // ── Theme-driven class sets ─────────────────────────────
   const pill = isDark
     ? "bg-[rgba(30,30,30,0.9)] border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-    : "bg-white border-gray-200 shadow-[0_8px_32px_rgba(0,0,0,0.15)]";
+    : "bg-[rgba(22,22,22,0.96)] border-[#F95F4A]/35 shadow-[0_12px_36px_rgba(45,20,12,0.28)]";
 
   const btn = isDark
     ? "text-white/60 hover:text-[#FEFCD9] hover:bg-white/[0.08]"
-    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100";
+    : "text-[#F7EEC1]/75 hover:text-[#F95F4A] hover:bg-[#F95F4A]/18";
 
-  const divider = isDark ? "bg-white/[0.08]" : "bg-gray-200";
+  const divider = isDark ? "bg-white/[0.08]" : "bg-[#F95F4A]/25";
 
   const scratchpad = isDark
     ? "bg-[rgba(30,30,30,0.95)] border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
-    : "bg-white border-gray-200 shadow-[0_8px_32px_rgba(0,0,0,0.15)]";
+    : "bg-[rgba(255,250,238,0.98)] border-[#C7442E]/25 shadow-[0_12px_36px_rgba(45,20,12,0.2)]";
 
   const scratchHeader = isDark
     ? "border-white/[0.06] text-white/50"
-    : "border-gray-200 text-gray-500";
+    : "border-[#C7442E]/15 text-[#8A2F21]";
 
   const scratchClose = isDark
     ? "text-white/40 hover:text-white/80 hover:bg-white/[0.06]"
-    : "text-gray-400 hover:text-gray-700 hover:bg-gray-100";
+    : "text-[#8A2F21]/60 hover:text-[#C7442E] hover:bg-[#F95F4A]/12";
 
   const scratchInput = isDark
     ? "border-white/[0.06] text-white/80 placeholder:text-white/20"
-    : "border-gray-200 text-gray-800 placeholder:text-gray-400";
-
-  const scratchPreview = isDark ? "text-white/70" : "text-gray-700";
+    : "border-[#C7442E]/15 text-[#1a1a1a] placeholder:text-[#7A4A3D]/60";
 
   // ── Render ─────────────────────────────────────────────
   //
@@ -242,21 +447,15 @@ export default function BlogDock({ slug, title }: Props) {
               <textarea
                 value={notes}
                 onChange={(e) => saveNotes(e.target.value)}
-                placeholder="Write notes in Markdown..."
-                className={`w-full min-h-[100px] max-h-[140px] px-3.5 py-3 bg-transparent border-0 border-b font-mono text-[12px] leading-relaxed resize-none outline-none box-border ${scratchInput}`}
+                placeholder="Write a quick note..."
+                className={`w-full h-[180px] px-3.5 py-3 bg-transparent border-0 font-mono text-[12px] leading-relaxed resize-none outline-none box-border ${scratchInput}`}
               />
-              {notes && (
-                <div
-                  className={`px-3.5 py-3 max-h-[120px] overflow-y-auto text-[12px] leading-relaxed [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${scratchPreview}`}
-                  dangerouslySetInnerHTML={{ __html: renderMarkdown(notes) }}
-                />
-              )}
             </div>
           </div>
         )}
 
         {/* ── Dock pill ───────────────────────────────── */}
-        <div className={`dock-pill flex items-center gap-1 px-4 py-2 backdrop-blur-2xl rounded-full border ${pill}`}>
+        <div className={`dock-pill flex min-h-[52px] items-center gap-1 px-4 py-2 backdrop-blur-2xl rounded-full border ${pill}`}>
 
           {/* Listen */}
           <button
@@ -278,20 +477,16 @@ export default function BlogDock({ slug, title }: Props) {
             )}
           </button>
 
-          <div className={`w-px h-5 mx-0.5 ${divider}`} />
-
-          {/* Speed */}
-          <button
-            className={`dock-btn ${btnBase} min-w-[42px] px-2.5 ${btn}`}
-            onClick={cycleListeningSpeed}
-            title={`Speed: ${listeningSpeed}x`}
-          >
-            <span className="font-mono text-[10px] tracking-[0.08em]">
-              {listeningSpeed.toFixed(listeningSpeed === 1 ? 0 : 2).replace(/0+$/,"").replace(/\.$/, "")}x
-            </span>
-          </button>
-
-          <div className={`w-px h-5 mx-0.5 ${divider}`} />
+          {showSpeedControl && (
+            <div
+              ref={speedControlRef}
+              className="playback-speed-group flex items-center gap-1 overflow-hidden origin-left"
+            >
+              <div className={`dock-divider w-px h-5 mx-0.5 shrink-0 ${divider}`} />
+              <ElasticSpeedSlider value={listeningSpeed} onChange={saveListeningSpeed} />
+              <div className={`dock-divider w-px h-5 mx-0.5 shrink-0 ${divider}`} />
+            </div>
+          )}
 
           {/* Notes */}
           <button
@@ -307,7 +502,7 @@ export default function BlogDock({ slug, title }: Props) {
             </svg>
           </button>
 
-          <div className={`w-px h-5 mx-0.5 ${divider}`} />
+          <div className={`dock-divider w-px h-5 mx-0.5 ${divider}`} />
 
           {/* Theme */}
           <button className={`dock-btn ${btnBase} ${btn}`} onClick={toggleTheme} title="Toggle theme">
@@ -326,7 +521,7 @@ export default function BlogDock({ slug, title }: Props) {
             )}
           </button>
 
-          <div className={`w-px h-5 mx-0.5 ${divider}`} />
+          <div className={`dock-divider w-px h-5 mx-0.5 ${divider}`} />
 
           {/* Share */}
           <button className={`dock-btn ${btnBase} ${btn}`} onClick={handleShare} title={copied ? "Copied!" : "Share"}>
