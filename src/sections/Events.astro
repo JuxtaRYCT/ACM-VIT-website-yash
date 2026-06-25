@@ -269,6 +269,12 @@ const worksHeightMobile = works.length * 45;
     ) {
       if (name === "progress") {
         this.style.setProperty("--progress", newValue);
+        const progressValue = Number(newValue);
+        if (Number.isFinite(progressValue)) {
+          this.style.zIndex = String(
+            Math.round((1 - Math.min(Math.abs(progressValue), 1)) * 1000) + 10
+          );
+        }
         if (newValue === "1" || newValue === "-1") {
           if (this.isPlaying) {
             this.outView();
@@ -499,6 +505,26 @@ const worksHeightMobile = works.length * 45;
         this.onTouchViewportResize,
         { passive: true }
       );
+
+      // Click delegation — catches clicks that pass through the mask overlay
+      // but miss a-work elements due to sticky stacking context issues.
+      this.el.addEventListener("click", (e: MouseEvent) => {
+        const target = e.target as HTMLElement;
+        if (target.closest("a-work")) return;
+
+        const elements = document.elementsFromPoint(e.clientX, e.clientY);
+        for (const el of elements) {
+          const work = el.closest("a-work") as HTMLElement | null;
+          if (work?.classList.contains("is-inview")) {
+            const anchor = work.querySelector("a") as HTMLAnchorElement | null;
+            const href = anchor?.getAttribute("href");
+            if (href) {
+              window.location.assign(href);
+              return;
+            }
+          }
+        }
+      });
 
       this.el.addEventListener(
         "intersect",
@@ -1533,7 +1559,6 @@ const worksHeightMobile = works.length * 45;
         pointer-events: none;
 
         &.is-inview {
-          z-index: 9;
           opacity: 1;
           pointer-events: auto;
         }
@@ -1573,9 +1598,8 @@ const worksHeightMobile = works.length * 45;
     left: 0;
     display: block;
     margin: 0;
-    padding: 0.5rem 0.5rem 0;
-    margin: 0;
-    padding: 0.5rem 0.5rem 0;
+    padding: 0;
+    pointer-events: none;
     border-radius: 1.5rem;
     background: var(--color-secondary);
     /* content-visibility: hidden; -- REMOVED to prevent interactivity issues */
@@ -1589,6 +1613,10 @@ const worksHeightMobile = works.length * 45;
 
     a {
       display: block;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      padding: 0.5rem 0.5rem 0;
       text-decoration: none;
       cursor: pointer;
       pointer-events: auto;
