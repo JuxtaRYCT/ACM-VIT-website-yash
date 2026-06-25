@@ -59,7 +59,8 @@ for (const item of domainItems) {
     <div
       class="domains-grid relative flex h-screen w-screen items-center justify-center overflow-visible p-5 origin-center will-change-transform [transform-style:preserve-3d] backface-hidden"
     >
-      <div
+      <a
+        href="/domains/tech"
         class="domain-item absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         data-domain="tech"
       >
@@ -74,10 +75,12 @@ for (const item of domainItems) {
               loading="lazy"
               decoding="async"
             />
+            <span class="cassette-explore-label">Explore &rarr;</span>
           </div>
         </div>
-      </div>
-      <div
+      </a>
+      <a
+        href="/domains/cc"
         class="domain-item absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         data-domain="cc"
       >
@@ -92,10 +95,12 @@ for (const item of domainItems) {
               loading="lazy"
               decoding="async"
             />
+            <span class="cassette-explore-label">Explore &rarr;</span>
           </div>
         </div>
-      </div>
-      <div
+      </a>
+      <a
+        href="/domains/design"
         class="domain-item absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         data-domain="design"
       >
@@ -110,10 +115,12 @@ for (const item of domainItems) {
               loading="lazy"
               decoding="async"
             />
+            <span class="cassette-explore-label">Explore &rarr;</span>
           </div>
         </div>
-      </div>
-      <div
+      </a>
+      <a
+        href="/domains/management"
         class="domain-item absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         data-domain="management"
       >
@@ -128,10 +135,12 @@ for (const item of domainItems) {
               loading="lazy"
               decoding="async"
             />
+            <span class="cassette-explore-label">Explore &rarr;</span>
           </div>
         </div>
-      </div>
-      <div
+      </a>
+      <a
+        href="/domains/research"
         class="domain-item absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         data-domain="research"
       >
@@ -146,11 +155,45 @@ for (const item of domainItems) {
               loading="lazy"
               decoding="async"
             />
+            <span class="cassette-explore-label">Explore &rarr;</span>
           </div>
         </div>
-      </div>
+      </a>
     </div>
     <style>
+      .domain-item {
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .cassette-explore-label {
+        position: absolute;
+        bottom: 12px;
+        left: 50%;
+        transform: translateX(-50%) translateY(6px);
+        font-family: 'PolySans Mono', monospace;
+        font-size: 0.6rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: #fefcd9;
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        padding: 6px 14px;
+        border-radius: 100px;
+        border: 1px solid rgba(254,252,217,0.15);
+        white-space: nowrap;
+        z-index: 5;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+      }
+
+      .domain-item:hover .cassette-explore-label {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
       .cassette-wrapper {
         position: relative;
         padding: 2px;
@@ -522,16 +565,13 @@ for (const item of domainItems) {
               });
             });
 
-            // Add click event handler for domain screen
+            // Navigate to domain page on click
             item.addEventListener("click", (event) => {
-              event.stopPropagation();
-              if (!isDomainsSectionInView()) return;
-              if (document.getElementById("domain-screen")) return;
-
-              const domain = item.getAttribute("data-domain");
-              if (domain) {
-                showDomainScreen(domain);
+              if (!isDomainsSectionInView()) {
+                event.preventDefault();
+                return;
               }
+              // Let the <a> tag navigate naturally
             });
           });
         }

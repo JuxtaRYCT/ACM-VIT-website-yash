@@ -1,0 +1,333 @@
+---
+export const prerender = true;
+
+import Layout from "../../layouts/Layout.astro";
+import Footer from "../../layouts/Footer.astro";
+import "../../styles/globals.css";
+import "../../styles/event.css";
+import { getAssetUrl } from "../../utils/cdn";
+import {
+  eventDetails,
+  eventSlugs,
+  getEventThemeHex,
+} from "../../data/eventDetailsData";
+
+export function getStaticPaths() {
+  return eventSlugs.map((slug) => ({ params: { event: slug } }));
+}
+
+const { event } = Astro.params;
+const data = eventDetails[event!];
+if (!data) return Astro.redirect("/");
+
+const themeColor = getEventThemeHex(data.themeKey);
+
+// Title typography split — first word in cream, rest in theme color.
+const titleWords = data.title.split(" ");
+const titleMain = titleWords[0];
+const titleAccent = titleWords.length > 1 ? titleWords.slice(1).join(" ") : "";
+
+// Other events for the closing strip.
+const otherEvents = Object.values(eventDetails)
+  .filter((e) => e.slug !== data.slug)
+  .slice(0, 6);
+---
+
+<Layout pageTitle={data.title} backHref="/#work">
+  <div style={`--event-color: ${themeColor};`}>
+    <!-- Hero -->
+    <section class="event-hero">
+      <div class="event-hero-inner">
+        <div class="event-hero-text">
+          <p class="event-hero-eyebrow" data-animate="fade-up">{data.eyebrow}</p>
+          <h1 class="event-hero-title" data-animate="fade-up">
+            {titleMain}
+            {titleAccent && <><br /><span>{titleAccent}</span></>}
+          </h1>
+          <p class="event-hero-tagline" data-animate="fade-up">{data.tagline}</p>
+          <p class="event-hero-desc" data-animate="fade-up">{data.shortDescription}</p>
+
+          <div class="event-hero-meta" data-animate="fade-up">
+            <span class="event-meta-chip"><strong>Mode</strong>{data.mode}</span>
+            <span class="event-meta-chip"><strong>Duration</strong>{data.duration}</span>
+            <span class="event-meta-chip"><strong>Team</strong>{data.team}</span>
+            <span class="event-meta-chip"><strong>Recurs</strong>{data.recurrence}</span>
+          </div>
+
+          <div class="event-hero-actions" data-animate="fade-up">
+            <a
+              href={data.registrationUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="event-cta-primary"
+            >
+              {data.primaryCtaLabel}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <a href="#event-about" class="event-cta-secondary">Learn More</a>
+          </div>
+        </div>
+
+        <div class="event-hero-cassette" data-animate="fade-in">
+          <img
+            src={getAssetUrl(data.cassetteSvg)}
+            alt={`${data.title} cassette`}
+            class="event-hero-cassette-img"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    {data.stats.length > 0 && (
+      <section class="event-stats" data-animate-group="stagger">
+        {data.stats.map((stat) => (
+          <div class="event-stat" data-animate="fade-up">
+            <div class="event-stat-value">{stat.value}</div>
+            <div class="event-stat-label">{stat.label}</div>
+          </div>
+        ))}
+      </section>
+    )}
+
+    <!-- About -->
+    <section class="event-section-narrow" id="event-about">
+      <div class="event-section-header">
+        <p class="event-section-eyebrow" data-animate="fade-up">About</p>
+        <h2 class="event-section-title" data-animate="fade-up">
+          What is <span>{data.title}</span>?
+        </h2>
+      </div>
+      <div class="event-about-body" data-animate="fade-up">
+        {data.longDescription.map((para) => <p>{para}</p>)}
+      </div>
+    </section>
+
+    <hr class="event-divider" />
+
+    <!-- Tracks / Themes -->
+    {data.tracks.length > 0 && (
+      <section class="event-section">
+        <div class="event-section-header">
+          <p class="event-section-eyebrow" data-animate="fade-up">Tracks</p>
+          <h2 class="event-section-title" data-animate="fade-up">
+            What you can <span>build</span>
+          </h2>
+        </div>
+        <div class="event-track-grid">
+          {data.tracks.map((track) => (
+            <div class="event-track-card" data-animate="fade-up">
+              <h3 class="event-track-name">{track.name}</h3>
+              <p class="event-track-desc">{track.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <hr class="event-divider" />
+
+    <!-- Schedule -->
+    {data.schedule.length > 0 && (
+      <section class="event-section-narrow">
+        <div class="event-section-header">
+          <p class="event-section-eyebrow" data-animate="fade-up">Flow</p>
+          <h2 class="event-section-title" data-animate="fade-up">
+            The <span>schedule</span>
+          </h2>
+        </div>
+        <div class="event-schedule">
+          {data.schedule.map((item) => (
+            <div class="event-schedule-item" data-animate="fade-up">
+              <div class="event-schedule-time">{item.time}</div>
+              <div class="event-schedule-content">
+                <div class="event-schedule-title">{item.title}</div>
+                {item.description && (
+                  <div class="event-schedule-desc">{item.description}</div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <hr class="event-divider" />
+
+    <!-- Prizes -->
+    {data.prizes.length > 0 && (
+      <section class="event-section">
+        <div class="event-section-header">
+          <p class="event-section-eyebrow" data-animate="fade-up">Rewards</p>
+          <h2 class="event-section-title" data-animate="fade-up">
+            Prizes & <span>recognition</span>
+          </h2>
+        </div>
+        <div class="event-prize-grid">
+          {data.prizes.map((prize) => (
+            <div class="event-prize-card" data-animate="fade-up">
+              <div class="event-prize-place">{prize.place}</div>
+              <div class="event-prize-value">{prize.value}</div>
+              {prize.note && <div class="event-prize-note">{prize.note}</div>}
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <hr class="event-divider" />
+
+    <!-- Perks -->
+    {data.perks.length > 0 && (
+      <section class="event-section-narrow">
+        <div class="event-section-header">
+          <p class="event-section-eyebrow" data-animate="fade-up">Included</p>
+          <h2 class="event-section-title" data-animate="fade-up">
+            What's <span>in it</span> for you
+          </h2>
+        </div>
+        <ul class="event-perks-list">
+          {data.perks.map((perk) => (
+            <li data-animate="fade-up">{perk}</li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <hr class="event-divider" />
+
+    <!-- Highlights / Past editions -->
+    {data.highlights.length > 0 && (
+      <section class="event-section">
+        <div class="event-section-header">
+          <p class="event-section-eyebrow" data-animate="fade-up">Past Editions</p>
+          <h2 class="event-section-title" data-animate="fade-up">
+            From the <span>archives</span>
+          </h2>
+        </div>
+        <div class="event-highlight-grid">
+          {data.highlights.map((h) => (
+            <div class="event-highlight-card" data-animate="fade-up">
+              <div class="event-highlight-year">{h.year}</div>
+              <div class="event-highlight-title">{h.title}</div>
+              <div class="event-highlight-desc">{h.description}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <hr class="event-divider" />
+
+    <!-- FAQ -->
+    {data.faq.length > 0 && (
+      <section class="event-section-narrow">
+        <div class="event-section-header">
+          <p class="event-section-eyebrow" data-animate="fade-up">Answers</p>
+          <h2 class="event-section-title" data-animate="fade-up">
+            Frequently asked
+          </h2>
+        </div>
+        <div class="event-faq-list">
+          {data.faq.map((f) => (
+            <details class="event-faq-item">
+              <summary class="event-faq-q">{f.q}</summary>
+              <div class="event-faq-a">{f.a}</div>
+            </details>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- CTA Banner -->
+    <div class="event-cta-banner" data-animate="fade-up">
+      <h3>Be part of the next {data.title}</h3>
+      <p>Hosted by {data.organizedBy}{data.firstHeld ? ` · First held ${data.firstHeld}` : ""}</p>
+      <a
+        href={data.registrationUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="event-cta-primary"
+      >
+        {data.primaryCtaLabel}
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+
+    <hr class="event-divider" />
+
+    <!-- Other events -->
+    <section class="event-section">
+      <div class="event-section-header">
+        <p class="event-section-eyebrow" data-animate="fade-up">More From ACM-VIT</p>
+        <h2 class="event-section-title" data-animate="fade-up">
+          Explore other <span>events</span>
+        </h2>
+      </div>
+      <div class="event-other-strip">
+        {otherEvents.map((e) => (
+          <a href={`/events/${e.slug}`} class="event-other-card" data-animate="fade-up">
+            <img src={getAssetUrl(e.cassetteSvg)} alt={e.title} loading="lazy" decoding="async" />
+            <span class="event-other-card-name">{e.title}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Back -->
+    <section class="event-back-section">
+      <a href="/#work" class="event-back-link">
+        <span aria-hidden="true">&larr;</span>
+        Back to All Events
+      </a>
+    </section>
+  </div>
+
+  <Footer />
+</Layout>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // Hero entrance
+    const heroEls = document.querySelectorAll('.event-hero [data-animate="fade-up"]');
+    gsap.fromTo(heroEls,
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.7, ease: "power3.out", stagger: 0.1, delay: 0.25 }
+    );
+
+    const cassette = document.querySelector('.event-hero [data-animate="fade-in"]');
+    if (cassette) {
+      gsap.fromTo(cassette,
+        { opacity: 0, scale: 0.9, rotate: -4 },
+        { opacity: 1, scale: 1, rotate: 0, duration: 0.85, ease: "power3.out", delay: 0.4 }
+      );
+      gsap.to(cassette.querySelector('.event-hero-cassette-img'), {
+        y: -14, duration: 2.8, ease: "sine.inOut", yoyo: true, repeat: -1,
+      });
+    }
+
+    // Scroll reveal for everything else
+    const scrollEls = document.querySelectorAll(
+      '.event-stats [data-animate], .event-section [data-animate], .event-section-narrow [data-animate], .event-cta-banner[data-animate]'
+    );
+    scrollEls.forEach((el) => {
+      gsap.fromTo(el,
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1, y: 0, duration: 0.6, ease: "power2.out",
+          scrollTrigger: { trigger: el, start: "top 88%", once: true },
+        }
+      );
+    });
+  });
+</script>
