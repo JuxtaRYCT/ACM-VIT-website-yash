@@ -162,6 +162,11 @@ export async function getHashnodePosts(): Promise<BlogPost[]> {
 
 /** Fetch full blog content HTML from a Hashnode page. */
 export async function getHashnodeContent(slug: string): Promise<string> {
+  // RSS content is already article-scoped, so prefer it over scraping the
+  // rendered Hashnode page where layout wrappers can leak into the fragment.
+  const rssHtml = await fetchContentFromRss(slug);
+  if (rssHtml) return cleanContentHtml(rssHtml);
+
   const url = `${BASE_URL}/${slug}`;
   const res = await fetch(url, {
     headers: { 'User-Agent': 'ACM-VIT-Website/1.0' },
@@ -178,16 +183,24 @@ export async function getHashnodeContent(slug: string): Promise<string> {
   const proseMatch = html.match(/<div[^>]*class="[^"]*prose[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/div>/i);
   if (proseMatch) return cleanContentHtml(proseMatch[1]);
 
-  // Last resort: try content from RSS
-  const rssRes = await fetch(RSS_URL);
-  if (rssRes.ok) {
+  return '';
+}
+
+/** Fetch article-scoped content from the Hashnode RSS feed. */
+async function fetchContentFromRss(slug: string): Promise<string> {
+  try {
+    const rssRes = await fetch(RSS_URL, {
+      headers: { 'User-Agent': 'ACM-VIT-Website/1.0' },
+    });
+    if (!rssRes.ok) return '';
+
     const rssXml = await rssRes.text();
     const items = parseRss(rssXml);
     const item = items.find((i) => extractSlug(i.link) === slug);
-    if (item?.contentHtml) return cleanContentHtml(item.contentHtml);
+    return item?.contentHtml || '';
+  } catch {
+    return '';
   }
-
-  return '';
 }
 
 /** Clean up extracted HTML content. */
@@ -212,6 +225,8 @@ function cleanContentHtml(html: string): string {
   // Strip leading metadata (date, reading time, author card, cover image)
   // that Hashnode includes in <article> before actual content
   cleaned = stripLeadingMetadata(cleaned);
+  cleaned = stripTrailingHashnodeChrome(cleaned);
+  cleaned = balanceHtmlFragment(cleaned);
 
   return cleaned;
 }
@@ -223,4 +238,123 @@ function stripLeadingMetadata(html: string): string {
     return html.substring(headingMatch.index);
   }
   return html;
+}
+
+/** Remove tag/footer chrome that appears after Hashnode page-scraped content. */
+function stripTrailingHashnodeChrome(html: string): string {
+  const patterns = [
+    /<\/div>\s*<\/div>\s*<\/div>\s*<\/div>\s*<div>\s*<div>\s*<a\s+href=["']\/tag\//i,
+    /<div>\s*<div>\s*<a\s+href=["']\/tag\//i,
+  ];
+
+  const cutAt = patterns
+    .map((pattern) => {
+      const match = html.match(pattern);
+      return match?.index ?? -1;
+    })
+    .filter((index) => index >= 0)
+    .sort((a, b) => a - b)[0];
+
+  return cutAt === undefined ? html : html.slice(0, cutAt).trim();
+}
+
+/** Keep injected article HTML balanced so it cannot close the page layout. */
+function balanceHtmlFragment(html: string): string {
+  const allowedTags = new Set([
+    'a', 'b', 'blockquote', 'br', 'code', 'del', 'em', 'figcaption', 'figure',
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'i', 'img', 'li', 'ol', 'p',
+    'pre', 's', 'span', 'strong', 'table', 'tbody', 'td', 'tfoot', 'th',
+    'thead', 'tr', 'u', 'ul',
+  ]);
+  const voidTags = new Set(['br', 'hr', 'img']);
+  const tagRe = /<!--[\s\S]*?-->|<\/?([a-z][a-z0-9-]*)(?:\s[^<>]*)?>/gi;
+
+  let output = '';
+  let lastIndex = 0;
+  const stack: string[] = [];
+  let match: RegExpExecArray | null;
+
+  while ((match = tagRe.exec(html)) !== null) {
+    output += html.slice(lastIndex, match.index);
+    lastIndex = tagRe.lastIndex;
+
+    const rawTag = match[0];
+    const tagName = match[1]?.toLowerCase();
+    if (!tagName || !allowedTags.has(tagName)) continue;
+
+    const isClosing = rawTag.startsWith('</');
+    if (isClosing) {
+      const openIndex = stack.lastIndexOf(tagName);
+      if (openIndex === -1) continue;
+
+      for (let i = stack.length - 1; i >= openIndex; i--) {
+        output += `</${stack.pop()}>`;
+      }
+      continue;
+    }
+
+    output += sanitizeOpeningTag(rawTag, tagName);
+    if (!voidTags.has(tagName) && !rawTag.endsWith('/>')) {
+      stack.push(tagName);
+    }
+  }
+
+  output += html.slice(lastIndex);
+
+  while (stack.length > 0) {
+    output += `</${stack.pop()}>`;
+  }
+
+  return output.trim();
+}
+
+function sanitizeOpeningTag(rawTag: string, tagName: string): string {
+  const allowedAttrs: Record<string, Set<string>> = {
+    a: new Set(['href', 'rel', 'target', 'title']),
+    blockquote: new Set(['cite']),
+    img: new Set(['alt', 'decoding', 'height', 'loading', 'src', 'title', 'width']),
+    td: new Set(['colspan', 'rowspan']),
+    th: new Set(['colspan', 'rowspan']),
+  };
+  const attrs = allowedAttrs[tagName];
+  if (!attrs) return `<${tagName}>`;
+
+  const attrParts: string[] = [];
+  const attrRe = /([a-z_:][-a-z0-9_:.]*)\s*=\s*("([^"]*)"|'([^']*)'|([^\s"'=<>`]+))/gi;
+  let match: RegExpExecArray | null;
+
+  while ((match = attrRe.exec(rawTag)) !== null) {
+    const name = match[1].toLowerCase();
+    const value = match[3] ?? match[4] ?? match[5] ?? '';
+    if (!attrs.has(name)) continue;
+    if ((name === 'href' || name === 'src') && !isSafeUrl(value)) continue;
+    attrParts.push(`${name}="${escapeAttr(value)}"`);
+  }
+
+  if (tagName === 'a') {
+    const hasTargetBlank = attrParts.some((attr) => attr === 'target="_blank"');
+    const hasRel = attrParts.some((attr) => attr.startsWith('rel='));
+    if (hasTargetBlank && !hasRel) attrParts.push('rel="noopener noreferrer"');
+  }
+
+  return attrParts.length > 0 ? `<${tagName} ${attrParts.join(' ')}>` : `<${tagName}>`;
+}
+
+function isSafeUrl(value: string): boolean {
+  const trimmed = value.trim().toLowerCase();
+  return (
+    trimmed.startsWith('http://') ||
+    trimmed.startsWith('https://') ||
+    trimmed.startsWith('mailto:') ||
+    trimmed.startsWith('/') ||
+    trimmed.startsWith('#')
+  );
+}
+
+function escapeAttr(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }

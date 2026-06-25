@@ -35,8 +35,10 @@ const hasContent = post.contentHtml.length > 100;
 <Layout pageTitle="Blog" backHref="/blogs">
   <ReadingProgress />
 
+  {/* blog-reader class used by blog.css diamond-grid opacity selector */}
   <article class="blog-reader relative overflow-hidden pt-8 md:pt-12 pb-0">
     <div class="max-w-[1400px] mx-auto px-6 md:px-10 relative z-10">
+
       {/* Back link */}
       <a
         href="/blogs"
@@ -50,7 +52,7 @@ const hasContent = post.contentHtml.length > 100;
 
       {/* Cover image */}
       {post.coverImage && (
-        <div class="blog-cover relative rounded-2xl overflow-hidden mb-10 border border-white/6">
+        <div class="blog-cover relative rounded-2xl overflow-hidden mb-10 border border-white/[0.06]">
           <img
             src={post.coverImage}
             alt={post.title}
@@ -67,7 +69,7 @@ const hasContent = post.contentHtml.length > 100;
         {post.tags.length > 0 && (
           <div class="flex flex-wrap gap-2 mb-4">
             {post.tags.slice(0, 5).map((tag) => (
-              <span class="blog-tag">
+              <span class="inline-flex items-center px-2.5 py-1 rounded-lg font-mono text-[10px] tracking-[0.12em] uppercase bg-[#F95F4A]/[0.14] text-[#FF9A86] border border-[#F95F4A]/[0.18]">
                 {tag}
               </span>
             ))}
@@ -112,12 +114,14 @@ const hasContent = post.contentHtml.length > 100;
     </div>
   </article>
 
-  {/* Content + TOC layout */}
+  {/* blog-body class used by blog.css diamond-grid opacity selector */}
   <section class="blog-body relative z-10 pb-24">
     <div class="max-w-[1400px] mx-auto px-6 md:px-10">
-      <div class="blog-layout grid gap-12 lg:grid-cols-[minmax(0,1fr)_18rem] items-start">
+
+      <div class="flex flex-col lg:flex-row lg:gap-12 lg:items-start">
+
         {/* Main content */}
-        <div class="blog-layout__content flex-1 min-w-0">
+        <div class="flex-1 min-w-0">
           {hasContent ? (
             <div class="blog-content" set:html={post.contentHtml} />
           ) : (
@@ -140,9 +144,9 @@ const hasContent = post.contentHtml.length > 100;
           )}
         </div>
 
-        {/* Sidebar TOC */}
+        {/* TOC sidebar — sticky, starts aligned with first line of content */}
         {hasContent && post.headings.length > 0 && (
-          <aside class="blog-layout__sidebar hidden lg:block w-64 flex-shrink-0 lg:sticky lg:top-28 self-start">
+          <aside class="hidden lg:block w-56 flex-shrink-0 sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto">
             <TableOfContents headings={post.headings} client:load />
           </aside>
         )}
@@ -150,7 +154,6 @@ const hasContent = post.contentHtml.length > 100;
     </div>
   </section>
 
-  {/* Interactive tools */}
   <BlogDock slug={slug} title={post.title} client:load />
   <TextHighlighter slug={slug} client:load />
 
@@ -160,7 +163,6 @@ const hasContent = post.contentHtml.length > 100;
 <script>
   import { gsap } from "gsap";
 
-  // Fade in blog content
   gsap.from('.blog-content', {
     y: 30,
     opacity: 0,
@@ -169,7 +171,6 @@ const hasContent = post.contentHtml.length > 100;
     delay: 0.2,
   });
 
-  // Fade in TOC
   const toc = document.querySelector('.toc');
   if (toc) {
     gsap.from(toc, {
@@ -188,7 +189,6 @@ const hasContent = post.contentHtml.length > 100;
       const cover = coverImg.closest('.blog-cover') as HTMLElement;
       if (cover) cover.style.display = 'none';
     });
-    // Check if already failed (cached error)
     if (coverImg.complete && coverImg.naturalWidth === 0) {
       const cover = coverImg.closest('.blog-cover') as HTMLElement;
       if (cover) cover.style.display = 'none';

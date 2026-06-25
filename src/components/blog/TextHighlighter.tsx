@@ -10,7 +10,6 @@ interface HighlightEntry {
 
 /** Highlight each text node in a range individually (safe for multi-node selections). */
 function highlightRange(range: Range): void {
-  // Collect text nodes within the range
   const container = range.commonAncestorContainer;
   const root = container.nodeType === Node.TEXT_NODE ? container.parentElement! : container;
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -18,12 +17,9 @@ function highlightRange(range: Range): void {
   let node: Node | null;
 
   while ((node = walker.nextNode())) {
-    if (range.intersectsNode(node)) {
-      textNodes.push(node as Text);
-    }
+    if (range.intersectsNode(node)) textNodes.push(node as Text);
   }
 
-  // Wrap each text node's selected portion
   for (const textNode of textNodes) {
     const nodeRange = document.createRange();
 
@@ -42,18 +38,16 @@ function highlightRange(range: Range): void {
 
     try {
       const mark = document.createElement('mark');
-      mark.className = 'blog-highlight';
+      mark.className = 'blog-highlight'; // styled in blog.css (JS-applied, cannot be Tailwind)
       nodeRange.surroundContents(mark);
-    } catch {
-      // Skip nodes that can't be wrapped (already partially wrapped, etc.)
-    }
+    } catch {}
   }
 }
 
 export default function TextHighlighter({ slug }: Props) {
   const [popup, setPopup] = useState<{ x: number; y: number } | null>(null);
-  const rangeRef = useRef<Range | null>(null);
-  const popupRef = useRef<HTMLDivElement>(null);
+  const rangeRef  = useRef<Range | null>(null);
+  const popupRef  = useRef<HTMLDivElement>(null);
   const storageKey = `acm-blog-${slug}`;
 
   // Restore saved highlights on mount
@@ -109,10 +103,7 @@ export default function TextHighlighter({ slug }: Props) {
 
       rangeRef.current = range.cloneRange();
       const rect = range.getBoundingClientRect();
-      setPopup({
-        x: rect.left + rect.width / 2,
-        y: rect.top - 8,
-      });
+      setPopup({ x: rect.left + rect.width / 2, y: rect.top - 8 });
     };
 
     content.addEventListener('mouseup', handleMouseUp);
@@ -138,9 +129,7 @@ export default function TextHighlighter({ slug }: Props) {
     const text = range.toString().trim();
     if (!text) return;
 
-    // Use safe node-by-node wrapping for all selections
     if (range.startContainer === range.endContainer && range.startContainer.nodeType === Node.TEXT_NODE) {
-      // Simple single text-node selection
       try {
         const mark = document.createElement('mark');
         mark.className = 'blog-highlight';
@@ -149,11 +138,9 @@ export default function TextHighlighter({ slug }: Props) {
         highlightRange(range);
       }
     } else {
-      // Multi-node selection — wrap each text node individually
       highlightRange(range);
     }
 
-    // Persist
     try {
       const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
       const highlights: HighlightEntry[] = saved.highlights || [];
@@ -172,15 +159,19 @@ export default function TextHighlighter({ slug }: Props) {
   return (
     <div
       ref={popupRef}
-      className="blog-highlight-popup"
       style={{
         position: 'fixed',
         left: popup.x,
         top: popup.y,
         transform: 'translate(-50%, -100%)',
+        zIndex: 9100,
+        animation: 'highlight-popup-in 0.15s ease-out',
       }}
     >
-      <button onClick={handleHighlight} className="blog-highlight-popup__btn">
+      <button
+        onClick={handleHighlight}
+        className="flex items-center gap-1.5 px-3 py-1.5 bg-[rgba(30,30,30,0.95)] backdrop-blur-lg border border-white/10 rounded-lg text-white/70 font-mono text-[11px] cursor-pointer transition-all duration-150 shadow-[0_4px_16px_rgba(0,0,0,0.3)] hover:bg-[#F95F4A]/15 hover:text-[#F95F4A] hover:border-[#F95F4A]/30"
+      >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M12 20h9" />
           <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" />
