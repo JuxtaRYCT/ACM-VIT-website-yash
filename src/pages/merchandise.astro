@@ -1,0 +1,66 @@
+---
+export const prerender = true;
+import Layout from "../layouts/Layout.astro";
+import "../styles/globals.css";
+import Footer from "../layouts/Footer.astro";
+---
+
+<Layout pageTitle="Merchandise" backHref="/more">
+  <section class="merch-page">
+    <div class="merch-inner">
+      <h1 class="merch-heading">Merchandise</h1>
+      <p class="merch-subtitle">Coming soon</p>
+      <p class="merch-desc">Official ACM-VIT merch & collectibles. Stay tuned.</p>
+    </div>
+  </section>
+  <Footer />
+</Layout>
+
+<style>
+  .merch-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+  }
+
+  .merch-inner {
+    max-width: 600px;
+  }
+
+  .merch-heading {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 800;
+    color: #FFFDD0;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  :global([data-theme="light"]) .merch-heading {
+    color: #1a1a1a;
+  }
+
+  .merch-subtitle {
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #FF5F4A;
+    margin-bottom: 1.5rem;
+  }
+
+  .merch-desc {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: 1rem;
+    color: rgba(255, 253, 208, 0.6);
+    line-height: 1.6;
+  }
+
+  :global([data-theme="light"]) .merch-desc {
+    color: rgba(0, 0, 0, 0.5);
+  }
+</style>

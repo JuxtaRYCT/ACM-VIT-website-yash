@@ -1,0 +1,255 @@
+---
+export const prerender = true;
+import Layout from "../layouts/Layout.astro";
+import "../styles/globals.css";
+import Footer from "../layouts/Footer.astro";
+
+const items = [
+  {
+    title: "Code of Conduct",
+    desc: "ACM ethical principles & community values",
+    href: "/code-of-conduct",
+    icon: "shield",
+  },
+  {
+    title: "Merchandise",
+    desc: "Official ACM-VIT merch & collectibles",
+    href: "/merchandise",
+    icon: "bag",
+  },
+  {
+    title: "GREP Newsletter",
+    desc: "Our bi-annual technical newsletter",
+    href: "/grep",
+    icon: "mail",
+  },
+  {
+    title: "z0d1ak",
+    desc: "ACM-VIT's competitive CTF team",
+    href: "/z0d1ak",
+    icon: "terminal",
+  },
+  {
+    title: "Achievements",
+    desc: "Awards, recognitions & milestones",
+    href: "/achievements",
+    icon: "trophy",
+  },
+];
+---
+
+<Layout pageTitle="More" backHref="/">
+  <section class="more-page">
+    <div class="more-inner">
+      <h1 class="more-heading">More from ACM-VIT</h1>
+      <p class="more-subtitle">Explore everything else we do</p>
+
+      <div class="bento-grid">
+        {items.map((item, i) => (
+          <a href={item.href} class="bento-card" style={`--card-i: ${i}`}>
+            <div class="bento-icon">
+              {item.icon === "shield" && (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              )}
+              {item.icon === "bag" && (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                  <line x1="3" y1="6" x2="21" y2="6"/>
+                  <path d="M16 10a4 4 0 01-8 0"/>
+                </svg>
+              )}
+              {item.icon === "mail" && (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+              )}
+              {item.icon === "terminal" && (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="4 17 10 11 4 5"/>
+                  <line x1="12" y1="19" x2="20" y2="19"/>
+                </svg>
+              )}
+              {item.icon === "trophy" && (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 9H4.5a2.5 2.5 0 010-5H6"/>
+                  <path d="M18 9h1.5a2.5 2.5 0 000-5H18"/>
+                  <path d="M4 22h16"/>
+                  <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 19.24 7 20v2"/>
+                  <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 19.24 17 20v2"/>
+                  <path d="M18 2H6v7a6 6 0 0012 0V2z"/>
+                </svg>
+              )}
+            </div>
+            <div class="bento-text">
+              <span class="bento-title">{item.title}</span>
+              <span class="bento-desc">{item.desc}</span>
+            </div>
+            <svg class="bento-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  <Footer />
+</Layout>
+
+<style>
+  .more-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8rem 2rem 4rem;
+  }
+
+  .more-inner {
+    max-width: 800px;
+    width: 100%;
+  }
+
+  .more-heading {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    color: #FFFDD0;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  :global([data-theme="light"]) .more-heading {
+    color: #1a1a1a;
+  }
+
+  .more-subtitle {
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #FF5F4A;
+    margin-bottom: 3rem;
+  }
+
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .bento-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    background: rgba(255, 95, 74, 0.04);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: cardIn 0.5s ease forwards;
+    animation-delay: calc(var(--card-i) * 0.08s);
+  }
+
+  .bento-card:first-child {
+    grid-column: span 2;
+  }
+
+  @keyframes cardIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .bento-card:hover {
+    border-color: rgba(255, 95, 74, 0.3);
+    background: rgba(255, 95, 74, 0.08);
+    transform: translateY(-2px);
+  }
+
+  :global([data-theme="light"]) .bento-card {
+    border-color: rgba(0, 0, 0, 0.1);
+    background: rgba(255, 95, 74, 0.06);
+  }
+
+  :global([data-theme="light"]) .bento-card:hover {
+    border-color: rgba(255, 95, 74, 0.3);
+    background: rgba(255, 95, 74, 0.1);
+  }
+
+  .bento-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(255, 95, 74, 0.12);
+    color: #FF5F4A;
+  }
+
+  .bento-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .bento-title {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #FFFDD0;
+  }
+
+  :global([data-theme="light"]) .bento-title {
+    color: #1a1a1a;
+  }
+
+  .bento-desc {
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.7rem;
+    color: rgba(255, 253, 208, 0.5);
+    letter-spacing: 0.02em;
+  }
+
+  :global([data-theme="light"]) .bento-desc {
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  .bento-arrow {
+    flex-shrink: 0;
+    color: #FF5F4A;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: all 0.3s ease;
+  }
+
+  .bento-card:hover .bento-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  @media (max-width: 640px) {
+    .more-page {
+      padding: 6rem 1.5rem 3rem;
+    }
+
+    .bento-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .bento-card:first-child {
+      grid-column: span 1;
+    }
+  }
+</style>

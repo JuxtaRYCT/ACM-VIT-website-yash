@@ -2,503 +2,487 @@
 export const prerender = true;
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
-import { getAssetUrl } from "../utils/cdn";
+import AnimatedButton from "../components/ui/AnimatedButton.astro";
 
 import IgnitingMinds from "../sections/IgnitingMinds.astro";
 import HourOfCode from "../sections/HourOfCode.astro";
 import KickStartLearn from "../sections/KickStartLearn.astro";
 import CommunityPrograms from "../sections/CommunityPrograms.astro";
-import CodeOfConduct from "../sections/CodeOfConduct.astro";
 import DistinguishedSpeaker from "../sections/DistinguishedSpeaker.astro";
 
 import Footer from "../layouts/Footer.astro";
+
+const yearsSince = new Date().getFullYear() - 2009;
 ---
 
 <Layout pageTitle="Community" backHref="/#community">
-  <!-- Hero -->
-  <section class="community-hero relative overflow-hidden pb-16 md:pb-24 pt-8 md:pt-16">
-    <div
-      class="absolute inset-0 pointer-events-none opacity-[0.06]"
-      style={`background-image: url(${getAssetUrl("/backgrounds/background_pattern.webp")}); background-size: cover;`}
-    ></div>
+  <div class="tape-experience" id="tape-experience">
+    <svg class="tape-svg" id="tape-svg" aria-hidden="true">
+      <path id="tape-shadow" fill="none" stroke-width="0" stroke-linecap="round" class="tape-stroke-shadow" />
+      <path id="tape-path" fill="none" stroke-width="12" stroke-linecap="round" class="tape-stroke-main" />
+      <path id="tape-shine" fill="none" stroke-width="2" stroke-linecap="round" class="tape-stroke-shine" />
+      <g id="tape-markers"></g>
+    </svg>
 
-    <div class="max-w-[1400px] mx-auto px-6 md:px-10 relative z-10">
-      <p
-        class="text-[#FF5F4A] text-xs sm:text-sm font-mono tracking-[0.3em] uppercase mb-8 md:mb-12"
-      >
-        ACM-VIT &mdash; Community Initiatives
-      </p>
+    <section class="cassette-hero" id="cassette-hero">
+      <div class="cassette-wrapper">
+        <img
+          src="/community/cassette-igniting-minds.png"
+          alt="Igniting Minds cassette tape"
+          class="cassette-img"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+      <div class="scroll-hint" id="scroll-hint">
+        <span>scroll to unravel</span>
+        <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
+          <path d="M8 4V20M8 20L2 14M8 20L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </section>
 
-      <h1
-        class="text-[clamp(3.5rem,10vw,12rem)] font-bold text-[#FFFDD0] uppercase tracking-tighter leading-[0.82]"
-      >
-        COMM<span class="text-[#FF5F4A]">UNITY</span>
-      </h1>
+    <div data-tape-section>
+      <IgnitingMinds />
+    </div>
 
-      <div class="w-20 h-[3px] bg-[#FF5F4A] my-8 md:my-10"></div>
+    <div data-tape-section>
+      <HourOfCode />
+    </div>
 
-      <div class="md:grid md:grid-cols-2 gap-12 items-end">
-        <p
-          class="text-gray-300 font-mono text-xs sm:text-sm leading-relaxed uppercase max-w-xl"
-        >
-          From school outreach programs to distinguished speaker sessions,
-          ACM-VIT's community initiatives drive inclusive growth and real-world
-          impact across technology and education.
-        </p>
-        <div class="mt-8 md:mt-0 flex md:justify-end">
-          <div class="flex gap-10 text-[#FFFDD0]">
-            <div>
-              <span class="text-3xl md:text-4xl font-bold tracking-tight"
-                >10+</span
-              >
-              <p class="text-gray-500 font-mono text-[0.65rem] mt-1 uppercase">
-                Initiatives
-              </p>
-            </div>
-            <div>
-              <span class="text-3xl md:text-4xl font-bold tracking-tight"
-                >500+</span
-              >
-              <p class="text-gray-500 font-mono text-[0.65rem] mt-1 uppercase">
-                Students Reached
-              </p>
-            </div>
-            <div>
-              <span class="text-3xl md:text-4xl font-bold tracking-tight"
-                >16</span
-              >
-              <p class="text-gray-500 font-mono text-[0.65rem] mt-1 uppercase">
-                Years of Impact
-              </p>
-            </div>
-          </div>
+    <div data-tape-section>
+      <KickStartLearn />
+    </div>
+
+    <div data-tape-section>
+      <CommunityPrograms />
+    </div>
+
+    <div data-tape-section>
+      <DistinguishedSpeaker />
+    </div>
+
+    <section class="tape-closing" id="tape-closing">
+      <div class="closing-inner">
+        <p class="closing-years">{yearsSince}</p>
+        <p class="closing-text">years of igniting minds</p>
+        <div class="closing-cta">
+          <AnimatedButton text="Back to home" href="/" />
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- Section Navigator — Bento Grid -->
-  <section class="py-12 md:py-20 border-t border-white/10">
-    <div class="max-w-[1400px] mx-auto px-6 md:px-10">
-      <div class="community-grid">
-        <!-- 01 Outreach -->
-        <a
-          href="#community-outreach"
-          class="community-card card-has-img group"
-          style="--card-i:0"
-        >
-          <img
-            src={getAssetUrl("/outreach/outreach-event.webp")}
-            alt="Outreach Event"
-            class="card-bg-img"
-            loading="lazy"
-            decoding="async"
-          />
-          <div class="card-overlay"></div>
-          <div class="card-content">
-            <span class="card-num">01</span>
-            <h3 class="card-title">Outreach</h3>
-            <p class="card-subtitle">Beyond The Norm</p>
-            <span class="card-arrow" aria-hidden="true">&#8599;</span>
-          </div>
-        </a>
-
-        <!-- 02 Hour of Code -->
-        <a
-          href="#community-hoc"
-          class="community-card card-has-img group"
-          style="--card-i:1"
-        >
-          <img
-            src={getAssetUrl("/community/hour-of-code.png")}
-            alt="Hour of Code"
-            class="card-bg-img"
-            loading="lazy"
-            decoding="async"
-          />
-          <div class="card-overlay"></div>
-          <div class="card-content">
-            <span class="card-num">02</span>
-            <h3 class="card-title">Hour of Code</h3>
-            <p class="card-subtitle">Making Tech Accessible</p>
-            <span class="card-arrow" aria-hidden="true">&#8599;</span>
-          </div>
-        </a>
-
-        <!-- 03 KSL -->
-        <a
-          href="#community-ksl"
-          class="community-card card-gradient group"
-          style="--card-i:2"
-        >
-          <div class="card-content">
-            <span class="card-num">03</span>
-            <h3 class="card-title">Kick Start Learn</h3>
-            <p class="card-subtitle">Fresher Launchpad</p>
-            <span class="card-arrow" aria-hidden="true">&#8599;</span>
-          </div>
-        </a>
-
-        <!-- 04 Summer Bootcamp -->
-        <a
-          href="#community-bootcamp"
-          class="community-card card-gradient group"
-          style="--card-i:3"
-        >
-          <div class="card-content">
-            <span class="card-num">04</span>
-            <h3 class="card-title">Summer Bootcamp</h3>
-            <p class="card-subtitle">Online Learning</p>
-            <span class="card-arrow" aria-hidden="true">&#8599;</span>
-          </div>
-        </a>
-
-        <!-- 05 Forktober -->
-        <a
-          href="#community-forktober"
-          class="community-card card-gradient group"
-          style="--card-i:4"
-        >
-          <div class="card-content">
-            <span class="card-num">05</span>
-            <h3 class="card-title">Forktober Fest</h3>
-            <p class="card-subtitle">Open Source Month</p>
-            <span class="card-arrow" aria-hidden="true">&#8599;</span>
-          </div>
-        </a>
-
-        <!-- 06 Open Source -->
-        <a
-          href="#community-opensource"
-          class="community-card card-gradient group"
-          style="--card-i:5"
-        >
-          <div class="card-content">
-            <span class="card-num">06</span>
-            <h3 class="card-title">Open Source Culture</h3>
-            <p class="card-subtitle">GSoC / GSoD / MLH</p>
-            <span class="card-arrow" aria-hidden="true">&#8599;</span>
-          </div>
-        </a>
-
-        <!-- 07 SDG -->
-        <a
-          href="#community-sdg"
-          class="community-card card-gradient group"
-          style="--card-i:6"
-        >
-          <div class="card-content">
-            <span class="card-num">07</span>
-            <h3 class="card-title">SDG Initiative</h3>
-            <p class="card-subtitle">Tech for Social Good</p>
-            <span class="card-arrow" aria-hidden="true">&#8599;</span>
-          </div>
-        </a>
-
-        <!-- 08 Award -->
-        <a
-          href="#community-award"
-          class="community-card card-has-img group"
-          style="--card-i:7"
-        >
-          <img
-            src={getAssetUrl("/ui/acm-celeb.png")}
-            alt="ACM International Award"
-            class="card-bg-img"
-            loading="lazy"
-            decoding="async"
-          />
-          <div class="card-overlay"></div>
-          <div class="card-content">
-            <span class="card-num">08</span>
-            <h3 class="card-title">Int'l Award</h3>
-            <p class="card-subtitle">Outstanding Service</p>
-            <span class="card-arrow" aria-hidden="true">&#8599;</span>
-          </div>
-        </a>
-
-        <!-- 09 Distinguished Speakers -->
-        <a
-          href="#community-speaker"
-          class="community-card card-has-img card-wide group"
-          style="--card-i:8"
-        >
-          <img
-            src={getAssetUrl("/community/peter-robinson.webp")}
-            alt="Distinguished Speakers"
-            class="card-bg-img"
-            loading="lazy"
-            decoding="async"
-          />
-          <div class="card-overlay"></div>
-          <div class="card-content">
-            <span class="card-num">09</span>
-            <h3 class="card-title">Distinguished Speakers</h3>
-            <p class="card-subtitle">Industry Leader Keynotes</p>
-            <span class="card-arrow" aria-hidden="true">&#8599;</span>
-          </div>
-        </a>
-
-        <!-- 10 Code of Conduct -->
-        <a
-          href="#community-conduct"
-          class="community-card card-gradient group"
-          style="--card-i:9"
-        >
-          <div class="card-content">
-            <span class="card-num">10</span>
-            <h3 class="card-title">Code of Conduct</h3>
-            <p class="card-subtitle">Ethics & Values</p>
-            <span class="card-arrow" aria-hidden="true">&#8599;</span>
-          </div>
-        </a>
-
-        <!-- 11 CASA -->
-        <a
-          href="#community-casa"
-          class="community-card card-gradient group"
-          style="--card-i:10"
-        >
-          <div class="card-content">
-            <span class="card-num">11</span>
-            <h3 class="card-title">CASA</h3>
-            <p class="card-subtitle">Student Well-being</p>
-            <span class="card-arrow" aria-hidden="true">&#8599;</span>
-          </div>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Divider -->
-  <div class="border-t border-dashed border-[#999999]/30 max-w-[1400px] mx-auto">
-    <p
-      class="text-center text-gray-500 font-mono text-[0.65rem] tracking-[0.4em] uppercase py-8"
-    >
-      Explore in detail
-    </p>
+    </section>
   </div>
-
-  <!-- Full Sections -->
-  <IgnitingMinds />
-  <HourOfCode />
-  <KickStartLearn />
-  <CommunityPrograms />
-  <CodeOfConduct />
-  <DistinguishedSpeaker />
-
-  <!-- Back to Home -->
-  <section class="py-16 md:py-24 border-t border-white/10">
-    <div class="max-w-[1400px] mx-auto px-6 md:px-10 text-center">
-      <a
-        href="/"
-        class="inline-flex items-center gap-3 text-[#FFFDD0] text-sm font-mono uppercase tracking-[0.18em] border border-white/12 px-6 py-4 transition-all duration-300 hover:border-[#FF5F4A] hover:text-[#FF5F4A] rounded-full"
-      >
-        <span aria-hidden="true" class="text-[#FF5F4A]">&larr;</span>
-        Back to Home
-      </a>
-    </div>
-  </section>
 
   <Footer />
 </Layout>
 
 <style>
-  /* ── Bento Grid ── */
-  .community-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-
-  @media (min-width: 640px) {
-    .community-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .community-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    .community-card.card-wide {
-      grid-column: span 2;
-    }
-  }
-
-  /* ── Base card ── */
-  .community-card {
+  .tape-experience {
     position: relative;
     overflow: hidden;
-    border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    min-height: 200px;
-    display: flex;
-    text-decoration: none;
-    transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
-    animation: cardReveal 0.6s ease both;
-    animation-delay: calc(var(--card-i, 0) * 0.05s);
+    min-height: 100vh;
   }
 
-  @keyframes cardReveal {
-    from {
-      opacity: 0;
-      transform: translateY(12px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .community-card:hover {
-    border-color: rgba(255, 95, 74, 0.35);
-    box-shadow:
-      0 16px 48px rgba(0, 0, 0, 0.3),
-      0 0 30px rgba(255, 95, 74, 0.05);
-    transform: translateY(-3px);
-  }
-
-  /* ── Image card ── */
-  .card-bg-img {
+  .tape-svg {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
-  }
-
-  .community-card:hover .card-bg-img {
-    transform: scale(1.06);
-  }
-
-  .card-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.9) 0%,
-      rgba(0, 0, 0, 0.5) 40%,
-      rgba(0, 0, 0, 0.2) 100%
-    );
-    transition: background 0.5s ease;
-  }
-
-  .community-card:hover .card-overlay {
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.85) 0%,
-      rgba(0, 0, 0, 0.35) 40%,
-      rgba(0, 0, 0, 0.1) 100%
-    );
-  }
-
-  /* ── Gradient card ── */
-  .card-gradient {
-    background: linear-gradient(
-      145deg,
-      rgba(255, 95, 74, 0.06) 0%,
-      rgba(13, 14, 13, 0.5) 50%,
-      rgba(255, 95, 74, 0.03) 100%
-    );
-    border-color: rgba(255, 255, 255, 0.05);
-  }
-
-  .card-gradient::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-      ellipse at 30% 80%,
-      rgba(255, 95, 74, 0.05) 0%,
-      transparent 60%
-    );
     pointer-events: none;
-    transition: opacity 0.5s ease;
+    z-index: 0;
+    overflow: visible;
   }
 
-  .card-gradient:hover {
-    background: linear-gradient(
-      145deg,
-      rgba(255, 95, 74, 0.1) 0%,
-      rgba(13, 14, 13, 0.45) 50%,
-      rgba(255, 95, 74, 0.05) 100%
-    );
+  /* Hide tape until JS computes path */
+  #tape-path, #tape-shadow, #tape-shine {
+    stroke-dasharray: 999999;
+    stroke-dashoffset: 999999;
   }
 
-  /* ── Card content ── */
-  .card-content {
+  /* Tape — dark brown like real cassette tape */
+  .tape-stroke-shadow {
+    stroke: none;
+  }
+  .tape-stroke-main {
+    stroke: #FF5F4A;
+    opacity: 1;
+  }
+  .tape-stroke-shine {
+    stroke: #1a1a1a;
+    opacity: 1;
+  }
+
+  :global([data-theme="light"]) .tape-stroke-main {
+    stroke: #C44030;
+  }
+  :global([data-theme="light"]) .tape-stroke-shine {
+    stroke: #8B2A1E;
+  }
+
+  [data-tape-section] {
     position: relative;
-    z-index: 10;
+    z-index: 2;
+  }
+
+  .cassette-hero {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    padding: 1.25rem;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 2rem 6rem;
+    min-height: 100vh;
+    min-height: 100dvh;
+    text-align: center;
+  }
+
+  .cassette-wrapper {
+    position: relative;
+    z-index: 3;
+    width: clamp(400px, 55vw, 800px);
+  }
+
+  .cassette-img {
     width: 100%;
+    height: auto;
+    filter: drop-shadow(0 30px 80px rgba(0, 0, 0, 0.6));
+    animation: cassetteFloat 6s ease-in-out infinite;
   }
 
-  @media (min-width: 768px) {
-    .card-content {
-      padding: 1.5rem;
-    }
+  @keyframes cassetteFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-14px) rotate(0.5deg); }
   }
 
-  .card-num {
-    color: #ff5f4a;
+  .scroll-hint {
+    position: absolute;
+    bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: #FF5F4A;
+    animation: hintPulse 2s ease-in-out infinite;
+  }
+
+  .scroll-hint span {
     font-family: "PolySans Mono", monospace;
     font-size: 0.6rem;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.25em;
     text-transform: uppercase;
-    margin-bottom: 0.5rem;
     opacity: 0.6;
   }
 
-  .card-title {
-    font-family: "PolySans Trial", sans-serif;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #fffdd0;
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 0.15rem;
+  @keyframes hintPulse {
+    0%, 100% { opacity: 0.5; transform: translateY(0); }
+    50% { opacity: 0.8; transform: translateY(4px); }
   }
 
-  @media (min-width: 768px) {
-    .card-title {
-      font-size: 1.35rem;
-    }
+  .tape-closing {
+    position: relative;
+    z-index: 2;
+    padding: 14rem 2rem 8rem;
+    text-align: center;
   }
 
-  .card-subtitle {
-    color: #ff5f4a;
-    font-size: 0.7rem;
-    font-family: "Inter", sans-serif;
-    font-weight: 600;
-  }
-
-  .card-arrow {
-    position: absolute;
-    top: 1.25rem;
-    right: 1.25rem;
-    color: #ff5f4a;
-    font-size: 1.1rem;
+  .closing-inner {
     opacity: 0;
-    transform: translate(-4px, 4px);
-    transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transform: translateY(30px);
   }
 
-  .community-card:hover .card-arrow {
-    opacity: 1;
-    transform: translate(0, 0);
+  .closing-years {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: clamp(10rem, 25vw, 20rem);
+    font-weight: 900;
+    color: #FF5F4A;
+    line-height: 0.8;
+    opacity: 0.12;
+    margin: 0;
   }
 
-  /* ── Wide card on tablet ── */
-  @media (min-width: 640px) and (max-width: 1023px) {
-    .card-wide {
-      grid-column: span 2;
+  .closing-text {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: clamp(1.1rem, 2vw, 1.6rem);
+    color: #FFFDD0;
+    text-transform: lowercase;
+    margin: -2rem 0 4rem;
+  }
+
+  :global([data-theme="light"]) .closing-text {
+    color: #1a1a1a;
+  }
+
+  @media (max-width: 768px) {
+    .cassette-hero {
+      padding: 2rem 1.5rem 5rem;
+      min-height: 70vh;
+    }
+
+    .cassette-wrapper {
+      width: clamp(280px, 80vw, 400px);
+    }
+
+    .tape-closing {
+      padding: 8rem 1.5rem 6rem;
     }
   }
 </style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const container = document.getElementById("tape-experience");
+  const svg = document.getElementById("tape-svg");
+  const tapePath = document.getElementById("tape-path");
+  const tapeShadow = document.getElementById("tape-shadow");
+  const tapeShine = document.getElementById("tape-shine");
+  const markersGroup = document.getElementById("tape-markers");
+  const sections = document.querySelectorAll("[data-tape-section]");
+  const cassetteHero = document.getElementById("cassette-hero");
+  const scrollHint = document.getElementById("scroll-hint");
+  const closing = document.getElementById("tape-closing");
+
+  let activeTriggers: ScrollTrigger[] = [];
+
+  function clearAll() {
+    activeTriggers.forEach((t) => t.kill());
+    activeTriggers = [];
+    if (markersGroup) markersGroup.innerHTML = "";
+  }
+
+  function buildTape() {
+    if (!container || !svg || !tapePath || !cassetteHero) return;
+    clearAll();
+
+    const W = container.offsetWidth;
+    const H = container.scrollHeight;
+
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    svg.style.height = `${H}px`;
+
+    const containerRect = container.getBoundingClientRect();
+    const cassetteImg = cassetteHero.querySelector(
+      ".cassette-img"
+    ) as HTMLElement;
+    if (!cassetteImg) return;
+    const cRect = cassetteImg.getBoundingClientRect();
+
+    // Start point — center of cassette so tape emerges from behind it
+    const startX = cRect.left + cRect.width * 0.5 - containerRect.left;
+    const startY = cRect.top + cRect.height * 0.5 - containerRect.top;
+
+    const waypoints: [number, number][] = [[startX, startY]];
+
+    sections.forEach((sec, i) => {
+      const el = sec as HTMLElement;
+      const sRect = el.getBoundingClientRect();
+      const y = sRect.top + sRect.height * 0.5 - containerRect.top;
+
+      if (W < 769) {
+        const x = i % 2 === 0 ? W * 0.2 : W * 0.8;
+        waypoints.push([x, y]);
+      } else {
+        const progress = i / sections.length;
+        const spread = 0.34 + progress * 0.1;
+        const x =
+          i % 2 === 0 ? W * (0.5 + spread) : W * (0.5 - spread);
+        waypoints.push([x, y]);
+      }
+    });
+
+    if (closing) {
+      const clRect = closing.getBoundingClientRect();
+      const y = clRect.top + clRect.height * 0.35 - containerRect.top;
+      waypoints.push([W * 0.5, y]);
+    }
+
+    // Build path: S-curves between waypoints
+    let d = `M ${waypoints[0][0].toFixed(1)} ${waypoints[0][1].toFixed(1)}`;
+
+    for (let i = 1; i < waypoints.length; i++) {
+      const [px, py] = waypoints[i - 1];
+      const [cx, cy] = waypoints[i];
+      const dy = cy - py;
+      const t = 0.38 + (i / waypoints.length) * 0.12;
+      const cp1y = py + dy * t;
+      const cp2y = cy - dy * t;
+
+      d += ` C ${px.toFixed(1)} ${cp1y.toFixed(1)}, ${cx.toFixed(1)} ${cp2y.toFixed(1)}, ${cx.toFixed(1)} ${cy.toFixed(1)}`;
+    }
+
+    [tapePath, tapeShadow, tapeShine].forEach((p) => {
+      if (p) p.setAttribute("d", d);
+    });
+
+    // Marker dots
+    if (markersGroup) {
+      waypoints.forEach((wp, i) => {
+        if (i === 0 || i === waypoints.length - 1) return;
+        const circle = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "circle"
+        );
+        circle.setAttribute("cx", wp[0].toFixed(1));
+        circle.setAttribute("cy", wp[1].toFixed(1));
+        circle.setAttribute("r", "8");
+        circle.setAttribute("fill", "#1a0f0a");
+        circle.setAttribute("opacity", "0");
+        markersGroup.appendChild(circle);
+      });
+    }
+
+    // Set dasharray/offset IMMEDIATELY so tape is hidden
+    const pathLength = tapePath.getTotalLength();
+
+    [tapePath, tapeShadow, tapeShine].forEach((p) => {
+      if (!p) return;
+      p.style.strokeDasharray = `${pathLength}`;
+      p.style.strokeDashoffset = `${pathLength}`;
+    });
+
+    // Compute snap points for each section
+    const scrollH = container.scrollHeight - window.innerHeight;
+    const snapTargets: number[] = [];
+
+    // Cassette hero
+    snapTargets.push(0);
+
+    // Each tape section
+    sections.forEach((sec) => {
+      const el = sec as HTMLElement;
+      const top = el.offsetTop;
+      snapTargets.push(Math.min(top / scrollH, 1));
+    });
+
+    // Closing
+    if (closing) {
+      snapTargets.push(Math.min((closing as HTMLElement).offsetTop / scrollH, 1));
+    }
+
+    // End
+    snapTargets.push(1);
+
+    // ScrollTrigger — scrub:3 for slow, lazy ribbon draw + snap
+    const drawTrigger = ScrollTrigger.create({
+      trigger: container,
+      start: "top top",
+      end: "bottom bottom",
+      scrub: 3,
+      snap: {
+        snapTo: snapTargets,
+        duration: { min: 0.3, max: 0.6 },
+        ease: "power2.inOut",
+      },
+      onUpdate: (self) => {
+        const offset = pathLength * (1 - self.progress);
+        [tapePath, tapeShadow, tapeShine].forEach((p) => {
+          if (p) p.style.strokeDashoffset = `${offset}`;
+        });
+
+        if (markersGroup) {
+          const markers = markersGroup.querySelectorAll("circle");
+          markers.forEach((marker, idx) => {
+            const markerProgress = (idx + 1) / (waypoints.length - 1);
+            const visible = self.progress >= markerProgress - 0.02;
+            marker.setAttribute("opacity", visible ? "0.5" : "0");
+          });
+        }
+      },
+    });
+    activeTriggers.push(drawTrigger);
+
+    // Scroll hint fade
+    if (scrollHint) {
+      const hintTrigger = ScrollTrigger.create({
+        trigger: cassetteHero,
+        start: "top top",
+        end: "bottom 60%",
+        scrub: true,
+        onUpdate: (self) => {
+          (scrollHint as HTMLElement).style.opacity = `${Math.max(
+            0,
+            0.5 - self.progress * 2
+          )}`;
+        },
+      });
+      activeTriggers.push(hintTrigger);
+    }
+
+    // Cassette parallax
+    const cassetteWrapper = cassetteHero.querySelector(
+      ".cassette-wrapper"
+    ) as HTMLElement;
+    if (cassetteWrapper) {
+      const parallaxTrigger = ScrollTrigger.create({
+        trigger: cassetteHero,
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+        onUpdate: (self) => {
+          cassetteWrapper.style.transform = `translateY(${
+            -self.progress * 100
+          }px)`;
+        },
+      });
+      activeTriggers.push(parallaxTrigger);
+    }
+
+    // Closing reveal
+    if (closing) {
+      const closingInner = closing.querySelector(
+        ".closing-inner"
+      ) as HTMLElement;
+      if (closingInner) {
+        gsap.set(closingInner, { opacity: 0, y: 30 });
+        const closingTween = gsap.to(closingInner, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+          paused: true,
+        });
+        const closingTrigger = ScrollTrigger.create({
+          trigger: closing,
+          start: "top 75%",
+          onEnter: () => closingTween.play(),
+          onLeaveBack: () => closingTween.reverse(),
+        });
+        activeTriggers.push(closingTrigger);
+      }
+    }
+
+    ScrollTrigger.refresh(true);
+  }
+
+  function init() {
+    requestAnimationFrame(() => {
+      buildTape();
+      setTimeout(() => {
+        clearAll();
+        buildTape();
+      }, 800);
+    });
+  }
+
+  if (document.readyState === "complete") {
+    init();
+  } else {
+    window.addEventListener("load", init, { once: true });
+  }
+
+  let resizeTimer = 0;
+  window.addEventListener(
+    "resize",
+    () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        buildTape();
+      }, 300);
+    },
+    { passive: true }
+  );
+</script>

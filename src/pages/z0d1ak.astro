@@ -1,0 +1,65 @@
+---
+export const prerender = true;
+import Layout from "../layouts/Layout.astro";
+import "../styles/globals.css";
+import Footer from "../layouts/Footer.astro";
+---
+
+<Layout pageTitle="z0d1ak" backHref="/more">
+  <section class="zodiak-page">
+    <div class="zodiak-inner">
+      <h1 class="zodiak-heading">z0d1ak</h1>
+      <p class="zodiak-subtitle">ACM-VIT CTF Team</p>
+      <p class="zodiak-desc">Our competitive Capture The Flag team. More details coming soon.</p>
+    </div>
+  </section>
+  <Footer />
+</Layout>
+
+<style>
+  .zodiak-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+  }
+
+  .zodiak-inner {
+    max-width: 600px;
+  }
+
+  .zodiak-heading {
+    font-family: "PolySans Mono", monospace;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 800;
+    color: #FFFDD0;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+
+  :global([data-theme="light"]) .zodiak-heading {
+    color: #1a1a1a;
+  }
+
+  .zodiak-subtitle {
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #FF5F4A;
+    margin-bottom: 1.5rem;
+  }
+
+  .zodiak-desc {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: 1rem;
+    color: rgba(255, 253, 208, 0.6);
+    line-height: 1.6;
+  }
+
+  :global([data-theme="light"]) .zodiak-desc {
+    color: rgba(0, 0, 0, 0.5);
+  }
+</style>

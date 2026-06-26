@@ -28,3 +28,6 @@ AGENTS.md
 .vercel
 
 .gitignore
+
+# graphify
+graphify-out/
