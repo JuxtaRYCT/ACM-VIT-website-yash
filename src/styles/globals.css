@@ -206,42 +206,46 @@ html[data-theme="light"] .nav-item.active.pink-mode .nav-label {
   color: #ff007a !important;
 }
 
-/* ── Megamenu ── */
+/* ── Megamenu — dark in both modes ── */
 html[data-theme="light"] .megamenu-panel {
-  background: rgba(250, 225, 200, 0.95) !important;
-  border-color: rgba(249, 95, 74, 0.25) !important;
+  background: rgba(20, 20, 24, 0.55) !important;
+  backdrop-filter: blur(40px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(40px) saturate(180%) !important;
+  border-color: rgba(249, 95, 74, 0.35) !important;
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.08),
-    0 0 20px rgba(249, 95, 74, 0.03),
-    inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+    0 20px 60px rgba(0, 0, 0, 0.18),
+    0 0 20px rgba(249, 95, 74, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10) !important;
 }
 html[data-theme="light"] .megamenu-panel::after {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent) !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent) !important;
 }
 html[data-theme="light"] .megamenu-tile {
-  background: rgba(255, 255, 255, 0.4) !important;
-  border-color: rgba(0, 0, 0, 0.05) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(254, 252, 217, 0.08) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
 }
 html[data-theme="light"] .megamenu-tile:hover {
-  background: rgba(249, 95, 74, 0.08) !important;
-  border-color: rgba(249, 95, 74, 0.2) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06) !important;
+  background: rgba(249, 95, 74, 0.10) !important;
+  border-color: rgba(249, 95, 74, 0.30) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
 }
 html[data-theme="light"] .tile-title {
-  color: #1a1a1a !important;
+  color: #FEFCD9 !important;
 }
 html[data-theme="light"] .tile-desc {
-  color: rgba(26, 26, 26, 0.5) !important;
+  color: rgba(254, 252, 217, 0.45) !important;
 }
 html[data-theme="light"] .megamenu-tile:hover .tile-title {
   color: #f95f4a !important;
 }
 html[data-theme="light"] .megamenu-tile:hover .tile-desc {
-  color: rgba(26, 26, 26, 0.7) !important;
+  color: rgba(254, 252, 217, 0.65) !important;
 }
 html[data-theme="light"] .tile-img {
-  opacity: 0.65 !important;
-  filter: saturate(0.8) !important;
+  opacity: 0.55 !important;
+  filter: saturate(0.7) !important;
 }
 html[data-theme="light"] .megamenu-tile:hover .tile-img {
   opacity: 1 !important;
@@ -250,11 +254,11 @@ html[data-theme="light"] .megamenu-tile:hover .tile-img {
 
 /* ACM-W pink megamenu */
 html[data-theme="light"] .megamenu-panel[data-panel="acm-w"] {
-  border-color: rgba(255, 0, 122, 0.25) !important;
+  border-color: rgba(255, 0, 122, 0.45) !important;
 }
 html[data-theme="light"] .megamenu-panel[data-panel="acm-w"] .megamenu-tile:hover {
-  background: rgba(255, 0, 122, 0.06) !important;
-  border-color: rgba(255, 0, 122, 0.2) !important;
+  background: rgba(255, 0, 122, 0.10) !important;
+  border-color: rgba(255, 0, 122, 0.30) !important;
 }
 html[data-theme="light"] .megamenu-panel[data-panel="acm-w"] .megamenu-tile:hover .tile-title {
   color: #ff007a !important;
@@ -424,11 +428,6 @@ html[data-theme="light"] .progress-fill {
   background: #1a1a1a !important;
 }
 
-/* ── Partners cassette image ── */
-html[data-theme="light"] #partners-svg {
-  filter: invert(1) brightness(0.15);
-}
-
 /* ── Domains cassette wrapper ── */
 html[data-theme="light"] .cassette-wrapper::after {
   background: #F5EDE4 !important;
@@ -436,78 +435,95 @@ html[data-theme="light"] .cassette-wrapper::after {
 
 /* ── Selection stays the same ── */
 
-/* ── Theme toggle button ── */
+/* ── Theme toggle — dangling bulb pull cord ── */
 .theme-toggle {
   position: fixed;
-  top: 28px;
-  right: 24px;
+  top: 0;
+  right: 32px;
   z-index: 1001;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid rgba(254, 252, 217, 0.25);
-  background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: auto;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+.theme-toggle:active {
+  cursor: grabbing;
+}
+
+.cord-svg {
+  display: block;
+  overflow: visible;
+}
+
+.bulb-handle {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: filter 0.3s ease;
+}
+
+.theme-toggle:hover .bulb-handle {
+  filter: drop-shadow(0 0 10px rgba(249, 95, 74, 0.55));
+}
+
+/* Bulb "on" in light mode */
+html[data-theme="light"] .bulb-circle {
+  fill: #F95F4A;
+}
+
+/* Tooltip — positioned to the left */
+.bulb-tooltip {
+  position: absolute;
+  top: 72px;
+  right: calc(100% + 12px);
+  white-space: nowrap;
+  font-family: 'PolySans Trial', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.04em;
   color: #FEFCD9;
-  transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
-  pointer-events: auto;
-}
-.theme-toggle:hover {
-  border-color: rgba(249, 95, 74, 0.5);
-  background: rgba(0, 0, 0, 0.35);
-  transform: scale(1.08);
-}
-.theme-toggle:active {
-  transform: scale(0.95);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(249, 95, 74, 0.3);
+  border-radius: 8px;
+  padding: 6px 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  transform: translateX(8px);
 }
 
-html[data-theme="light"] .theme-toggle {
-  border-color: rgba(26, 26, 26, 0.15);
-  background: rgba(255, 255, 255, 0.4);
+.theme-toggle:hover .bulb-tooltip {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+html[data-theme="light"] .bulb-tooltip {
   color: #1a1a1a;
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(249, 95, 74, 0.25);
 }
-html[data-theme="light"] .theme-toggle:hover {
-  border-color: rgba(249, 95, 74, 0.4);
-  background: rgba(255, 255, 255, 0.55);
-}
-
-/* Icon visibility */
-.theme-toggle .icon-sun { display: none; }
-.theme-toggle .icon-moon { display: block; }
-html[data-theme="light"] .theme-toggle .icon-sun { display: block; }
-html[data-theme="light"] .theme-toggle .icon-moon { display: none; }
 
 @media (max-width: 952px) {
   .theme-toggle {
-    top: 18px;
-    right: 72px;
-    width: 36px;
-    height: 36px;
+    right: 70px;
   }
-  body.hero-in-view .theme-toggle {
-    top: auto;
-    bottom: calc(22px + env(safe-area-inset-bottom, 0px));
-    right: auto;
-    left: calc(50% + 35px);
-  }
+  .cord-svg { transform: scale(0.85); transform-origin: top center; }
+  .bulb-handle svg { width: 34px; height: 21px; }
 }
 
 @media (max-width: 480px) {
   .theme-toggle {
-    top: 14px;
-    right: 56px;
-    width: 32px;
-    height: 32px;
+    right: 54px;
   }
-  body.hero-in-view .theme-toggle {
-    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-    left: calc(50% + 28px);
-  }
+  .cord-svg { transform: scale(0.75); transform-origin: top center; }
+  .bulb-handle svg { width: 30px; height: 19px; }
+  .bulb-tooltip { font-size: 10px; padding: 5px 10px; }
 }
 
 body.mobile-menu-open .theme-toggle {

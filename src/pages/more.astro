@@ -35,6 +35,12 @@ const items = [
     href: "/achievements",
     icon: "trophy",
   },
+  {
+    title: "Cassette Builder",
+    desc: "Design & download your own custom cassette",
+    href: "/cassette-builder",
+    icon: "cassette",
+  },
 ];
 ---
 
@@ -80,6 +86,15 @@ const items = [
                   <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 19.24 7 20v2"/>
                   <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 19.24 17 20v2"/>
                   <path d="M18 2H6v7a6 6 0 0012 0V2z"/>
+                </svg>
+              )}
+              {item.icon === "cassette" && (
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="5" width="20" height="14" rx="2"/>
+                  <circle cx="8" cy="12" r="2"/>
+                  <circle cx="16" cy="12" r="2"/>
+                  <path d="M10 12h4"/>
+                  <path d="M7 19l2-4h6l2 4"/>
                 </svg>
               )}
             </div>

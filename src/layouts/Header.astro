@@ -71,6 +71,14 @@ const dropdowns: Record<string, DropdownItem[]> = {
     { title: "Hashnode", desc: "Our latest technical deep-dives", href: "/blogs#all-blogs", img: "/logos/acm_topleft.webp" },
     { title: "Medium", desc: "Earlier publications & tutorials", href: "/blogs#all-blogs", img: "/logos/acm_topleft.webp" },
   ],
+  more: [
+    { title: "Code of Conduct", desc: "ACM ethical principles & values", href: "/code-of-conduct", img: "/logos/acm-logo-black.webp" },
+    { title: "Merchandise", desc: "Official ACM-VIT merch & collectibles", href: "/merchandise", img: "/logos/acm_topleft.webp" },
+    { title: "GREP Newsletter", desc: "Our bi-annual technical newsletter", href: "/grep", img: "/ui/bloglayout.webp" },
+    { title: "z0d1ak", desc: "ACM-VIT's competitive CTF team", href: "/z0d1ak", img: "/icons/github-orange.webp" },
+    { title: "Achievements", desc: "Awards, recognitions & milestones", href: "/more", img: "/ui/acm-celeb.png" },
+    { title: "Cassette Builder", desc: "Design your own custom cassette", href: "/cassette-builder", img: "/cassettes/Cassette_Tech.webp" },
+  ],
 };
 ---
 
@@ -142,6 +150,10 @@ const dropdowns: Record<string, DropdownItem[]> = {
           <a href="/#contact" class="nav-item" data-section="contact" style="--dot-i:10">
             <span class="nav-dot"></span>
             <span class="nav-label">Contact</span>
+          </a>
+          <a href="/more" class="nav-item" data-section="more" style="--dot-i:11">
+            <span class="nav-dot"></span>
+            <span class="nav-label">More</span>
           </a>
           <!-- Progress bar track inside pill -->
           <div class="pill-progress" id="pillProgress">
@@ -252,8 +264,9 @@ const dropdowns: Record<string, DropdownItem[]> = {
                 "partners",
                 "gallery",
                 "contact",
+                "more",
               ].map((item) => {
-                const href = item === "community" ? "/community" : `/#${item}`;
+                const href = item === "community" ? "/community" : item === "more" ? "/more" : `/#${item}`;
                 return (
                   <li>
                     <a
@@ -582,13 +595,15 @@ const dropdowns: Record<string, DropdownItem[]> = {
   /* 5-item panels: 3 top + 2 bottom spanning wider */
   .megamenu-panel[data-panel="community"] .megamenu-grid,
   .megamenu-panel[data-panel="domains"] .megamenu-grid,
-  .megamenu-panel[data-panel="events"] .megamenu-grid {
+  .megamenu-panel[data-panel="events"] .megamenu-grid,
+  .megamenu-panel[data-panel="more"] .megamenu-grid {
     grid-template-columns: repeat(6, 1fr);
   }
 
   .megamenu-panel[data-panel="community"] .megamenu-tile,
   .megamenu-panel[data-panel="domains"] .megamenu-tile,
-  .megamenu-panel[data-panel="events"] .megamenu-tile {
+  .megamenu-panel[data-panel="events"] .megamenu-tile,
+  .megamenu-panel[data-panel="more"] .megamenu-tile {
     grid-column: span 2;
   }
 
@@ -793,14 +808,14 @@ const dropdowns: Record<string, DropdownItem[]> = {
   /* ── Subpage Dynamic Island ── */
 
   /* Light mode: dark fill on both subpage pills */
-  html[data-theme="light"] .header-pill.subpage-mode {
+  :global(html[data-theme="light"]) .header-pill.subpage-mode {
     --glass-bg: rgba(20, 20, 24, 0.85);
     --glass-border: rgba(20, 20, 24, 0.3);
     --glass-highlight: rgba(255, 255, 255, 0.10);
     --glass-shadow: rgba(0, 0, 0, 0.15);
   }
 
-  html[data-theme="light"] .header-pill.subpage-mode .subpage-island-label {
+  :global(html[data-theme="light"]) .header-pill.subpage-mode .subpage-island-label {
     color: #FEFCD9;
   }
 
@@ -1182,7 +1197,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
     // ── Megamenu interaction ──
     const megamenu = document.getElementById("navMegamenu");
     const megamenuPanels = megamenu ? megamenu.querySelectorAll(".megamenu-panel") : [];
-    const sectionsWithDropdowns = ["about", "community", "domains", "events", "projects", "acm-w", "team"];
+    const sectionsWithDropdowns = ["about", "community", "domains", "events", "projects", "acm-w", "team", "more"];
     let megamenuTimer = null;
     let currentPanel = null;
 

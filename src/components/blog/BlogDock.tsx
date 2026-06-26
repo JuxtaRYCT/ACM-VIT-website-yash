@@ -10,8 +10,6 @@ import {
   type PointerEvent,
 } from "react";
 
-gsap.registerPlugin(Flip);
-
 interface Props {
   slug: string;
   title: string;
@@ -152,6 +150,9 @@ export default function BlogDock({ slug, title }: Props) {
   const speedControlRef = useRef<HTMLDivElement>(null);
   const speedVisibleRef = useRef(false);
   const storageKey  = `acm-blog-${slug}`;
+
+  // Register GSAP Flip plugin on client only — module-level registration crashes SSR
+  useEffect(() => { gsap.registerPlugin(Flip); }, []);
 
   // ── Load saved state + voices ──────────────────────────
   useEffect(() => {
