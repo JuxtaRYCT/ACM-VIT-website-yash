@@ -8,18 +8,18 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
 const collections = [
   {
     year: "2026",
-    label: "LATEST DROP",
-    title: "Genesis Collection",
-    desc: "The newest ACM-VIT merch. Bold, loud, and unapologetically fresh.",
+    label: "LATEST",
+    title: "2026 Collection",
+    desc: "The current line. Six domain tees built around the Atlas system.",
     cassette: "/assets/merch/cassette-2026.png",
     href: "/merchandise/2026",
     accent: "#F95F4A",
   },
   {
     year: "2025",
-    label: "FAN FAVORITE",
-    title: "Retro Revival",
-    desc: "A love letter to the classics. Vintage vibes meet modern cuts.",
+    label: "RECENT",
+    title: "2025 Collection",
+    desc: "Seven domain tees with a Wayfarer back illustration, plus a Senior Core hoodie.",
     cassette: "/assets/merch/cassette-2025.png",
     href: "/merchandise/2025",
     accent: "#2023FE",
@@ -27,8 +27,8 @@ const collections = [
   {
     year: "2024",
     label: "ARCHIVE",
-    title: "Neon Pulse",
-    desc: "Electric colors and cyber-inspired graphics. The glow-up era.",
+    title: "2024 Collection",
+    desc: "One tee per domain, each with its own graphic identity.",
     cassette: "/assets/merch/cassette-2024.png",
     href: "/merchandise/2024",
     accent: "#00C9A7",
@@ -36,17 +36,17 @@ const collections = [
   {
     year: "2023",
     label: "ARCHIVE",
-    title: "Pixel Perfect",
-    desc: "Where 8-bit nostalgia meets wearable art. The one that started it all.",
+    title: "2023 Collection",
+    desc: "Shared front across the lineup, domain identity printed on the back.",
     cassette: "/assets/merch/cassette-2023.png",
     href: "/merchandise/2023",
     accent: "#FF6B9D",
   },
   {
     year: "BF",
-    label: "SPECIAL EDITION",
-    title: "Board Farewell Merch",
-    desc: "Limited runs created to honor outgoing board members. Rare and collectible.",
+    label: "LIMITED",
+    title: "Board Farewell",
+    desc: "A short run to mark the end of a board tenure. Not on the regular catalog.",
     cassette: "/assets/merch/cassette-more.png",
     href: "/merchandise/board-farewell",
     accent: "#FFB800",
@@ -55,7 +55,7 @@ const collections = [
     year: "++",
     label: "MISC",
     title: "Other Merchandise",
-    desc: "Event exclusives, collab drops, and one-off pieces that did not fit a collection.",
+    desc: "Event tees, collab pieces and one-off prints outside the yearly drops.",
     cassette: "/assets/merch/cassette-more.png",
     href: "/merchandise/other",
     accent: "#F95F4A",
@@ -98,17 +98,15 @@ const collections = [
 
     <div class="merch-bottom relative z-[5] w-full px-6 sm:px-12 lg:px-20 pb-12 sm:pb-16 mt-8">
       <div class="max-w-2xl">
-        <p class="merch-tag" data-merch-tag>FRESH EVERY YEAR</p>
+        <p class="merch-tag" data-merch-tag>EVERY YEAR, A NEW LINE</p>
         <p class="merch-desc" data-merch-desc>
-          Every year, ACM-VIT drops a brand new merchandise line for its members.
-          Each collection is built around a unique design theme, blending tech culture
-          with street-ready aesthetics. From oversized tees to limited edition drops,
-          the merch is always crafted to stand out.
+          ACM-VIT puts out a new merchandise collection for its members each year.
+          Every collection has its own visual direction, typography and palette,
+          built around the chapter and the year it represents.
         </p>
         <p class="merch-desc mt-3" data-merch-desc>
-          It is not just clothing. It is a statement. A badge of the community you
-          belong to. Every stitch, every print, every colorway tells a story of
-          innovation and creative chaos.
+          This archive holds every drop in one place &mdash; current line,
+          past years, board farewell editions, and the one-offs in between.
         </p>
         <div class="mt-8" data-merch-btn>
           <AnimatedButton text="Explore Collections" href="#collections" iconBg="#F95F4A" />
@@ -123,11 +121,10 @@ const collections = [
       <div class="mb-10">
         <p class="coll-tag" data-coll-anim>ALL COLLECTIONS</p>
         <h2 class="coll-heading" data-coll-anim>
-          Pick your <span class="text-[#F95F4A]">era.</span>
+          The full <span class="text-[#F95F4A]">archive.</span>
         </h2>
         <p class="coll-subtitle" data-coll-anim>
-          Every year brings a new theme, a new identity, a new reason to wear
-          ACM-VIT on your sleeve.
+          Every yearly drop, plus the limited and one-off pieces.
         </p>
       </div>
 
