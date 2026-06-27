@@ -4,64 +4,54 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
 
 <section class="community-landing relative w-full overflow-hidden">
   <div class="landing-inner">
-    <!-- Cassette -->
+    <!-- Left: Cassette -->
     <div class="landing-cassette">
       <img
         src="/community/cassette-igniting-minds.png"
         alt="Igniting Minds cassette"
         class="landing-cassette-img"
-        loading="lazy"
+        loading="eager"
         decoding="async"
       />
     </div>
 
-    <!-- Decorative tape line -->
-    <svg class="landing-tape" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true">
-      <path
-        d="M 200 0 C 200 30, 80 40, 80 60 C 80 80, 320 80, 320 100 C 320 110, 200 115, 200 120"
-        fill="none"
-        stroke="#4A2F1A"
-        stroke-width="2"
-        stroke-linecap="round"
-        opacity="0.4"
-      />
-    </svg>
-
-    <!-- Text -->
-    <div class="landing-content">
-      <div class="chapter-pill"><span>CHAPTER 4 : IGNITING MINDS</span></div>
+    <!-- Right: Heading + text + CTA -->
+    <div class="landing-right">
+      <h2 class="landing-heading">
+        COMM<span class="accent">UNITY</span>
+      </h2>
       <p class="landing-text">
-        at acm-vit, technology is more than just code — it's a tool to
-        uplift, empower, and create meaningful change. our
-        community-driven initiatives aim to spark curiosity and bring
-        the power of technology closer to those who need it most.
+        At ACM-VIT, technology is more than just code — it's a tool to
+        uplift, empower, and create meaningful change. Our
+        community-driven initiatives aim to spark curiosity,
+        strengthen digital literacy, and bring the power of
+        technology closer to those who need it most. Here's how
+        we're taking that step forward.
       </p>
-    </div>
-
-    <!-- CTA -->
-    <div class="landing-cta">
-      <AnimatedButton text="Unravel the tape" href="/community" />
+      <div class="landing-cta">
+        <AnimatedButton text="Unravel the tape" href="/community" />
+      </div>
     </div>
   </div>
 </section>
 
 <style>
   .community-landing {
-    height: 100vh;
-    height: 100dvh;
-    min-height: 600px;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-top: 3rem;
+    padding-bottom: 6rem;
   }
 
   .landing-inner {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
     align-items: center;
-    text-align: center;
-    padding: 2rem;
-    gap: 1rem;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    width: 100%;
+    max-width: 1500px;
+    padding: 2rem clamp(2rem, 5vw, 4rem);
     opacity: 0;
     transform: translateY(30px);
     animation: landingReveal 1s ease 0.3s forwards;
@@ -75,71 +65,73 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
   }
 
   .landing-cassette {
-    width: clamp(200px, 28vw, 340px);
-    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 
   .landing-cassette-img {
-    width: 100%;
+    width: clamp(320px, 38vw, 560px);
     height: auto;
-    filter: drop-shadow(0 16px 48px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 24px 60px rgba(0, 0, 0, 0.55));
     animation: cassetteHover 5s ease-in-out infinite;
   }
 
   @keyframes cassetteHover {
     0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-8px) rotate(0.4deg); }
+    50% { transform: translateY(-10px) rotate(0.4deg); }
   }
 
-  .landing-tape {
-    width: 200px;
-    height: 60px;
-    opacity: 0;
-    animation: tapeReveal 0.8s ease 0.8s forwards;
+  .landing-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    min-width: 0;
   }
 
-  @keyframes tapeReveal {
-    to { opacity: 1; }
-  }
-
-  .landing-content {
-    max-width: 540px;
-  }
-
-  .chapter-pill {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.45rem 1.4rem;
-    background: #FF5F4A;
-    border-radius: 100px;
-    font-family: "PolySans Mono", "Inter", monospace;
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    color: white;
+  .landing-heading {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: clamp(2.75rem, 6.2vw, 7.5rem);
+    line-height: 0.85;
+    color: #FFFDD0;
+    font-weight: 700;
     text-transform: uppercase;
+    letter-spacing: -0.05em;
+    margin: 0;
     white-space: nowrap;
-    margin-bottom: 1.5rem;
+  }
+
+  .landing-heading .accent {
+    color: #FF5F4A;
   }
 
   .landing-text {
     font-family: "PolySans Trial", system-ui, sans-serif;
-    font-size: clamp(0.88rem, 1.5vw, 1.15rem);
-    line-height: 1.55;
-    color: #FF5F4A;
+    font-size: clamp(0.95rem, 1.15vw, 1.15rem);
+    line-height: 1.6;
+    color: rgba(254, 252, 217, 0.78);
     font-weight: 400;
-    text-transform: lowercase;
+    margin: 0;
+    max-width: 56ch;
   }
 
   .landing-cta {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
   }
 
-  @media (max-width: 640px) {
-    .chapter-pill {
-      font-size: 0.55rem;
-      padding: 0.35rem 1rem;
-      letter-spacing: 0.1em;
+  @media (max-width: 900px) {
+    .landing-inner {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 2rem;
+    }
+    .landing-right {
+      align-items: center;
+      margin: 0 auto;
+    }
+    .landing-cassette-img {
+      width: clamp(280px, 70vw, 480px);
     }
   }
 </style>

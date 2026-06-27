@@ -18,6 +18,10 @@ export default defineConfig({
         plugins: [tailwindcss()],
         optimizeDeps: {
             exclude: ['@keystatic/astro'],
+            include: ['react-hook-form', '@hookform/resolvers/zod', 'zod'],
+        },
+        resolve: {
+            dedupe: ['react', 'react-dom'],
         },
     }
 });

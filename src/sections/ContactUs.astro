@@ -1,8 +1,16 @@
 ---
-
+const SUBJECTS = [
+  "General Inquiry",
+  "Collaboration",
+  "Sponsorship",
+  "Join ACM",
+  "Event Info",
+  "Feedback",
+  "Other",
+];
 ---
 
-<section class="laptop-section relative w-full h-[300vh]">
+<section class="laptop-section relative w-full h-[200vh]" style="clip-path: inset(0);">
   <div
     class="sticky top-0 left-0 w-full h-screen flex items-center justify-center overflow-hidden"
   >
@@ -10,95 +18,83 @@
       id="laptop-canvas"
       class="w-[80%] h-[80%] object-contain brightness-125"></canvas>
     <div
-      class="contact-heading absolute top-[25%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10 opacity-100 pointer-events-none"
+      class="contact-heading absolute top-[25%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10 opacity-0 pointer-events-none"
     >
       <div
         class="justify-start text-white text-5xl font-semibold font-['PolySans_Trial'] uppercase"
       >
-        Contact us!
+        Contact <span class="text-[#F95F4A]">us</span>!
       </div>
     </div>
 
     <!-- Contact Form Overlay -->
     <div
-      class="contact-form-overlay absolute top-[8%] left-[11%] w-[78%] h-[72%] z-20 opacity-0 pointer-events-none flex flex-col items-center justify-center"
+      class="contact-form-overlay absolute top-[14%] left-[14%] w-[72%] h-[62%] z-20 opacity-0 pointer-events-none flex items-center justify-center overflow-hidden"
     >
-      <div class="flex flex-col items-center text-black mb-1">
-        <div
-          class="text-center justify-start text-stone-900 text-2xl font-bold font-['PolySans_Trial']"
-        >
-          Say Hello!
-        </div>
-      </div>
-
       <form
-        class="contact-form pointer-events-auto mt-4 flex w-full max-w-[50%] flex-col gap-4 text-xs text-black px-4"
-        method="POST"
         id="contact-form-desktop"
+        class="mx-auto flex w-full max-w-md flex-col justify-center gap-3 px-8 py-5 text-stone-900"
       >
-        <div class="contact-grid grid gap-4 sm:grid-cols-2">
-          <label
-            class="flex flex-col gap-2 text-[8px] font-semibold uppercase tracking-[0.35em] text-neutral-500 sm:text-[10px]"
-          >
-            First Name
-            <input
-              type="text"
-              name="firstName"
-              required
-              class="contact-input"
-            />
+        <div class="mb-1 text-center">
+          <div class="font-['PolySans_Trial'] text-xl font-bold tracking-tight text-stone-900 sm:text-2xl">
+            Say Hello!
+          </div>
+          <p class="mt-0.5 text-[10px] font-medium tracking-normal text-stone-500 sm:text-xs">
+            We'd love to hear from you
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <label class="flex flex-col gap-1">
+            <span class="contact-label">First name</span>
+            <input type="text" name="firstName" required class="contact-input" />
           </label>
-          <label
-            class="flex flex-col gap-2 text-[8px] font-semibold uppercase tracking-[0.35em] text-neutral-500 sm:text-[10px]"
-          >
-            Last Name
+          <label class="flex flex-col gap-1">
+            <span class="contact-label">Last name</span>
             <input type="text" name="lastName" class="contact-input" />
           </label>
         </div>
 
-        <div class="contact-grid grid gap-4 sm:grid-cols-2">
-          <label
-            class="flex flex-col gap-2 text-[8px] font-semibold uppercase tracking-[0.35em] text-neutral-500 sm:text-[10px]"
-          >
-            Email
+        <div class="grid grid-cols-2 gap-3">
+          <label class="flex flex-col gap-1">
+            <span class="contact-label">Email</span>
             <input type="email" name="email" required class="contact-input" />
           </label>
-          <label
-            class="flex flex-col gap-2 text-[8px] font-semibold uppercase tracking-[0.35em] text-neutral-500 sm:text-[10px]"
-          >
-            Phone
-            <input
-              type="tel"
-              name="phone"
-              inputmode="tel"
-              pattern="^[0-9+()\s-]{7,}$"
-              class="contact-input"
-            />
+          <label class="flex flex-col gap-1">
+            <span class="contact-label">Phone</span>
+            <input type="tel" name="phone" inputmode="tel" class="contact-input" />
           </label>
         </div>
 
-        <label
-          class="flex flex-col gap-2 text-[8px] font-semibold uppercase tracking-[0.35em] text-neutral-500 sm:text-[10px]"
-        >
-          Message
-          <textarea
-            name="message"
-            rows="2"
-            required
-            class="contact-input resize-none py-2.5"></textarea>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="flex flex-col gap-1">
+            <span class="contact-label">Organization</span>
+
+            <input type="text" name="organization" class="contact-input" />
+          </label>
+          <label class="flex flex-col gap-1">
+            <span class="contact-label">Subject</span>
+            <select name="subject" required class="contact-input appearance-none cursor-pointer">
+              <option value="" disabled selected>Select...</option>
+              {SUBJECTS.map((s) => <option value={s}>{s}</option>)}
+            </select>
+          </label>
+        </div>
+
+        <label class="flex flex-col gap-1">
+          <span class="contact-label">Message</span>
+          <textarea name="message" rows="2" required class="contact-input resize-none"></textarea>
         </label>
 
-        <div class="flex flex-col items-center gap-4 mt-4">
-          <div
-            class="w-40 h-10 bg-stone-900 rounded-[200px] flex items-center justify-center overflow-hidden"
+        <div class="mt-2 flex flex-col items-center gap-2">
+          <button
+            type="submit"
+            class="group relative inline-flex h-10 w-36 items-center justify-center overflow-hidden rounded-full bg-stone-900 text-sm font-medium text-[#FEFCD9] transition-all hover:bg-stone-800 active:scale-[0.97] disabled:opacity-60"
           >
-            <button
-              type="submit"
-              class="group inline-flex items-center justify-center gap-2 w-full h-full text-lg font-light text-[#ffeead] sm:text-xl hover:bg-white/5 transition-colors"
-            >
-              Submit
-            </button>
-          </div>
+            <span class="relative z-10">Submit</span>
+            <span class="absolute inset-0 -translate-x-full bg-[#F95F4A] transition-transform duration-300 group-hover:translate-x-0"></span>
+          </button>
+          <p class="contact-status hidden text-center text-xs"></p>
         </div>
       </form>
     </div>
@@ -106,26 +102,33 @@
 </section>
 
 <style>
+  .contact-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #78716c; /* stone-500 */
+  }
+
   .contact-input {
-    border-radius: 0.75rem;
-    border: 1.5px dashed #050505;
-    background: transparent;
-    padding: 0.6rem 0.8rem;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: #050505;
-    outline: none;
-    transition: border 0.2s ease;
     width: 100%;
+    border-radius: 0.75rem;
+    border: 1.5px dashed rgba(28, 25, 23, 0.3);
+    background: rgba(255, 255, 255, 0.5);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #1c1917;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
   }
 
   .contact-input:focus {
     border-color: #f95f4a;
+    background: rgba(255, 255, 255, 0.7);
   }
 
-  /* Adjust form layout for the laptop screen size */
-  .contact-form {
-    height: auto;
+  .contact-input::placeholder {
+    color: #a8a29e;
   }
 </style>
 
@@ -140,136 +143,85 @@
   const context = canvas?.getContext("2d", { alpha: true });
   const section = document.querySelector(".laptop-section");
 
-  const frameCount = 125;
-  const narrowQuery = "(max-width: 1024px)";
-  let maxCacheSize = frameCount;
-  let preloadRadius = 8;
-  const pendingFrames = new Set<number>();
+  // ---------------------------------------------------------------------------
+  // Sample every 5th original frame → ~26 images instead of 125.
+  // ---------------------------------------------------------------------------
+  const TOTAL_FRAMES = 125;
+  const STEP = 5;
+  const keyframes: number[] = [];
+  for (let i = 0; i < TOTAL_FRAMES; i += STEP) keyframes.push(i);
+  if (keyframes[keyframes.length - 1] !== TOTAL_FRAMES - 1)
+    keyframes.push(TOTAL_FRAMES - 1);
+  const frameCount = keyframes.length;
+
   const frameCache = new Map<number, HTMLImageElement>();
+  const pendingFrames = new Set<number>();
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;
 
-  const laptop = {
-    frame: 0,
-  };
+  const laptop = { frame: 0 };
 
-  const updatePerfSettings = () => {
-    const isNarrow = window.matchMedia(narrowQuery).matches;
-    maxCacheSize = isNarrow ? Math.min(12, frameCount) : frameCount;
-    preloadRadius = isNarrow ? 3 : 8;
-  };
-
-  const currentFrame = (index: number) =>
-    getAssetUrl(
-      `/scroll-frames/frame_${(index + 1).toString().padStart(4, "0")}.png`
+  const frameUrl = (keyIdx: number) => {
+    const clamped = Math.max(0, Math.min(frameCount - 1, keyIdx));
+    const actual = keyframes[clamped];
+    return getAssetUrl(
+      `/scroll-frames/frame_${(actual + 1).toString().padStart(4, "0")}.png`
     );
+  };
 
   const clampFrame = (index: number) =>
     Math.max(0, Math.min(frameCount - 1, Math.round(index)));
 
+  const narrowQuery = "(max-width: 1024px)";
+
   const resizeCanvas = () => {
     if (!canvas || !context) return;
-    updatePerfSettings();
     const rect = canvas.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
-    const maxDpr = window.matchMedia(narrowQuery).matches
-      ? 1.25
-      : 1.5;
+    const maxDpr = window.matchMedia(narrowQuery).matches ? 1.25 : 1.5;
     const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
-    const width = Math.round(rect.width * dpr);
-    const height = Math.round(rect.height * dpr);
-    if (canvas.width !== width || canvas.height !== height) {
-      canvas.width = width;
-      canvas.height = height;
+    const w = Math.round(rect.width * dpr);
+    const h = Math.round(rect.height * dpr);
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width = w;
+      canvas.height = h;
     }
   };
 
-  const trimCache = (center: number) => {
-    if (maxCacheSize >= frameCount || frameCache.size <= maxCacheSize) return;
-    const keys = Array.from(frameCache.keys()).sort(
-      (a, b) => Math.abs(a - center) - Math.abs(b - center)
-    );
-    const keep = new Set(keys.slice(0, maxCacheSize));
-    for (const key of frameCache.keys()) {
-      if (!keep.has(key)) frameCache.delete(key);
-    }
-  };
-
-  const loadFrame = async (index: number) => {
-    const clampedIndex = clampFrame(index);
-    const cached = frameCache.get(clampedIndex);
-    if (cached) return cached;
-    if (pendingFrames.has(clampedIndex)) return null;
-    pendingFrames.add(clampedIndex);
+  const loadFrame = async (keyIdx: number): Promise<HTMLImageElement | null> => {
+    const idx = clampFrame(keyIdx);
+    if (frameCache.has(idx)) return frameCache.get(idx)!;
+    if (pendingFrames.has(idx)) return null;
+    pendingFrames.add(idx);
 
     const img = new Image();
     img.decoding = "async";
-    img.src = currentFrame(clampedIndex);
-    const awaitLoad = () =>
-      new Promise((resolve) => {
-        if (img.complete) {
-          resolve(null);
-          return;
-        }
-        img.onload = () => resolve(null);
-        img.onerror = () => resolve(null);
-      });
+    img.src = frameUrl(idx);
 
-    if (typeof img.decode === "function") {
-      try {
-        await img.decode();
-      } catch {
-        await awaitLoad();
-      }
-    } else {
-      await awaitLoad();
+    try {
+      if (typeof img.decode === "function") await img.decode();
+      else
+        await new Promise<void>((r) => {
+          if (img.complete) return r();
+          img.onload = () => r();
+          img.onerror = () => r();
+        });
+    } catch {
+      /* decode can reject */
     }
 
-    pendingFrames.delete(clampedIndex);
-    frameCache.set(clampedIndex, img);
-    trimCache(clampedIndex);
+    pendingFrames.delete(idx);
+    frameCache.set(idx, img);
     return img;
   };
 
-  const queueFrames = (center: number) => {
-    const start = Math.max(0, center - preloadRadius);
-    const end = Math.min(frameCount - 1, center + preloadRadius);
-    for (let i = start; i <= end; i++) {
-      void loadFrame(i);
-    }
-  };
-
-  let preloadAllScheduled = false;
-  const preloadAllFrames = async () => {
-    const concurrency = Math.min(6, frameCount);
-    let nextIndex = 0;
-
-    const worker = async () => {
-      while (nextIndex < frameCount) {
-        const index = nextIndex;
-        nextIndex += 1;
-        await loadFrame(index);
-      }
-    };
-
-    await Promise.all(
-      Array.from({ length: concurrency }, () => worker())
-    );
-  };
-
-  const schedulePreloadAll = () => {
-    if (prefersReducedMotion || preloadAllScheduled) return;
-    if (window.matchMedia(narrowQuery).matches) return;
-    preloadAllScheduled = true;
-    window.setTimeout(() => {
-      void preloadAllFrames();
-    }, 200);
-  };
+  const preloadAll = () =>
+    Promise.all(keyframes.map((_, i) => loadFrame(i)));
 
   let lastRenderedFrame = -1;
-  let lastCanvasWidth = 0;
-  let lastCanvasHeight = 0;
+  let lastCanvasW = 0;
+  let lastCanvasH = 0;
 
   const render = () => {
     if (!context || !canvas) return;
@@ -284,18 +236,16 @@
 
     if (
       frame === lastRenderedFrame &&
-      canvas.width === lastCanvasWidth &&
-      canvas.height === lastCanvasHeight
-    ) {
+      canvas.width === lastCanvasW &&
+      canvas.height === lastCanvasH
+    )
       return;
-    }
 
     lastRenderedFrame = frame;
-    lastCanvasWidth = canvas.width;
-    lastCanvasHeight = canvas.height;
+    lastCanvasW = canvas.width;
+    lastCanvasH = canvas.height;
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.drawImage(img, 0, 0, canvas.width, canvas.height);
-    queueFrames(frame);
   };
 
   const initSequence = async () => {
@@ -303,7 +253,7 @@
     resizeCanvas();
     await loadFrame(0);
     render();
-    schedulePreloadAll();
+    void preloadAll();
 
     if (prefersReducedMotion) {
       const formOverlay = document.querySelector(
@@ -323,47 +273,60 @@
       return;
     }
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".laptop-section",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.5,
+    // Fade heading in when section enters viewport
+    ScrollTrigger.create({
+      trigger: ".laptop-section",
+      start: "top 80%",
+      once: true,
+      onEnter: () => {
+        gsap.to(".contact-heading", {
+          opacity: 1,
+          duration: 0.5,
+          ease: "power2.out",
+        });
       },
     });
 
-    tl.to(laptop, {
-      frame: 0,
-      duration: 0.5,
-      onUpdate: render,
-    })
-      .to(laptop, {
-        frame: frameCount - 1,
-        snap: "frame",
-        ease: "none",
-        duration: 2,
-        onUpdate: render,
-      })
-      .to(
-        ".contact-heading",
-        {
-          opacity: 0,
-          y: -50,
-          duration: (20 / frameCount) * 2,
-          ease: "none",
-        },
-        `<+${(40 / frameCount) * 2}`
-      )
-      .to(
-        ".contact-form-overlay",
-        {
-          opacity: 1,
-          pointerEvents: "auto",
-          duration: 0.5,
-          ease: "power2.inOut",
-        },
-        `<+${(40 / frameCount) * 2}`
-      );
+    let opened = false;
+
+    ScrollTrigger.create({
+      trigger: ".laptop-section",
+      start: "10% top",
+      once: true,
+      onEnter: () => {
+        if (opened) return;
+        opened = true;
+
+        const tl = gsap.timeline();
+        tl.to(laptop, {
+            frame: frameCount - 1,
+            snap: "frame",
+            duration: 1.4,
+            ease: "power3.inOut",
+            onUpdate: render,
+          })
+          .to(
+            ".contact-heading",
+            {
+              opacity: 0,
+              y: -40,
+              duration: 0.4,
+              ease: "power2.in",
+            },
+            0.15
+          )
+          .to(
+            ".contact-form-overlay",
+            {
+              opacity: 1,
+              pointerEvents: "auto",
+              duration: 0.5,
+              ease: "power2.out",
+            },
+            0.7
+          );
+      },
+    });
   };
 
   let started = false;
@@ -376,7 +339,7 @@
   if (section && "IntersectionObserver" in window) {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
+        if (entries.some((e) => e.isIntersecting)) {
           startWhenVisible();
           observer.disconnect();
         }
@@ -394,47 +357,44 @@
     render();
   });
 
-  // Form handling
-  const form = document.getElementById(
-    "contact-form-desktop"
-  ) as HTMLFormElement;
+  // ---- Form handling --------------------------------------------------------
+  const form = document.getElementById("contact-form-desktop") as HTMLFormElement;
+  const statusEl = form?.querySelector(".contact-status") as HTMLElement;
+
   if (form) {
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const submitBtn = form.querySelector('button[type="submit"]');
-      const originalBtnText = submitBtn ? submitBtn.innerHTML : "Submit";
-      const setSubmitting = (submitting: boolean) => {
-        if (!submitBtn) return;
-        submitBtn.innerHTML = submitting ? "Sending..." : originalBtnText;
-        (submitBtn as HTMLButtonElement).disabled = submitting;
-      };
+      const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const btnLabel = btn.querySelector("span:first-child") as HTMLElement;
+      const original = btnLabel.textContent!;
 
-      setSubmitting(true);
+      btn.disabled = true;
+      btnLabel.textContent = "Sending...";
 
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
+      const data = Object.fromEntries(new FormData(form).entries());
 
       try {
-        const response = await fetch("/api/contact", {
+        const res = await fetch("/api/contact", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
         });
 
-        if (response.ok) {
-          form.reset();
-        } else {
-          const resData = await response.json();
-          console.warn(
-            `Failed to send message: ${resData.message || "Unknown error"}`
-          );
-        }
-      } catch (error) {
-        console.error("Error:", error);
+        if (!res.ok) throw new Error("Request failed");
+
+        form.reset();
+        statusEl.textContent = "Thanks! We'll get back to you.";
+        statusEl.className = "contact-status text-center text-xs text-emerald-700";
+      } catch {
+        statusEl.textContent = "Something went wrong. Please try again.";
+        statusEl.className = "contact-status text-center text-xs text-red-600";
       } finally {
-        setSubmitting(false);
+        btn.disabled = false;
+        btnLabel.textContent = original;
+        setTimeout(() => {
+          statusEl.textContent = "";
+          statusEl.className = "contact-status hidden text-center text-xs";
+        }, 3500);
       }
     });
   }

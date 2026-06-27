@@ -112,25 +112,25 @@ const dropdowns: Record<string, DropdownItem[]> = {
             <span class="nav-dot"></span>
             <span class="nav-label">About</span>
           </a>
-          <a href="/community" class="nav-item" data-section="community" style="--dot-i:1">
-            <span class="nav-dot"></span>
-            <span class="nav-label">Community</span>
-          </a>
-          <a href="/#domains" class="nav-item" data-section="domains" style="--dot-i:2">
+          <a href="/#domains" class="nav-item" data-section="domains" style="--dot-i:1">
             <span class="nav-dot"></span>
             <span class="nav-label">Domains</span>
           </a>
-          <a href="/#events" class="nav-item" data-section="events" style="--dot-i:3">
+          <a href="/#events" class="nav-item" data-section="events" style="--dot-i:2">
             <span class="nav-dot"></span>
             <span class="nav-label">Events</span>
           </a>
-          <a href="/#projects" class="nav-item" data-section="projects" style="--dot-i:4">
+          <a href="/#projects" class="nav-item" data-section="projects" style="--dot-i:3">
             <span class="nav-dot"></span>
             <span class="nav-label">Projects</span>
           </a>
-          <a href="/#acm-w" class="nav-item" data-section="acm-w" style="--dot-i:5">
+          <a href="/#acm-w" class="nav-item" data-section="acm-w" style="--dot-i:4">
             <span class="nav-dot"></span>
             <span class="nav-label">ACM-W</span>
+          </a>
+          <a href="/#community" class="nav-item" data-section="community" style="--dot-i:5">
+            <span class="nav-dot"></span>
+            <span class="nav-label">Community</span>
           </a>
           <a href="/#team" class="nav-item" data-section="team" style="--dot-i:6">
             <span class="nav-dot"></span>
@@ -233,7 +233,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
             </svg>
             <span class="tab-label">Projects</span>
           </a>
-          <a href="/community" class="tab-item" data-tab="community">
+          <a href="/#community" class="tab-item" data-tab="community">
             <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
               <circle cx="9" cy="7" r="4"/>
@@ -279,11 +279,11 @@ const dropdowns: Record<string, DropdownItem[]> = {
               {
                 [
                   { id: "about", icon: "info", label: "About" },
-                  { id: "community", icon: "people", label: "Community" },
                   { id: "domains", icon: "grid", label: "Domains" },
                   { id: "events", icon: "calendar", label: "Events" },
                   { id: "projects", icon: "code", label: "Projects" },
                   { id: "acm-w", icon: "heart", label: "ACM-W" },
+                  { id: "community", icon: "people", label: "Community" },
                   { id: "team", icon: "users", label: "Team" },
                   { id: "blogs", icon: "book", label: "Blogs" },
                   { id: "partners", icon: "handshake", label: "Partners" },
@@ -291,7 +291,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
                   { id: "contact", icon: "mail", label: "Contact" },
                   { id: "more", icon: "dots", label: "More" },
                 ].map((item) => {
-                  const href = item.id === "community" ? "/community" : item.id === "more" ? "/more" : `/#${item.id}`;
+                  const href = item.id === "more" ? "/more" : `/#${item.id}`;
                   return (
                     <li>
                       <a
