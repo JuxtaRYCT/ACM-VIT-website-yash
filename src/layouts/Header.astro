@@ -78,6 +78,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
     { title: "z0d1ak", desc: "ACM-VIT's competitive CTF team", href: "/z0d1ak", img: "/icons/github-orange.webp" },
     { title: "Achievements", desc: "Awards, recognitions & milestones", href: "/more", img: "/ui/acm-celeb.png" },
     { title: "Cassette Builder", desc: "Design your own custom cassette", href: "/cassette-builder", img: "/cassettes/Cassette_Tech.webp" },
+    { title: "Calendar", desc: "Upcoming events & important dates", href: "/calendar", img: "/ui/acm-celeb.png" },
   ],
 };
 ---
@@ -613,6 +614,14 @@ const dropdowns: Record<string, DropdownItem[]> = {
   .megamenu-panel[data-panel="domains"] .megamenu-tile:nth-child(5),
   .megamenu-panel[data-panel="events"] .megamenu-tile:nth-child(4),
   .megamenu-panel[data-panel="events"] .megamenu-tile:nth-child(5) {
+    grid-column: span 3;
+  }
+
+  /* More panel: 7 items — 3 top, 2 middle (span 3), 2 bottom (span 3) */
+  .megamenu-panel[data-panel="more"] .megamenu-tile:nth-child(4),
+  .megamenu-panel[data-panel="more"] .megamenu-tile:nth-child(5),
+  .megamenu-panel[data-panel="more"] .megamenu-tile:nth-child(6),
+  .megamenu-panel[data-panel="more"] .megamenu-tile:nth-child(7) {
     grid-column: span 3;
   }
 
