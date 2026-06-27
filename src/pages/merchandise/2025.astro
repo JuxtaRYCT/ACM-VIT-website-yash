@@ -1,0 +1,888 @@
+---
+export const prerender = true;
+import Layout from "../../layouts/Layout.astro";
+import "../../styles/globals.css";
+import Footer from "../../layouts/Footer.astro";
+
+const domains = [
+  { name: "Board", slug: "board", accent: "#FF0054" },
+  { name: "App", slug: "app", accent: "#9B51E0" },
+  { name: "Competitive Coding", slug: "cc", accent: "#42CD9D" },
+  { name: "Design", slug: "design", accent: "#FF7777" },
+  { name: "Management", slug: "management", accent: "#008080" },
+  { name: "Research", slug: "research", accent: "#9AF3FF" },
+  { name: "Web", slug: "web", accent: "#B4E35B" },
+];
+---
+
+<Layout pageTitle="2025 Edition" backHref="/merchandise">
+  <!-- ═══ HERO ═══ -->
+  <section class="m25-hero" data-m25-hero>
+    <div class="m25-bg" data-m25-bg></div>
+
+    <!-- Color Toggle -->
+    <div class="m25-toggle" data-m25-toggle>
+      <button class="m25-dot m25-dot--black active" data-dot="black" aria-label="Black variants">
+        <span class="m25-dot__fill"></span>
+      </button>
+      <button class="m25-dot m25-dot--white" data-dot="white" aria-label="White variants">
+        <span class="m25-dot__fill"></span>
+      </button>
+    </div>
+
+    <!-- Year -->
+    <div class="m25-year-wrap">
+      <h1 class="m25-year" data-m25-year>
+        <span class="m25-char" data-m25-char>2</span>
+        <span class="m25-char" data-m25-char>0</span>
+        <span class="m25-char" data-m25-char>2</span>
+        <span class="m25-char" data-m25-char>5</span>
+      </h1>
+    </div>
+
+    <!-- Hero Tees -->
+    <div class="m25-htee m25-htee--1" data-m25-htee>
+      <img class="m25-htee__img m25-htee__img--black" src="/assets/merch/2025/black-front/board.png" alt="Board T-shirt" />
+      <img class="m25-htee__img m25-htee__img--white" src="/assets/merch/2025/white-front/board.png" alt="Board T-shirt White" />
+    </div>
+    <div class="m25-htee m25-htee--2" data-m25-htee>
+      <img class="m25-htee__img m25-htee__img--black" src="/assets/merch/2025/hoodie/hoodie_back.png" alt="Hoodie Back" />
+      <img class="m25-htee__img m25-htee__img--white" src="/assets/merch/2025/hoodie/hoodie_back.png" alt="Hoodie Back" />
+    </div>
+    <div class="m25-htee m25-htee--3" data-m25-htee>
+      <img class="m25-htee__img m25-htee__img--black" src="/assets/merch/2025/black-front/web.png" alt="Web T-shirt" />
+      <img class="m25-htee__img m25-htee__img--white" src="/assets/merch/2025/white-front/web.png" alt="Web T-shirt White" />
+    </div>
+
+    <!-- Scattered text -->
+    <span class="m25-scatter m25-scatter--1" data-m25-scatter>ACM-VIT MERCHANDISE</span>
+    <span class="m25-scatter m25-scatter--2" data-m25-scatter>15 VARIANTS</span>
+    <span class="m25-scatter m25-scatter--3" data-m25-scatter>BECAUSE TECHNOLOGY MATTERS</span>
+    <span class="m25-scatter m25-scatter--4" data-m25-scatter>7 BLACK &bull; 7 WHITE &bull; 1 HOODIE</span>
+
+    <!-- Lines -->
+    <div class="m25-line m25-line--1"></div>
+    <div class="m25-line m25-line--2"></div>
+
+    <!-- Edition badge -->
+    <div class="m25-badge" data-m25-badge>
+      <span class="m25-badge__label">EDITION</span>
+      <span class="m25-badge__year">'25</span>
+    </div>
+  </section>
+
+  <!-- ═══ GALLERY ═══ -->
+  <section class="m25-gallery" data-m25-gallery>
+    <div class="m25-gallery__head">
+      <p class="m25-gallery__tag" data-m25-ganim>THE COLLECTION</p>
+      <h2 class="m25-gallery__title" data-m25-ganim>
+        Seven domains.<br />One identity.
+      </h2>
+      <p class="m25-gallery__sub" data-m25-ganim>
+        Each domain got its own accent color. Same cyberpunk illustration, different soul.
+      </p>
+    </div>
+
+    <div class="m25-grid">
+      {domains.map((d) => (
+        <div
+          class="m25-card"
+          data-m25-card
+          data-showing="front"
+          data-domain={d.slug}
+          style={`--accent: ${d.accent}`}
+        >
+          <div class="m25-card__imgs">
+            <img class="m25-card__img" data-v="black-front" src={`/assets/merch/2025/black-front/${d.slug}.png`} alt={`${d.name} Black Front`} loading="lazy" />
+            <img class="m25-card__img" data-v="white-front" src={`/assets/merch/2025/white-front/${d.slug}.png`} alt={`${d.name} White Front`} loading="lazy" />
+            <img class="m25-card__img" data-v="black-back" src={`/assets/merch/2025/black-back/${d.slug}.png`} alt={`${d.name} Black Back`} loading="lazy" />
+            <img class="m25-card__img" data-v="white-back" src={`/assets/merch/2025/white-back/${d.slug}.png`} alt={`${d.name} White Back`} loading="lazy" />
+          </div>
+          <div class="m25-card__info">
+            <span class="m25-card__dot" />
+            <span class="m25-card__name">{d.name}</span>
+            <button class="m25-card__flip" data-flip aria-label="Flip card">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 1l4 4-4 4" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><path d="M7 23l-4-4 4-4" /><path d="M21 13v2a4 4 0 0 1-4 4H3" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      ))}
+
+      <!-- JC (black only) -->
+      <div
+        class="m25-card m25-card--jc"
+        data-m25-card
+        data-showing="front"
+        data-domain="JC"
+        data-black-only
+        style="--accent: #00BFFF"
+      >
+        <div class="m25-card__imgs">
+          <img class="m25-card__img" data-v="black-front" src="/assets/merch/2025/black-front/JC.png" alt="Junior Core Front" loading="lazy" />
+          <img class="m25-card__img" data-v="black-back" src="/assets/merch/2025/black-back/JC.png" alt="Junior Core Back" loading="lazy" />
+        </div>
+        <div class="m25-card__info">
+          <span class="m25-card__dot" />
+          <span class="m25-card__name">Junior Core</span>
+          <span class="m25-card__excl">BLACK ONLY</span>
+          <button class="m25-card__flip" data-flip aria-label="Flip card">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 1l4 4-4 4" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><path d="M7 23l-4-4 4-4" /><path d="M21 13v2a4 4 0 0 1-4 4H3" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ HOODIE ═══ -->
+  <section class="m25-hoodie" data-m25-hoodie>
+    <div class="m25-hoodie__head">
+      <p class="m25-hoodie__tag" data-m25-hanim>EXCLUSIVE</p>
+      <h2 class="m25-hoodie__title" data-m25-hanim>The Hoodie.</h2>
+      <p class="m25-hoodie__sub" data-m25-hanim>
+        One colorway. Senior Core and Board only.<br />
+        Lime-green accents on pitch black.
+      </p>
+    </div>
+    <div class="m25-hoodie__show" data-m25-hanim>
+      <div class="m25-hoodie__item">
+        <img src="/assets/merch/2025/hoodie/hoodie_front.png" alt="Hoodie Front" loading="lazy" />
+        <span class="m25-hoodie__label">FRONT</span>
+      </div>
+      <div class="m25-hoodie__item">
+        <img src="/assets/merch/2025/hoodie/hoodie_back.png" alt="Hoodie Back" loading="lazy" />
+        <span class="m25-hoodie__label">BACK</span>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<style>
+  /* ══════ HERO ══════ */
+  .m25-hero {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .m25-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  /* ── Year ── */
+  .m25-year-wrap {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .m25-year {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-weight: 800;
+    font-size: clamp(18vw, 28vw, 36vw);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: rgba(254, 252, 217, 0.07);
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    white-space: nowrap;
+  }
+
+  .m25-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(80px);
+  }
+
+  /* ── Color Toggle ── */
+  .m25-toggle {
+    position: fixed;
+    top: 100px;
+    right: 28px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .m25-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    padding: 0;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .m25-dot:hover { transform: scale(1.1); }
+
+  .m25-dot__fill {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    transition: box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .m25-dot--black .m25-dot__fill {
+    background: #1a1a1a;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .m25-dot--white .m25-dot__fill {
+    background: #eee;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .m25-dot.active .m25-dot__fill {
+    box-shadow: 0 0 0 3px rgba(249, 95, 74, 0.5);
+  }
+
+  /* ── Hero Tees ── */
+  .m25-htee {
+    position: absolute;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  .m25-htee__img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.5));
+    position: absolute;
+    inset: 0;
+  }
+
+  .m25-htee__img--white { opacity: 0; }
+
+  .m25-htee--1 {
+    left: 8%;
+    top: 50%;
+    width: clamp(220px, 32vw, 420px);
+    height: clamp(220px, 32vw, 420px);
+    transform: translateY(-50%) rotate(-6deg);
+  }
+
+  .m25-htee--2 {
+    right: 6%;
+    top: 48%;
+    width: clamp(180px, 24vw, 320px);
+    height: clamp(180px, 24vw, 320px);
+    transform: translateY(-50%) rotate(5deg);
+  }
+
+  .m25-htee--3 {
+    left: 50%;
+    bottom: 6%;
+    width: clamp(150px, 18vw, 240px);
+    height: clamp(150px, 18vw, 240px);
+    transform: translateX(-50%) rotate(-3deg);
+  }
+
+  /* ── Scattered Text ── */
+  .m25-scatter {
+    position: absolute;
+    z-index: 3;
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(254, 252, 217, 0.2);
+    opacity: 0;
+    white-space: nowrap;
+  }
+
+  .m25-scatter--1 { top: 100px; left: 28px; }
+  .m25-scatter--2 { top: 140px; right: 120px; }
+  .m25-scatter--3 { bottom: 80px; left: 28px; }
+  .m25-scatter--4 { bottom: 50px; right: 28px; }
+
+  /* ── Lines ── */
+  .m25-line {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(249, 95, 74, 0.12) 30%, rgba(249, 95, 74, 0.12) 70%, transparent 100%);
+  }
+
+  .m25-line--1 { top: 20%; }
+  .m25-line--2 { bottom: 25%; }
+
+  /* ── Badge ── */
+  .m25-badge {
+    position: absolute;
+    bottom: 35%;
+    left: 28px;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    opacity: 0;
+  }
+
+  .m25-badge__label {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(249, 95, 74, 0.5);
+  }
+
+  .m25-badge__year {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(249, 95, 74, 0.25);
+    letter-spacing: -0.02em;
+  }
+
+  /* ══════ GALLERY ══════ */
+  .m25-gallery {
+    position: relative;
+    padding: 6rem 1.5rem 4rem;
+  }
+
+  .m25-gallery__head {
+    max-width: 72rem;
+    margin: 0 auto 3rem;
+  }
+
+  .m25-gallery__tag {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #F95F4A;
+    margin-bottom: 1rem;
+  }
+
+  .m25-gallery__title {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: #FEFCD9;
+    margin: 0 0 1.2rem;
+  }
+
+  .m25-gallery__sub {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.7;
+    color: rgba(254, 252, 217, 0.4);
+    max-width: 420px;
+  }
+
+  .m25-grid {
+    max-width: 72rem;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+
+  /* ── Card ── */
+  .m25-card {
+    position: relative;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.02);
+    overflow: hidden;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, border-color 0.5s ease;
+    cursor: default;
+  }
+
+  .m25-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .m25-card__imgs {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+  }
+
+  .m25-card__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 0.75rem;
+    opacity: 0;
+  }
+
+  .m25-card__img[data-v="black-front"] { opacity: 1; }
+
+  .m25-card__info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.85rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .m25-card__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .m25-card__name {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: rgba(254, 252, 217, 0.7);
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .m25-card__excl {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: 0.55rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: #00BFFF;
+    white-space: nowrap;
+  }
+
+  .m25-card__flip {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(254, 252, 217, 0.4);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  }
+
+  .m25-card__flip:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(254, 252, 217, 0.8);
+    transform: rotate(180deg);
+  }
+
+  /* ══════ HOODIE ══════ */
+  .m25-hoodie {
+    position: relative;
+    padding: 6rem 1.5rem 4rem;
+  }
+
+  .m25-hoodie__head {
+    max-width: 72rem;
+    margin: 0 auto 3rem;
+  }
+
+  .m25-hoodie__tag {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #B4E35B;
+    margin-bottom: 1rem;
+  }
+
+  .m25-hoodie__title {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: #FEFCD9;
+    margin: 0 0 1rem;
+  }
+
+  .m25-hoodie__sub {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    line-height: 1.7;
+    color: rgba(254, 252, 217, 0.4);
+    max-width: 400px;
+  }
+
+  .m25-hoodie__show {
+    max-width: 72rem;
+    margin: 0 auto;
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .m25-hoodie__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .m25-hoodie__item img {
+    width: clamp(200px, 28vw, 360px);
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 16px 40px rgba(0, 0, 0, 0.4));
+  }
+
+  .m25-hoodie__label {
+    font-family: "PolySans Trial", system-ui, sans-serif;
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(254, 252, 217, 0.25);
+  }
+
+  /* ══════ RESPONSIVE ══════ */
+  @media (max-width: 1024px) {
+    .m25-grid { grid-template-columns: repeat(3, 1fr); }
+    .m25-htee--1 { width: clamp(180px, 28vw, 320px); height: clamp(180px, 28vw, 320px); }
+    .m25-htee--2 { width: clamp(150px, 22vw, 260px); height: clamp(150px, 22vw, 260px); }
+    .m25-htee--3 { width: clamp(120px, 16vw, 200px); height: clamp(120px, 16vw, 200px); }
+  }
+
+  @media (max-width: 768px) {
+    .m25-hero { min-height: 100svh; }
+    .m25-year { font-size: clamp(20vw, 26vw, 30vw); }
+
+    .m25-toggle { top: 80px; right: 16px; }
+
+    .m25-htee--1 {
+      left: 5%;
+      width: clamp(160px, 38vw, 240px);
+      height: clamp(160px, 38vw, 240px);
+    }
+    .m25-htee--2 {
+      right: 2%;
+      width: clamp(140px, 30vw, 200px);
+      height: clamp(140px, 30vw, 200px);
+    }
+    .m25-htee--3 {
+      width: clamp(110px, 24vw, 160px);
+      height: clamp(110px, 24vw, 160px);
+    }
+
+    .m25-grid { grid-template-columns: repeat(2, 1fr); }
+    .m25-scatter--2, .m25-scatter--3 { display: none; }
+    .m25-badge { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .m25-year { font-size: 24vw; }
+    .m25-htee--2 { display: none; }
+    .m25-htee--3 { display: none; }
+    .m25-htee--1 {
+      left: 50%;
+      top: 60%;
+      width: 55vw;
+      height: 55vw;
+      transform: translateX(-50%) translateY(-50%) rotate(-3deg);
+    }
+  }
+
+  /* ══════ LIGHT THEME OVERRIDES ══════ */
+  :global(html[data-theme="light"]) .m25-year { color: rgba(0, 0, 0, 0.05); }
+  :global(html[data-theme="light"]) .m25-scatter { color: rgba(0, 0, 0, 0.15); }
+  :global(html[data-theme="light"]) .m25-gallery__title,
+  :global(html[data-theme="light"]) .m25-hoodie__title { color: #1a1a1a; }
+  :global(html[data-theme="light"]) .m25-gallery__sub,
+  :global(html[data-theme="light"]) .m25-hoodie__sub { color: rgba(0, 0, 0, 0.45); }
+  :global(html[data-theme="light"]) .m25-card {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.06);
+  }
+  :global(html[data-theme="light"]) .m25-card:hover {
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  }
+  :global(html[data-theme="light"]) .m25-card__name { color: rgba(0, 0, 0, 0.7); }
+  :global(html[data-theme="light"]) .m25-card__flip {
+    border-color: rgba(0, 0, 0, 0.08);
+    color: rgba(0, 0, 0, 0.35);
+  }
+  :global(html[data-theme="light"]) .m25-card__info { border-top-color: rgba(0, 0, 0, 0.04); }
+  :global(html[data-theme="light"]) .m25-hoodie__label { color: rgba(0, 0, 0, 0.2); }
+  :global(html[data-theme="light"]) .m25-badge__year { -webkit-text-stroke-color: rgba(249, 95, 74, 0.15); }
+  :global(html[data-theme="light"]) .m25-dot--black .m25-dot__fill { border-color: rgba(0, 0, 0, 0.15); }
+  :global(html[data-theme="light"]) .m25-dot--white .m25-dot__fill { border-color: rgba(0, 0, 0, 0.15); }
+  :global(html[data-theme="light"]) .m25-toggle {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  let currentColor: "black" | "white" = "black";
+
+  // ── 1. Entry Animation ──
+  const chars = document.querySelectorAll("[data-m25-char]");
+  const htees = document.querySelectorAll("[data-m25-htee]");
+  const scatters = document.querySelectorAll("[data-m25-scatter]");
+  const badge = document.querySelector("[data-m25-badge]");
+  const toggle = document.querySelector("[data-m25-toggle]");
+
+  const entry = gsap.timeline({ defaults: { ease: "power3.out" }, delay: 0.4 });
+
+  entry.to(chars, { opacity: 1, y: 0, duration: 0.9, stagger: 0.1 });
+
+  htees.forEach((tee, i) => {
+    entry.to(tee, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out",
+    }, `-=${0.6 - i * 0.1}`);
+  });
+
+  entry.to(scatters, { opacity: 1, duration: 0.6, stagger: 0.08 }, "-=0.5");
+
+  if (badge) entry.to(badge, { opacity: 1, duration: 0.5 }, "-=0.4");
+  if (toggle) entry.fromTo(toggle, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.5 }, "-=0.4");
+
+  // ── 2. Floating animation ──
+  htees.forEach((tee, i) => {
+    gsap.to(tee, {
+      y: `+=${8 + i * 3}`,
+      duration: 3 + i * 0.5,
+      ease: "sine.inOut",
+      repeat: -1,
+      yoyo: true,
+      delay: i * 0.3,
+    });
+  });
+
+  // ── 3. Color Toggle ──
+  const dots = document.querySelectorAll<HTMLButtonElement>("[data-dot]");
+  const bg = document.querySelector("[data-m25-bg]");
+  const hero = document.querySelector<HTMLElement>(".m25-hero");
+  const gallery = document.querySelector<HTMLElement>(".m25-gallery");
+  const hoodie = document.querySelector<HTMLElement>(".m25-hoodie");
+  const sections = [hero, gallery, hoodie].filter(Boolean) as HTMLElement[];
+
+  const yearEl = document.querySelector<HTMLElement>(".m25-year");
+  const galleryTitle = document.querySelector<HTMLElement>(".m25-gallery__title");
+  const hoodieTitle = document.querySelector<HTMLElement>(".m25-hoodie__title");
+  const cardNames = document.querySelectorAll<HTMLElement>(".m25-card__name");
+  const jcCard = document.querySelector<HTMLElement>("[data-black-only]");
+
+  dots.forEach((dot) => {
+    dot.addEventListener("click", () => {
+      const color = dot.dataset.dot as "black" | "white";
+      if (color === currentColor) return;
+      currentColor = color;
+
+      // Update dot active state
+      dots.forEach((d) => d.classList.remove("active"));
+      dot.classList.add("active");
+
+      const isWhite = color === "white";
+      const tl = gsap.timeline({ defaults: { duration: 0.8, ease: "power3.inOut" } });
+
+      // Background
+      tl.to(bg, { backgroundColor: isWhite ? "#ececec" : "transparent" }, 0);
+      sections.forEach((s) => tl.to(s, { backgroundColor: isWhite ? "#ececec" : "transparent" }, 0));
+
+      // Year text
+      if (yearEl) {
+        tl.to(yearEl, { color: isWhite ? "rgba(0,0,0,0.05)" : "rgba(254,252,217,0.07)" }, 0);
+      }
+
+      // Gallery/hoodie title
+      if (galleryTitle) {
+        tl.to(galleryTitle, { color: isWhite ? "#1a1a1a" : "#FEFCD9" }, 0);
+      }
+      if (hoodieTitle) {
+        tl.to(hoodieTitle, { color: isWhite ? "#1a1a1a" : "#FEFCD9" }, 0);
+      }
+
+      // Card names
+      tl.to(cardNames, { color: isWhite ? "rgba(0,0,0,0.7)" : "rgba(254,252,217,0.7)" }, 0);
+
+      // Scattered text
+      tl.to(scatters, { color: isWhite ? "rgba(0,0,0,0.15)" : "rgba(254,252,217,0.2)" }, 0);
+
+      // Hero tee images
+      tl.to(".m25-htee__img--black", { opacity: isWhite ? 0 : 1, duration: 0.5 }, 0.1);
+      tl.to(".m25-htee__img--white", { opacity: isWhite ? 1 : 0, duration: 0.5 }, 0.15);
+
+      // Gallery card images
+      const cards = document.querySelectorAll<HTMLElement>("[data-m25-card]");
+      cards.forEach((card) => {
+        const side = card.dataset.showing || "front";
+        const oldKey = `${color === "white" ? "black" : "white"}-${side}`;
+        const newKey = `${color}-${side}`;
+        const oldImg = card.querySelector(`[data-v="${oldKey}"]`);
+        const newImg = card.querySelector(`[data-v="${newKey}"]`);
+        if (oldImg) tl.to(oldImg, { opacity: 0, duration: 0.4 }, 0.1);
+        if (newImg) tl.to(newImg, { opacity: 1, duration: 0.4 }, 0.15);
+      });
+
+      // Gallery card bg
+      tl.to(".m25-card", {
+        backgroundColor: isWhite ? "rgba(0,0,0,0.02)" : "rgba(255,255,255,0.02)",
+        borderColor: isWhite ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.06)",
+      }, 0);
+      tl.to(".m25-card__info", {
+        borderTopColor: isWhite ? "rgba(0,0,0,0.04)" : "rgba(255,255,255,0.04)",
+      }, 0);
+      tl.to(".m25-card__flip", {
+        borderColor: isWhite ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)",
+        color: isWhite ? "rgba(0,0,0,0.35)" : "rgba(254,252,217,0.4)",
+      }, 0);
+
+      // Gallery sub + hoodie sub
+      tl.to(".m25-gallery__sub, .m25-hoodie__sub", {
+        color: isWhite ? "rgba(0,0,0,0.45)" : "rgba(254,252,217,0.4)",
+      }, 0);
+
+      // Hoodie labels
+      tl.to(".m25-hoodie__label", {
+        color: isWhite ? "rgba(0,0,0,0.2)" : "rgba(254,252,217,0.25)",
+      }, 0);
+
+      // Toggle pill bg
+      const toggleEl = document.querySelector<HTMLElement>("[data-m25-toggle]");
+      if (toggleEl) {
+        tl.to(toggleEl, {
+          backgroundColor: isWhite ? "rgba(0,0,0,0.04)" : "rgba(255,255,255,0.06)",
+          borderColor: isWhite ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)",
+        }, 0);
+      }
+
+      // Badge
+      tl.to(".m25-badge__year", {
+        webkitTextStrokeColor: isWhite ? "rgba(249,95,74,0.15)" : "rgba(249,95,74,0.25)",
+      }, 0);
+      tl.to(".m25-badge__label", {
+        color: isWhite ? "rgba(249,95,74,0.35)" : "rgba(249,95,74,0.5)",
+      }, 0);
+
+      // Lines
+      tl.to(".m25-line", {
+        background: isWhite
+          ? "linear-gradient(90deg, transparent 0%, rgba(249,95,74,0.08) 30%, rgba(249,95,74,0.08) 70%, transparent 100%)"
+          : "linear-gradient(90deg, transparent 0%, rgba(249,95,74,0.12) 30%, rgba(249,95,74,0.12) 70%, transparent 100%)",
+      }, 0);
+
+      // JC card (black only)
+      if (jcCard) {
+        tl.to(jcCard, {
+          opacity: isWhite ? 0.15 : 1,
+          scale: isWhite ? 0.96 : 1,
+          pointerEvents: isWhite ? "none" : "auto",
+          duration: 0.5,
+        }, 0);
+      }
+    });
+  });
+
+  // ── 4. Card Flip ──
+  const flipBtns = document.querySelectorAll("[data-flip]");
+  flipBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const card = btn.closest<HTMLElement>("[data-m25-card]");
+      if (!card) return;
+
+      const isJc = card.hasAttribute("data-black-only");
+      const curSide = card.dataset.showing || "front";
+      const newSide = curSide === "front" ? "back" : "front";
+      card.dataset.showing = newSide;
+
+      const colorForCard = isJc ? "black" : currentColor;
+      const oldKey = `${colorForCard}-${curSide}`;
+      const newKey = `${colorForCard}-${newSide}`;
+
+      const oldImg = card.querySelector(`[data-v="${oldKey}"]`);
+      const newImg = card.querySelector(`[data-v="${newKey}"]`);
+
+      const tl = gsap.timeline();
+      tl.to(card.querySelector(".m25-card__imgs"), { scale: 0.95, duration: 0.15, ease: "power2.in" });
+      if (oldImg) tl.to(oldImg, { opacity: 0, duration: 0.2 }, 0);
+      if (newImg) tl.to(newImg, { opacity: 1, duration: 0.2 }, 0.1);
+      tl.to(card.querySelector(".m25-card__imgs"), { scale: 1, duration: 0.25, ease: "power2.out" }, 0.15);
+    });
+  });
+
+  // ── 5. Scroll Animations ──
+  const galleryAnims = document.querySelectorAll("[data-m25-ganim]");
+  gsap.fromTo(galleryAnims,
+    { opacity: 0, y: 30 },
+    {
+      opacity: 1, y: 0, duration: 0.7, stagger: 0.12, ease: "power3.out",
+      scrollTrigger: { trigger: ".m25-gallery", start: "top 80%", once: true },
+    }
+  );
+
+  const galleryCards = document.querySelectorAll("[data-m25-card]");
+  galleryCards.forEach((card, i) => {
+    gsap.fromTo(card,
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1, y: 0, duration: 0.6, ease: "power3.out",
+        scrollTrigger: { trigger: card, start: "top 88%", once: true },
+        delay: (i % 4) * 0.08,
+      }
+    );
+  });
+
+  const hoodieAnims = document.querySelectorAll("[data-m25-hanim]");
+  gsap.fromTo(hoodieAnims,
+    { opacity: 0, y: 30 },
+    {
+      opacity: 1, y: 0, duration: 0.7, stagger: 0.12, ease: "power3.out",
+      scrollTrigger: { trigger: ".m25-hoodie", start: "top 80%", once: true },
+    }
+  );
+</script>
