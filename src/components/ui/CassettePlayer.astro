@@ -19,6 +19,9 @@
 
 <!-- Expanded player -->
 <div id="cp-player" class="cp-player">
+  <!-- Iridescent top rim — light refraction at the glass edge -->
+  <div class="cp-refract-rim" aria-hidden="true"></div>
+
   <!-- Minimize chevron -->
   <button id="cp-minimize" class="cp-min-btn" aria-label="Minimize">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
@@ -135,6 +138,8 @@
 </div>
 
 <script>
+  import { gsap } from 'gsap';
+
   const PLAYLIST = [
     { title: "Experience", artist: "Ludovico Einaudi", src: "/audio/experience-ludovico-einaudi.mp3" },
     { title: "Code Monkey", artist: "KagatoAMV", src: "/audio/code-monkey.mp3" },
@@ -274,15 +279,47 @@
   progHitArea.addEventListener('pointerup', progUp);
   progHitArea.addEventListener('pointercancel', progUp);
 
-  /* ─── Expand / Collapse ─── */
+  /* ─── Morph expand / collapse ─── */
+  let morphTween: gsap.core.Tween | null = null;
+  let closeTimer: ReturnType<typeof setTimeout> | null = null;
+
+  function getClosedClip() {
+    const w = mini.offsetWidth || 52;
+    const ph = player.offsetHeight;
+    const pw = player.offsetWidth;
+    const br = Math.round(parseFloat(getComputedStyle(mini).borderRadius)) || 14;
+    return `inset(${ph - w}px 0px 0px ${pw - w}px round ${br}px)`;
+  }
+
+  // Open: GSAP power3.out expand from button corner
   mini.addEventListener('click', () => {
-    player.classList.add('cp-open');
+    if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+    if (morphTween) morphTween.kill();
     mini.classList.add('cp-hidden');
+    player.style.opacity = '1';
+    player.style.pointerEvents = 'auto';
+    player.style.transition = 'none';
+    morphTween = gsap.fromTo(player,
+      { clipPath: getClosedClip() },
+      { clipPath: 'inset(0px 0px 0px 0px round 18px)', duration: 0.5, ease: 'power3.out',
+        onComplete: () => { player.style.transition = ''; } }
+    );
   });
 
+  // Close: CSS transition, button appears immediately, opacity clears after
   $('cp-minimize').addEventListener('click', () => {
-    player.classList.remove('cp-open');
+    if (morphTween) morphTween.kill();
+    if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
     mini.classList.remove('cp-hidden');
+    player.style.pointerEvents = 'none';
+    player.style.opacity = '1';
+    player.style.transition = 'clip-path 0.35s cubic-bezier(0.4,0,0.6,1)';
+    requestAnimationFrame(() => { player.style.clipPath = getClosedClip(); });
+    closeTimer = setTimeout(() => {
+      player.style.opacity = '0';
+      player.style.transition = '';
+      closeTimer = null;
+    }, 390);
   });
 
   /* ─── Elastic volume slider ─── */
@@ -351,27 +388,52 @@
     width: 52px;
     height: 52px;
     border-radius: 14px;
-    background: rgba(18,18,18,0.96);
-    border: 1px solid rgba(255,255,255,0.08);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    /* Glassmorphic */
+    background: linear-gradient(
+      145deg,
+      rgba(255,255,255,0.12) 0%,
+      rgba(8,8,14,0.52) 55%,
+      rgba(6,6,10,0.48) 100%
+    );
+    border: 1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.22),
+      inset 0 -1px 0 rgba(0,0,0,0.3),
+      0 4px 24px rgba(0,0,0,0.45),
+      0 1px 6px rgba(0,0,0,0.3);
     cursor: pointer;
     z-index: 990;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
-    color: rgba(255,253,208,0.4);
-    transition: transform 0.2s ease;
+    color: rgba(255,253,208,0.5);
+    /* Morph: fade + scale on hide/show */
+    opacity: 1;
+    transform: scale(1);
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s cubic-bezier(0.16,1,0.3,1);
   }
   .cp-mini:hover { transform: scale(1.08); }
-  .cp-mini.cp-hidden { display: none; }
+  .cp-mini.cp-hidden {
+    opacity: 0;
+    transform: scale(0.85);
+    pointer-events: none;
+  }
 
   :global(html[data-theme="light"]) .cp-mini {
-    background: rgba(245,240,230,0.96);
-    border-color: rgba(0,0,0,0.12);
+    background: linear-gradient(
+      145deg,
+      rgba(255,255,255,0.7) 0%,
+      rgba(240,235,225,0.55) 100%
+    );
+    border-color: rgba(0,0,0,0.1);
     color: rgba(26,26,26,0.6);
-    box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.9),
+      0 4px 24px rgba(0,0,0,0.12);
   }
 
   /* ── Equalizer bars ── */
@@ -391,48 +453,24 @@
   .cp-eq-bar:nth-child(3) { height: 18px; }
   .cp-eq-bar:nth-child(4) { height: 10px; }
 
-  .cp-eq.cp-eq-active {
-    display: flex;
-  }
-  .cp-eq.cp-eq-active ~ .cp-mini-note {
-    display: none;
-  }
-  .cp-eq.cp-eq-active .cp-eq-bar:nth-child(1) {
-    animation: eqBar1 0.65s ease-in-out infinite;
-  }
-  .cp-eq.cp-eq-active .cp-eq-bar:nth-child(2) {
-    animation: eqBar2 0.78s ease-in-out infinite;
-  }
-  .cp-eq.cp-eq-active .cp-eq-bar:nth-child(3) {
-    animation: eqBar3 0.55s ease-in-out infinite;
-  }
-  .cp-eq.cp-eq-active .cp-eq-bar:nth-child(4) {
-    animation: eqBar4 0.72s ease-in-out infinite;
-  }
+  .cp-eq.cp-eq-active { display: flex; }
+  .cp-eq.cp-eq-active ~ .cp-mini-note { display: none; }
+  .cp-eq.cp-eq-active .cp-eq-bar:nth-child(1) { animation: eqBar1 0.65s ease-in-out infinite; }
+  .cp-eq.cp-eq-active .cp-eq-bar:nth-child(2) { animation: eqBar2 0.78s ease-in-out infinite; }
+  .cp-eq.cp-eq-active .cp-eq-bar:nth-child(3) { animation: eqBar3 0.55s ease-in-out infinite; }
+  .cp-eq.cp-eq-active .cp-eq-bar:nth-child(4) { animation: eqBar4 0.72s ease-in-out infinite; }
 
   @keyframes eqBar1 {
-    0%, 100% { height: 6px; }
-    25% { height: 18px; }
-    50% { height: 10px; }
-    75% { height: 20px; }
+    0%, 100% { height: 6px; } 25% { height: 18px; } 50% { height: 10px; } 75% { height: 20px; }
   }
   @keyframes eqBar2 {
-    0%, 100% { height: 16px; }
-    30% { height: 4px; }
-    60% { height: 14px; }
-    80% { height: 8px; }
+    0%, 100% { height: 16px; } 30% { height: 4px; } 60% { height: 14px; } 80% { height: 8px; }
   }
   @keyframes eqBar3 {
-    0%, 100% { height: 10px; }
-    20% { height: 20px; }
-    45% { height: 4px; }
-    70% { height: 16px; }
+    0%, 100% { height: 10px; } 20% { height: 20px; } 45% { height: 4px; } 70% { height: 16px; }
   }
   @keyframes eqBar4 {
-    0%, 100% { height: 14px; }
-    35% { height: 6px; }
-    55% { height: 18px; }
-    85% { height: 4px; }
+    0%, 100% { height: 14px; } 35% { height: 6px; } 55% { height: 18px; } 85% { height: 4px; }
   }
 
   /* ── Expanded player ── */
@@ -442,36 +480,141 @@
     right: 24px;
     width: 340px;
     max-width: calc(100vw - 48px);
-    border-radius: 16px;
-    background: rgba(18,18,18,0.96);
-    border: 1px solid rgba(255,255,255,0.08);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    border-radius: 18px;
+    /* Glassmorphic background */
+    background: linear-gradient(
+      150deg,
+      rgba(255,255,255,0.09) 0%,
+      rgba(10,10,16,0.52) 28%,
+      rgba(8,8,13,0.48) 70%,
+      rgba(12,10,18,0.52) 100%
+    );
+    border: 1px solid rgba(255,255,255,0.16);
+    backdrop-filter: blur(48px) saturate(200%) brightness(0.92);
+    -webkit-backdrop-filter: blur(48px) saturate(200%) brightness(0.92);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.25),
+      inset 0 -1px 0 rgba(0,0,0,0.2),
+      inset 1px 0 0 rgba(255,255,255,0.06),
+      inset -1px 0 0 rgba(255,255,255,0.04),
+      0 20px 60px rgba(0,0,0,0.6),
+      0 4px 20px rgba(0,0,0,0.4),
+      0 0 0 0.5px rgba(255,255,255,0.06);
     z-index: 990;
     overflow: hidden;
-    opacity: 0;
-    transform: translateY(20px) scale(0.9);
-    transform-origin: bottom right;
-    pointer-events: none;
-    transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
     padding: 12px 14px 14px;
+    /* ── Morph: clip-path from button corner, anchored bottom-right ── */
+    clip-path: inset(calc(100% - 52px) 0 0 calc(100% - 52px) round 14px);
+    opacity: 0;
+    pointer-events: none;
+    /* GSAP manages clip-path, opacity, pointer-events */
   }
-  .cp-player.cp-open {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    pointer-events: auto;
+
+  /* ── Light refraction layers ── */
+
+  /* Diagonal top-left highlight — light hitting the glass face */
+  .cp-player::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      130deg,
+      rgba(255,255,255,0.18) 0%,
+      rgba(255,255,255,0.07) 18%,
+      transparent 42%,
+      transparent 80%,
+      rgba(255,255,255,0.03) 100%
+    );
+    pointer-events: none;
+    z-index: 0;
   }
+
+  /* Moving sheen sweep — periodic light refraction */
+  .cp-player::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -130%;
+    width: 55%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255,255,255,0.03) 30%,
+      rgba(255,255,255,0.09) 50%,
+      rgba(255,255,255,0.03) 70%,
+      transparent 100%
+    );
+    transform: skewX(-12deg);
+    pointer-events: none;
+    z-index: 0;
+    animation: cpGlassSweep 7s ease-in-out 1.5s infinite;
+  }
+
+  @keyframes cpGlassSweep {
+    0%   { left: -130%; opacity: 0; }
+    8%   { opacity: 1; }
+    45%  { left: 160%; opacity: 1; }
+    46%  { opacity: 0; }
+    100% { left: 160%; opacity: 0; }
+  }
+
+  /* Iridescent top edge — color-shifted light at the rim */
+  .cp-player .cp-refract-rim {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(160,210,255,0.35) 20%,
+      rgba(220,180,255,0.45) 40%,
+      rgba(255,255,255,0.55) 50%,
+      rgba(255,200,140,0.35) 65%,
+      rgba(160,230,200,0.3) 80%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: cpIridescent 5s linear infinite;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  @keyframes cpIridescent {
+    0%   { background-position: 0% 0; }
+    100% { background-position: 200% 0; }
+  }
+
   :global(html[data-theme="light"]) .cp-player {
-    background: rgba(245,240,230,0.96);
+    background: linear-gradient(
+      150deg,
+      rgba(255,255,255,0.72) 0%,
+      rgba(240,236,228,0.58) 50%,
+      rgba(235,230,220,0.55) 100%
+    );
     border-color: rgba(0,0,0,0.08);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.95),
+      0 20px 60px rgba(0,0,0,0.18),
+      0 4px 16px rgba(0,0,0,0.1);
+  }
+  :global(html[data-theme="light"]) .cp-player::before {
+    background: linear-gradient(
+      130deg,
+      rgba(255,255,255,0.6) 0%,
+      rgba(255,255,255,0.2) 20%,
+      transparent 45%
+    );
   }
 
   .cp-min-btn {
     position: absolute;
     top: 8px;
     right: 8px;
-    background: rgba(0,0,0,0.35);
+    background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.12);
     cursor: pointer;
     padding: 4px;
@@ -483,24 +626,24 @@
     -webkit-backdrop-filter: blur(8px);
     transition: background 0.15s ease;
   }
-  .cp-min-btn:hover { background: rgba(0,0,0,0.5); color: rgba(255,253,208,0.9); }
+  .cp-min-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,253,208,0.95); }
   :global(html[data-theme="light"]) .cp-min-btn {
-    background: rgba(255,255,255,0.5);
+    background: rgba(0,0,0,0.06);
     border-color: rgba(0,0,0,0.1);
     color: rgba(26,26,26,0.7);
   }
   :global(html[data-theme="light"]) .cp-min-btn:hover {
-    background: rgba(255,255,255,0.7);
+    background: rgba(0,0,0,0.1);
     color: rgba(26,26,26,0.9);
   }
 
   /* ── Cassette SVG ── */
-  .cp-cassette { display: flex; justify-content: center; }
+  .cp-cassette { display: flex; justify-content: center; position: relative; z-index: 1; }
   .cp-cassette svg { width: 100%; }
 
-  .cp-c-body { fill: #222; stroke: rgba(255,255,255,0.15); stroke-width: 1.5; }
-  .cp-c-cover { fill: #161616; stroke: rgba(255,255,255,0.12); stroke-width: 0.75; }
-  .cp-c-line { stroke: rgba(255,255,255,0.12); stroke-width: 0.5; }
+  .cp-c-body { fill: #1a1a22; stroke: rgba(255,255,255,0.18); stroke-width: 1.5; }
+  .cp-c-cover { fill: #111118; stroke: rgba(255,255,255,0.14); stroke-width: 0.75; }
+  .cp-c-line { stroke: rgba(255,255,255,0.1); stroke-width: 0.5; }
   .cp-c-outer { fill: none; stroke: rgba(255,255,255,0.35); stroke-width: 1.2; }
   .cp-c-mid { fill: none; stroke: rgba(255,255,255,0.2); stroke-width: 0.8; }
   .cp-c-hub { fill: none; stroke: rgba(255,255,255,0.5); stroke-width: 1.5; }
@@ -557,7 +700,7 @@
     fill: rgba(255,253,208,0.35);
   }
 
-  /* Light mode overrides */
+  /* Light mode cassette overrides */
   :global(html[data-theme="light"]) .cp-c-body { fill: #e8e0d0; stroke: rgba(0,0,0,0.12); }
   :global(html[data-theme="light"]) .cp-c-cover { fill: #2a2420; }
   :global(html[data-theme="light"]) .cp-c-label-bg { fill: rgba(255,255,255,0.06); stroke: rgba(255,255,255,0.1); }
@@ -576,6 +719,8 @@
     align-items: center;
     gap: 0.5rem;
     padding: 6px 4px 0;
+    position: relative;
+    z-index: 1;
   }
   .cp-vol-icon {
     display: flex;
@@ -620,6 +765,8 @@
   /* ── Responsive ── */
   @media (max-width: 480px) {
     .cp-mini { bottom: 16px; right: 16px; width: 46px; height: 46px; }
-    .cp-player { bottom: 16px; right: 16px; width: 300px; }
+    .cp-player { bottom: 16px; right: 16px; width: 300px;
+      clip-path: inset(calc(100% - 46px) 0 0 calc(100% - 46px) round 14px);
+    }
   }
 </style>
