@@ -45,7 +45,7 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
     <div class="mt-8">
       <AnimatedButton
         text="Learn More"
-        href="#"
+        href="/grep-reader"
         class="grep-btn"
         iconBg="#2023FE"
       />
@@ -102,7 +102,7 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
     width: 200%;
     height: auto;
     max-height: none;
-    opacity: 0.1;
+    opacity: 0.2;
     flex-shrink: 0;
   }
 
@@ -154,7 +154,8 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
   }
 
   :global(html[data-theme="light"]) .keyboard-bg :global(rect:hover) {
-    fill: rgba(32, 35, 254, 0.1) !important;
+    fill: rgba(249, 95, 74, 0.2) !important;
+    filter: drop-shadow(0 0 4px rgba(249, 95, 74, 0.08));
   }
 
   :global(html[data-theme="light"]) .keyboard-bg :global(path) {
