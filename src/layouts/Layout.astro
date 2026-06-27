@@ -1,6 +1,7 @@
 ---
 import Preloader from "./Preloader.astro";
 import Header from "./Header.astro";
+import CassettePlayer from "../components/ui/CassettePlayer.astro";
 import { getAssetUrl } from "../utils/cdn";
 
 export interface Props {
@@ -157,6 +158,9 @@ const isLandingPage = Astro.url.pathname === "/";
         <slot />
       </main>
     </div>
+
+    <CassettePlayer />
+
     <script>
       import { gsap } from "gsap";
       import { ScrollTrigger } from "gsap/ScrollTrigger";
