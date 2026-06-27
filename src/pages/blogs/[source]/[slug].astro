@@ -2,9 +2,9 @@
 import Layout from "../../../layouts/Layout.astro";
 import Footer from "../../../layouts/Footer.astro";
 import ReadingProgress from "../../../components/blog/ReadingProgress.astro";
-import TableOfContents from "../../../components/blog/TableOfContents";
-import BlogDock from "../../../components/blog/BlogDock";
-import TextHighlighter from "../../../components/blog/TextHighlighter";
+import TableOfContents from "../../../components/blog/TableOfContents.astro";
+import BlogDock from "../../../components/blog/BlogDock.astro";
+import TextHighlighter from "../../../components/blog/TextHighlighter.astro";
 import { getPost } from "../../../lib/blog";
 import type { BlogSource } from "../../../lib/blog/types";
 import { getAssetUrl } from "../../../utils/cdn";
@@ -147,15 +147,15 @@ const hasContent = post.contentHtml.length > 100;
         {/* TOC sidebar — sticky, starts aligned with first line of content */}
         {hasContent && post.headings.length > 0 && (
           <aside class="hidden lg:block w-56 flex-shrink-0 sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto">
-            <TableOfContents headings={post.headings} client:only="react" />
+            <TableOfContents headings={post.headings} />
           </aside>
         )}
       </div>
     </div>
   </section>
 
-  <BlogDock slug={slug} title={post.title} client:only="react" />
-  <TextHighlighter slug={slug} client:only="react" />
+  <BlogDock slug={slug} title={post.title} />
+  <TextHighlighter slug={slug} />
 
   <Footer />
 </Layout>
