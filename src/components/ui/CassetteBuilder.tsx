@@ -769,7 +769,7 @@ export default function CassetteBuilder() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(240px, 100%), 1fr))",
             gap: "1rem",
             marginTop: "1rem",
           }}
@@ -1030,9 +1030,9 @@ function ColorSwatch({
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
-        width: 32,
-        height: 32,
-        borderRadius: "10px",
+        width: 40,
+        height: 40,
+        borderRadius: "12px",
         background: value,
         border: `2px solid ${hover ? "#F95F4A" : isDark ? "rgba(255,255,255,0.18)" : "rgba(0,0,0,0.15)"}`,
         boxShadow: hover

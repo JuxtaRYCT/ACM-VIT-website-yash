@@ -63,13 +63,13 @@ const btnActive = 'bg-[#F95F4A] border-[#F95F4A] text-white';
       return (
         <a
           href={internalUrl}
-          class="group grid grid-cols-[100px_1fr_auto] gap-4 items-center p-4 rounded-xl no-underline transition-all duration-200 border border-transparent hover:bg-white/[0.04] hover:border-white/[0.06]"
+          class="group grid grid-cols-[1fr] sm:grid-cols-[80px_1fr_auto] gap-3 sm:gap-4 items-start sm:items-center p-3 sm:p-4 rounded-xl no-underline transition-all duration-200 border border-transparent hover:bg-white/[0.04] hover:border-white/[0.06]"
           data-source={post.source}
           data-title={post.title.toLowerCase()}
           data-tags={post.tags.join(',').toLowerCase()}
         >
           {/* Thumbnail */}
-          <div class="w-[100px] h-[68px] rounded-lg overflow-hidden flex-shrink-0">
+          <div class="hidden sm:block w-[80px] h-[54px] rounded-lg overflow-hidden flex-shrink-0">
             {post.coverImage ? (
               <img
                 src={post.coverImage}

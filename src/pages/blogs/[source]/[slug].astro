@@ -147,15 +147,15 @@ const hasContent = post.contentHtml.length > 100;
         {/* TOC sidebar — sticky, starts aligned with first line of content */}
         {hasContent && post.headings.length > 0 && (
           <aside class="hidden lg:block w-56 flex-shrink-0 sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto">
-            <TableOfContents headings={post.headings} client:load />
+            <TableOfContents headings={post.headings} client:only="react" />
           </aside>
         )}
       </div>
     </div>
   </section>
 
-  <BlogDock slug={slug} title={post.title} client:idle />
-  <TextHighlighter slug={slug} client:idle />
+  <BlogDock slug={slug} title={post.title} client:only="react" />
+  <TextHighlighter slug={slug} client:only="react" />
 
   <Footer />
 </Layout>

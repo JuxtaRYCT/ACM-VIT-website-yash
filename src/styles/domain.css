@@ -421,17 +421,55 @@
 }
 
 @media (max-width: 480px) {
+  .domain-hero {
+    padding: 4.5rem 1.25rem 2.5rem;
+  }
+
   .domain-hero-title {
     font-size: 3.5rem;
+  }
+
+  .domain-hero-cta {
+    padding: 12px 22px;
+    font-size: 0.78rem;
+    width: 100%;
+    justify-content: center;
   }
 
   .domain-aoi-grid {
     grid-template-columns: 1fr;
   }
 
+  .domain-aoi-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .domain-aoi-card-img {
+    width: 80px;
+    height: 80px;
+  }
+
   .domain-marquee-icon {
     width: 36px;
     height: 36px;
+  }
+
+  .domain-marquee-set {
+    gap: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .domain-about-section {
+    padding: 3rem 1.25rem;
+  }
+
+  .domain-aoi-section {
+    padding: 3rem 1.25rem 4rem;
+  }
+
+  .domain-stats {
+    gap: 1.25rem;
+    padding: 2.5rem 1.25rem;
   }
 }
 

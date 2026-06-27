@@ -671,6 +671,43 @@
   .event-section-narrow {
     padding: 3rem 1.25rem;
   }
+
+  .event-cta-primary,
+  .event-cta-secondary {
+    padding: 12px 20px;
+    font-size: 0.75rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .event-hero-actions {
+    flex-direction: column;
+  }
+
+  .event-meta-chip {
+    font-size: 0.58rem;
+    padding: 5px 10px;
+  }
+
+  .event-stats {
+    gap: 1rem;
+  }
+
+  .event-cta-banner {
+    padding: 2rem 1.25rem;
+    margin: 2rem 1rem 3rem;
+  }
+
+  .event-track-grid,
+  .event-prize-grid,
+  .event-highlight-grid,
+  .event-perks-list {
+    grid-template-columns: 1fr;
+  }
+
+  .event-other-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* ═══════════════════════════════════════════════════════

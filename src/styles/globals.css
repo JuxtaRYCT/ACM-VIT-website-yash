@@ -286,21 +286,21 @@ html[data-theme="light"] #acm-w #tubelight {
 html[data-theme="light"] #mobile-menu-overlay {
   background: rgba(242, 206, 174, 0.98) !important;
 }
-html[data-theme="light"] #mobile-menu-btn {
-  background: rgba(255, 240, 220, 0.7) !important;
-  border-color: rgba(26, 26, 26, 0.2) !important;
-}
-html[data-theme="light"] #mobile-menu-btn svg {
-  stroke: #1a1a1a !important;
-}
 html[data-theme="light"] #mobile-menu-close {
   color: #1a1a1a !important;
+  border-color: rgba(26, 26, 26, 0.15) !important;
 }
 html[data-theme="light"] .mobile-nav-link {
   color: #1a1a1a !important;
 }
 html[data-theme="light"] .mobile-nav-link:hover {
   color: #f95f4a !important;
+}
+html[data-theme="light"] #mobile-menu-overlay span.text-\[\#FEFCD9\] {
+  color: rgba(26, 26, 26, 0.5) !important;
+}
+html[data-theme="light"] .mobile-nav-link span {
+  background: rgba(26, 26, 26, 0.06) !important;
 }
 
 /* ── AnimatedButton (inverted for light mode) ── */

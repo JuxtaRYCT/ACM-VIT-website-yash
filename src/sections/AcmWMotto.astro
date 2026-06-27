@@ -30,10 +30,11 @@ import { getAssetUrl } from "../utils/cdn";
     </div>
   </div>
 
-  <div class="absolute bottom-0 right-0">
+  <div class="absolute bottom-0 right-0 max-w-[70vw] sm:max-w-[55vw] md:max-w-none">
     <img
       src={getAssetUrl("/acmw/acmwtable.webp")}
       alt="AcmW Table"
+      class="w-full h-auto"
       loading="lazy"
       decoding="async"
     />
@@ -79,13 +80,15 @@ import { getAssetUrl } from "../utils/cdn";
     animation-play-state: paused;
   }
 
-  /* Optional: Different speeds */
-  .fast {
-    animation-duration: 8s;
+  @media (max-width: 768px) {
+    .marquee-container {
+      top: 30%;
+    }
+    .marquee-content {
+      animation-duration: 10s;
+    }
+    .marquee-content img {
+      margin-right: 24px;
+    }
   }
-
-  .slow {
-    animation-duration: 25s;
-  }
-
 </style>
