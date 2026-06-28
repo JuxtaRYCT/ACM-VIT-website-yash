@@ -5,6 +5,7 @@ export interface DesignTool {
   slug: string;
   svgFile: string;
   colorHex: string;
+  isDark?: boolean;
 }
 
 export interface DesignAOI {
@@ -23,24 +24,27 @@ export const designTools: DesignTool[] = [
   { name: "After Effects", slug: "after-effects", svgFile: "/domains/design/tools/after-effects.svg", colorHex: "#9999FF" },
   { name: "Premiere Pro", slug: "premiere-pro", svgFile: "/domains/design/tools/premiere-pro.svg", colorHex: "#9999FF" },
   { name: "Blender", slug: "blender", svgFile: "/domains/design/tools/blender.svg", colorHex: "#E87D0D" },
-  { name: "Unity", slug: "unity", svgFile: "/domains/design/tools/unity.svg", colorHex: "#FFFFFF" },
-  { name: "Unreal Engine", slug: "unreal-engine", svgFile: "/domains/design/tools/unreal-engine.svg", colorHex: "#0E1128" },
-  { name: "Framer", slug: "framer", svgFile: "/domains/design/tools/framer.svg", colorHex: "#0055FF" },
+  { name: "Unity", slug: "unity", svgFile: "/domains/design/tools/unity.svg", colorHex: "#FFFFFF", isDark: true },
+  { name: "Unreal Engine", slug: "unreal-engine", svgFile: "/domains/design/tools/unreal-engine.svg", colorHex: "#0E1128", isDark: true },
+  { name: "Framer", slug: "framer", svgFile: "/domains/design/tools/framer.svg", colorHex: "#0055FF", isDark: true },
   { name: "Sketch", slug: "sketch", svgFile: "/domains/design/tools/sketch.svg", colorHex: "#F7B500" },
   { name: "Canva", slug: "canva", svgFile: "/domains/design/tools/canva.svg", colorHex: "#00C4CC" },
   { name: "DaVinci Resolve", slug: "davinci-resolve", svgFile: "/domains/design/tools/davinci-resolve.svg", colorHex: "#E12D39" },
   { name: "Krita", slug: "krita", svgFile: "/domains/design/tools/krita.svg", colorHex: "#3BABFF" },
   { name: "CorelDRAW", slug: "coreldraw", svgFile: "/domains/design/tools/coreldraw.svg", colorHex: "#6DB33F" },
-  { name: "Adobe XD", slug: "adobe-xd", svgFile: "/domains/design/tools/adobe-xd.svg", colorHex: "#FF61F6" },
   { name: "Lightroom", slug: "lightroom", svgFile: "/domains/design/tools/lightroom.svg", colorHex: "#31A8FF" },
   { name: "InDesign", slug: "indesign", svgFile: "/domains/design/tools/indesign.svg", colorHex: "#FF3366" },
   { name: "Affinity Designer", slug: "affinity-designer", svgFile: "/domains/design/tools/affinity-designer.svg", colorHex: "#1B72BE" },
   { name: "Affinity Photo", slug: "affinity-photo", svgFile: "/domains/design/tools/affinity-photo.svg", colorHex: "#7E4DD2" },
   { name: "Affinity Publisher", slug: "affinity-publisher", svgFile: "/domains/design/tools/affinity-publisher.svg", colorHex: "#C9514D" },
   { name: "Houdini", slug: "houdini", svgFile: "/domains/design/tools/houdini.svg", colorHex: "#FF4713" },
-  { name: "Rive", slug: "rive", svgFile: "/domains/design/tools/rive.svg", colorHex: "#1D1D1D" },
+  { name: "Rive", slug: "rive", svgFile: "/domains/design/tools/rive.svg", colorHex: "#1D1D1D", isDark: true },
   { name: "Spline", slug: "spline", svgFile: "/domains/design/tools/spline.svg", colorHex: "#7B61FF" },
   { name: "GSAP", slug: "gsap", svgFile: "/domains/design/tools/gsap.svg", colorHex: "#88CE02" },
+  { name: "Final Cut Pro", slug: "final-cut-pro", svgFile: "/domains/design/tools/final-cut-pro.svg", colorHex: "#9B8CFF" },
+  { name: "GIMP", slug: "gimp", svgFile: "/domains/design/tools/gimp.svg", colorHex: "#5C5543" },
+  { name: "shadcn/ui", slug: "shadcn", svgFile: "/domains/design/tools/shadcn.svg", colorHex: "#FFFFFF", isDark: true },
+  { name: "Higgsfield", slug: "higgsfield", svgFile: "/domains/design/tools/higgsfield.svg", colorHex: "#E94560" },
 ];
 
 export const designAOIs: DesignAOI[] = [
@@ -53,7 +57,7 @@ export const designAOIs: DesignAOI[] = [
       "From event registration portals to our own website, every surface a user touches is shaped by this AOI. We work closely with the Tech domain to ensure our designs translate faithfully into production.",
     ],
     cassetteSrc: "/aois/design/cassettes/uiux.png",
-    tools: ["figma", "adobe-xd", "framer", "sketch", "canva"],
+    tools: ["figma", "framer", "sketch", "canva", "shadcn"],
   },
   {
     key: "illustrations",
@@ -108,7 +112,7 @@ export const designDescription = [
 
 export const designStats = [
   { value: "5", label: "AOIs" },
-  { value: "24+", label: "Tools" },
+  { value: "27+", label: "Tools" },
   { value: "100+", label: "Designs Created" },
 ];
 

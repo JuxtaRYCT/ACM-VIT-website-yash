@@ -41,6 +41,14 @@ const designEventsCustom = [
     desc: "The design domain works on the designs for every ACM-VIT event. Check out more of our work on ACM-VIT's Instagram.",
   },
 ];
+
+const pyramidSizes = [3, 5, 8, 11];
+const pyramidRows: (typeof designTools)[] = [];
+let offset = 0;
+for (const size of pyramidSizes) {
+  pyramidRows.push(designTools.slice(offset, offset + size));
+  offset += size;
+}
 ---
 
 <Layout pageTitle="Design" backHref="/#domains">
@@ -107,21 +115,29 @@ const designEventsCustom = [
         <p class="dsg-tools-label" data-dsg-animate="fade-up">Our Arsenal</p>
         <h2 class="dsg-tools-title" data-dsg-animate="fade-up">Tools We Use</h2>
       </div>
-      <div class="dsg-tools-grid">
-        {designTools.map((tool, i) => (
-          <div
-            class="dsg-tool-card"
-            data-dsg-animate="fade-up"
-            style={`--tool-color: ${tool.colorHex}; --card-delay: ${i * 0.03}s`}
-          >
-            <img
-              src={getAssetUrl(tool.svgFile)}
-              alt={tool.name}
-              class="dsg-tool-icon"
-              loading="lazy"
-              decoding="async"
-            />
-            <span class="dsg-tool-name">{tool.name}</span>
+      <div class="dsg-tools-pyramid">
+        {pyramidRows.map((row, rowIdx) => (
+          <div class="dsg-tools-pyramid-row">
+            {row.map((tool, i) => {
+              const globalIdx = [0, 3, 8, 16][rowIdx] + i;
+              return (
+                <div
+                  class="dsg-tool-card"
+                  data-dsg-animate="fade-up"
+                  style={`--tool-color: ${tool.colorHex}; --card-delay: ${globalIdx * 0.03}s`}
+                  {...(tool.isDark ? { "data-dark-icon": "" } : {})}
+                >
+                  <img
+                    src={getAssetUrl(tool.svgFile)}
+                    alt={tool.name}
+                    class="dsg-tool-icon"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span class="dsg-tool-name">{tool.name}</span>
+                </div>
+              );
+            })}
           </div>
         ))}
       </div>

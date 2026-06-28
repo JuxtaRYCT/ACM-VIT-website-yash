@@ -80,12 +80,13 @@ const otherAOIs = designAOIs.filter((a) => a.key !== aoiSlug);
           <p class="dsg-tools-label" data-dsg-animate="fade-up">Stack</p>
           <h2 class="dsg-tools-title" data-dsg-animate="fade-up">Tools We Use</h2>
         </div>
-        <div class="dsg-tools-grid" style="max-width: 800px; margin: 0 auto;">
+        <div class="dsg-aoi-tools-row">
           {aoiTools.map((tool, i) => (
             <div
               class="dsg-tool-card"
               data-dsg-animate="fade-up"
               style={`--tool-color: ${tool.colorHex}; --card-delay: ${i * 0.05}s`}
+              {...(tool.isDark ? { "data-dark-icon": "" } : {})}
             >
               <img
                 src={getAssetUrl(tool.svgFile)}

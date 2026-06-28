@@ -268,6 +268,28 @@
   justify-items: center;
 }
 
+.dsg-aoi-tools-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.dsg-tools-pyramid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.dsg-tools-pyramid-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
 .dsg-tool-card {
   display: flex;
   flex-direction: column;
@@ -280,16 +302,16 @@
   background: rgba(255, 255, 255, 0.03);
   cursor: default;
   transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
-  width: 100%;
+  width: 100px;
   aspect-ratio: 1;
 }
 
 .dsg-tool-card:hover {
-  border-color: color-mix(in srgb, var(--tool-color) 50%, transparent);
-  background: color-mix(in srgb, var(--tool-color) 8%, transparent);
+  border-color: color-mix(in srgb, var(--domain-color, #FF0054) 50%, transparent);
+  background: color-mix(in srgb, var(--domain-color, #FF0054) 8%, transparent);
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(0,0,0,0.15),
-              0 0 16px color-mix(in srgb, var(--tool-color) 12%, transparent);
+              0 0 16px color-mix(in srgb, var(--domain-color, #FF0054) 12%, transparent);
 }
 
 /* Tool icons: white/light in dark mode, dark in light mode */
@@ -297,12 +319,23 @@
   width: 32px;
   height: 32px;
   object-fit: contain;
-  opacity: 0.7;
+  opacity: 0.6;
+  filter: grayscale(1);
   transition: all 0.35s ease;
 }
 
 .dsg-tool-card:hover .dsg-tool-icon {
   opacity: 1;
+  filter: none;
+}
+
+/* Dark logos need invert in dark mode to be visible */
+.dsg-tool-card[data-dark-icon] .dsg-tool-icon {
+  filter: grayscale(1) invert(1);
+}
+
+.dsg-tool-card[data-dark-icon]:hover .dsg-tool-icon {
+  filter: invert(1);
 }
 
 .dsg-tool-name {
@@ -608,6 +641,10 @@
     grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
   }
 
+  .dsg-tools-pyramid-row {
+    flex-wrap: wrap;
+  }
+
   .dsg-cassette-fan {
     min-height: 260px;
   }
@@ -643,6 +680,15 @@
 
   .dsg-tools-grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+
+  .dsg-tools-pyramid {
+    gap: 0.5rem;
+  }
+
+  .dsg-tools-pyramid-row {
+    flex-wrap: wrap;
     gap: 0.5rem;
   }
 
@@ -751,7 +797,7 @@ html[data-theme="light"] .dsg-tool-card {
 }
 
 html[data-theme="light"] .dsg-tool-card:hover {
-  background: color-mix(in srgb, var(--tool-color) 8%, white);
+  background: color-mix(in srgb, var(--domain-color, #FF0054) 8%, white);
 }
 
 html[data-theme="light"] .dsg-tool-name {
@@ -762,13 +808,23 @@ html[data-theme="light"] .dsg-tool-card:hover .dsg-tool-name {
   color: rgba(26, 26, 26, 0.85);
 }
 
-/* Light mode: icons are already black from SVG source, just lower opacity */
 html[data-theme="light"] .dsg-tool-icon {
-  opacity: 0.7;
+  filter: grayscale(1);
+  opacity: 0.5;
 }
 
 html[data-theme="light"] .dsg-tool-card:hover .dsg-tool-icon {
+  filter: none;
   opacity: 1;
+}
+
+/* Dark icons are naturally visible in light mode - no invert needed */
+html[data-theme="light"] .dsg-tool-card[data-dark-icon] .dsg-tool-icon {
+  filter: grayscale(1);
+}
+
+html[data-theme="light"] .dsg-tool-card[data-dark-icon]:hover .dsg-tool-icon {
+  filter: none;
 }
 
 html[data-theme="light"] .dsg-aoi-title {
