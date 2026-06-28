@@ -13,6 +13,9 @@ const { slug } = Astro.props;
   if (root) {
     const slug = root.dataset.slug || "";
     const storageKey = `acm-blog-${slug}`;
+    const content = document.querySelector<HTMLElement>(".blog-content");
+    let isPointerSelecting = false;
+    let selectionPopupRaf = 0;
 
     const HIGHLIGHT_COLORS = [
       { name: "Orange", value: "#F95F4A" },
@@ -80,7 +83,6 @@ const { slug } = Astro.props;
         const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
         const highlights: HighlightEntry[] = saved.highlights || [];
         if (highlights.length === 0) return;
-        const content = document.querySelector(".blog-content");
         if (!content) return;
 
         const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT);
@@ -106,7 +108,24 @@ const { slug } = Astro.props;
         }
       } catch {}
     }
-    requestAnimationFrame(restore);
+    function isPreloaderActive(): boolean {
+      const preloader = document.getElementById("preloader");
+      if (!preloader) return false;
+      const styles = window.getComputedStyle(preloader);
+      return styles.display !== "none" && styles.visibility !== "hidden" && styles.opacity !== "0";
+    }
+
+    function runAfterPreloader(callback: () => void) {
+      if (!isPreloaderActive()) {
+        callback();
+        return;
+      }
+      window.addEventListener("preloader:done", callback, { once: true });
+    }
+
+    runAfterPreloader(() => {
+      requestAnimationFrame(restore);
+    });
 
     // ── State
     let currentRange: Range | null = null;
@@ -153,6 +172,12 @@ const { slug } = Astro.props;
       el.style.transform = "translate(-50%, -100%)";
       el.style.zIndex = "9100";
       el.style.animation = "highlight-popup-in 0.15s ease-out";
+
+      // Prevent the popup itself from stealing focus / clearing the text selection.
+      // Without this, clicking a swatch fires selectionchange → destroyPopup before
+      // the click handler can run, so nothing gets highlighted.
+      el.addEventListener("mousedown", (e) => e.preventDefault());
+      el.addEventListener("pointerdown", (e) => e.preventDefault());
 
       const action = document.createElement("button");
       action.type = "button";
@@ -204,6 +229,40 @@ const { slug } = Astro.props;
 
       document.body.appendChild(el);
       removePopup = el;
+    }
+
+    function isRangeInsideContent(range: Range): boolean {
+      return !!content && content.contains(range.commonAncestorContainer);
+    }
+
+    function scheduleSelectionPopupUpdate() {
+      if (selectionPopupRaf) window.cancelAnimationFrame(selectionPopupRaf);
+      selectionPopupRaf = window.requestAnimationFrame(() => {
+        selectionPopupRaf = 0;
+        updateSelectionPopup();
+      });
+    }
+
+    function updateSelectionPopup() {
+      if (!content) return;
+      const selection = window.getSelection();
+      if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
+        destroyPopup();
+        return;
+      }
+
+      const range = selection.getRangeAt(0);
+      const text = selection.toString().trim();
+      if (!text || !isRangeInsideContent(range)) {
+        destroyPopup();
+        return;
+      }
+
+      const rect = range.getBoundingClientRect();
+      if (!rect.width && !rect.height) return;
+      buildHighlightPopup(rect.left + rect.width / 2, rect.top - 8);
+      // Must assign AFTER buildHighlightPopup — it calls destroyPopup which nulls currentRange.
+      currentRange = range.cloneRange();
     }
 
     function doHighlight(color = DEFAULT_COLOR) {
@@ -264,17 +323,19 @@ const { slug } = Astro.props;
     }
 
     // ── Listeners
-    const content = document.querySelector(".blog-content");
     if (content) {
-      content.addEventListener("mouseup", () => {
-        const selection = window.getSelection();
-        if (!selection || selection.isCollapsed || !selection.toString().trim()) return;
-        const range = selection.getRangeAt(0);
-        if (!content.contains(range.commonAncestorContainer)) return;
-        currentRange = range.cloneRange();
-        const rect = range.getBoundingClientRect();
-        buildHighlightPopup(rect.left + rect.width / 2, rect.top - 8);
+      content.addEventListener("pointerdown", () => {
+        isPointerSelecting = true;
       });
+
+      const finishPointerSelection = () => {
+        isPointerSelecting = false;
+        scheduleSelectionPopupUpdate();
+      };
+
+      content.addEventListener("mouseup", finishPointerSelection);
+      content.addEventListener("touchend", finishPointerSelection, { passive: true });
+      content.addEventListener("keyup", scheduleSelectionPopupUpdate);
 
       content.addEventListener("pointerover", (event) => {
         const target = event.target as Element | null;
@@ -286,8 +347,27 @@ const { slug } = Astro.props;
       });
     }
 
+    document.addEventListener("selectionchange", () => {
+      const text = window.getSelection()?.toString().trim();
+      if (!text) {
+        destroyPopup();
+        return;
+      }
+      if (!isPointerSelecting) scheduleSelectionPopupUpdate();
+    });
+
     document.addEventListener("mousedown", (e) => {
       if (popup && !popup.contains(e.target as Node)) destroyPopup();
+    });
+
+    document.addEventListener("pointerup", () => {
+      if (!isPointerSelecting) return;
+      isPointerSelecting = false;
+      scheduleSelectionPopupUpdate();
+    });
+
+    document.addEventListener("pointercancel", () => {
+      isPointerSelecting = false;
     });
 
     document.addEventListener("pointermove", (e) => {

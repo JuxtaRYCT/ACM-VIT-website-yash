@@ -10,6 +10,7 @@ const { slug, title } = Astro.props;
 <div
   class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9000] pointer-events-none"
   data-blog-dock-root
+  data-dock-state="booting"
   data-slug={slug}
   data-title={title}
 >
@@ -215,6 +216,10 @@ const { slug, title } = Astro.props;
     color: #F95F4A;
     background: rgba(249, 95, 74, 0.15);
   }
+
+  [data-blog-dock-root][data-dock-state="booting"] {
+    visibility: hidden;
+  }
 </style>
 
 <script>
@@ -274,6 +279,21 @@ const { slug, title } = Astro.props;
     let speaking = false;
     let showNotes = false;
 
+    function isPreloaderActive(): boolean {
+      const preloader = document.getElementById("preloader");
+      if (!preloader) return false;
+      const styles = window.getComputedStyle(preloader);
+      return styles.display !== "none" && styles.visibility !== "hidden" && styles.opacity !== "0";
+    }
+
+    function runAfterPreloader(callback: () => void) {
+      if (!isPreloaderActive()) {
+        callback();
+        return;
+      }
+      window.addEventListener("preloader:done", callback, { once: true });
+    }
+
     // ── Load saved state
     try {
       const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
@@ -306,7 +326,10 @@ const { slug, title } = Astro.props;
     const controls = pill.querySelectorAll<HTMLElement>(".dock-control");
     const dividers = pill.querySelectorAll<HTMLElement>(".dock-divider");
 
-    const ctx = gsap.context(() => {
+    const runEntryAnimation = () => {
+      root.style.visibility = "visible";
+      root.dataset.dockState = "animating";
+
       const naturalRect = pill.getBoundingClientRect();
       const naturalWidth = naturalRect.width;
       const naturalHeight = naturalRect.height;
@@ -335,10 +358,20 @@ const { slug, title } = Astro.props;
               pill.style.width = "";
               pill.style.height = "";
               pill.style.overflow = "";
+              root.dataset.dockState = "ready";
+              root.style.removeProperty("visibility");
               gsap.to([controls, dividers], { opacity: 1, duration: 0.3, stagger: 0.025, ease: "power2.out" });
             },
           });
         }, "-=0.08");
+    };
+
+    const ctx = gsap.context(() => {
+      runAfterPreloader(() => {
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(runEntryAnimation);
+        });
+      });
     }, root);
 
     // ── Speed slider visuals

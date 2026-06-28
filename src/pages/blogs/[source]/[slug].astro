@@ -163,24 +163,41 @@ const hasContent = post.contentHtml.length > 100;
 <script>
   import { gsap } from "gsap";
 
-  gsap.from('.blog-content', {
-    y: 30,
-    opacity: 0,
-    duration: 0.8,
-    ease: 'power3.out',
-    delay: 0.2,
-  });
-
-  const toc = document.querySelector('.toc');
-  if (toc) {
-    gsap.from(toc, {
-      x: 20,
-      opacity: 0,
-      duration: 0.6,
-      ease: 'power3.out',
-      delay: 0.5,
-    });
+  function isPreloaderActive() {
+    const preloader = document.getElementById('preloader');
+    if (!preloader) return false;
+    const styles = window.getComputedStyle(preloader);
+    return styles.display !== 'none' && styles.visibility !== 'hidden' && styles.opacity !== '0';
   }
+
+  function runAfterPreloader(callback: () => void) {
+    if (!isPreloaderActive()) {
+      callback();
+      return;
+    }
+    window.addEventListener('preloader:done', callback, { once: true });
+  }
+
+  runAfterPreloader(() => {
+    gsap.from('.blog-content', {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power3.out',
+      delay: 0.2,
+    });
+
+    const toc = document.querySelector('.toc');
+    if (toc) {
+      gsap.from(toc, {
+        x: 20,
+        opacity: 0,
+        duration: 0.6,
+        ease: 'power3.out',
+        delay: 0.5,
+      });
+    }
+  });
 
   // Handle broken cover images
   const coverImg = document.querySelector('.blog-cover img') as HTMLImageElement;
