@@ -13,11 +13,13 @@
 .proj-tubelight-wrap {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   padding: 0 2rem;
   margin-top: -1rem;
   margin-bottom: -2rem;
+  max-height: 30vh;
+  overflow: hidden;
 }
 
 .proj-tubelight {
@@ -56,19 +58,13 @@
 /* ── Grid ── */
 .proj-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 4rem 4.5rem;
-  max-width: 1000px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem 3.5rem;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
 }
 
-/* Center last odd item */
-.proj-grid > .proj-card:last-child:nth-child(odd) {
-  grid-column: 1 / -1;
-  max-width: 400px;
-  justify-self: center;
-}
 
 /* ── Card ── */
 .proj-card {
@@ -118,9 +114,6 @@
     gap: 2.5rem;
     max-width: 400px;
     padding: 0 1.25rem;
-  }
-  .proj-grid > .proj-card:last-child:nth-child(odd) {
-    max-width: none;
   }
   .proj-tagline {
     margin: 0.5rem auto 2rem;

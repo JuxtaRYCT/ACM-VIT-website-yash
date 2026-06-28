@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 353">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E53E3E"/>
+      <stop offset="100%" stop-color="#9B2C2C"/>
+    </linearGradient>
+  </defs>
+  <rect x="380" y="60" width="100" height="100" rx="12" fill="#E53E3E" opacity="0.12" transform="rotate(15 430 110)"/>
+  <text x="288" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="80" fill="url(#g)" letter-spacing="8">TAGRED</text>
+  <text x="288" y="220" text-anchor="middle" font-family="system-ui, monospace" font-weight="400" font-size="16" fill="rgba(255,255,255,0.5)" letter-spacing="6">ACM-VIT</text>
+</svg>

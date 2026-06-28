@@ -738,6 +738,14 @@ html[data-theme="light"] .event-cta-banner p {
   color: rgba(26, 26, 26, 0.65);
 }
 
+html[data-theme="light"] .event-stat-value {
+  color: var(--event-color, #1a1a1a);
+}
+
+html[data-theme="light"] .event-stat-label {
+  color: rgba(26, 26, 26, 0.5);
+}
+
 html[data-theme="light"] .event-meta-chip {
   color: rgba(26, 26, 26, 0.75);
   border-color: rgba(0, 0, 0, 0.12);
@@ -1233,4 +1241,32 @@ html[data-theme="light"] .event-sponsor-card:hover .event-sponsor-logo-wrap img 
 
 html[data-theme="light"] .event-archive-sub-block {
   border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* ── Owls (Cryptic Hunt footer) ── */
+.event-owls-section {
+  text-align: center;
+  padding: 3rem 2rem 1rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.event-owls-img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  margin-bottom: 1.25rem;
+  filter: drop-shadow(0 4px 24px rgba(245, 117, 59, 0.15));
+}
+
+.event-owls-caption {
+  font-family: 'PolySans Mono', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.6;
+}
+
+html[data-theme="light"] .event-owls-caption {
+  color: rgba(0, 0, 0, 0.4);
 }

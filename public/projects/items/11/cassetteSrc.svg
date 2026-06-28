@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 353">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DD6B20"/>
+      <stop offset="100%" stop-color="#C05621"/>
+    </linearGradient>
+  </defs>
+  <text x="100" y="110" font-family="monospace" font-size="22" fill="#DD6B20" opacity="0.15">&lt;/&gt;</text>
+  <circle cx="470" cy="250" r="50" fill="#DD6B20" opacity="0.08"/>
+  <text x="288" y="185" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="74" fill="url(#g)" letter-spacing="6">CODIGO</text>
+  <text x="288" y="220" text-anchor="middle" font-family="system-ui, monospace" font-weight="400" font-size="16" fill="rgba(255,255,255,0.5)" letter-spacing="6">ACM-VIT</text>
+</svg>

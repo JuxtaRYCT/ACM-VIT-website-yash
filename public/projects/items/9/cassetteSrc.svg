@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 353">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#48BB78"/>
+      <stop offset="100%" stop-color="#276749"/>
+    </linearGradient>
+  </defs>
+  <text x="110" y="120" font-family="monospace" font-size="28" fill="#48BB78" opacity="0.2">&gt;_</text>
+  <rect x="70" y="90" width="180" height="50" rx="6" fill="none" stroke="#48BB78" stroke-width="1.5" opacity="0.1"/>
+  <text x="288" y="180" text-anchor="middle" font-family="'Courier New', monospace" font-weight="700" font-size="72" fill="url(#g)" letter-spacing="4">CLI-TOP</text>
+  <text x="288" y="218" text-anchor="middle" font-family="system-ui, monospace" font-weight="400" font-size="16" fill="rgba(255,255,255,0.5)" letter-spacing="6">ACM-VIT</text>
+</svg>
