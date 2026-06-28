@@ -771,7 +771,7 @@ html[data-theme="light"] .event-cta-secondary {
   border-color: rgba(0, 0, 0, 0.18);
 }
 
-/* Darken light event colors (e.g. #F3ED99) for readability on white backgrounds */
+/* Darken light event colors for readability on white backgrounds */
 html[data-theme="light"] .event-hero-eyebrow,
 html[data-theme="light"] .event-hero-title span,
 html[data-theme="light"] .event-section-title span,
@@ -779,11 +779,11 @@ html[data-theme="light"] .event-section-eyebrow,
 html[data-theme="light"] .event-stat-value,
 html[data-theme="light"] .event-archive-link-chip,
 html[data-theme="light"] .event-archive-year {
-  color: color-mix(in srgb, var(--event-color, #F95F4A) 70%, #000);
+  color: color-mix(in srgb, var(--event-color, #F95F4A) 55%, #000);
 }
 
 html[data-theme="light"] .event-cta-primary {
-  background: color-mix(in srgb, var(--event-color, #F95F4A) 80%, #000);
+  background: color-mix(in srgb, var(--event-color, #F95F4A) 65%, #000);
 }
 
 /* ── Archives ── */
@@ -1172,7 +1172,8 @@ html[data-theme="light"] .event-archive-tab {
 }
 
 html[data-theme="light"] .event-archive-tab.is-active {
-  color: #FFFDD0;
+  background: color-mix(in srgb, var(--event-color, #F95F4A) 65%, #000);
+  color: #fff;
 }
 
 html[data-theme="light"] .event-sponsor-card {

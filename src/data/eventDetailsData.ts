@@ -656,7 +656,7 @@ export const eventDetails: Record<string, EventDetail> = {
     tagline: "Every great open-source contributor starts with a single commit.",
     eyebrow: "ACM-VIT · Hacktoberfest · Open Source",
     themeKey: "tech",
-    themeColor: "#7192D1",
+    themeColor: "#EFEFEF",
     hideCtaBanner: true,
     cassetteSvg: "/events/forktober-cassette.svg",
     shortDescription:
@@ -1166,6 +1166,7 @@ export const eventDetails: Record<string, EventDetail> = {
     tagline: "Meet your chapter. Build your first idea together.",
     eyebrow: "ACM-VIT · Internal Ideathon",
     themeKey: "brand",
+    themeColor: "#7496D8",
     hideCtaBanner: true,
     cassetteSvg: "/events/bethebuilder-cassette.png",
     shortDescription:
