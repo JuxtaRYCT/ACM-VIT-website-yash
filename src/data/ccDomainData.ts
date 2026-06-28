@@ -1,4 +1,4 @@
-export const CC_THEME_COLOR = "#B4E35B";
+export const CC_THEME_COLOR = "#42CD9D";
 
 export interface CcTool {
   name: string;
@@ -64,10 +64,10 @@ export const ccEvents: CcEvent[] = [
   },
   {
     title: "Code++",
-    cassette: "/cassettes/code-plusplus-cassette.svg",
+    cassette: "/events/code-plusplus-cassette.svg",
     desc: "A focused four-hour competitive coding sprint, curated problem set and live leaderboard, run by the Competitive Coding domain.",
     slug: "code-plusplus",
   },
 ];
 
-export const ccFooterMessage = "Show up. Solve. Ship. Then do it again next weekend.";
+export const ccFooterMessage = "Read the problem. Bound the input. Beat the clock.";

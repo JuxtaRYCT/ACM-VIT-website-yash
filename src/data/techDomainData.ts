@@ -209,7 +209,7 @@ export const techAOIs: TechAOI[] = [
     cassetteSrc: "/aois/tech/cassettes/foss.png",
     tools: ["gitlab", "github", "git", "ubuntu", "arch-linux", "debian", "fedora", "gnu", "gcc", "cmake", "bazel", "meson", "nix", "homebrew", "podman", "openapi", "apache", "neovim", "vim", "blender", "krita", "gimp", "libreoffice", "linux"],
     events: [
-      { title: "Forktober", cassette: "/cassettes/forktober-cassette.svg", desc: "ACM-VIT's open source festival run every Hacktoberfest. Curated repositories, sessions and workshops to land first contributions.", slug: "forktober" },
+      { title: "Forktober", cassette: "/events/forktober-cassette.svg", desc: "ACM-VIT's open source festival run every Hacktoberfest. Curated repositories, sessions and workshops to land first contributions.", slug: "forktober" },
     ],
   },
   {

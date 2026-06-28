@@ -9,6 +9,29 @@ export type EventScheduleItem = { time: string; title: string; description?: str
 export type EventFaq = { q: string; a: string };
 export type EventPrize = { place: string; value: string; note?: string };
 export type EventHighlight = { year: string; title: string; description: string };
+export type EventSponsor = {
+  name: string;
+  tier?: string;
+  logo?: string;
+};
+export type EventEditionLink = { label: string; href: string };
+export type EventPastEdition = {
+  year: string;
+  edition: string;
+  description: string;
+  links?: EventEditionLink[];
+  collectibles?: EventCollectibleItem[];
+  sponsors?: EventSponsor[];
+};
+export type EventCollectibleItem = {
+  name: string;
+  image?: string;
+  desc?: string;
+};
+export type EventCollectibleYear = {
+  year: string;
+  items: EventCollectibleItem[];
+};
 
 export interface EventDetail {
   slug: string;
@@ -37,11 +60,15 @@ export interface EventDetail {
   perks: string[];
   faq: EventFaq[];
   socials?: { label: string; href: string }[];
+  pastEditions?: EventPastEdition[];
+  collectibles?: EventCollectibleYear[];
+  instagramHandle?: string;
+  isAcmW?: boolean;
 }
 
 const themeHex: Record<EventDetail["themeKey"], string> = {
   tech: "#9B51E0",
-  cc: "#B4E35B",
+  cc: "#42CD9D",
   design: "#FF0054",
   research: "#135DE2",
   management: "#008080",
@@ -128,70 +155,195 @@ export const eventDetails: Record<string, EventDetail> = {
   code2create: {
     slug: "code2create",
     title: "Code2Create",
-    tagline: "The flagship 36-hour hackathon of ACM-VIT.",
-    eyebrow: "ACM-VIT · Flagship Hackathon",
+    tagline: "ACM-VIT's flagship hackathon since 2017.",
+    eyebrow: "ACM-VIT · ACM-W · Flagship Hackathon",
     themeKey: "brand",
     cassetteSvg: "/events/c2c-cassette.svg",
     shortDescription:
-      "Code2Create (C2C) is ACM-VIT's flagship 36-hour overnight hackathon - a multi-track, problem-driven build sprint that consistently draws hundreds of student builders from across India.",
+      "Code2Create (C2C) is ACM-VIT's flagship hackathon. First conducted in 2017 and now six editions deep, it has grown into a national platform for builders from across India to ship real solutions to real problems.",
     longDescription: [
-      "Code2Create - C2C to anyone who's been to one - is the event that put ACM-VIT on the national hackathon map. Multiple tracks, real-world problem statements from industry partners, and judging panels that include ACM-VIT alumni now working at companies like Microsoft, Google, and Stripe.",
-      "Teams form in advance, ship through the night, and present at hour 36. The bar is high: a working prototype is the floor, not the ceiling.",
-      "C2C has historically been the launch point for several student projects that became real products, and the recruiting pipeline behind many ACM-VIT alumni placements.",
+      "Code2Create is one of the oldest and most prestigious student-run hackathons at VIT. The first edition went up in 2017 and the event has run six editions to date, becoming a national platform that brings together developers, designers and entrepreneurs from colleges across the country to build impactful solutions to real-world problems.",
+      "Today C2C is recognised as one of ACM-VIT's premier events. The most recent edition, Code2Create 6.0 in 2025, received over 2,300 total registrations including 200+ external registrations from institutions across India, making it the largest edition in the event's history. Participants compete across multiple innovation tracks while interacting with mentors, industry professionals, and distinguished speakers.",
+      "Across its journey C2C has served as a launchpad for hundreds of student projects, giving participants 48 hours to transform an idea into a working product. Supported by leading technology companies and industry partners, the event consistently encourages creativity, problem solving, and engineering excellence, while fostering a vibrant developer community at VIT and beyond.",
+      "Code2Create runs under ACM-W's umbrella as part of the chapter's commitment to championing more women in STEM. Each edition raises the bar and strengthens its legacy as one of the most anticipated student hackathons hosted by the university.",
+      "For the latest updates on upcoming editions, follow @c2c.acmvit and @acmvit on Instagram.",
     ],
     format: "Offline · Multi-track flagship hackathon",
-    duration: "36 hours",
+    duration: "48 hours",
     mode: "Offline",
     audience: "Undergraduate students across India",
     team: "Teams of 2 to 4",
-    organizedBy: "ACM-VIT · Cross-domain",
+    organizedBy: "ACM-VIT · ACM-W · Cross-domain",
     firstHeld: "2017",
-    recurrence: "Annual · Odd-semester",
-    registrationUrl: "https://code2create.acmvit.in",
-    primaryCtaLabel: "Register for C2C",
+    recurrence: "Annual flagship · 6 editions to date",
+    registrationUrl: "https://c2c.acmvit.in",
+    primaryCtaLabel: "Visit c2c.acmvit.in",
     stats: [
-      { value: "36h", label: "Hackathon" },
-      { value: "500+", label: "Builders Per Edition" },
-      { value: "10+", label: "Industry Partners" },
+      { value: "6", label: "Editions" },
+      { value: "48h", label: "Per Edition" },
+      { value: "5000+", label: "Past Participants" },
+      { value: "30+", label: "Sponsors To Date" },
     ],
-    tracks: [
-      { name: "Open Innovation", description: "Bring your own problem. Build whatever you'd ship on Monday." },
-      { name: "FinTech", description: "Payments, lending, personal finance, on-chain - practical financial tooling." },
-      { name: "Web3 & Crypto", description: "Smart contracts, on-chain UX, novel primitives." },
-      { name: "AI/ML", description: "Models in production. Inference, agents, retrieval, evals." },
-      { name: "Social Impact", description: "Accessibility, public health, education, climate." },
-      { name: "DevTools", description: "Things developers will actually install on Monday." },
+    tracks: [],
+    schedule: [],
+    prizes: [],
+    highlights: [],
+    perks: [],
+    faq: [],
+    isAcmW: true,
+    instagramHandle: "c2c.acmvit",
+    socials: [
+      { label: "Instagram · @c2c.acmvit", href: "https://instagram.com/c2c.acmvit" },
+      { label: "Instagram · @acmvit", href: "https://instagram.com/acmvit" },
+      { label: "Website", href: "https://c2c.acmvit.in" },
     ],
-    schedule: [
-      { time: "Day 1 · 09:00", title: "Check-in & Opening Ceremony" },
-      { time: "Day 1 · 11:00", title: "Problem Statement Reveal & Hacking Begins" },
-      { time: "Day 1 · 18:00", title: "Checkpoint 1 - Idea & Architecture" },
-      { time: "Day 2 · 02:00", title: "Midnight Mentor Round" },
-      { time: "Day 2 · 12:00", title: "Checkpoint 2 - Working Demo" },
-      { time: "Day 2 · 19:00", title: "Submission Freeze & Pitch Prep" },
-      { time: "Day 2 · 21:00", title: "Final Pitches & Awards" },
-    ],
-    prizes: [
-      { place: "Grand Prize", value: "₹1,00,000+ overall pool", note: "Split across tracks and special categories" },
-      { place: "Track Winners", value: "Cash + sponsor credits per track" },
-      { place: "Best Beginner Team", value: "Hardware + mentorship slot" },
-      { place: "Sponsor Bounties", value: "Direct prizes from API + cloud partners" },
-    ],
-    highlights: [
-      { year: "2024", title: "C2C 8.0", description: "Largest edition to date - multi-day finals, sponsor demo booths, and a public expo." },
-      { year: "2023", title: "C2C 7.0", description: "Returned to fully in-person format after pandemic editions, drew teams from 30+ campuses." },
-    ],
-    perks: [
-      "Full board for 36 hours - meals, snacks, caffeine",
-      "Mentors on the floor from top engineering teams",
-      "Recruiter access for finalists",
-      "Swag, certificates, and Devfolio leaderboard credit",
-    ],
-    faq: [
-      { q: "Is C2C open to non-VIT students?", a: "Yes - C2C is national. Past editions have had teams from IITs, NITs, BITS, and dozens of private universities." },
-      { q: "Are travel expenses covered?", a: "Selected finalists from past editions have received partial travel reimbursement. Check the current edition page." },
-      { q: "Can I work on an existing project?", a: "Submissions must be substantially built during the event window. Pre-existing UI mocks and design assets are fine; pre-existing code is not." },
-      { q: "What if my team is incomplete?", a: "We run a team-formation Discord pre-event and a meet-and-greet at hour 0." },
+    pastEditions: [
+      {
+        year: "2025",
+        edition: "Code2Create 6.0",
+        description: "Largest edition to date. 2,300+ total registrations including 200+ external sign-ups from institutions across India, run as a multi-track innovation hackathon with mentors and industry partners on the floor.",
+        links: [
+          { label: "Website", href: "https://c2c.acmvit.in" },
+          { label: "@c2c.acmvit", href: "https://instagram.com/c2c.acmvit" },
+        ],
+        collectibles: [
+          { name: "C2C 6.0 Sticker - Variant 1", image: "/events/c2c/sticker-1.png", desc: "First sticker variant from the 2025 edition." },
+          { name: "C2C 6.0 Sticker - Variant 2", image: "/events/c2c/sticker-2.png", desc: "Second sticker variant from the 2025 edition." },
+          { name: "RunPod Credits", desc: "USD 25 in compute credits from RunPod for every participant." },
+          { name: "ElevenLabs Credits", desc: "USD 50 in API credits from ElevenLabs for every participant." },
+        ],
+        sponsors: [
+          { name: "RunPod", tier: "Platinum", logo: "/events/c2c/sponsors/runpod.svg" },
+          { name: "ElevenLabs", tier: "Gold", logo: "/events/c2c/sponsors/elevenlabs.svg" },
+        ],
+      },
+      {
+        year: "2021",
+        edition: "Code2Create 5.0",
+        description: "Post-pandemic edition that bridged remote and on-campus participation, expanding C2C's national reach across colleges. Strongest sponsor lineup of any edition to that point.",
+        collectibles: [
+          { name: "ACM-VIT Schwag Kit", desc: "Chapter merch and curated swag for every participant." },
+          { name: "Patron Stickers", desc: "Sticker pack from the edition's industry patrons." },
+        ],
+        sponsors: [
+          { name: "Meribachat", tier: "Gold", logo: "/events/c2c/sponsors/meribachat.svg" },
+          { name: "Mcwitties", tier: "Silver", logo: "/events/c2c/sponsors/mcwitties.svg" },
+          { name: "Capital Inc.", tier: "Silver", logo: "/events/c2c/sponsors/capitalinc.svg" },
+          { name: "Skill Oxide", tier: "Silver", logo: "/events/c2c/sponsors/skilloxide.svg" },
+          { name: "OneDrop", tier: "Silver", logo: "/events/c2c/sponsors/onedrop.svg" },
+          { name: "GitHub", tier: "Sponsor", logo: "/events/c2c/sponsors/github.svg" },
+          { name: "Sashido", tier: "Sponsor", logo: "/events/c2c/sponsors/sashido.svg" },
+          { name: "Wolfram Language", tier: "Sponsor", logo: "/events/c2c/sponsors/wolframlanguage.svg" },
+          { name: "Balsamiq", tier: "Sponsor", logo: "/events/c2c/sponsors/balsamiq.svg" },
+          { name: "Replit", tier: "Sponsor", logo: "/events/c2c/sponsors/replit.svg" },
+          { name: "Taskade", tier: "Sponsor", logo: "/events/c2c/sponsors/taskade.svg" },
+          { name: "O'Reilly", tier: "Sponsor", logo: "/events/c2c/sponsors/oreilly.svg" },
+          { name: "Bilda", tier: "Sponsor", logo: "/events/c2c/sponsors/bilda.svg" },
+          { name: "Sticker Mule", tier: "Sponsor", logo: "/events/c2c/sponsors/stickermule.svg" },
+          { name: "EchoAR", tier: "Sponsor", logo: "/events/c2c/sponsors/echoar.svg" },
+          { name: "Axure", tier: "Sponsor", logo: "/events/c2c/sponsors/axure.svg" },
+          { name: "Egghead.io", tier: "Sponsor" },
+          { name: "C4 Projects", tier: "Mentoring Partner", logo: "/events/c2c/sponsors/c4projects.svg" },
+          { name: "Zuddl", tier: "Portal Partner", logo: "/events/c2c/sponsors/zuddl.svg" },
+        ],
+      },
+      {
+        year: "2020",
+        edition: "Code2Create 4.0",
+        description: "First fully online edition during the pandemic. Virtual judging, Discord-based mentor rooms, and a sponsor pool that broadened C2C's footprint beyond campus.",
+        collectibles: [
+          { name: "Digital Schwag Pack", desc: "Online edition schwag delivered digitally to all participants." },
+          { name: "Patron Stickers", desc: "Sticker pack from sponsoring patrons of the edition." },
+        ],
+        sponsors: [
+          { name: "JetBrains", tier: "Patron", logo: "/events/c2c/sponsors/jetbrains.svg" },
+          { name: "DigitalOcean", tier: "Patron", logo: "/events/c2c/sponsors/digitalocean.svg" },
+          { name: "Slack", tier: "Patron", logo: "/events/c2c/sponsors/slack.svg" },
+          { name: "CloudSploit", tier: "Patron", logo: "/events/c2c/sponsors/cloudsploit.svg" },
+          { name: "GeeksforGeeks", tier: "Patron", logo: "/events/c2c/sponsors/geeksforgeeks.svg" },
+          { name: "Wolfram Alpha", tier: "Patron", logo: "/events/c2c/sponsors/wolframalpha.svg" },
+          { name: "Coding Blocks", tier: "Patron", logo: "/events/c2c/sponsors/codingblocks.svg" },
+          { name: "Axure", tier: "Patron", logo: "/events/c2c/sponsors/axure.svg" },
+          { name: "Rosenfeld", tier: "Patron", logo: "/events/c2c/sponsors/rosenfeld.svg" },
+          { name: "GitHub", tier: "Sponsor", logo: "/events/c2c/sponsors/github.svg" },
+          { name: "Devfolio", tier: "Platinum Sponsor", logo: "/events/c2c/sponsors/devfolio.svg" },
+          { name: "Fold", tier: "Sponsor", logo: "/events/c2c/sponsors/fold.svg" },
+          { name: "Matic", tier: "Sponsor", logo: "/events/c2c/sponsors/matic.svg" },
+        ],
+      },
+      {
+        year: "2019",
+        edition: "Code2Create 3.0",
+        description: "Largest pre-pandemic edition, with industry mentors from across Bangalore and Mumbai and the most diverse sponsor roster in C2C history at the time.",
+        collectibles: [
+          { name: "ACM-VIT Schwag Kit", desc: "Chapter merch and curated swag for every participant." },
+          { name: "Patron Stickers", desc: "Sticker pack from the edition's industry patrons." },
+        ],
+        sponsors: [
+          { name: "GitHub", tier: "Title Sponsor", logo: "/events/c2c/sponsors/github.svg" },
+          { name: "HackerEarth", tier: "Platform Sponsor", logo: "/events/c2c/sponsors/hackerearth.svg" },
+          { name: "Indriya Construction Company", tier: "Platinum Sponsor", logo: "/events/c2c/sponsors/indriya.svg" },
+          { name: "DigitalOcean", tier: "Cloud Partner", logo: "/events/c2c/sponsors/digitalocean.svg" },
+          { name: "IBM", tier: "Innovation Partner", logo: "/events/c2c/sponsors/ibm.svg" },
+          { name: "Hasura", tier: "Innovation Partner", logo: "/events/c2c/sponsors/hasura.svg" },
+          { name: "Coding Blocks", tier: "Learning Partner", logo: "/events/c2c/sponsors/codingblocks.svg" },
+          { name: "AnitaB.org", tier: "Patron", logo: "/events/c2c/sponsors/anitab.svg" },
+          { name: "Axure RP", tier: "Patron", logo: "/events/c2c/sponsors/axure.svg" },
+          { name: "Bugsee", tier: "Patron", logo: "/events/c2c/sponsors/bugsee.svg" },
+          { name: "CloudSploit", tier: "Patron", logo: "/events/c2c/sponsors/cloudsploit.svg" },
+          { name: "InVision", tier: "Patron", logo: "/events/c2c/sponsors/invision.svg" },
+          { name: "Jenkins", tier: "Patron", logo: "/events/c2c/sponsors/jenkins.svg" },
+          { name: "JetBrains", tier: "Patron", logo: "/events/c2c/sponsors/jetbrains.svg" },
+          { name: "Sketch", tier: "Patron", logo: "/events/c2c/sponsors/sketch.svg" },
+          { name: "Slang Labs", tier: "Patron", logo: "/events/c2c/sponsors/slanglabs.svg" },
+          { name: "Shift", tier: "Patron", logo: "/events/c2c/sponsors/shift.svg" },
+          { name: "Sticker Mule", tier: "Patron", logo: "/events/c2c/sponsors/stickermule.svg" },
+          { name: "Taskade", tier: "Patron", logo: "/events/c2c/sponsors/taskade.svg" },
+          { name: "TTA", tier: "Patron", logo: "/events/c2c/sponsors/tta.svg" },
+          { name: ".Tech Domains", tier: "Patron", logo: "/events/c2c/sponsors/techdomains.svg" },
+          { name: "Wolfram Language", tier: "Patron", logo: "/events/c2c/sponsors/wolframlanguage.svg" },
+        ],
+      },
+      {
+        year: "2018",
+        edition: "Code2Create 2.0",
+        description: "Second edition, expanding tracks, sponsors, and on-campus participation. Built the foundation for C2C becoming a national flagship.",
+        collectibles: [
+          { name: "ACM-VIT Schwag Kit", desc: "Chapter merch and curated swag for every participant." },
+          { name: "Patron Stickers", desc: "Sticker pack from the edition's industry patrons." },
+        ],
+        sponsors: [
+          { name: "JSP Projects Pvt. Ltd.", tier: "Gold Sponsor", logo: "/events/c2c/sponsors/jsp.svg" },
+          { name: "Balsamiq", tier: "Silver Sponsor", logo: "/events/c2c/sponsors/balsamiq.svg" },
+          { name: "GitLab", tier: "Diversity Sponsor", logo: "/events/c2c/sponsors/gitlab.svg" },
+          { name: "Iconscout", tier: "Patron", logo: "/events/c2c/sponsors/iconscout.svg" },
+          { name: "Slack", tier: "Patron", logo: "/events/c2c/sponsors/slack.svg" },
+          { name: "Twilio", tier: "Patron", logo: "/events/c2c/sponsors/twilio.svg" },
+          { name: "Zulip", tier: "Chat Partner", logo: "/events/c2c/sponsors/zulip.svg" },
+          { name: "Custom Baba", tier: "Merchandise Partner", logo: "/events/c2c/sponsors/custombaba.svg" },
+          { name: "The Photography Club (TPC)", tier: "Media Partner", logo: "/events/c2c/sponsors/tpc.svg" },
+          { name: "Ozonetel", tier: "Cloud Partner", logo: "/events/c2c/sponsors/ozonetel.svg" },
+          { name: "GeeksforGeeks", tier: "Coding Partner", logo: "/events/c2c/sponsors/geeksforgeeks.svg" },
+          { name: "npm", tier: "Sponsor", logo: "/events/c2c/sponsors/npm.svg" },
+          { name: "Product Hunt", tier: "Sponsor", logo: "/events/c2c/sponsors/producthunt.svg" },
+          { name: "Zeplin", tier: "Sponsor", logo: "/events/c2c/sponsors/zeplin.svg" },
+          { name: "Travis CI", tier: "Sponsor", logo: "/events/c2c/sponsors/travisci.svg" },
+          { name: "Docker", tier: "Sponsor", logo: "/events/c2c/sponsors/docker.svg" },
+        ],
+      },
+      {
+        year: "2017",
+        edition: "Code2Create 1.0",
+        description: "The inaugural edition. Campus-first hackathon that laid the foundation for everything that followed.",
+        collectibles: [
+          { name: "ACM-VIT Schwag Kit", desc: "Chapter merch and curated swag for every participant." },
+          { name: "Patron Stickers", desc: "Sticker pack from the inaugural edition's patrons." },
+        ],
+        sponsors: [
+          { name: "Transitus", tier: "Sponsor", logo: "/events/c2c/sponsors/transitus.svg" },
+          { name: "Tricentis", tier: "Sponsor", logo: "/events/c2c/sponsors/tricentis.svg" },
+        ],
+      },
     ],
   },
 

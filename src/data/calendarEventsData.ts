@@ -18,7 +18,7 @@ export const DOMAIN_COLORS: Record<EventDomain, { bg: string; text: string; bord
   design:     { bg: 'rgba(255, 0, 84, 0.2)', text: '#FF0054', border: '#FF0054', label: 'Design',             cassette: '/cassettes/Cassette_Design.webp' },
   research:   { bg: 'rgba(19, 93, 226, 0.2)', text: '#135DE2', border: '#135DE2', label: 'Research',           cassette: '/cassettes/Cassette_Research.webp' },
   management: { bg: 'rgba(0, 180, 180, 0.2)',   text: '#00B4B4', border: '#00B4B4', label: 'Management',         cassette: '/cassettes/Cassette_Management.webp' },
-  cc:         { bg: 'rgba(180, 227, 91, 0.2)',   text: '#B4E35B', border: '#B4E35B', label: 'Competitive Coding', cassette: '/cassettes/Cassette_cc.webp' },
+  cc:         { bg: 'rgba(66, 205, 157, 0.2)',   text: '#42CD9D', border: '#42CD9D', label: 'Competitive Coding', cassette: '/cassettes/Cassette_cc.webp' },
   blog:       { bg: 'rgba(249, 95, 74, 0.2)',    text: '#F95F4A', border: '#F95F4A', label: 'Blog Post',          cassette: '/cassettes/Cassette_Tech.webp' },
 };
 

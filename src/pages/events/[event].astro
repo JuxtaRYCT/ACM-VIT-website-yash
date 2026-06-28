@@ -22,12 +22,10 @@ if (!data) return Astro.redirect("/");
 
 const themeColor = getEventThemeHex(data.themeKey);
 
-// Title typography split - first word in cream, rest in theme color.
 const titleWords = data.title.split(" ");
 const titleMain = titleWords[0];
 const titleAccent = titleWords.length > 1 ? titleWords.slice(1).join(" ") : "";
 
-// Other events for the closing strip.
 const otherEvents = Object.values(eventDetails)
   .filter((e) => e.slug !== data.slug)
   .slice(0, 6);
@@ -35,6 +33,7 @@ const otherEvents = Object.values(eventDetails)
 
 <Layout pageTitle={data.title} backHref="/#work">
   <div style={`--event-color: ${themeColor};`}>
+
     <!-- Hero -->
     <section class="event-hero">
       <div class="event-hero-inner">
@@ -52,6 +51,7 @@ const otherEvents = Object.values(eventDetails)
             <span class="event-meta-chip"><strong>Duration</strong>{data.duration}</span>
             <span class="event-meta-chip"><strong>Team</strong>{data.team}</span>
             <span class="event-meta-chip"><strong>Recurs</strong>{data.recurrence}</span>
+            {data.firstHeld && <span class="event-meta-chip"><strong>Since</strong>{data.firstHeld}</span>}
           </div>
 
           <div class="event-hero-actions" data-animate="fade-up">
@@ -107,143 +107,108 @@ const otherEvents = Object.values(eventDetails)
       </div>
     </section>
 
-    <hr class="event-divider" />
+    <!-- Archives (tabbed by year) -->
+    {data.pastEditions && data.pastEditions.length > 0 && (
+      <>
+        <hr class="event-divider" />
+        <section class="event-section" id="event-archives">
+          <div class="event-section-header">
+            <p class="event-section-eyebrow" data-animate="fade-up">Archives</p>
+            <h2 class="event-section-title" data-animate="fade-up">
+              Past <span>editions</span>
+            </h2>
+          </div>
 
-    <!-- Tracks / Themes -->
-    {data.tracks.length > 0 && (
-      <section class="event-section">
-        <div class="event-section-header">
-          <p class="event-section-eyebrow" data-animate="fade-up">Tracks</p>
-          <h2 class="event-section-title" data-animate="fade-up">
-            What you can <span>build</span>
-          </h2>
-        </div>
-        <div class="event-track-grid">
-          {data.tracks.map((track) => (
-            <div class="event-track-card" data-animate="fade-up">
-              <h3 class="event-track-name">{track.name}</h3>
-              <p class="event-track-desc">{track.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-    )}
+          <div class="event-archive-tabs" role="tablist" data-animate="fade-up">
+            {data.pastEditions.map((ed, i) => (
+              <button
+                type="button"
+                role="tab"
+                class={`event-archive-tab${i === 0 ? " is-active" : ""}`}
+                data-archive-tab={ed.year}
+                aria-selected={i === 0 ? "true" : "false"}
+              >
+                {ed.year}
+              </button>
+            ))}
+          </div>
 
-    <hr class="event-divider" />
+          <div class="event-archive-panels">
+            {data.pastEditions.map((ed, i) => (
+              <article
+                class={`event-archive-panel${i === 0 ? " is-active" : ""}`}
+                data-archive-panel={ed.year}
+                role="tabpanel"
+                aria-hidden={i === 0 ? "false" : "true"}
+              >
+                <div class="event-archive-head">
+                  <span class="event-archive-year">{ed.year}</span>
+                  <h3 class="event-archive-edition">{ed.edition}</h3>
+                </div>
+                <p class="event-archive-desc">{ed.description}</p>
 
-    <!-- Schedule -->
-    {data.schedule.length > 0 && (
-      <section class="event-section-narrow">
-        <div class="event-section-header">
-          <p class="event-section-eyebrow" data-animate="fade-up">Flow</p>
-          <h2 class="event-section-title" data-animate="fade-up">
-            The <span>schedule</span>
-          </h2>
-        </div>
-        <div class="event-schedule">
-          {data.schedule.map((item) => (
-            <div class="event-schedule-item" data-animate="fade-up">
-              <div class="event-schedule-time">{item.time}</div>
-              <div class="event-schedule-content">
-                <div class="event-schedule-title">{item.title}</div>
-                {item.description && (
-                  <div class="event-schedule-desc">{item.description}</div>
+                {ed.links && ed.links.length > 0 && (
+                  <div class="event-archive-links">
+                    {ed.links.map((l) => (
+                      <a href={l.href} target="_blank" rel="noopener noreferrer" class="event-archive-link-chip">
+                        {l.label}
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M7 17L17 7M9 7h8v8"/>
+                        </svg>
+                      </a>
+                    ))}
+                  </div>
                 )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+
+                {ed.collectibles && ed.collectibles.length > 0 && (
+                  <div class="event-archive-sub-block">
+                    <span class="event-archive-sub-label">Collectibles</span>
+                    <div class="event-collectible-grid">
+                      {ed.collectibles.map((item) => (
+                        <div class="event-collectible-card">
+                          {item.image && (
+                            <div class="event-collectible-img-wrap">
+                              <img src={getAssetUrl(item.image)} alt={item.name} loading="lazy" decoding="async" />
+                            </div>
+                          )}
+                          <div class="event-collectible-name">{item.name}</div>
+                          {item.desc && <div class="event-collectible-desc">{item.desc}</div>}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {ed.sponsors && ed.sponsors.length > 0 && (
+                  <div class="event-archive-sub-block">
+                    <span class="event-archive-sub-label">Sponsors & Partners</span>
+                    <div class="event-archive-sponsor-grid">
+                      {ed.sponsors.map((s) => (
+                        <div class="event-sponsor-card">
+                          {s.logo && (
+                            <div class="event-sponsor-logo-wrap">
+                              <img src={getAssetUrl(s.logo)} alt={s.name} loading="lazy" decoding="async" />
+                            </div>
+                          )}
+                          <div class="event-sponsor-meta">
+                            <div class="event-sponsor-name">{s.name}</div>
+                            {s.tier && <div class="event-sponsor-tier">{s.tier}</div>}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
+      </>
     )}
 
     <hr class="event-divider" />
 
-    <!-- Prizes -->
-    {data.prizes.length > 0 && (
-      <section class="event-section">
-        <div class="event-section-header">
-          <p class="event-section-eyebrow" data-animate="fade-up">Rewards</p>
-          <h2 class="event-section-title" data-animate="fade-up">
-            Prizes & <span>recognition</span>
-          </h2>
-        </div>
-        <div class="event-prize-grid">
-          {data.prizes.map((prize) => (
-            <div class="event-prize-card" data-animate="fade-up">
-              <div class="event-prize-place">{prize.place}</div>
-              <div class="event-prize-value">{prize.value}</div>
-              {prize.note && <div class="event-prize-note">{prize.note}</div>}
-            </div>
-          ))}
-        </div>
-      </section>
-    )}
-
-    <hr class="event-divider" />
-
-    <!-- Perks -->
-    {data.perks.length > 0 && (
-      <section class="event-section-narrow">
-        <div class="event-section-header">
-          <p class="event-section-eyebrow" data-animate="fade-up">Included</p>
-          <h2 class="event-section-title" data-animate="fade-up">
-            What's <span>in it</span> for you
-          </h2>
-        </div>
-        <ul class="event-perks-list">
-          {data.perks.map((perk) => (
-            <li data-animate="fade-up">{perk}</li>
-          ))}
-        </ul>
-      </section>
-    )}
-
-    <hr class="event-divider" />
-
-    <!-- Highlights / Past editions -->
-    {data.highlights.length > 0 && (
-      <section class="event-section">
-        <div class="event-section-header">
-          <p class="event-section-eyebrow" data-animate="fade-up">Past Editions</p>
-          <h2 class="event-section-title" data-animate="fade-up">
-            From the <span>archives</span>
-          </h2>
-        </div>
-        <div class="event-highlight-grid">
-          {data.highlights.map((h) => (
-            <div class="event-highlight-card" data-animate="fade-up">
-              <div class="event-highlight-year">{h.year}</div>
-              <div class="event-highlight-title">{h.title}</div>
-              <div class="event-highlight-desc">{h.description}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-    )}
-
-    <hr class="event-divider" />
-
-    <!-- FAQ -->
-    {data.faq.length > 0 && (
-      <section class="event-section-narrow">
-        <div class="event-section-header">
-          <p class="event-section-eyebrow" data-animate="fade-up">Answers</p>
-          <h2 class="event-section-title" data-animate="fade-up">
-            Frequently asked
-          </h2>
-        </div>
-        <div class="event-faq-list">
-          {data.faq.map((f) => (
-            <details class="event-faq-item">
-              <summary class="event-faq-q">{f.q}</summary>
-              <div class="event-faq-a">{f.a}</div>
-            </details>
-          ))}
-        </div>
-      </section>
-    )}
-
-    <!-- CTA Banner -->
+    <!-- Be Part of Next Edition CTA -->
     <div class="event-cta-banner" data-animate="fade-up">
       <h3>Be part of the next {data.title}</h3>
       <p>Hosted by {data.organizedBy}{data.firstHeld ? ` · First held ${data.firstHeld}` : ""}</p>
@@ -258,6 +223,13 @@ const otherEvents = Object.values(eventDetails)
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
       </a>
+      {data.socials && data.socials.length > 0 && (
+        <div class="event-cta-socials">
+          {data.socials.map((s) => (
+            <a href={s.href} target="_blank" rel="noopener noreferrer" class="event-cta-social">{s.label}</a>
+          ))}
+        </div>
+      )}
     </div>
 
     <hr class="event-divider" />
@@ -298,7 +270,6 @@ const otherEvents = Object.values(eventDetails)
   gsap.registerPlugin(ScrollTrigger);
 
   document.addEventListener("DOMContentLoaded", () => {
-    // Hero entrance
     const heroEls = document.querySelectorAll('.event-hero [data-animate="fade-up"]');
     gsap.fromTo(heroEls,
       { opacity: 0, y: 30 },
@@ -311,12 +282,14 @@ const otherEvents = Object.values(eventDetails)
         { opacity: 0, scale: 0.9, rotate: -4 },
         { opacity: 1, scale: 1, rotate: 0, duration: 0.85, ease: "power3.out", delay: 0.4 }
       );
-      gsap.to(cassette.querySelector('.event-hero-cassette-img'), {
-        y: -14, duration: 2.8, ease: "sine.inOut", yoyo: true, repeat: -1,
-      });
+      const img = cassette.querySelector('.event-hero-cassette-img');
+      if (img) {
+        gsap.to(img, {
+          y: -14, duration: 2.8, ease: "sine.inOut", yoyo: true, repeat: -1,
+        });
+      }
     }
 
-    // Scroll reveal for everything else
     const scrollEls = document.querySelectorAll(
       '.event-stats [data-animate], .event-section [data-animate], .event-section-narrow [data-animate], .event-cta-banner[data-animate]'
     );
@@ -328,6 +301,25 @@ const otherEvents = Object.values(eventDetails)
           scrollTrigger: { trigger: el, start: "top 88%", once: true },
         }
       );
+    });
+
+    // Archive tabs
+    const tabs = document.querySelectorAll<HTMLButtonElement>("[data-archive-tab]");
+    const panels = document.querySelectorAll<HTMLElement>("[data-archive-panel]");
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const year = tab.dataset.archiveTab;
+        tabs.forEach((t) => {
+          const active = t.dataset.archiveTab === year;
+          t.classList.toggle("is-active", active);
+          t.setAttribute("aria-selected", active ? "true" : "false");
+        });
+        panels.forEach((p) => {
+          const active = p.dataset.archivePanel === year;
+          p.classList.toggle("is-active", active);
+          p.setAttribute("aria-hidden", active ? "false" : "true");
+        });
+      });
     });
   });
 </script>
