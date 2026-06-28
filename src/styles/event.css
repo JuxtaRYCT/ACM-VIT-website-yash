@@ -161,7 +161,7 @@
   width: 75%;
   height: 75%;
   border-radius: 50%;
-  background: var(--event-color, #F95F4A);
+  background: var(--event-color-secondary, var(--event-color, #F95F4A));
   opacity: 0.1;
   filter: blur(80px);
   pointer-events: none;
@@ -185,7 +185,7 @@
   font-family: 'PolySans Trial', sans-serif;
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 800;
-  color: var(--event-color, #FFFDD0);
+  color: var(--event-color-secondary, var(--event-color, #FFFDD0));
   letter-spacing: -0.02em;
 }
 
@@ -235,7 +235,7 @@
 }
 
 .event-section-title span {
-  color: var(--event-color, #F95F4A);
+  color: var(--event-color-secondary, var(--event-color, #F95F4A));
 }
 
 /* ── About Section ── */

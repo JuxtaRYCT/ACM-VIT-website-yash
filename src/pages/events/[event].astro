@@ -21,6 +21,7 @@ const data = eventDetails[event!];
 if (!data) return Astro.redirect("/");
 
 const themeColor = data.themeColor ?? getEventThemeHex(data.themeKey);
+const themeColorSecondary = data.themeColorSecondary ?? themeColor;
 
 const titleWords = data.title.split(" ");
 const titleMain = titleWords[0];
@@ -32,7 +33,7 @@ const otherEvents = Object.values(eventDetails)
 ---
 
 <Layout pageTitle={data.title} backHref="/#work">
-  <div style={`--event-color: ${themeColor};`}>
+  <div style={`--event-color: ${themeColor}; --event-color-secondary: ${themeColorSecondary};`}>
 
     <!-- Hero -->
     <section class="event-hero">
