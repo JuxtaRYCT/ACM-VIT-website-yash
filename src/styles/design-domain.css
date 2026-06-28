@@ -338,6 +338,27 @@
   filter: invert(1);
 }
 
+/* Monochrome silhouettes: render via CSS mask so brand color shows on hover */
+.dsg-tool-icon--mask {
+  display: inline-block;
+  filter: none;
+  background-color: rgba(254, 252, 217, 0.55);
+  -webkit-mask: var(--icon-url) center / contain no-repeat;
+  mask: var(--icon-url) center / contain no-repeat;
+  transition: background-color 0.35s ease, opacity 0.35s ease;
+}
+
+.dsg-tool-card:hover .dsg-tool-icon--mask {
+  filter: none;
+  background-color: var(--tool-color, #FFFDD0);
+}
+
+/* Mask icons don't need invert hack in dark mode */
+.dsg-tool-card[data-dark-icon] .dsg-tool-icon--mask,
+.dsg-tool-card[data-dark-icon]:hover .dsg-tool-icon--mask {
+  filter: none;
+}
+
 .dsg-tool-name {
   display: block;
   font-family: 'PolySans Mono', monospace;
@@ -851,6 +872,14 @@ html[data-theme="light"] .dsg-tool-card[data-dark-icon] .dsg-tool-icon {
 
 html[data-theme="light"] .dsg-tool-card[data-dark-icon]:hover .dsg-tool-icon {
   filter: none;
+}
+
+html[data-theme="light"] .dsg-tool-icon--mask {
+  background-color: rgba(26, 26, 26, 0.55);
+}
+
+html[data-theme="light"] .dsg-tool-card:hover .dsg-tool-icon--mask {
+  background-color: var(--tool-color, #1a1a1a);
 }
 
 html[data-theme="light"] .dsg-aoi-title {
