@@ -178,26 +178,70 @@
   let idx = 0;
   let seeking = false;
 
+  const STATE_KEY = 'acm-cassette-player-state';
+  type SavedState = { idx: number; time: number; paused: boolean; volume: number };
+
+  const readSavedState = (): SavedState | null => {
+    try {
+      const raw = sessionStorage.getItem(STATE_KEY);
+      if (!raw) return null;
+      const s = JSON.parse(raw);
+      if (typeof s?.idx !== 'number' || typeof s?.time !== 'number') return null;
+      return s;
+    } catch { return null; }
+  };
+
+  const writeSavedState = () => {
+    try {
+      const s: SavedState = {
+        idx,
+        time: audio.currentTime || 0,
+        paused: audio.paused,
+        volume: audio.volume,
+      };
+      sessionStorage.setItem(STATE_KEY, JSON.stringify(s));
+    } catch { /* ignore quota errors */ }
+  };
+
   const fmt = (s: number) => {
     if (!isFinite(s) || s < 0) return '0:00';
     return `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
   };
 
-  function loadTrack(i: number, autoplay = false) {
+  function loadTrack(i: number, autoplay = false, startTime = 0) {
     idx = ((i % PLAYLIST.length) + PLAYLIST.length) % PLAYLIST.length;
     const t = PLAYLIST[idx];
     audio.src = t.src;
     audio.load();
     svgTitle.textContent = t.title;
     svgArtist.textContent = t.artist;
-    timeL.textContent = '0:00';
+    timeL.textContent = fmt(startTime);
     timeR.textContent = '0:00';
     progBar.setAttribute('width', '0');
+    if (startTime > 0) {
+      const applyStart = () => {
+        try { audio.currentTime = startTime; } catch { /* ignore */ }
+      };
+      if (audio.readyState >= 1) applyStart();
+      else audio.addEventListener('loadedmetadata', applyStart, { once: true });
+    }
     if (autoplay) audio.play().catch(() => {});
   }
 
-  loadTrack(0);
-  audio.volume = 0.7;
+  const saved = readSavedState();
+  if (saved) {
+    audio.volume = Math.min(1, Math.max(0, saved.volume));
+    volFill.style.width = `${audio.volume * 100}%`;
+    loadTrack(saved.idx, !saved.paused, saved.time);
+  } else {
+    loadTrack(0);
+    audio.volume = 0.7;
+  }
+
+  // Persist state on every nav-out and periodically while playing
+  window.addEventListener('pagehide', writeSavedState);
+  window.addEventListener('beforeunload', writeSavedState);
+  setInterval(() => { if (!audio.paused) writeSavedState(); }, 1000);
 
   /* ─── Audio events ─── */
   audio.addEventListener('timeupdate', () => {
@@ -219,6 +263,7 @@
     cassette.classList.add('cp-playing');
     eq.classList.add('cp-eq-active');
     miniNote.style.display = 'none';
+    writeSavedState();
   });
 
   audio.addEventListener('pause', () => {
@@ -227,6 +272,7 @@
     cassette.classList.remove('cp-playing');
     eq.classList.remove('cp-eq-active');
     miniNote.style.display = '';
+    writeSavedState();
   });
 
   /* ─── SVG button clicks ─── */
