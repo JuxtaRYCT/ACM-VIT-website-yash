@@ -42,8 +42,8 @@ export interface EventDetail {
 const themeHex: Record<EventDetail["themeKey"], string> = {
   tech: "#9B51E0",
   cc: "#B4E35B",
-  design: "#FF7777",
-  research: "#9AF3FF",
+  design: "#FF0054",
+  research: "#135DE2",
   management: "#008080",
   brand: "#F95F4A",
 };

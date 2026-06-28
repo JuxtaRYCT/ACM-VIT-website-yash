@@ -37,8 +37,8 @@ const dropdowns: Record<string, DropdownItem[]> = {
   domains: [
     { title: "Tech", desc: "App Dev, Web, FOSS, DevOps", href: "/domains/tech", img: "/cassettes/Cassette_Tech.webp", color: "#9B51E0" },
     { title: "Competitive Coding", desc: "Codeforces, ICPC, C++", href: "/domains/cc", img: "/cassettes/Cassette_cc.webp", color: "#B4E35B" },
-    { title: "Design", desc: "UI/UX, Motion Graphics, 3D", href: "/domains/design", img: "/cassettes/Cassette_Design.webp", color: "#FF7777" },
-    { title: "Research", desc: "AI/ML, Blockchain, Quantum", href: "/domains/research", img: "/cassettes/Cassette_Research.webp", color: "#9AF3FF" },
+    { title: "Design", desc: "UI/UX, Motion Graphics, 3D", href: "/domains/design", img: "/cassettes/Cassette_Design.webp", color: "#FF0054" },
+    { title: "Research", desc: "AI/ML, Blockchain, Quantum", href: "/domains/research", img: "/cassettes/Cassette_Research.webp", color: "#135DE2" },
     { title: "Management", desc: "Operations & coordination", href: "/domains/management", img: "/cassettes/Cassette_Management.webp", color: "#008080" },
   ],
   events: [
@@ -1461,6 +1461,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
         }
         if (bubbleIcon) gsap.set(bubbleIcon, { opacity: 0 });
 
+        function playSubpageIntro() {
         const dropTl = gsap.timeline({ delay: 0.25 });
 
         // Phase 1: Circle drops in
@@ -1474,7 +1475,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
         .to(pill, { y: 0, duration: 0.15, ease: 'power2.out' })
         // Phase 4: Flip expand circle → pill
         .add(() => {
-          if (label) gsap.set(label, { opacity: 1, maxWidth: 200, padding: '0 4px' });
+          if (label) gsap.set(label, { opacity: 1, maxWidth: 300, padding: '0 4px' });
 
           const state = Flip.getState(pill);
           pill.classList.remove('pill-collapsed');
@@ -1539,6 +1540,13 @@ const dropdowns: Record<string, DropdownItem[]> = {
             },
           });
         });
+
+        } // end playSubpageIntro
+
+        // Wait for preloader to finish before playing subpage intro
+        window.addEventListener("preloader:done", () => {
+          setTimeout(playSubpageIntro, 500);
+        }, { once: true });
 
         // ── Subpage hover: pill only (not bubble), debounced ──
         let hoverTimer = null;

@@ -8,9 +8,9 @@ const items = [
   { name: "Board", slug: "board", accent: "#FF0054", hasWhite: true },
   { name: "App", slug: "app", accent: "#9B51E0", hasWhite: true },
   { name: "Competitive Coding", slug: "cc", accent: "#42CD9D", hasWhite: true },
-  { name: "Design", slug: "design", accent: "#FF7777", hasWhite: true },
+  { name: "Design", slug: "design", accent: "#FF0054", hasWhite: true },
   { name: "Management", slug: "management", accent: "#008080", hasWhite: true },
-  { name: "Research", slug: "research", accent: "#9AF3FF", hasWhite: true },
+  { name: "Research", slug: "research", accent: "#135DE2", hasWhite: true },
   { name: "Web", slug: "web", accent: "#B4E35B", hasWhite: true },
   { name: "Junior Core", slug: "JC", accent: "#00BFFF", hasWhite: false },
   { name: "Hoodie", slug: "hoodie", accent: "#B4E35B", hasWhite: false, isHoodie: true },
@@ -495,9 +495,9 @@ const items = [
     { name: "Board", slug: "board", accent: "#FF0054", hasWhite: true, isHoodie: false },
     { name: "App", slug: "app", accent: "#9B51E0", hasWhite: true, isHoodie: false },
     { name: "Competitive Coding", slug: "cc", accent: "#42CD9D", hasWhite: true, isHoodie: false },
-    { name: "Design", slug: "design", accent: "#FF7777", hasWhite: true, isHoodie: false },
+    { name: "Design", slug: "design", accent: "#FF0054", hasWhite: true, isHoodie: false },
     { name: "Management", slug: "management", accent: "#008080", hasWhite: true, isHoodie: false },
-    { name: "Research", slug: "research", accent: "#9AF3FF", hasWhite: true, isHoodie: false },
+    { name: "Research", slug: "research", accent: "#135DE2", hasWhite: true, isHoodie: false },
     { name: "Web", slug: "web", accent: "#B4E35B", hasWhite: true, isHoodie: false },
     { name: "Junior Core", slug: "JC", accent: "#00BFFF", hasWhite: false, isHoodie: false },
     { name: "Hoodie", slug: "hoodie", accent: "#B4E35B", hasWhite: false, isHoodie: true },
@@ -549,7 +549,8 @@ const items = [
   }
 
   // ── Entry Animation ──
-  const entry = gsap.timeline({ defaults: { ease: "power3.out" }, delay: 0.2 });
+  const entry = gsap.timeline({ defaults: { ease: "power3.out" }, paused: true });
+  window.addEventListener("preloader:done", () => entry.play(), { once: true });
 
   entry.fromTo("[data-vw-title]", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 });
   entry.fromTo("[data-vw-domain]", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.45 }, "-=0.25");

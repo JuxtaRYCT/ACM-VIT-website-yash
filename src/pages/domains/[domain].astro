@@ -15,8 +15,8 @@ const allDomains = domainsData?.items ?? [];
 const themeHexMap: Record<string, string> = {
   tech: "#9B51E0",
   competitive: "#B4E35B",
-  design: "#FF7777",
-  research: "#9AF3FF",
+  design: "#FF0054",
+  research: "#135DE2",
   management: "#008080",
 };
 
@@ -53,7 +53,6 @@ export function getStaticPaths() {
   return [
     { params: { domain: "tech" } },
     { params: { domain: "cc" } },
-    { params: { domain: "design" } },
     { params: { domain: "research" } },
     { params: { domain: "management" } },
   ];
@@ -80,7 +79,7 @@ const titleAccent = titleWords.length > 1 ? titleWords.slice(1).join(" ") : "";
       <div class="domain-hero-inner">
         <div class="domain-hero-text">
           <p class="domain-hero-eyebrow" data-animate="fade-up">
-            ACM-VIT &mdash; Domains
+            ACM-VIT - Domains
           </p>
           <h1 class="domain-hero-title" data-animate="fade-up">
             {titleMain}

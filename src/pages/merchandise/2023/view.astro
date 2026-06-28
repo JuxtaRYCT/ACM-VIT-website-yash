@@ -7,9 +7,9 @@ import Footer from "../../../layouts/Footer.astro";
 const items = [
   { name: "App", slug: "app", accent: "#6C8EFF" },
   { name: "Competitive Coding", slug: "cc", accent: "#42CD9D" },
-  { name: "Design", slug: "design", accent: "#FF7777" },
+  { name: "Design", slug: "design", accent: "#FF0054" },
   { name: "Management", slug: "management", accent: "#008080" },
-  { name: "Research", slug: "research", accent: "#9AF3FF" },
+  { name: "Research", slug: "research", accent: "#135DE2" },
   { name: "Web", slug: "web", accent: "#B4E35B" },
 ];
 ---
@@ -339,9 +339,9 @@ const items = [
   const ITEMS = [
     { name: "App", slug: "app", accent: "#6C8EFF" },
     { name: "Competitive Coding", slug: "cc", accent: "#42CD9D" },
-    { name: "Design", slug: "design", accent: "#FF7777" },
+    { name: "Design", slug: "design", accent: "#FF0054" },
     { name: "Management", slug: "management", accent: "#008080" },
-    { name: "Research", slug: "research", accent: "#9AF3FF" },
+    { name: "Research", slug: "research", accent: "#135DE2" },
     { name: "Web", slug: "web", accent: "#B4E35B" },
   ];
 
@@ -371,7 +371,8 @@ const items = [
     }
   }
 
-  const entry = gsap.timeline({ defaults: { ease: "power3.out" }, delay: 0.2 });
+  const entry = gsap.timeline({ defaults: { ease: "power3.out" }, paused: true });
+  window.addEventListener("preloader:done", () => entry.play(), { once: true });
   entry.fromTo("[data-vw-title]", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 });
   entry.fromTo("[data-vw-domain]", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.45 }, "-=0.25");
   entry.fromTo("[data-vw-sub]", { opacity: 0 }, { opacity: 1, duration: 0.4 }, "-=0.2");
