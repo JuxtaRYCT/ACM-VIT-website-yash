@@ -5,7 +5,7 @@ import "../styles/globals.css";
 import "../styles/calendar.css";
 import { getAssetUrl } from "../utils/cdn";
 import Footer from "../layouts/Footer.astro";
-import EventCalendar from "../components/calendar/EventCalendar";
+import EventCalendar from "../components/calendar/EventCalendar.astro";
 ---
 
 <Layout pageTitle="Calendar" backHref="/#events">
@@ -34,7 +34,7 @@ import EventCalendar from "../components/calendar/EventCalendar";
 
   <section class="calendar-body relative z-10 pb-24">
     <div class="max-w-[1400px] mx-auto px-4 md:px-10">
-      <EventCalendar client:only="react" />
+      <EventCalendar />
     </div>
   </section>
 
