@@ -17,57 +17,66 @@ function initAnimatedButtons() {
 
     let triggered = false;
 
-    ScrollTrigger.create({
+    const play = (immediate = false) => {
+      if (triggered) return;
+      triggered = true;
+
+      const run = () => {
+        const tl = gsap.timeline();
+
+        tl.fromTo(
+          btn,
+          { opacity: 0, y: 24, scale: 0.7 },
+          {
+            opacity: 1,
+            y: -6,
+            scale: 1.05,
+            duration: 0.35,
+            ease: "power2.out",
+          }
+        )
+          .to(btn, {
+            y: 0,
+            scale: 1,
+            duration: 0.25,
+            ease: "power3.out",
+          })
+          .add(() => {
+            const state = Flip.getState(btn);
+            btn.classList.add("is-expanded");
+
+            Flip.from(state, {
+              duration: 0.5,
+              ease: "power3.out",
+              onComplete: () => {
+                gsap.to(label, {
+                  opacity: 1,
+                  duration: 0.3,
+                  ease: "power2.out",
+                });
+              },
+            });
+          }, "-=0.08");
+      };
+
+      if (immediate) run();
+      else gsap.delayedCall(1, run);
+    };
+
+    const st = ScrollTrigger.create({
       trigger: anchor,
       start: "top 95%",
-      once: true,
-      onEnter: () => {
-        if (triggered) return;
-        triggered = true;
-
-        gsap.delayedCall(1, () => {
-          const tl = gsap.timeline();
-
-          // Phase 1: Circle rises from below with scale
-          tl.fromTo(
-            btn,
-            { opacity: 0, y: 24, scale: 0.7 },
-            {
-              opacity: 1,
-              y: -6,
-              scale: 1.05,
-              duration: 0.35,
-              ease: "power2.out",
-            }
-          )
-            // Phase 2: Settle bounce
-            .to(btn, {
-              y: 0,
-              scale: 1,
-              duration: 0.25,
-              ease: "power3.out",
-            })
-            // Phase 3: Expand pill from circle (like Apple)
-            .add(() => {
-              const state = Flip.getState(btn);
-              btn.classList.add("is-expanded");
-
-              Flip.from(state, {
-                duration: 0.5,
-                ease: "power3.out",
-                onComplete: () => {
-                  // Phase 4: Text fades in
-                  gsap.to(label, {
-                    opacity: 1,
-                    duration: 0.3,
-                    ease: "power2.out",
-                  });
-                },
-              });
-            }, "-=0.08");
-        });
-      },
+      onEnter: () => play(),
+      onEnterBack: () => play(),
     });
+
+    // Already past trigger at init (page jump / fast scroll / refresh mid-page)
+    const rect = anchor.getBoundingClientRect();
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    if (rect.top < vh * 0.95) {
+      play(true);
+      st.kill();
+    }
   });
 }
 

@@ -58,7 +58,7 @@
   font-family: 'PolySans Trial', sans-serif;
   font-size: clamp(0.9rem, 1.5vw, 1.1rem);
   line-height: 1.7;
-  color: rgba(254, 252, 217, 0.6);
+  color: color-mix(in srgb, var(--domain-color, #FF0054) 55%, #FFFDD0 45%);
   max-width: 600px;
   opacity: 0;
 }
@@ -228,7 +228,7 @@
   font-family: 'PolySans Trial', sans-serif;
   font-size: 1rem;
   line-height: 1.8;
-  color: rgba(254, 252, 217, 0.55);
+  color: color-mix(in srgb, var(--domain-color, #FF0054) 55%, #FFFDD0 45%);
 }
 
 /* ── Tools Grid ── */
@@ -314,7 +314,7 @@
               0 0 16px color-mix(in srgb, var(--domain-color, #FF0054) 12%, transparent);
 }
 
-/* Tool icons: white/light in dark mode, dark in light mode */
+/* Tool icons: monochrome at rest, original color on hover */
 .dsg-tool-icon {
   width: 32px;
   height: 32px;
@@ -329,7 +329,7 @@
   filter: none;
 }
 
-/* Dark logos need invert in dark mode to be visible */
+/* Dark logos need invert in dark mode to be visible at rest */
 .dsg-tool-card[data-dark-icon] .dsg-tool-icon {
   filter: grayscale(1) invert(1);
 }
@@ -339,6 +339,7 @@
 }
 
 .dsg-tool-name {
+  display: block;
   font-family: 'PolySans Mono', monospace;
   font-size: 0.6rem;
   letter-spacing: 0.04em;
@@ -348,8 +349,31 @@
   transition: color 0.35s ease;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
   max-width: 100%;
+  width: 100%;
+}
+
+.dsg-tool-name-inner {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* Static label uses ellipsis; marquee-enabled label drops ellipsis via inline-block child */
+.dsg-tool-name:not([data-overflow]) .dsg-tool-name-inner {
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+@keyframes dsg-tool-marquee {
+  0%, 12% { transform: translateX(0); }
+  50%, 62% { transform: translateX(var(--marquee-distance, 0)); }
+  100% { transform: translateX(0); }
+}
+
+.dsg-tool-card:hover .dsg-tool-name[data-overflow="1"] .dsg-tool-name-inner {
+  animation: dsg-tool-marquee var(--marquee-duration, 4s) ease-in-out infinite;
 }
 
 .dsg-tool-card:hover .dsg-tool-name {
@@ -453,7 +477,7 @@
   font-family: 'PolySans Trial', sans-serif;
   font-size: 0.95rem;
   line-height: 1.7;
-  color: rgba(254, 252, 217, 0.55);
+  color: color-mix(in srgb, var(--domain-color, #FF0054) 55%, #FFFDD0 45%);
   margin-bottom: 1.5rem;
 }
 
@@ -534,7 +558,9 @@
 
 .dsg-event-card img {
   width: 100%;
+  max-width: 220px;
   height: auto;
+  margin: 0 auto;
   border-radius: 12px;
 }
 
@@ -550,7 +576,7 @@
   font-family: 'PolySans Trial', sans-serif;
   font-size: 0.85rem;
   line-height: 1.5;
-  color: rgba(254, 252, 217, 0.5);
+  color: color-mix(in srgb, var(--domain-color, #FF0054) 55%, #FFFDD0 45%);
 }
 
 /* ── Footer Section ── */
@@ -570,7 +596,7 @@
   font-size: clamp(1.1rem, 2vw, 1.5rem);
   font-weight: 500;
   font-style: italic;
-  color: rgba(254, 252, 217, 0.5);
+  color: color-mix(in srgb, var(--domain-color, #FF0054) 60%, #FFFDD0 40%);
   letter-spacing: 0.02em;
   max-width: 600px;
 }
@@ -756,7 +782,7 @@ html[data-theme="light"] .dsg-hero-title {
 }
 
 html[data-theme="light"] .dsg-hero-desc {
-  color: rgba(26, 26, 26, 0.6);
+  color: color-mix(in srgb, var(--domain-color, #FF0054) 65%, #1a1a1a 35%);
 }
 
 html[data-theme="light"] .dsg-hero-cta {
@@ -772,7 +798,7 @@ html[data-theme="light"] .dsg-about-heading {
 }
 
 html[data-theme="light"] .dsg-about-body p {
-  color: rgba(26, 26, 26, 0.6);
+  color: color-mix(in srgb, var(--domain-color, #FF0054) 65%, #1a1a1a 35%);
 }
 
 html[data-theme="light"] .dsg-stat-value {
@@ -818,7 +844,7 @@ html[data-theme="light"] .dsg-tool-card:hover .dsg-tool-icon {
   opacity: 1;
 }
 
-/* Dark icons are naturally visible in light mode - no invert needed */
+/* Dark icons naturally visible on light bg - no invert at rest or hover */
 html[data-theme="light"] .dsg-tool-card[data-dark-icon] .dsg-tool-icon {
   filter: grayscale(1);
 }
@@ -841,7 +867,7 @@ html[data-theme="light"] .dsg-aoi-info h3 {
 }
 
 html[data-theme="light"] .dsg-aoi-info p {
-  color: rgba(26, 26, 26, 0.6);
+  color: color-mix(in srgb, var(--domain-color, #FF0054) 65%, #1a1a1a 35%);
 }
 
 html[data-theme="light"] .dsg-events-title {
@@ -858,11 +884,11 @@ html[data-theme="light"] .dsg-event-card h4 {
 }
 
 html[data-theme="light"] .dsg-event-card p {
-  color: rgba(26, 26, 26, 0.5);
+  color: color-mix(in srgb, var(--domain-color, #FF0054) 65%, #1a1a1a 35%);
 }
 
 html[data-theme="light"] .dsg-footer-msg {
-  color: rgba(26, 26, 26, 0.5);
+  color: color-mix(in srgb, var(--domain-color, #FF0054) 65%, #1a1a1a 35%);
 }
 
 html[data-theme="light"] .dsg-back-link {

@@ -112,7 +112,6 @@ export const designDescription = [
 
 export const designStats = [
   { value: "5", label: "AOIs" },
-  { value: "27+", label: "Tools" },
   { value: "100+", label: "Designs Created" },
 ];
 

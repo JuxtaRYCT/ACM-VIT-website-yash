@@ -8,59 +8,56 @@ import "../../styles/design-domain.css";
 import { getAssetUrl } from "../../utils/cdn";
 import ToolCard from "../../components/ToolCard.astro";
 import {
-  DESIGN_THEME_COLOR,
-  designTools,
-  designAOIs,
-  designDescription,
-  designStats,
-  designFooterMessage,
-} from "../../data/designDomainData";
+  RESEARCH_THEME_COLOR,
+  researchTools,
+  researchAOIs,
+  researchDescription,
+  researchStats,
+  researchFooterMessage,
+} from "../../data/researchDomainData";
 
-const designEventsCustom = [
+const researchEventsCustom = [
   {
     slug: "reverse-coding",
     title: "Reverse Coding",
     cassette: "/events/reverse-coding-cassette.svg",
-    desc: "Every year, Reverse Coding has a new theme related to art and pop culture - all designed by the design domain.",
+    desc: "Research spends months building Reverse Coding's problem set, writing test cases, stress testing against AI agents, and seeding questions into the contest portal.",
+    external: false,
   },
   {
     slug: "cryptic-hunt",
     title: "Cryptic Hunt",
     cassette: "/events/cryptic-hunt-cassette.svg",
-    desc: "One of India's largest scavenger hunts, built around our signature owls. Every year the owl theme changes - and the design domain brings it to life.",
+    desc: "One of India's largest scavenger hunts. Research crafts the puzzles, calibrates difficulty, and holds question quality through the run of the event.",
+    external: false,
   },
   {
-    slug: "code2create",
-    title: "Code2Create",
-    cassette: "/events/c2c-cassette.webp",
-    desc: "ACM-VIT's flagship hackathon. Every piece of design work for C2C is crafted entirely by ACM members.",
-  },
-  {
-    slug: null,
-    title: "Every Event",
-    cassette: "/cassettes/Cassette_Design.svg",
-    desc: "The design domain works on the designs for every ACM-VIT event. Check out more of our work on ACM-VIT's Instagram.",
+    slug: "neural-hack",
+    title: "Neural Hack",
+    cassette: "/events/neural-hack-cassette.svg",
+    desc: "ACM-VIT's flagship AI/ML hackathon, run by the Research domain. Teams build end-to-end ML systems under the clock, judged on technical depth and applied impact.",
+    external: true,
+    href: "https://nh.acmvit.in/",
   },
 ];
 
-const pyramidSizes = [3, 5, 8, 11];
-const pyramidRows: (typeof designTools)[] = [];
+const pyramidSizes = [4, 9, 12, 15];
+const pyramidRows: (typeof researchTools)[] = [];
 let offset = 0;
 for (const size of pyramidSizes) {
-  pyramidRows.push(designTools.slice(offset, offset + size));
+  pyramidRows.push(researchTools.slice(offset, offset + size));
   offset += size;
 }
 ---
 
-<Layout pageTitle="Design" backHref="/#domains">
-  <div style={`--domain-color: ${DESIGN_THEME_COLOR};`}>
+<Layout pageTitle="Research" backHref="/#domains">
+  <div style={`--domain-color: ${RESEARCH_THEME_COLOR};`}>
 
-    <!-- Hero: illustration on top, then title, desc, stats -->
     <section class="dsg-hero">
       <div class="dsg-hero-centered">
         <img
-          src={getAssetUrl("/aois/design/cassettes/design-illustration.png")}
-          alt="Design Illustration"
+          src={getAssetUrl("/aois/research/cassettes/research-illustration.png")}
+          alt="Research Illustration"
           class="dsg-hero-illustration"
           data-dsg-animate="fade-up"
           loading="eager"
@@ -70,13 +67,13 @@ for (const size of pyramidSizes) {
           ACM-VIT - Domains
         </p>
         <h1 class="dsg-hero-title" data-dsg-animate="fade-up">
-          DESIGN
+          RESEARCH
         </h1>
         <p class="dsg-hero-desc" data-dsg-animate="fade-up">
-          {designDescription[0]}
+          {researchDescription[0]}
         </p>
         <div data-dsg-animate="fade-up">
-          <a href="#design-aois" class="dsg-hero-cta">
+          <a href="#research-aois" class="dsg-hero-cta">
             Explore AOIs
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -86,9 +83,8 @@ for (const size of pyramidSizes) {
       </div>
     </section>
 
-    <!-- Stats -->
     <section class="dsg-stats">
-      {designStats.map((stat) => (
+      {researchStats.map((stat) => (
         <div class="dsg-stat" data-dsg-animate="fade-up">
           <div class="dsg-stat-value">{stat.value}</div>
           <div class="dsg-stat-label">{stat.label}</div>
@@ -96,50 +92,49 @@ for (const size of pyramidSizes) {
       ))}
     </section>
 
-    <!-- Description -->
     <section class="dsg-about">
       <div class="dsg-about-inner">
         <h2 class="dsg-about-heading" data-dsg-animate="fade-up">
           What we <span>do</span>
         </h2>
         <div class="dsg-about-body" data-dsg-animate="fade-up">
-          {designDescription.map((p) => <p>{p}</p>)}
+          {researchDescription.map((p) => <p>{p}</p>)}
         </div>
       </div>
     </section>
 
     <hr class="dsg-divider" />
 
-    <!-- Tools Grid -->
     <section class="dsg-tools">
       <div class="dsg-tools-header">
         <p class="dsg-tools-label" data-dsg-animate="fade-up">Our Arsenal</p>
         <h2 class="dsg-tools-title" data-dsg-animate="fade-up">Tools We Use</h2>
       </div>
       <div class="dsg-tools-pyramid">
-        {pyramidRows.map((row, rowIdx) => (
-          <div class="dsg-tools-pyramid-row">
-            {row.map((tool, i) => {
-              const globalIdx = [0, 3, 8, 16][rowIdx] + i;
-              return <ToolCard tool={tool} index={globalIdx} />;
-            })}
-          </div>
-        ))}
+        {pyramidRows.map((row, rowIdx) => {
+          const startIdx = pyramidSizes.slice(0, rowIdx).reduce((a, b) => a + b, 0);
+          return (
+            <div class="dsg-tools-pyramid-row">
+              {row.map((tool, i) => (
+                <ToolCard tool={tool} index={startIdx + i} />
+              ))}
+            </div>
+          );
+        })}
       </div>
     </section>
 
     <hr class="dsg-divider" />
 
-    <!-- AOI Showcase -->
-    <section class="dsg-aoi" id="design-aois">
+    <section class="dsg-aoi" id="research-aois">
       <div class="dsg-aoi-header">
         <p class="dsg-aoi-label" data-dsg-animate="fade-up">Explore</p>
         <h2 class="dsg-aoi-title" data-dsg-animate="fade-up">Areas of Interest</h2>
       </div>
       <div class="dsg-aoi-list">
-        {designAOIs.map((aoi) => (
+        {researchAOIs.map((aoi) => (
           <a
-            href={`/domains/design/${aoi.key}`}
+            href={`/domains/research/${aoi.key}`}
             class="dsg-aoi-item"
             data-dsg-animate="fade-up"
           >
@@ -163,16 +158,17 @@ for (const size of pyramidSizes) {
 
     <hr class="dsg-divider" />
 
-    <!-- Design Events -->
     <section class="dsg-events">
       <div class="dsg-events-header">
         <p class="dsg-events-label" data-dsg-animate="fade-up">Events</p>
-        <h2 class="dsg-events-title" data-dsg-animate="fade-up">Design in Action</h2>
+        <h2 class="dsg-events-title" data-dsg-animate="fade-up">Research in Action</h2>
       </div>
       <div class="dsg-events-row">
-        {designEventsCustom.map((event) => (
-          event.slug ? (
-            <a href={`/events/${event.slug}`} class="dsg-event-card" data-dsg-animate="fade-up">
+        {researchEventsCustom.map((event) => {
+          const href = event.external ? (event as any).href : `/events/${event.slug}`;
+          const extra = event.external ? { target: "_blank", rel: "noopener noreferrer" } : {};
+          return (
+            <a href={href} {...extra} class="dsg-event-card" data-dsg-animate="fade-up">
               <img
                 src={getAssetUrl(event.cassette)}
                 alt={event.title}
@@ -182,26 +178,14 @@ for (const size of pyramidSizes) {
               <h4>{event.title}</h4>
               <p>{event.desc}</p>
             </a>
-          ) : (
-            <a href="https://www.instagram.com/acmvit/" target="_blank" rel="noopener noreferrer" class="dsg-event-card" data-dsg-animate="fade-up">
-              <img
-                src={getAssetUrl(event.cassette)}
-                alt={event.title}
-                loading="lazy"
-                decoding="async"
-              />
-              <h4>{event.title}</h4>
-              <p>{event.desc}</p>
-            </a>
-          )
-        ))}
+          );
+        })}
       </div>
     </section>
 
-    <!-- Footer with cassette fan -->
     <section class="dsg-footer-section">
       <div class="dsg-cassette-fan" data-dsg-fan>
-        {designAOIs.map((aoi, i) => (
+        {researchAOIs.slice(0, 5).map((aoi, i) => (
           <div class="dsg-fan-card" style={`--fan-index: ${i}`} data-fan-card>
             <img
               src={getAssetUrl(aoi.cassetteSrc)}
@@ -212,7 +196,7 @@ for (const size of pyramidSizes) {
           </div>
         ))}
       </div>
-      <p class="dsg-footer-msg">{designFooterMessage}</p>
+      <p class="dsg-footer-msg">{researchFooterMessage}</p>
       <a href="/" class="dsg-back-link">
         <span aria-hidden="true">&larr;</span>
         Back to Home
@@ -228,25 +212,20 @@ for (const size of pyramidSizes) {
   import { ScrollTrigger } from "gsap/ScrollTrigger";
   gsap.registerPlugin(ScrollTrigger);
 
-  // Entry timeline - paused until preloader finishes
   const entry = gsap.timeline({ defaults: { ease: "power3.out" }, paused: true });
 
-  // Hero centered elements fadeUp
   const heroEls = document.querySelectorAll('.dsg-hero-centered [data-dsg-animate="fade-up"]');
   entry.fromTo(heroEls,
     { opacity: 0, y: 30 },
     { opacity: 1, y: 0, duration: 0.6, stagger: 0.12 }
   );
 
-  // Play after preloader
   window.addEventListener("preloader:done", () => entry.play(), { once: true });
 
-  // Footer cassette fan - scroll triggered
   const fanCards = document.querySelectorAll("[data-fan-card]");
   const fanSection = document.querySelector(".dsg-cassette-fan");
 
   if (fanSection && fanCards.length > 0) {
-    // 5 cards fanned: far-left, left, center, right, far-right
     const fanAngles = [-30, -15, 0, 15, 30];
     const fanOffsetsX = [-280, -140, 0, 140, 280];
     const fanOffsetsY = [40, 10, -10, 10, 40];
@@ -263,7 +242,6 @@ for (const size of pyramidSizes) {
       },
     });
 
-    // Fan cards spread out with stagger
     fanCards.forEach((card, i) => {
       fanTl.to(card, {
         opacity: 1,
@@ -277,7 +255,6 @@ for (const size of pyramidSizes) {
     });
   }
 
-  // Scroll-triggered animations for sections below hero
   const scrollEls = document.querySelectorAll(
     '.dsg-about [data-dsg-animate], .dsg-tools [data-dsg-animate], .dsg-aoi [data-dsg-animate], .dsg-events [data-dsg-animate], .dsg-stats [data-dsg-animate], .dsg-footer-section [data-dsg-animate]'
   );
@@ -296,7 +273,6 @@ for (const size of pyramidSizes) {
     );
   });
 
-  // AOI card hover tilt
   document.querySelectorAll('.dsg-aoi-item').forEach((card) => {
     card.addEventListener('mousemove', (e: Event) => {
       const me = e as MouseEvent;

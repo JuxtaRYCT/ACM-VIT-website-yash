@@ -8,36 +8,66 @@ import "../../../styles/design-domain.css";
 import { getAssetUrl } from "../../../utils/cdn";
 import ToolCard from "../../../components/ToolCard.astro";
 import {
-  DESIGN_THEME_COLOR,
-  designAOIs,
-  designTools,
-  designFooterMessage,
-} from "../../../data/designDomainData";
+  RESEARCH_THEME_COLOR,
+  researchAOIs,
+  researchTools,
+  researchFooterMessage,
+} from "../../../data/researchDomainData";
 
 export function getStaticPaths() {
-  return designAOIs.map((aoi) => ({ params: { aoi: aoi.key } }));
+  return researchAOIs.map((aoi) => ({ params: { aoi: aoi.key } }));
 }
 
 const { aoi: aoiSlug } = Astro.params;
-const aoiData = designAOIs.find((a) => a.key === aoiSlug);
-if (!aoiData) return Astro.redirect("/domains/design");
+const aoiData = researchAOIs.find((a) => a.key === aoiSlug);
+if (!aoiData) return Astro.redirect("/domains/research");
 
 const aoiTools = aoiData.tools
-  .map((slug) => designTools.find((t) => t.slug === slug))
-  .filter((t): t is (typeof designTools)[number] => Boolean(t));
+  .map((slug) => researchTools.find((t) => t.slug === slug))
+  .filter((t): t is (typeof researchTools)[number] => Boolean(t));
 
-const otherAOIs = designAOIs.filter((a) => a.key !== aoiSlug);
+const otherAOIs = researchAOIs.filter((a) => a.key !== aoiSlug);
+
+interface SpotlightCard {
+  href: string;
+  title: string;
+  cassette: string;
+  desc: string;
+  external: boolean;
+}
+
+const spotlightByAOI: Record<string, SpotlightCard[]> = {
+  aiml: [
+    {
+      href: "https://nh.acmvit.in/",
+      title: "Neural Hack",
+      cassette: "/events/neural-hack-cassette.svg",
+      desc: "ACM-VIT's flagship AI/ML hackathon. Teams build end-to-end ML systems under the clock, judged on technical depth and applied impact.",
+      external: true,
+    },
+  ],
+  cybersecurity: [
+    {
+      href: "/z0d1ak",
+      title: "z0d1ak",
+      cassette: "/aois/research/cassettes/cybersecurity.png",
+      desc: "ACM-VIT's competitive CTF team. Currently India's number one ranked squad and seventh in the world, with members across web, pwn, crypto, and reversing.",
+      external: false,
+    },
+  ],
+};
+
+const spotlight = spotlightByAOI[aoiData.key] ?? [];
 ---
 
-<Layout pageTitle={aoiData.title} backHref="/domains/design">
-  <div style={`--domain-color: ${DESIGN_THEME_COLOR};`}>
+<Layout pageTitle={aoiData.title} backHref="/domains/research">
+  <div style={`--domain-color: ${RESEARCH_THEME_COLOR};`}>
 
-    <!-- Hero -->
     <section class="dsg-hero" style="min-height: 70vh;">
       <div class="dsg-hero-inner">
         <div class="dsg-hero-text">
           <p class="dsg-hero-eyebrow" data-dsg-animate="fade-up">
-            Design - Area of Interest
+            Research - Area of Interest
           </p>
           <h1 class="dsg-hero-title" data-dsg-animate="fade-up" style="font-size: clamp(3rem, 8vw, 7rem);">
             {aoiData.title}
@@ -60,7 +90,6 @@ const otherAOIs = designAOIs.filter((a) => a.key !== aoiSlug);
       </div>
     </section>
 
-    <!-- Description -->
     <section class="dsg-about">
       <div class="dsg-about-inner">
         <h2 class="dsg-about-heading" data-dsg-animate="fade-up">
@@ -74,7 +103,6 @@ const otherAOIs = designAOIs.filter((a) => a.key !== aoiSlug);
 
     <hr class="dsg-divider" />
 
-    <!-- Tools used in this AOI -->
     {aoiTools.length > 0 && (
       <section class="dsg-tools">
         <div class="dsg-tools-header">
@@ -89,18 +117,48 @@ const otherAOIs = designAOIs.filter((a) => a.key !== aoiSlug);
       </section>
     )}
 
+    {spotlight.length > 0 && (
+      <>
+        <hr class="dsg-divider" />
+        <section class="dsg-events">
+          <div class="dsg-events-header">
+            <p class="dsg-events-label" data-dsg-animate="fade-up">Spotlight</p>
+            <h2 class="dsg-events-title" data-dsg-animate="fade-up">
+              {aoiData.key === "cybersecurity" ? "Our CTF Team" : "Our Event"}
+            </h2>
+          </div>
+          <div class="dsg-events-row">
+            {spotlight.map((item) => (
+              item.external ? (
+                <a href={item.href} target="_blank" rel="noopener noreferrer" class="dsg-event-card" data-dsg-animate="fade-up">
+                  <img src={getAssetUrl(item.cassette)} alt={item.title} loading="lazy" decoding="async" />
+                  <h4>{item.title}</h4>
+                  <p>{item.desc}</p>
+                </a>
+              ) : (
+                <a href={item.href} class="dsg-event-card" data-dsg-animate="fade-up">
+                  <img src={getAssetUrl(item.cassette)} alt={item.title} loading="lazy" decoding="async" />
+                  <h4>{item.title}</h4>
+                  <p>{item.desc}</p>
+                </a>
+              )
+            ))}
+          </div>
+        </section>
+      </>
+    )}
+
     <hr class="dsg-divider" />
 
-    <!-- Other AOIs -->
     {otherAOIs.length > 0 && (
       <section class="dsg-events">
         <div class="dsg-events-header">
-          <p class="dsg-events-label" data-dsg-animate="fade-up">More from Design</p>
+          <p class="dsg-events-label" data-dsg-animate="fade-up">More from Research</p>
           <h2 class="dsg-events-title" data-dsg-animate="fade-up">Other AOIs</h2>
         </div>
         <div class="dsg-events-row">
           {otherAOIs.map((aoi) => (
-            <a href={`/domains/design/${aoi.key}`} class="dsg-event-card" data-dsg-animate="fade-up">
+            <a href={`/domains/research/${aoi.key}`} class="dsg-event-card" data-dsg-animate="fade-up">
               <img
                 src={getAssetUrl(aoi.cassetteSrc)}
                 alt={aoi.title}
@@ -115,10 +173,9 @@ const otherAOIs = designAOIs.filter((a) => a.key !== aoiSlug);
       </section>
     )}
 
-    <!-- Footer with cassette fan -->
     <section class="dsg-footer-section">
       <div class="dsg-cassette-fan" data-dsg-fan>
-        {otherAOIs.map((aoi, i) => (
+        {otherAOIs.slice(0, 5).map((aoi, i) => (
           <div class="dsg-fan-card" style={`--fan-index: ${i}`} data-fan-card>
             <img
               src={getAssetUrl(aoi.cassetteSrc)}
@@ -129,10 +186,10 @@ const otherAOIs = designAOIs.filter((a) => a.key !== aoiSlug);
           </div>
         ))}
       </div>
-      <p class="dsg-footer-msg">{designFooterMessage}</p>
-      <a href="/domains/design" class="dsg-back-link">
+      <p class="dsg-footer-msg">{researchFooterMessage}</p>
+      <a href="/domains/research" class="dsg-back-link">
         <span aria-hidden="true">&larr;</span>
-        Back to Design
+        Back to Research
       </a>
     </section>
   </div>
@@ -147,14 +204,12 @@ const otherAOIs = designAOIs.filter((a) => a.key !== aoiSlug);
 
   const entry = gsap.timeline({ defaults: { ease: "power3.out" }, paused: true });
 
-  // Hero text
   const heroEls = document.querySelectorAll('.dsg-hero-text [data-dsg-animate="fade-up"]');
   entry.fromTo(heroEls,
     { opacity: 0, y: 30 },
     { opacity: 1, y: 0, duration: 0.6, stagger: 0.12 }
   );
 
-  // Cassette
   const fan = document.querySelector('.dsg-cassette-fan[data-dsg-animate]');
   if (fan) {
     entry.fromTo(fan,
@@ -164,7 +219,6 @@ const otherAOIs = designAOIs.filter((a) => a.key !== aoiSlug);
     );
   }
 
-  // Float
   const centerImg = document.querySelector('.dsg-fan-center img');
   if (centerImg) {
     gsap.to(centerImg, {
@@ -174,7 +228,6 @@ const otherAOIs = designAOIs.filter((a) => a.key !== aoiSlug);
 
   window.addEventListener("preloader:done", () => entry.play(), { once: true });
 
-  // Scroll reveals
   const scrollEls = document.querySelectorAll(
     '.dsg-about [data-dsg-animate], .dsg-tools [data-dsg-animate], .dsg-events [data-dsg-animate]'
   );
@@ -189,15 +242,13 @@ const otherAOIs = designAOIs.filter((a) => a.key !== aoiSlug);
     );
   });
 
-  // Footer cassette fan - scroll triggered
   const fanCards = document.querySelectorAll("[data-fan-card]");
   const fanSection = document.querySelector(".dsg-cassette-fan");
 
   if (fanSection && fanCards.length > 0) {
-    // 4 cards: left, near-left, near-right, right
-    const fanAngles = [-25, -10, 10, 25];
-    const fanOffsetsX = [-220, -80, 80, 220];
-    const fanOffsetsY = [30, 5, 5, 30];
+    const fanAngles = [-25, -10, 10, 25, 35];
+    const fanOffsetsX = [-220, -80, 80, 220, 320];
+    const fanOffsetsY = [30, 5, 5, 30, 50];
 
     fanCards.forEach((card) => {
       gsap.set(card, { opacity: 0, rotation: 0, x: 0, y: 40, scale: 0.5 });
