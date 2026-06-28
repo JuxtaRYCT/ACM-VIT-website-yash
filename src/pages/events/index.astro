@@ -20,29 +20,25 @@ const eventOrder = [
   "inspiher",
   "neural-hack",
   "forktober",
+  "be-the-builder",
+  "casa",
+  "deepfake",
+  "dr-peter-robinson",
+  "dr-federica-sarro",
+  "kickstart-learn",
+  "sdg-workshops",
 ];
 
 const events = eventOrder
   .map((slug) => eventDetails[slug])
   .filter(Boolean);
-
-// Events without detail pages — cassette-only cards
-const extraEvents = [
-  { title: "Be The Builder", image: "/events/bethebuilder-cassette.png" },
-  { title: "CASA", image: "/events/casa-cassette.png" },
-  { title: "Deepfake: The Digital Doppelganger", image: "/events/deepfake-cassette.png" },
-  { title: "Dr. Federica Sarro — Speaker Session", image: "/events/federica-sarro-cassette.png" },
-  { title: "Kickstart Learn", image: "/events/kickstart-learn-cassette.png" },
-  { title: "Peter Robinson — Speaker Session", image: "/events/peter-robinson-cassette.png" },
-  { title: "SDG Workshops", image: "/events/sdg-cassette.png" },
-];
 ---
 
 <Layout pageTitle="Events" backHref="/#work">
   <section class="events-page">
     <div class="events-page__header">
       <p class="events-page__subtitle" data-animate="fade-up">
-        Where tech meets energy — ACM-VIT events are more than just gatherings, they're launches for ideas, collabs, and the next big things.
+        Where tech meets energy - ACM-VIT events are more than just gatherings, they're launches for ideas, collabs, and the next big things.
       </p>
     </div>
 
@@ -61,20 +57,6 @@ const extraEvents = [
             class="events-page__cassette"
           />
         </a>
-      ))}
-      {extraEvents.map((ev) => (
-        <div
-          class="events-page__card"
-          data-animate="fade-up"
-        >
-          <img
-            src={getAssetUrl(ev.image)}
-            alt={ev.title}
-            loading="lazy"
-            decoding="async"
-            class="events-page__cassette"
-          />
-        </div>
       ))}
     </div>
   </section>

@@ -108,6 +108,53 @@ const otherEvents = Object.values(eventDetails)
       </div>
     </section>
 
+    <!-- Speaker Bio (if speaker session) -->
+    {data.speaker && (
+      <>
+        <hr class="event-divider" />
+        <section class="event-section-narrow" id="event-speaker">
+          <div class="event-section-header">
+            <p class="event-section-eyebrow" data-animate="fade-up">Speaker</p>
+            <h2 class="event-section-title" data-animate="fade-up">
+              Who is <span>{data.speaker.name}</span>?
+            </h2>
+          </div>
+          <div class="event-speaker-block" data-animate="fade-up">
+            <div class="event-speaker-photo-wrap">
+              <img
+                src={getAssetUrl(data.speaker.image)}
+                alt={data.speaker.name}
+                class="event-speaker-photo"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="event-speaker-info">
+              <h3 class="event-speaker-name">{data.speaker.name}</h3>
+              <p class="event-speaker-role">{data.speaker.role} · {data.speaker.institution}</p>
+              <div class="event-speaker-bio">
+                {data.speaker.bio.map((para) => <p>{para}</p>)}
+              </div>
+              {data.speaker.profileUrl && (
+                <a
+                  href={data.speaker.profileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="event-archive-link-chip"
+                  style="margin-top: 1rem; display: inline-flex;"
+                >
+                  View Profile
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 17L17 7M9 7h8v8"/>
+                  </svg>
+                </a>
+              )}
+            </div>
+          </div>
+        </section>
+      </>
+    )}
+
     <!-- Archives (tabbed by year) -->
     {data.pastEditions && data.pastEditions.length > 0 && (
       <>

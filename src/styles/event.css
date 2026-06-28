@@ -771,6 +771,21 @@ html[data-theme="light"] .event-cta-secondary {
   border-color: rgba(0, 0, 0, 0.18);
 }
 
+/* Darken light event colors (e.g. #F3ED99) for readability on white backgrounds */
+html[data-theme="light"] .event-hero-eyebrow,
+html[data-theme="light"] .event-hero-title span,
+html[data-theme="light"] .event-section-title span,
+html[data-theme="light"] .event-section-eyebrow,
+html[data-theme="light"] .event-stat-value,
+html[data-theme="light"] .event-archive-link-chip,
+html[data-theme="light"] .event-archive-year {
+  color: color-mix(in srgb, var(--event-color, #F95F4A) 70%, #000);
+}
+
+html[data-theme="light"] .event-cta-primary {
+  background: color-mix(in srgb, var(--event-color, #F95F4A) 80%, #000);
+}
+
 /* ── Archives ── */
 .event-archive-list {
   display: grid;
@@ -1269,4 +1284,75 @@ html[data-theme="light"] .event-archive-sub-block {
 
 html[data-theme="light"] .event-owls-caption {
   color: rgba(0, 0, 0, 0.4);
+}
+
+/* ── Speaker Bio ── */
+.event-speaker-block {
+  display: flex;
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+
+.event-speaker-photo-wrap {
+  flex-shrink: 0;
+  width: 180px;
+  height: 180px;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 2px solid color-mix(in srgb, var(--event-color, #F95F4A) 30%, transparent);
+}
+
+.event-speaker-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.event-speaker-name {
+  font-family: 'PolySans Trial', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #FFFDD0;
+  margin-bottom: 0.25rem;
+}
+
+.event-speaker-role {
+  font-family: 'PolySans Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--event-color, #F95F4A);
+  letter-spacing: 0.02em;
+  margin-bottom: 1rem;
+}
+
+.event-speaker-bio p {
+  font-family: 'PolySans Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.75rem;
+}
+
+html[data-theme="light"] .event-speaker-name {
+  color: #1a1a1a;
+}
+
+html[data-theme="light"] .event-speaker-bio p {
+  color: rgba(26, 26, 26, 0.65);
+}
+
+html[data-theme="light"] .event-speaker-photo-wrap {
+  border-color: color-mix(in srgb, var(--event-color, #F95F4A) 40%, transparent);
+}
+
+@media (max-width: 600px) {
+  .event-speaker-block {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .event-speaker-photo-wrap {
+    width: 140px;
+    height: 140px;
+  }
 }
