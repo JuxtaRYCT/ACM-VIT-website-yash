@@ -63,7 +63,7 @@ function EventDetailCard({ event, onClose }: { event: CalendarEvent; onClose: ()
           </svg>
         </button>
 
-        {/* Full cassette frame — single composed SVG with real proportions */}
+        {/* Full cassette frame - single composed SVG with real proportions */}
         <svg className="cal-cassette-frame" viewBox="0 0 576 353" fill="none">
           {/* BG body */}
           <rect x="0.8" y="0.8" width="574.06" height="351.26" rx="24.25" fill="#FCE6D2" stroke="#202020" strokeWidth="1.6"/>
@@ -74,20 +74,20 @@ function EventDetailCard({ event, onClose }: { event: CalendarEvent; onClose: ()
           <g transform="translate(542.2,14)"><path d={SCREW_D} fill="#202020"/></g>
           <g transform="translate(542.2,319.9)"><path d={SCREW_D} fill="#202020"/></g>
 
-          {/* Cover fill — dark label area with beveled top corners */}
+          {/* Cover fill - dark label area with beveled top corners */}
           <g transform="translate(32,14)">
             <path d="M479 0.8H31C26.5 0.8 22.2 2.6 19 5.8L5.5 19.2C2.3 22.4 0.5 26.8 0.5 31.3V209C0.5 218.4 8.1 226 17.5 226H492.5C501.9 226 509.5 218.4 509.5 209V31.3C509.5 26.8 507.7 22.4 504.5 19.2L491 5.8C487.8 2.6 483.5 0.8 479 0.8Z" fill="#261D1E" stroke="#202020" strokeWidth="1.6"/>
           </g>
 
-          {/* Tape path lines — connecting label area to bottom reels */}
+          {/* Tape path lines - connecting label area to bottom reels */}
           <path d="M67.4 145.5C61.9 189.6 40.2 294.7 45.8 328.6" stroke="#202020" strokeWidth="0.53"/>
           <path d="M62.4 342.5C99.4 343 509.3 342.5 513.3 342.5" stroke="#202020" strokeWidth="0.53"/>
           <path d="M436.3 138.1C455.1 166 515.9 277.8 529.5 321.4" stroke="#202020" strokeWidth="0.53"/>
 
-          {/* Bump trapezoid — bottom frame */}
+          {/* Bump trapezoid - bottom frame */}
           <path d="M129.7 273.2H450.2C457.6 273.2 464.1 278.2 465.9 285.4L483 352.1H93.3L114.2 284.6C116.3 277.8 122.6 273.2 129.7 273.2Z" stroke="#202020" strokeWidth="1.6"/>
 
-          {/* Bump details — tape guide circles, square windows, center tab */}
+          {/* Bump details - tape guide circles, square windows, center tab */}
           <circle cx="151.9" cy="327.8" r="14.1" stroke="#202020" strokeWidth="1.6"/>
           <circle cx="424.3" cy="327.8" r="14.1" stroke="#202020" strokeWidth="1.6"/>
           <rect x="197.5" y="313.7" width="18.7" height="18.7" rx="2.4" stroke="#202020" strokeWidth="1.6"/>
@@ -103,13 +103,13 @@ function EventDetailCard({ event, onClose }: { event: CalendarEvent; onClose: ()
 
         </svg>
 
-        {/* Brand labels — on cream body above cover */}
+        {/* Brand labels - on cream body above cover */}
         <div className="cal-cassette-brand-row">
           <span className="cal-cassette-brand">ACM-VIT</span>
           <span className="cal-cassette-type" style={{ color: colors.border }}>{colors.label.toUpperCase()}</span>
         </div>
 
-        {/* Event content — overlaid on dark cover area */}
+        {/* Event content - overlaid on dark cover area */}
         <div className="cal-label-content">
           <div className="cal-label-glow" style={{ background: `radial-gradient(ellipse 100% 50% at 50% 120%, ${colors.border}18 0%, transparent 70%)` }} />
           <div className="cal-label-side" style={{ color: colors.border }}>A SIDE</div>

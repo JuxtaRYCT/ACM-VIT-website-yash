@@ -67,7 +67,7 @@ const themeColor = themeHexMap[domainData.themeColor] || "#F95F4A";
 const stats = domainStats[domain!] || [];
 const hasAois = domainData.aois && domainData.aois.length > 0;
 
-// Split title for typography effect — first word normal, rest accent colored
+// Split title for typography effect - first word normal, rest accent colored
 const titleWords = domainData.title.split(" ");
 const titleMain = titleWords[0];
 const titleAccent = titleWords.length > 1 ? titleWords.slice(1).join(" ") : "";

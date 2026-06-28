@@ -99,7 +99,7 @@ const yearsSince = new Date().getFullYear() - 2009;
     stroke-dashoffset: 999999;
   }
 
-  /* Tape — dark brown like real cassette tape */
+  /* Tape - dark brown like real cassette tape */
   .tape-stroke-shadow {
     stroke: none;
   }
@@ -271,7 +271,7 @@ const yearsSince = new Date().getFullYear() - 2009;
     if (!cassetteImg) return;
     const cRect = cassetteImg.getBoundingClientRect();
 
-    // Start point — center of cassette so tape emerges from behind it
+    // Start point - center of cassette so tape emerges from behind it
     const startX = cRect.left + cRect.width * 0.5 - containerRect.left;
     const startY = cRect.top + cRect.height * 0.5 - containerRect.top;
 
@@ -366,7 +366,7 @@ const yearsSince = new Date().getFullYear() - 2009;
     // End
     snapTargets.push(1);
 
-    // ScrollTrigger — scrub:3 for slow, lazy ribbon draw + snap
+    // ScrollTrigger - scrub:3 for slow, lazy ribbon draw + snap
     const drawTrigger = ScrollTrigger.create({
       trigger: container,
       start: "top top",

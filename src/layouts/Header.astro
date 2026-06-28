@@ -104,7 +104,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
         </svg>
         <div class="pill-island-wrap" id="pillIslandWrap">
         <div class={`header-pill ${isSubpage ? 'subpage-mode' : ''}`} id="headerPill" data-subpage={isSubpage ? 'true' : undefined}>
-          {/* Subpage title — shown only on subpages, hidden when nav expands */}
+          {/* Subpage title - shown only on subpages, hidden when nav expands */}
           {isSubpage && (
             <span class="subpage-island-label">{pageTitle}</span>
           )}
@@ -162,7 +162,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
           </div>
         </div>
 
-        {/* Back button bubble — separate from pill, Dynamic Island style */}
+        {/* Back button bubble - separate from pill, Dynamic Island style */}
         {isSubpage && (
           <a href={resolvedBackHref} class="subpage-back-bubble" aria-label="Back to home">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -405,7 +405,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
     position: absolute;
   }
 
-  /* Diagonal lens refraction — light top-left, dark bottom-right */
+  /* Diagonal lens refraction - light top-left, dark bottom-right */
   .header-pill::before {
     background: linear-gradient(
       135deg,
@@ -418,7 +418,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
     opacity: 0.85;
   }
 
-  /* Top inner highlight — like a glass rim catching light */
+  /* Top inner highlight - like a glass rim catching light */
   .header-pill::after {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent);
     height: 50%;
@@ -427,12 +427,12 @@ const dropdowns: Record<string, DropdownItem[]> = {
     top: 0;
   }
 
-  /* Intro complete — GSAP sets opacity/transform, this class gates child visibility */
+  /* Intro complete - GSAP sets opacity/transform, this class gates child visibility */
   .header-pill.pill-intro-play {
     opacity: 1;
   }
 
-  /* Hover state — also triggered by .pill-menu-open when megamenu is visible */
+  /* Hover state - also triggered by .pill-menu-open when megamenu is visible */
   .header-pill:hover,
   .header-pill.pill-menu-open {
     --glass-border: rgba(249, 95, 74, 1.0);
@@ -462,7 +462,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
     transition: gap 0.38s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
 
-  /* Hover on pill — expand all items */
+  /* Hover on pill - expand all items */
   .header-pill:hover .nav-item,
   .header-pill.pill-menu-open .nav-item {
     gap: 7px;
@@ -501,7 +501,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
     transform: scale(1.2);
   }
 
-  /* ── Nav item hover — orange highlight ── */
+  /* ── Nav item hover - orange highlight ── */
   .nav-item:hover .nav-dot {
     background: #f95f4a !important;
     box-shadow: 0 0 8px rgba(249, 95, 74, 0.5);
@@ -512,7 +512,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
     opacity: 1 !important;
   }
 
-  /* ACM-W hover — pink */
+  /* ACM-W hover - pink */
   .nav-item[data-section="acm-w"]:hover .nav-dot {
     background: #ff007a !important;
     box-shadow: 0 0 8px rgba(255, 0, 122, 0.5);
@@ -645,7 +645,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
     grid-column: span 3;
   }
 
-  /* More panel: 7 items — 3 top, 2 middle (span 3), 2 bottom (span 3) */
+  /* More panel: 7 items - 3 top, 2 middle (span 3), 2 bottom (span 3) */
   .megamenu-panel[data-panel="more"] .megamenu-tile:nth-child(4),
   .megamenu-panel[data-panel="more"] .megamenu-tile:nth-child(5),
   .megamenu-panel[data-panel="more"] .megamenu-tile:nth-child(6),
@@ -757,7 +757,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
     color: rgba(254, 252, 217, 0.65);
   }
 
-  /* Tile image — contained inside tile */
+  /* Tile image - contained inside tile */
   .tile-img {
     width: 130px;
     height: 100%;
@@ -856,7 +856,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
     color: #FEFCD9;
   }
 
-  /* Island label — page title inside pill */
+  /* Island label - page title inside pill */
   .subpage-island-label {
     font-family: 'PolySans Trial', sans-serif;
     font-size: 13px;
@@ -873,9 +873,9 @@ const dropdowns: Record<string, DropdownItem[]> = {
     overflow: hidden;
   }
 
-  /* After intro: label visible — GSAP controls this */
+  /* After intro: label visible - GSAP controls this */
 
-  /* Subpage pill resting state — orange background (applied by GSAP via inline styles) */
+  /* Subpage pill resting state - orange background (applied by GSAP via inline styles) */
 
   /* In subpage mode: hide nav items by default */
   .header-pill.subpage-mode .nav-item {
@@ -916,7 +916,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
     padding: 0 !important;
   }
 
-  /* Back button bubble — orange filled */
+  /* Back button bubble - orange filled */
   .subpage-back-bubble {
     --glass-bg: #F95F4A;
     --glass-blur: 32px;
@@ -1318,7 +1318,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
       if (!target) return;
       e.preventDefault();
       target.scrollIntoView({ behavior: "smooth", block: "start" });
-      // Clean URL — no hash
+      // Clean URL - no hash
       history.replaceState(null, "", window.location.pathname);
       applyNavState(id);
       currentSectionId = id;
@@ -1485,7 +1485,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
             ease: 'power3.out',
             clearProps: 'all',
             onComplete() {
-              // Phase 5: Gooey breakoff — bubble breaks from pill edge
+              // Phase 5: Gooey breakoff - bubble breaks from pill edge
               pill.style.transition = 'none';
               pill.style.background = solidDark;
               pill.style.backdropFilter = 'none';
@@ -1512,12 +1512,12 @@ const dropdowns: Record<string, DropdownItem[]> = {
                 },
               });
 
-              // Bubble slides out — gooey metaball bridge
+              // Bubble slides out - gooey metaball bridge
               breakTl.to(backBubble, {
                 x: 0, marginLeft: 8,
                 duration: 0.2, ease: 'power3.out',
               })
-              // Bridge snap — restore pill to glass
+              // Bridge snap - restore pill to glass
               .add(() => {
                 if (gooeyWrap) gooeyWrap.classList.remove('gooey-active');
                 pill.style.background = '';
@@ -1620,7 +1620,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
       if (sessionStorage.getItem("preloaderShown")) {
         setTimeout(triggerPillIntro, 500);
       } else {
-        // First visit — wait for preloader to fully finish
+        // First visit - wait for preloader to fully finish
         window.addEventListener("preloader:done", () => {
           setTimeout(triggerPillIntro, 500);
         }, { once: true });

@@ -1,7 +1,7 @@
 
 <div id="preloader" class="preloader">
   <div class="loader-content">
-    <!-- Inline SVG Cassette — renders instantly, zero network requests -->
+    <!-- Inline SVG Cassette - renders instantly, zero network requests -->
     <div class="cassette-wrapper" id="cassette-wrapper">
       <svg class="cassette-svg" viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg">
         <!-- Body -->
@@ -640,6 +640,20 @@
     void initPreloader();
   }
 
+  // ── Handle bfcache restoration (browser back/forward button) ──
+  // When we navigate forward, the preloader curtain is visible (yPercent: 0).
+  // If the browser caches that state and restores it on back-nav, the user
+  // sees a black screen. Dismiss the curtain immediately on bfcache restore.
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+      const pl = document.getElementById('preloader');
+      if (pl) {
+        pl.style.display = 'none';
+        pl.style.transform = 'translateY(-100%)';
+      }
+    }
+  });
+
   // ── Internal navigation: show preloader curtain before navigating ──
   document.addEventListener('click', (e) => {
     const anchor = (e.target as HTMLElement).closest('a[href]') as HTMLAnchorElement | null;
@@ -787,7 +801,7 @@
     stroke-linecap: round;
   }
 
-  /* Tape fill around hubs — asymmetric (supply vs take-up) */
+  /* Tape fill around hubs - asymmetric (supply vs take-up) */
   .reel-tape {
     fill: none;
     stroke: rgba(255, 255, 255, 0.12);

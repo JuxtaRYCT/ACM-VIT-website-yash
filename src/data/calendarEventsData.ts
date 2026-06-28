@@ -62,7 +62,7 @@ export const SAMPLE_EVENTS: CalendarEvent[] = [
   {
     id: '7', title: 'App Dev Workshop', date: '2026-07-10',
     startTime: '14:00', endTime: '17:00', domain: 'tech',
-    description: 'Flutter crash course — from zero to deploying your first cross-platform mobile app.',
+    description: 'Flutter crash course - from zero to deploying your first cross-platform mobile app.',
     location: 'SJT 302, VIT Vellore',
   },
   {
@@ -74,31 +74,31 @@ export const SAMPLE_EVENTS: CalendarEvent[] = [
   {
     id: '9', title: 'Board Meeting', date: '2026-07-20',
     startTime: '20:00', endTime: '21:30', domain: 'management',
-    description: 'Monthly board sync — event planning, budget review, and membership updates.',
+    description: 'Monthly board sync - event planning, budget review, and membership updates.',
     location: 'TT 623, VIT Vellore',
   },
   {
     id: '10', title: 'Forktober Prep', date: '2026-07-22',
     startTime: '16:00', endTime: '17:00', domain: 'tech',
-    description: 'Planning session for Forktober — ACM-VIT\'s open source contribution drive.',
+    description: 'Planning session for Forktober - ACM-VIT\'s open source contribution drive.',
     location: 'SJT Seminar Hall, VIT Vellore',
   },
   {
     id: '11', title: 'CodArt', date: '2026-07-25',
     startTime: '15:00', endTime: '18:00', domain: 'design',
-    description: 'Creative coding competition — blend algorithms and art using p5.js and generative techniques.',
+    description: 'Creative coding competition - blend algorithms and art using p5.js and generative techniques.',
     location: 'Anna Auditorium, VIT Vellore',
   },
   {
     id: '12', title: 'Code++', date: '2026-07-05',
     startTime: '14:00', endTime: '16:00', domain: 'cc',
-    description: 'Competitive programming contest for beginners — solve algorithmic challenges and win prizes.',
+    description: 'Competitive programming contest for beginners - solve algorithmic challenges and win prizes.',
     location: 'Online (HackerRank)',
   },
   {
     id: '13', title: 'The Neural Hack', date: '2026-07-18',
     startTime: '09:00', endTime: '21:00', domain: 'research',
-    description: 'AI/ML focused hackathon — build intelligent solutions for real-world problems.',
+    description: 'AI/ML focused hackathon - build intelligent solutions for real-world problems.',
     location: 'Anna Auditorium, VIT Vellore',
   },
   {

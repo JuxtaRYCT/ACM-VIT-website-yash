@@ -351,7 +351,7 @@ const normalizedLightWebmSrc = lightWebmSrc.startsWith("/") ? lightWebmSrc : `/$
                 const diff = targetTime - current;
                 const absDiff = Math.abs(diff);
 
-                // Close enough — pause
+                // Close enough - pause
                 if (absDiff < 0.03) {
                     video.playbackRate = 1;
                     if (isPlaying) {
@@ -361,7 +361,7 @@ const normalizedLightWebmSrc = lightWebmSrc.startsWith("/") ? lightWebmSrc : `/$
                     return;
                 }
 
-                // Too far behind — seek (e.g. scrolled backward fast)
+                // Too far behind - seek (e.g. scrolled backward fast)
                 if (diff < -0.5) {
                     video.currentTime = targetTime;
                     video.pause();
@@ -379,7 +379,7 @@ const normalizedLightWebmSrc = lightWebmSrc.startsWith("/") ? lightWebmSrc : `/$
                     return;
                 }
 
-                // Forward — play and adjust rate to catch up
+                // Forward - play and adjust rate to catch up
                 // Map distance to playback rate: small diff = slow, large diff = fast
                 const rate = Math.min(Math.max(absDiff * 3, 0.2), 4);
                 video.playbackRate = rate;
@@ -464,13 +464,13 @@ const normalizedLightWebmSrc = lightWebmSrc.startsWith("/") ? lightWebmSrc : `/$
 
         if (!container) return;
 
-        // Dark video — seek-based scrubber (works fine with its keyframes)
+        // Dark video - seek-based scrubber (works fine with its keyframes)
         const darkVideo = document.querySelector(
             "[data-scroll-video-dark]",
         ) as HTMLVideoElement;
         if (darkVideo) createVideoScrubber(darkVideo, container, overlay);
 
-        // Light video — playback-rate scrubber (smooth frame playback)
+        // Light video - playback-rate scrubber (smooth frame playback)
         const lightVideo = document.querySelector(
             "[data-scroll-video-light]",
         ) as HTMLVideoElement;

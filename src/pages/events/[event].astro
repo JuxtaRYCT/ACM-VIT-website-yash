@@ -22,7 +22,7 @@ if (!data) return Astro.redirect("/");
 
 const themeColor = getEventThemeHex(data.themeKey);
 
-// Title typography split — first word in cream, rest in theme color.
+// Title typography split - first word in cream, rest in theme color.
 const titleWords = data.title.split(" ");
 const titleMain = titleWords[0];
 const titleAccent = titleWords.length > 1 ? titleWords.slice(1).join(" ") : "";

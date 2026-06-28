@@ -67,7 +67,7 @@ body.scroll-video-active .diamond-grid {
 }
 
 /* ═══════════════════════════════════════════════════════
-   LIGHT MODE THEME — Warm peach palette (Juan Mora inspired)
+   LIGHT MODE THEME - Warm peach palette (Juan Mora inspired)
    ═══════════════════════════════════════════════════════ */
 
 /* Smooth transition between themes */
@@ -146,7 +146,7 @@ html[data-theme="light"] .border-dashed.border-\[\#999999\]\/50 {
 }
 
 /* ── Background overrides ── */
-/* Overlays use bg-[#050505]/95 (with opacity modifier) — different class, unaffected */
+/* Overlays use bg-[#050505]/95 (with opacity modifier) - different class, unaffected */
 html[data-theme="light"] .bg-\[\#050505\],
 html[data-theme="light"] .bg-\[\#060606\] {
   background: transparent !important;
@@ -206,7 +206,7 @@ html[data-theme="light"] .nav-item.active.pink-mode .nav-label {
   color: #ff007a !important;
 }
 
-/* ── Megamenu — dark in both modes ── */
+/* ── Megamenu - dark in both modes ── */
 html[data-theme="light"] .megamenu-panel {
   background: rgba(20, 20, 24, 0.55) !important;
   backdrop-filter: blur(40px) saturate(180%) !important;
@@ -317,7 +317,7 @@ html[data-theme="light"] .anim-btn:hover {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18) !important;
 }
 
-/* ── Scroll video light mode — dimmed with warm overlay for readability ── */
+/* ── Scroll video light mode - dimmed with warm overlay for readability ── */
 html[data-theme="light"] .scroll-video-light.visible {
   opacity: 0.45 !important;
 }
@@ -435,7 +435,7 @@ html[data-theme="light"] .cassette-wrapper::after {
 
 /* ── Selection stays the same ── */
 
-/* ── Theme toggle — dangling bulb pull cord ── */
+/* ── Theme toggle - dangling bulb pull cord ── */
 .theme-toggle {
   position: fixed;
   top: 0;
@@ -476,7 +476,7 @@ html[data-theme="light"] .bulb-circle {
   fill: #F95F4A;
 }
 
-/* Tooltip — positioned to the left */
+/* Tooltip - positioned to the left */
 .bulb-tooltip {
   position: absolute;
   top: 72px;

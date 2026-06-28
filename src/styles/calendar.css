@@ -303,7 +303,7 @@
   border-radius: 50%;
 }
 
-/* ── Event Detail — Cassette Modal ── */
+/* ── Event Detail - Cassette Modal ── */
 .cal-detail-overlay {
   position: fixed;
   inset: 0;
@@ -327,7 +327,7 @@
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ── Cassette wrapper — locked aspect ratio ── */
+/* ── Cassette wrapper - locked aspect ratio ── */
 .cal-cassette-wrapper {
   position: relative;
   width: 100%;
@@ -336,7 +336,7 @@
   animation: calSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ── SVG frame — fills container perfectly ── */
+/* ── SVG frame - fills container perfectly ── */
 .cal-cassette-frame {
   position: absolute;
   inset: 0;
@@ -345,7 +345,7 @@
   filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.45)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
 }
 
-/* ── Close button — positioned in top-right of cassette ── */
+/* ── Close button - positioned in top-right of cassette ── */
 .cal-detail-close {
   position: absolute;
   top: 1.5%;
@@ -369,7 +369,7 @@
   transform: scale(1.15);
 }
 
-/* ── Brand labels — on cream body above dark cover ── */
+/* ── Brand labels - on cream body above dark cover ── */
 .cal-cassette-brand-row {
   position: absolute;
   top: 1%;
@@ -399,7 +399,7 @@
   text-transform: uppercase;
 }
 
-/* ── Label content — overlaid on dark cover area ── */
+/* ── Label content - overlaid on dark cover area ── */
 .cal-label-content {
   position: absolute;
   /* Mapped to cover area: 32/576=5.56%, 18/353=5.1%, 510/576=88.5%, 220/353=62.3% */
@@ -757,7 +757,7 @@
 }
 
 /* ══════════════════════════════════════════════════════
-   LIGHT MODE — Higher contrast
+   LIGHT MODE - Higher contrast
    ══════════════════════════════════════════════════════ */
 
 /* ── Toolbar ── */
@@ -856,7 +856,7 @@ html[data-theme="light"] .cal-day-other { opacity: 0.4; }
 html[data-theme="light"] .cal-day-other .cal-day-num { color: #666; }
 html[data-theme="light"] .cal-day-more { color: #555; }
 
-/* ── Event Pills — darken domain colors for light bg ── */
+/* ── Event Pills - darken domain colors for light bg ── */
 html[data-theme="light"] .cal-event-pill {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }

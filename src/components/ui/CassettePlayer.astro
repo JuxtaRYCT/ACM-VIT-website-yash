@@ -1,5 +1,5 @@
 ---
-// Pure Astro — no React, no hydration
+// Pure Astro - no React, no hydration
 ---
 
 <audio id="cp-audio" preload="metadata"></audio>
@@ -19,7 +19,7 @@
 
 <!-- Expanded player -->
 <div id="cp-player" class="cp-player">
-  <!-- Iridescent top rim — light refraction at the glass edge -->
+  <!-- Iridescent top rim - light refraction at the glass edge -->
   <div class="cp-refract-rim" aria-hidden="true"></div>
 
   <!-- Minimize chevron -->
@@ -27,7 +27,7 @@
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
   </button>
 
-  <!-- Cassette SVG — track info + controls live INSIDE -->
+  <!-- Cassette SVG - track info + controls live INSIDE -->
   <div class="cp-cassette" id="cp-cassette">
     <svg viewBox="0 0 280 175" xmlns="http://www.w3.org/2000/svg">
       <!-- Body -->
@@ -512,7 +512,7 @@
 
   /* ── Light refraction layers ── */
 
-  /* Diagonal top-left highlight — light hitting the glass face */
+  /* Diagonal top-left highlight - light hitting the glass face */
   .cp-player::before {
     content: '';
     position: absolute;
@@ -530,7 +530,7 @@
     z-index: 0;
   }
 
-  /* Moving sheen sweep — periodic light refraction */
+  /* Moving sheen sweep - periodic light refraction */
   .cp-player::after {
     content: '';
     position: absolute;
@@ -560,7 +560,7 @@
     100% { left: 160%; opacity: 0; }
   }
 
-  /* Iridescent top edge — color-shifted light at the rim */
+  /* Iridescent top edge - color-shifted light at the rim */
   .cp-player .cp-refract-rim {
     position: absolute;
     top: 0;

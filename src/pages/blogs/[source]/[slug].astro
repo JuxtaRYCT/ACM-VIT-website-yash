@@ -144,9 +144,9 @@ const hasContent = post.contentHtml.length > 100;
           )}
         </div>
 
-        {/* TOC sidebar — sticky, starts aligned with first line of content */}
+        {/* TOC sidebar - sticky, starts aligned with first line of content */}
         {hasContent && post.headings.length > 0 && (
-          <aside class="hidden lg:block w-56 flex-shrink-0 sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto">
+          <aside class="hidden lg:block w-56 flex-shrink-0 sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto overflow-x-hidden">
             <TableOfContents headings={post.headings} />
           </aside>
         )}

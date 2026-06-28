@@ -8,7 +8,7 @@ const STAR_PATH =
 const COVER_PATH =
   "M480.844 0.8H31.387C26.877 0.8 22.55 2.586 19.354 5.768L5.823 19.239C2.607 22.439 0.8 26.79 0.8 31.327V210.809C0.8 220.229 8.436 227.866 17.856 227.866H494.375C503.795 227.866 511.432 220.229 511.432 210.809V31.327C511.432 26.79 509.624 22.439 506.409 19.239L492.878 5.768C489.681 2.586 485.354 0.8 480.844 0.8Z";
 
-// Pencil Thingy gear — natural center at (33, 33) in 67×67 space
+// Pencil Thingy gear - natural center at (33, 33) in 67×67 space
 const REEL_GEAR =
   "M32.865 9.595C36.091 9.595 39.165 10.246 41.963 11.424L39.137 16.32L44.222 19.256L47.044 14.366C51.943 18.09 55.333 23.696 56.135 30.107H50.48V35.98H56.136C55.335 42.398 51.941 48.009 47.036 51.734L44.213 46.844L39.128 49.779L41.954 54.673C39.159 55.849 36.088 56.5 32.865 56.5C29.638 56.5 26.563 55.847 23.765 54.668L26.596 49.767L21.511 46.831L18.684 51.727C13.784 48.001 10.396 42.393 9.596 35.98H15.251V30.107H9.597C10.399 23.693 13.791 18.083 18.694 14.359L21.519 19.252L26.604 16.316L23.777 11.42C26.572 10.244 29.643 9.595 32.865 9.595Z";
 
@@ -214,7 +214,7 @@ export default function CassetteBuilder() {
             a.download = `cassette-${Date.now()}.png`;
             a.click();
           } catch {
-            // Canvas tainted — fallback to SVG
+            // Canvas tainted - fallback to SVG
             downloadSVG();
           }
           resolve();
@@ -403,7 +403,7 @@ export default function CassetteBuilder() {
             )}
             {variant === 3 && (
               <>
-                {/* V3: Minimal — bottom label bar + side indicator */}
+                {/* V3: Minimal - bottom label bar + side indicator */}
                 <rect x="20" y="195" width="200" height="24" rx="4" fill={labelColor} stroke="#202020" strokeWidth="0.8" />
                 <text x="120" y="210" textAnchor="middle" dominantBaseline="middle" fontFamily="'Rock Salt', cursive"
                   fontSize={Math.max(7, Math.min(12, 160 / Math.max(1, labelText.length * 0.7)))} fill={textColor}>

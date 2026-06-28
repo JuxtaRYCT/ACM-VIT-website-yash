@@ -175,7 +175,7 @@ export async function getHashnodeContent(slug: string): Promise<string> {
 
   const html = await res.text();
 
-  // Hashnode wraps article content — try multiple selectors
+  // Hashnode wraps article content - try multiple selectors
   const articleMatch = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
   if (articleMatch) return cleanContentHtml(articleMatch[1]);
 

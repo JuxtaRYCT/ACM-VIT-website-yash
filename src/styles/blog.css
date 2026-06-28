@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   BLOG STYLES — Only what Tailwind cannot handle
+   BLOG STYLES - Only what Tailwind cannot handle
    ═══════════════════════════════════════════════════════ */
 
 /* ── Diamond pattern opacity on blog pages ── */
@@ -14,12 +14,13 @@ html[data-theme="light"] body:has(.blog-body) .diamond-grid {
 }
 
 /* ══════════════════════════════════════════════════════
-   TABLE OF CONTENTS — Lines ↔ Text hover animation
+   TABLE OF CONTENTS - Lines ↔ Text hover animation
    (Cannot use Tailwind: uses max-width:0→220px transition
    and !important width override on sibling state)
    ══════════════════════════════════════════════════════ */
 
 .toc {
+  overflow-x: hidden;
   overflow-y: auto;
   scrollbar-width: none;
   padding-right: 16px;
@@ -146,7 +147,7 @@ html[data-theme="light"] .toc--expanded .toc__link:hover .toc__label {
 }
 
 /* ══════════════════════════════════════════════════════
-   BLOG CONTENT PROSE — Markdown-rendered HTML has no
+   BLOG CONTENT PROSE - Markdown-rendered HTML has no
    Tailwind classes on inner elements (set:html), so we
    must target them via CSS descendant selectors.
    ══════════════════════════════════════════════════════ */

@@ -506,7 +506,7 @@ const worksHeightMobile = works.length * 45;
         { passive: true }
       );
 
-      // Click delegation — catches clicks that pass through the mask overlay
+      // Click delegation - catches clicks that pass through the mask overlay
       // but miss a-work elements due to sticky stacking context issues.
       this.el.addEventListener("click", (e: MouseEvent) => {
         const target = e.target as HTMLElement;

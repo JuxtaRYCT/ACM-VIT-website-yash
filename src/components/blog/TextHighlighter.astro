@@ -33,7 +33,7 @@ const { slug } = Astro.props;
       return crypto.randomUUID?.() || `highlight-${Date.now()}-${Math.random().toString(36).slice(2)}`;
     }
 
-    function applyHighlightStyle(mark: HTMLElement, color = DEFAULT_COLOR, id?: string): void {
+    function applyHighlightStyle(mark: HTMLElement, color: string = DEFAULT_COLOR, id?: string): void {
       mark.className = "blog-highlight";
       mark.style.setProperty("--blog-highlight-color", color);
       if (id) mark.dataset.highlightId = id;
@@ -47,7 +47,7 @@ const { slug } = Astro.props;
       parent.normalize();
     }
 
-    function highlightRange(range: Range, color = DEFAULT_COLOR, id?: string): void {
+    function highlightRange(range: Range, color: string = DEFAULT_COLOR, id?: string): void {
       const container = range.commonAncestorContainer;
       const rootEl = container.nodeType === Node.TEXT_NODE ? container.parentElement! : (container as HTMLElement);
       const walker = document.createTreeWalker(rootEl, NodeFilter.SHOW_TEXT);
@@ -261,11 +261,11 @@ const { slug } = Astro.props;
       const rect = range.getBoundingClientRect();
       if (!rect.width && !rect.height) return;
       buildHighlightPopup(rect.left + rect.width / 2, rect.top - 8);
-      // Must assign AFTER buildHighlightPopup — it calls destroyPopup which nulls currentRange.
+      // Must assign AFTER buildHighlightPopup - it calls destroyPopup which nulls currentRange.
       currentRange = range.cloneRange();
     }
 
-    function doHighlight(color = DEFAULT_COLOR) {
+    function doHighlight(color: string = DEFAULT_COLOR) {
       const range = currentRange;
       if (!range) return;
       const text = range.toString().trim();
