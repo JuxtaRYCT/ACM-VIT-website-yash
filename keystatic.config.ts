@@ -172,7 +172,7 @@ export default config({
             ),
             aois: fields.array(
               fields.object({
-                src: fields.image({ label: 'AOI Image', directory: 'public/AOIs', publicPath: '/AOIs/' }),
+                src: fields.image({ label: 'AOI Image', directory: 'public/aois', publicPath: '/aois/' }),
                 alt: fields.text({ label: 'Alt Text' }),
               }),
               {
