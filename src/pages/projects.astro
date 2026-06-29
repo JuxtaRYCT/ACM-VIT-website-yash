@@ -43,7 +43,7 @@ const overlayProjects = [
     color: "#7100FF",
     image: "/projects/items/3/cassetteSrc.webp",
     alt: "UniPool",
-    url: "https://unipool.acmvit.in",
+    url: "/projects/unipool",
     sizePercent: 80,
     sizeAxis: "width" as const,
     offsetY: -3,
@@ -102,11 +102,12 @@ const svgProjects = [
 
     <!-- Grid -->
     <div class="proj-grid">
-      {overlayProjects.map((proj) => (
+      {overlayProjects.map((proj) => {
+        const isExternal = /^https?:\/\//.test(proj.url);
+        return (
         <a
           href={proj.url}
-          target="_blank"
-          rel="noopener noreferrer"
+          {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
           class="proj-card"
           style={`--card-glow: ${proj.color};`}
         >
@@ -121,7 +122,8 @@ const svgProjects = [
             />
           </div>
         </a>
-      ))}
+        );
+      })}
       {svgProjects.map((proj) => (
         <a
           href={proj.url}
