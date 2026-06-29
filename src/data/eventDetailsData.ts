@@ -151,7 +151,7 @@ export const eventDetails: Record<string, EventDetail> = {
   code2create: {
     slug: "code2create",
     title: "Code2Create",
-    tagline: "ACM-VIT's flagship hackathon since 2017.",
+    tagline: "Don't just code for the vibes, Code2Create.",
     eyebrow: "ACM-VIT · ACM-W · Flagship Hackathon",
     themeKey: "brand",
     themeColor: "#4AB887",
@@ -398,7 +398,7 @@ export const eventDetails: Record<string, EventDetail> = {
   "code-plus-plus": {
     slug: "code-plus-plus",
     title: "Code Plus Plus",
-    tagline: "Challenge your mathematical prowess and logical thinking.",
+    tagline: "Think Fast, Code Faster!",
     eyebrow: "ACM-VIT · Competitive Coding",
     themeKey: "cc",
     themeColor: "#FF007A",
@@ -459,7 +459,7 @@ export const eventDetails: Record<string, EventDetail> = {
   "codex-cryptum": {
     slug: "codex-cryptum",
     title: "Codex Cryptum",
-    tagline: "Learn to hack before you hunt.",
+    tagline: "Beyond the Obvious",
     eyebrow: "ACM-VIT · Cybersecurity Workshop",
     themeKey: "cc",
     themeColor: "#FF7A01",
@@ -538,7 +538,7 @@ export const eventDetails: Record<string, EventDetail> = {
   "cryptic-hunt": {
     slug: "cryptic-hunt",
     title: "Cryptic Hunt",
-    tagline: "ACM-VIT's annual campus-wide scavenger hunt.",
+    tagline: "Expect the Unexpected",
     eyebrow: "ACM-VIT · Campus Scavenger Hunt",
     themeKey: "cc",
     themeColor: "#F5753B",
@@ -776,7 +776,7 @@ export const eventDetails: Record<string, EventDetail> = {
   inspiher: {
     slug: "inspiher",
     title: "inspiHer",
-    tagline: "Stories of women in tech, told through candid conversations.",
+    tagline: "if they can you can too",
     eyebrow: "ACM-W VIT · Podcast & Speaker Series",
     themeKey: "management",
     themeColor: "#CE307D",
@@ -946,7 +946,7 @@ export const eventDetails: Record<string, EventDetail> = {
   "reverse-coding": {
     slug: "reverse-coding",
     title: "Reverse Coding",
-    tagline: "No problem statement. Just the test cases.",
+    tagline: "Code, Invert, Conquer!",
     eyebrow: "ACM-VIT · RCPC · Competitive Coding",
     themeKey: "cc",
     themeColor: "#9B51E0",
@@ -1096,7 +1096,7 @@ export const eventDetails: Record<string, EventDetail> = {
   "the-tiny-hack": {
     slug: "the-tiny-hack",
     title: "The Tiny Hack",
-    tagline: "10 hours. Small solutions. Real-world impact.",
+    tagline: "\\\\tiny ideas, huge impact!",
     eyebrow: "ACM-VIT · Mini Hackathon",
     themeKey: "tech",
     themeColor: "#D6696E",
