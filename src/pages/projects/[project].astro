@@ -6,6 +6,7 @@ import Footer from "../../layouts/Footer.astro";
 import "../../styles/globals.css";
 import "../../styles/design-domain.css";
 import ToolCard from "../../components/ToolCard.astro";
+import FillButton from "../../components/ui/FillButton.astro";
 import { getAssetUrl } from "../../utils/cdn";
 import {
   projectDetails,
@@ -62,15 +63,11 @@ const statusMap: Record<typeof data.status, { label: string; dot: string }> = {
 };
 const statusInfo = statusMap[data.status];
 
-const titleWords = data.title.split(" ");
-const titleMain = titleWords[0];
-const titleAccent = titleWords.length > 1 ? titleWords.slice(1).join(" ") : "";
+// Title is conveyed by the hero logo + tagline; no large h1 watermark.
 
 // Per-slug decoration assets. Easy to extend per project.
 const slugDecorations: Record<string, {
   motorcycle?: string;
-  ramp?: string;
-  cornerGuard?: string;
   parking?: string;
   bigLogo?: string;
   storeAppleBadge?: string;
@@ -78,12 +75,14 @@ const slugDecorations: Record<string, {
 }> = {
   unipool: {
     motorcycle: "/projects/unipool/beep-motorcycle.png",
-    ramp: "/projects/unipool/beep-ramp.png",
-    cornerGuard: "/projects/unipool/beep-corner-guard.png",
     parking: "/projects/unipool/beep-parking.png",
     bigLogo: "/projects/unipool/unipool-logo.png",
     storeAppleBadge: "/projects/unipool/app-store-badge.svg",
     storeGoogleBadge: "/projects/unipool/google-play-badge.png",
+  },
+  examcooker: {
+    storeAppleBadge: "/projects/examcooker/app-store-badge.svg",
+    storeGoogleBadge: "/projects/examcooker/google-play-badge.png",
   },
 };
 const deco = slugDecorations[data.slug] ?? {};
@@ -91,6 +90,8 @@ const deco = slugDecorations[data.slug] ?? {};
 // Witty footer line per project.
 const footerLines: Record<string, string> = {
   unipool: "End of the line. Driver says park.",
+  examcooker: "Exam's over. Close your tabs.",
+  "cli-rpg": "Game over. Insert coin to continue.",
 };
 const footerLine = footerLines[data.slug] ?? "End of the road.";
 
@@ -119,17 +120,6 @@ const otherLinks = data.links.filter(
         <div class="proj-commit-fade" />
       </div>
 
-      {deco.motorcycle && (
-        <img
-          src={getAssetUrl(deco.motorcycle)}
-          alt=""
-          aria-hidden="true"
-          class="proj-deco proj-deco-motorcycle"
-          loading="eager"
-          decoding="async"
-        />
-      )}
-
       <div class="proj-hero-inner relative z-10 max-w-[1400px] mx-auto px-6 md:px-10 pt-24 md:pt-32 pb-16 md:pb-24">
         <div class="grid md:grid-cols-[1.15fr_1fr] gap-10 items-center">
           <div class="flex flex-col gap-6 md:gap-8 items-start">
@@ -141,28 +131,28 @@ const otherLinks = data.links.filter(
               </span>
             </div>
 
-            <h1 class="proj-hero-title" data-anim="up">
-              {titleMain}
-              {titleAccent && <> <span>{titleAccent}</span></>}
-            </h1>
-
-            <p class="proj-hero-tagline max-w-2xl" data-anim="up">{data.tagline}</p>
-            <p class="proj-hero-desc max-w-2xl" data-anim="up">{data.shortDescription}</p>
+            {!deco.bigLogo && !data.heroImage && (
+              <h1 class="proj-hero-title max-w-2xl" data-anim="up">{data.title}</h1>
+            )}
+            {data.tagline && data.tagline !== data.shortDescription && (
+              <p class="proj-hero-tagline max-w-2xl" data-anim="up">{data.tagline}</p>
+            )}
+            {data.shortDescription && (
+              <p class="proj-hero-desc max-w-2xl" data-anim="up">{data.shortDescription}</p>
+            )}
 
             <div class="flex flex-wrap items-center gap-3 mt-2" data-anim="up">
               {websiteLink && (
-                <a href={websiteLink.href} target="_blank" rel="noopener noreferrer" class="proj-cta-primary">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <FillButton href={websiteLink.href} label="Visit website" external>
+                  <svg slot="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M5 12h14M12 5l7 7-7 7"/>
                   </svg>
-                  Visit website
-                </a>
+                </FillButton>
               )}
               {githubLink && (
-                <a href={githubLink.href} target="_blank" rel="noopener noreferrer" class="proj-cta-secondary">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-2c-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11.04 11.04 0 0 1 5.79 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.27 5.68.42.36.79 1.07.79 2.16v3.2c0 .31.21.68.79.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.73 18.27.5 12 .5Z"/></svg>
-                  GitHub
-                </a>
+                <FillButton href={githubLink.href} label="GitHub" external>
+                  <svg slot="icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-2c-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11.04 11.04 0 0 1 5.79 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.27 5.68.42.36.79 1.07.79 2.16v3.2c0 .31.21.68.79.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.73 18.27.5 12 .5Z"/></svg>
+                </FillButton>
               )}
             </div>
 
@@ -206,9 +196,9 @@ const otherLinks = data.links.filter(
             )}
           </div>
 
-          {(deco.bigLogo || data.cassetteSvg) && (
+          {(deco.bigLogo || data.heroImage || data.cassetteSvg) && (
             <div class="proj-hero-art" data-anim="in">
-              {deco.bigLogo && (
+              {deco.bigLogo ? (
                 <img
                   src={getAssetUrl(deco.bigLogo)}
                   alt={`${data.title} app icon`}
@@ -216,8 +206,15 @@ const otherLinks = data.links.filter(
                   loading="eager"
                   decoding="async"
                 />
-              )}
-              {data.cassetteSvg && (
+              ) : data.heroImage ? (
+                <img
+                  src={getAssetUrl(data.heroImage)}
+                  alt={`${data.title} logo`}
+                  class="proj-hero-art-icon"
+                  loading="eager"
+                  decoding="async"
+                />
+              ) : data.cassetteSvg ? (
                 <img
                   src={getAssetUrl(data.cassetteSvg)}
                   alt={`${data.title} cassette`}
@@ -225,7 +222,7 @@ const otherLinks = data.links.filter(
                   loading="eager"
                   decoding="async"
                 />
-              )}
+              ) : null}
             </div>
           )}
         </div>
@@ -270,18 +267,25 @@ const otherLinks = data.links.filter(
             </h2>
           </div>
 
-          <div class="proj-screens-stage" data-anim="up">
-            {deco.ramp && (
-              <img src={getAssetUrl(deco.ramp)} alt="" aria-hidden="true" class="proj-deco-ramp" loading="lazy" decoding="async" />
-            )}
-            <div class="proj-screens-row">
-              {data.gallery.map((shot, i) => (
-                <div class={`proj-screen-card proj-screen-card--${i % 3}`} data-anim="up">
+          {data.galleryLayout === "landscape" ? (
+            <div class="proj-landscape-grid" data-anim="up">
+              {data.gallery.map((shot) => (
+                <div class="proj-landscape-card">
                   <img src={getAssetUrl(shot.src)} alt={shot.alt} class="proj-screen-img" loading="lazy" decoding="async" />
                 </div>
               ))}
             </div>
-          </div>
+          ) : (
+            <div class="proj-screens-stage" data-anim="up">
+              <div class="proj-screens-row">
+                {data.gallery.map((shot, i) => (
+                  <div class={`proj-screen-card proj-screen-card--${i % 3}`}>
+                    <img src={getAssetUrl(shot.src)} alt={shot.alt} class="proj-screen-img" loading="lazy" decoding="async" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </section>
       </>
     )}
@@ -510,12 +514,16 @@ const otherLinks = data.links.filter(
     )}
 
     <!-- END-OF-ROAD FOOTER -->
-    {deco.cornerGuard && (
+    {(deco.parking || deco.motorcycle) && (
       <section class="proj-endroad" data-anim="up">
-        <img src={getAssetUrl(deco.cornerGuard)} alt="" aria-hidden="true" class="proj-endroad-img" loading="lazy" decoding="async" />
-        {deco.parking && (
-          <img src={getAssetUrl(deco.parking)} alt="" aria-hidden="true" class="proj-endroad-img proj-endroad-img--parking" loading="lazy" decoding="async" />
-        )}
+        <div class="proj-endroad-row">
+          {deco.parking && (
+            <img src={getAssetUrl(deco.parking)} alt="" aria-hidden="true" class="proj-endroad-img proj-endroad-img--parking" loading="lazy" decoding="async" />
+          )}
+          {deco.motorcycle && (
+            <img src={getAssetUrl(deco.motorcycle)} alt="" aria-hidden="true" class="proj-endroad-img proj-endroad-img--motorcycle" loading="lazy" decoding="async" />
+          )}
+        </div>
         <p class="proj-endroad-caption">{footerLine}</p>
         <a href="/projects" class="proj-back-link">
           <span aria-hidden="true">&larr;</span>
@@ -524,8 +532,9 @@ const otherLinks = data.links.filter(
       </section>
     )}
 
-    {!deco.cornerGuard && (
+    {!(deco.parking || deco.motorcycle) && (
       <section class="proj-back-section">
+        {footerLine && <p class="proj-endroad-caption">{footerLine}</p>}
         <a href="/projects" class="proj-back-link">
           <span aria-hidden="true">&larr;</span>
           Back to all projects
@@ -594,14 +603,13 @@ const otherLinks = data.links.filter(
 
   .proj-hero-title {
     font-family: 'PolySans Trial', sans-serif;
-    font-size: clamp(3rem, 9vw, 7.5rem);
-    font-weight: 900;
-    line-height: 0.95;
-    letter-spacing: -0.04em;
-    text-transform: uppercase;
+    font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+    font-weight: 800;
     color: #FFFDD0;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin: 0;
   }
-  .proj-hero-title span { color: var(--proj-color); }
   .proj-hero-tagline {
     font-family: 'PolySans Trial', sans-serif;
     font-size: clamp(1.1rem, 2vw, 1.4rem);
@@ -609,6 +617,7 @@ const otherLinks = data.links.filter(
     color: rgba(254, 252, 217, 0.88);
     line-height: 1.4;
   }
+  :global(html[data-theme="light"]) .proj-hero-title { color: #1a1a1a; }
   .proj-hero-desc {
     font-family: 'PolySans Trial', sans-serif;
     font-size: clamp(0.95rem, 1.4vw, 1.05rem);
@@ -646,16 +655,21 @@ const otherLinks = data.links.filter(
     z-index: 2;
     transform: rotate(-4deg);
   }
+  .proj-hero-art-icon[src$=".svg"] {
+    border-radius: 0;
+    transform: none;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.4));
+    max-width: 400px;
+    width: 80%;
+  }
   .proj-hero-art-cassette {
-    position: absolute;
-    width: 46%;
-    max-width: 240px;
-    bottom: -4%;
-    right: 4%;
-    transform: rotate(8deg);
-    filter: drop-shadow(0 16px 30px rgba(0,0,0,0.4));
-    opacity: 0.92;
-    z-index: 1;
+    position: relative;
+    width: 82%;
+    max-width: 420px;
+    transform: rotate(-3deg);
+    filter: drop-shadow(0 18px 36px rgba(0,0,0,0.45));
+    opacity: 1;
+    z-index: 2;
   }
 
   /* ── Commit graph backdrop ── */
@@ -696,20 +710,8 @@ const otherLinks = data.links.filter(
     pointer-events: none;
   }
 
-  /* ── Hero decorations ── */
-  .proj-deco { position: absolute; pointer-events: none; }
-  .proj-deco-motorcycle {
-    bottom: 4%;
-    left: -3%;
-    width: clamp(140px, 18vw, 240px);
-    opacity: 0.9;
-    z-index: 1;
-    transform: rotate(-4deg);
-    filter: drop-shadow(0 8px 18px rgba(0,0,0,0.35));
-  }
-
   /* ── CTA ── */
-  .proj-cta-primary, .proj-cta-secondary {
+  .proj-cta-secondary {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -721,25 +723,14 @@ const otherLinks = data.links.filter(
     text-transform: uppercase;
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-  }
-  .proj-cta-primary {
-    background: var(--proj-color);
-    color: var(--proj-color-secondary, #0d0e0d);
-    border: 1px solid var(--proj-color);
-    font-weight: 700;
-  }
-  .proj-cta-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 32px color-mix(in srgb, var(--proj-color) 55%, transparent);
-  }
-  .proj-cta-secondary {
     background: transparent;
     color: #FFFDD0;
     border: 1px solid rgba(255,255,255,0.18);
   }
   .proj-cta-secondary:hover {
+    background: var(--proj-color);
+    color: var(--proj-color-secondary, #0d0e0d);
     border-color: var(--proj-color);
-    color: var(--proj-color);
   }
 
   /* ── Store badges (official) ── */
@@ -752,7 +743,6 @@ const otherLinks = data.links.filter(
   }
   .proj-store-link:hover {
     transform: translateY(-2px);
-    filter: drop-shadow(0 6px 18px color-mix(in srgb, var(--proj-color) 35%, transparent));
   }
   .proj-store-img {
     display: block;
@@ -845,27 +835,38 @@ const otherLinks = data.links.filter(
     aspect-ratio: 9 / 19.5;
     transition: transform 0.45s cubic-bezier(0.22, 0.9, 0.3, 1.2);
   }
-  .proj-screen-card--0 { transform: rotate(-3deg) translateY(20px); }
-  .proj-screen-card--1 { transform: translateY(-10px) scale(1.04); z-index: 2; }
-  .proj-screen-card--2 { transform: rotate(3deg) translateY(20px); }
-  .proj-screen-card:hover { transform: translateY(-8px); z-index: 3; }
+  .proj-screen-card--0 { transform: rotate(-5deg) translateY(24px); }
+  .proj-screen-card--1 { transform: translateY(-12px) scale(1.05); z-index: 2; }
+  .proj-screen-card--2 { transform: rotate(5deg) translateY(24px); }
+  .proj-screen-card--0:hover { transform: rotate(-5deg) translateY(-4px); z-index: 3; }
+  .proj-screen-card--1:hover { transform: translateY(-20px) scale(1.05); z-index: 3; }
+  .proj-screen-card--2:hover { transform: rotate(5deg) translateY(-4px); z-index: 3; }
   .proj-screen-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
-  .proj-deco-ramp {
-    position: absolute;
-    left: 50%;
-    bottom: -10px;
-    width: clamp(280px, 70%, 720px);
-    transform: translateX(-50%);
-    opacity: 0.5;
-    pointer-events: none;
-    z-index: 0;
-  }
 
+  .proj-landscape-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .proj-landscape-card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: transform 0.3s ease;
+  }
+  .proj-landscape-card:hover {
+    transform: translateY(-4px);
+  }
+  :global(html[data-theme="light"]) .proj-landscape-card {
+    border-color: rgba(0, 0, 0, 0.08);
+  }
   /* ── Feature cards ── */
   .proj-feature-card {
     padding: 1.25rem 1.25rem 1.5rem;
@@ -921,9 +922,9 @@ const otherLinks = data.links.filter(
     min-width: 220px;
   }
   .proj-person-card:hover {
+    background: color-mix(in srgb, var(--proj-color) 12%, transparent);
     border-color: var(--proj-color);
     transform: translateY(-2px);
-    box-shadow: 0 0 28px color-mix(in srgb, var(--proj-color) 25%, transparent);
   }
   .proj-person-avatar-wrap {
     width: 44px;
@@ -1079,16 +1080,23 @@ const otherLinks = data.links.filter(
     text-align: center;
     overflow: hidden;
   }
+  .proj-endroad-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 1.5rem;
+  }
   .proj-endroad-img {
     display: inline-block;
-    width: clamp(160px, 28vw, 260px);
     height: auto;
     filter: drop-shadow(0 12px 24px rgba(0,0,0,0.4));
-    margin: 0 0.5rem;
   }
   .proj-endroad-img--parking {
+    width: clamp(100px, 18vw, 160px);
+  }
+  .proj-endroad-img--motorcycle {
     width: clamp(120px, 22vw, 200px);
-    transform: translateY(8px);
+    transform: scaleX(-1);
   }
   .proj-endroad-caption {
     margin: 1.5rem auto 1.5rem;
@@ -1118,7 +1126,6 @@ const otherLinks = data.links.filter(
   .proj-back-link:hover { color: var(--proj-color); }
 
   /* ───── LIGHT THEME ───── */
-  :global(html[data-theme="light"]) .proj-hero-title,
   :global(html[data-theme="light"]) .proj-section-title,
   :global(html[data-theme="light"]) .proj-feature-title,
   :global(html[data-theme="light"]) .proj-version-label,
@@ -1164,14 +1171,29 @@ const otherLinks = data.links.filter(
       radial-gradient(ellipse at top right, transparent, #f5f1e3 70%),
       linear-gradient(180deg, transparent 30%, #f5f1e3 95%);
   }
-  :global(html[data-theme="light"]) .proj-cta-primary {
-    color: #ffffff;
-    background: var(--proj-color-secondary, #263B33);
-    border-color: var(--proj-color-secondary, #263B33);
-  }
   :global(html[data-theme="light"]) .proj-cta-secondary {
     color: #1a1a1a;
     border-color: rgba(0,0,0,0.15);
+  }
+  :global(html[data-theme="light"]) .proj-cta-secondary:hover {
+    background: var(--proj-color-secondary, #263B33);
+    color: #ffffff;
+    border-color: var(--proj-color-secondary, #263B33);
+  }
+  :global(html[data-theme="light"]) .proj-screen-card {
+    background: color-mix(in srgb, var(--proj-color) 12%, #ffffff);
+    box-shadow:
+      0 20px 40px rgba(0,0,0,0.1),
+      0 0 0 1px rgba(0,0,0,0.06);
+  }
+  :global(html[data-theme="light"]) .proj-person-arrow {
+    color: rgba(26,26,26,0.35);
+  }
+  :global(html[data-theme="light"]) .proj-person-card:hover .proj-person-arrow {
+    color: var(--proj-color-secondary, #263B33);
+  }
+  :global(html[data-theme="light"]) .proj-person-card:hover {
+    background: color-mix(in srgb, var(--proj-color) 10%, #ffffff);
   }
   :global(html[data-theme="light"]) .proj-store-badge {
     background: #1a1a1a;
@@ -1181,6 +1203,27 @@ const otherLinks = data.links.filter(
     color: rgba(26,26,26,0.7);
   }
   :global(html[data-theme="light"]) .proj-back-link { color: rgba(26,26,26,0.55); }
+  :global(html[data-theme="light"]) .proj-commit-cell {
+    background: rgba(0,0,0,0.04);
+  }
+  :global(html[data-theme="light"]) .proj-eyebrow,
+  :global(html[data-theme="light"]) .proj-section-eyebrow,
+  :global(html[data-theme="light"]) .proj-section-title span,
+  :global(html[data-theme="light"]) .proj-stat-value,
+  :global(html[data-theme="light"]) .proj-version-year {
+    color: var(--proj-color-secondary, #263B33);
+  }
+  :global(html[data-theme="light"]) .proj-feature-card:hover {
+    border-color: color-mix(in srgb, var(--proj-color-secondary, #263B33) 50%, transparent);
+  }
+  :global(html[data-theme="light"]) .proj-other-card:hover,
+  :global(html[data-theme="light"]) .proj-person-card:hover,
+  :global(html[data-theme="light"]) .proj-mini-person:hover {
+    border-color: var(--proj-color-secondary, #263B33);
+  }
+  :global(html[data-theme="light"]) .proj-back-link:hover {
+    color: var(--proj-color-secondary, #263B33);
+  }
 
   /* ── Responsive ── */
   @media (max-width: 880px) {
@@ -1188,11 +1231,12 @@ const otherLinks = data.links.filter(
     .proj-hero-cassette-img { max-width: 280px; }
     .proj-screens-row { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6rem; }
     .proj-screen-card { border-radius: 22px; }
-    .proj-deco-motorcycle { width: 130px; bottom: 2%; left: -10px; opacity: 0.7; }
   }
   @media (max-width: 560px) {
     .proj-screens-row { grid-template-columns: 1fr; max-width: 240px; margin: 0 auto; }
     .proj-screen-card--0, .proj-screen-card--1, .proj-screen-card--2 { transform: none; }
+    .proj-screen-card--0:hover, .proj-screen-card--1:hover, .proj-screen-card--2:hover { transform: translateY(-6px); }
+    .proj-landscape-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 760px) {
     .proj-commit-graph { --cell: 14px; --gap: 3px; opacity: 0.4; }

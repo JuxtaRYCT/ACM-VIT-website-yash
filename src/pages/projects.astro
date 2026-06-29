@@ -6,6 +6,9 @@ import "../styles/projects.css";
 import { getAssetUrl } from "../utils/cdn";
 import Cassette from "../components/ui/Cassette.astro";
 import Footer from "../layouts/Footer.astro";
+import { forktoberByYear, forktoberYears } from "../data/forktoberProjectsData";
+
+const FORKTOBER_COLOR = "#EFEFEF";
 
 const overlayProjects = [
   {
@@ -23,7 +26,7 @@ const overlayProjects = [
     color: "#2664e4",
     image: "/projects/items/1/cassetteSrc.webp",
     alt: "ExamCooker",
-    url: "https://examcooker.acmvit.in",
+    url: "/projects/examcooker",
     sizePercent: 80,
     sizeAxis: "width" as const,
     offsetY: -3,
@@ -33,7 +36,7 @@ const overlayProjects = [
     color: "#16A34A",
     image: "/projects/items/2/cassetteSrc.webp",
     alt: "CLI RPG",
-    url: "https://cli-rpg.acmvit.in",
+    url: "/projects/cli-rpg",
     sizePercent: 75,
     sizeAxis: "width" as const,
     offsetY: -5,
@@ -145,6 +148,42 @@ const svgProjects = [
       ))}
     </div>
 
+    <!-- Forktober projects -->
+    <section class="proj-forktober" aria-labelledby="forktober-heading">
+      <div class="proj-forktober-header">
+        <p class="proj-forktober-eyebrow">Open Source · Hacktoberfest</p>
+        <h2 id="forktober-heading" class="proj-forktober-title">Projects under <span>Forktober</span></h2>
+        <p class="proj-forktober-sub">Repositories ACM-VIT opens up to student contributors every October.</p>
+      </div>
+
+      {forktoberYears.map((year) => (
+        <div class="proj-forktober-year-block">
+          <div class="proj-forktober-year-label">
+            <span class="proj-forktober-year-num">{year}</span>
+            <span class="proj-forktober-year-meta">{forktoberByYear[year].length} repositories</span>
+          </div>
+          <div class="proj-grid proj-grid--forktober">
+            {forktoberByYear[year].map((p) => (
+              <a
+                href={`/projects/${p.slug}`}
+                class="proj-card proj-card--forktober"
+                style={`--card-glow: ${FORKTOBER_COLOR};`}
+                aria-label={`${p.title} — Forktober ${year}`}
+              >
+                <div class="proj-card-inner">
+                  <Cassette color={FORKTOBER_COLOR} alt={p.title} />
+                  <div class="proj-forktober-overlay">
+                    <span class="proj-forktober-overlay-name">{p.title}</span>
+                    <span class="proj-forktober-overlay-year">Forktober · {p.years.join(", ")}</span>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
+
     <!-- Bottom glow -->
     <div class="proj-bottom-glow">
       <div class="proj-tubelight-wrap proj-tubelight-wrap--bottom">
@@ -181,6 +220,121 @@ const svgProjects = [
 
   :global(html[data-theme="light"]) .proj-svg-cassette-img {
     filter: sepia(0.15) brightness(0.98);
+  }
+
+  /* ── Forktober section ── */
+  .proj-forktober {
+    max-width: 1400px;
+    margin: 4rem auto 2rem;
+    padding: 0 1.5rem;
+    position: relative;
+    z-index: 2;
+  }
+  .proj-forktober-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .proj-forktober-eyebrow {
+    font-family: 'PolySans Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(254, 252, 217, 0.55);
+    margin: 0 0 0.75rem;
+  }
+  .proj-forktober-title {
+    font-family: 'PolySans Trial', sans-serif;
+    font-size: clamp(2rem, 4.2vw, 3rem);
+    font-weight: 800;
+    color: #FFFDD0;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin: 0;
+  }
+  .proj-forktober-title span { color: #EFEFEF; opacity: 0.85; }
+  .proj-forktober-sub {
+    font-family: 'PolySans Trial', sans-serif;
+    font-size: 0.95rem;
+    color: rgba(254, 252, 217, 0.55);
+    max-width: 640px;
+    margin: 1rem auto 0;
+    line-height: 1.6;
+  }
+
+  .proj-forktober-year-block {
+    margin-top: 3rem;
+  }
+  .proj-forktober-year-label {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .proj-forktober-year-num {
+    font-family: 'PolySans Trial', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    color: #FFFDD0;
+    letter-spacing: -0.02em;
+  }
+  .proj-forktober-year-meta {
+    font-family: 'PolySans Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(254, 252, 217, 0.45);
+  }
+
+  .proj-card--forktober .proj-card-inner {
+    position: relative;
+  }
+  .proj-forktober-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    text-align: center;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .proj-forktober-overlay-name {
+    font-family: 'PolySans Trial', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.1rem, 2.2vw, 1.55rem);
+    color: #FEFCD9;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.7), 0 0 2px rgba(0,0,0,0.5);
+  }
+  .proj-forktober-overlay-year {
+    font-family: 'PolySans Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(254, 252, 217, 0.72);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  }
+
+  :global(html[data-theme="light"]) .proj-forktober-title { color: #1a1a1a; }
+  :global(html[data-theme="light"]) .proj-forktober-title span { color: #555; }
+  :global(html[data-theme="light"]) .proj-forktober-eyebrow,
+  :global(html[data-theme="light"]) .proj-forktober-sub { color: rgba(26, 26, 26, 0.6); }
+  :global(html[data-theme="light"]) .proj-forktober-year-num { color: #1a1a1a; }
+  :global(html[data-theme="light"]) .proj-forktober-year-meta { color: rgba(26, 26, 26, 0.5); }
+  :global(html[data-theme="light"]) .proj-forktober-year-label { border-bottom-color: rgba(0,0,0,0.1); }
+  :global(html[data-theme="light"]) .proj-forktober-overlay-name {
+    color: #FEFCD9;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.8), 0 0 2px rgba(0,0,0,0.6);
+  }
+  :global(html[data-theme="light"]) .proj-forktober-overlay-year {
+    color: rgba(254, 252, 217, 0.78);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.7);
   }
 </style>
 

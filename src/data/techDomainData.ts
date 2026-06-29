@@ -47,10 +47,11 @@ const t = (name: string, slug: string, colorHex: string, opts: { isDark?: boolea
 
 export const techTools: TechTool[] = [
   // Web
-  t("Next.js", "nextjs", "#000000", { monochrome: true }),
+  t("Next.js", "nextjs", "#FFFDD0", { monochrome: true }),
   t("React", "react", "#61DAFB"),
   t("Node.js", "nodejs", "#5FA04E"),
   t("Go", "go", "#00ADD8"),
+  t("Python", "python", "#3776AB"),
   t("TypeScript", "typescript", "#3178C6"),
   t("JavaScript", "javascript", "#F7DF1E"),
   t("Tailwind CSS", "tailwindcss", "#06B6D4"),
@@ -59,8 +60,8 @@ export const techTools: TechTool[] = [
   t("tRPC", "trpc", "#2596BE"),
   t("GraphQL", "graphql", "#E10098"),
   t("Apollo GraphQL", "apollographql", "#311C87", { monochrome: true }),
-  t("Express.js", "express", "#000000", { monochrome: true }),
-  t("Fastify", "fastify", "#000000", { monochrome: true }),
+  t("Express.js", "express", "#FFFDD0", { monochrome: true }),
+  t("Fastify", "fastify", "#FFFDD0", { monochrome: true }),
   t("NestJS", "nestjs", "#E0234E"),
   t("Hono", "hono", "#E36002", { monochrome: true }),
   t("PostgreSQL", "postgresql", "#4169E1"),
@@ -146,6 +147,7 @@ export const techTools: TechTool[] = [
   t("OpenGL", "opengl", "#5586A4"),
   t("Vulkan", "vulkan", "#AC162C"),
   t("SDL", "sdl", "#1A1A1A", { isDark: false }),
+  t("Rust", "rust", "#FFFDD0", { monochrome: true }),
 ];
 
 export const techAOIs: TechAOI[] = [

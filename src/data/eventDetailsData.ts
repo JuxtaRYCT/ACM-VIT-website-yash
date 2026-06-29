@@ -749,7 +749,6 @@ export const eventDetails: Record<string, EventDetail> = {
           { label: "CryptoDash", href: "https://github.com/ACM-VIT/CryptoDash" },
           { label: "todo-app", href: "https://github.com/ACM-VIT/todo-app" },
           { label: "create-boilerplate-node", href: "https://github.com/ACM-VIT/create-boilerplate-node" },
-          { label: "cryptic-hunt-backend", href: "https://github.com/ACM-VIT/cryptic-hunt-backend" },
           { label: "QChat", href: "https://github.com/ACM-VIT/QChat" },
         ],
       },
