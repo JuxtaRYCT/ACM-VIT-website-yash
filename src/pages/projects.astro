@@ -29,6 +29,7 @@ type GridProject =
       cassetteSvg: string;
       alt: string;
       url: string;
+      comingSoon?: boolean;
     };
 
 const gridProjects: GridProject[] = [
@@ -100,13 +101,13 @@ const gridProjects: GridProject[] = [
     sizeAxis: "width",
     offsetY: 0,
   },
-  { kind: "svg", name: "OCS 2026", color: "#B721FF", cassetteSvg: "/projects/cassettes/ocs-26.svg", alt: "OCS 2026", url: "https://github.com/ACM-VIT" },
-  { kind: "svg", name: "Conclave", color: "#FF6B35", cassetteSvg: "/projects/cassettes/conclave.svg", alt: "Conclave", url: "https://github.com/ACM-VIT/conclave" },
-  { kind: "svg", name: "TAGRED", color: "#E53E3E", cassetteSvg: "/projects/cassettes/tagred.svg", alt: "TAGRED", url: "https://github.com/ACM-VIT/TAGRED" },
-  { kind: "svg", name: "WENVY", color: "#38B2AC", cassetteSvg: "/projects/cassettes/wenvy.svg", alt: "WENVY", url: "https://github.com/ACM-VIT/wenvy" },
-  { kind: "svg", name: "CLI-TOP", color: "#48BB78", cassetteSvg: "/projects/cassettes/cli-top.svg", alt: "CLI-TOP", url: "https://github.com/ACM-VIT" },
-  { kind: "svg", name: "FORM", color: "#805AD5", cassetteSvg: "/projects/cassettes/form.svg", alt: "FORM", url: "https://github.com/ACM-VIT" },
-  { kind: "svg", name: "CODIGO", color: "#DD6B20", cassetteSvg: "/projects/cassettes/codigo.svg", alt: "CODIGO", url: "https://github.com/ACM-VIT" },
+  { kind: "svg", name: "OCS 2026", color: "#EFE28B", cassetteSvg: "/projects/cassettes/ocs-26.svg", alt: "OCS '26", url: "/projects/ocs-26" },
+  { kind: "svg", name: "Conclave", color: "#FF6B35", cassetteSvg: "/projects/cassettes/conclave.svg", alt: "Conclave", url: "/projects/conclave" },
+  { kind: "svg", name: "WENVY", color: "#F03104", cassetteSvg: "/projects/cassettes/wenvy.svg", alt: "WENVY", url: "/projects/wenvy" },
+  { kind: "svg", name: "CLI-TOP", color: "#48BB78", cassetteSvg: "/projects/cassettes/cli-top.svg", alt: "CLI-TOP", url: "/projects/cli-top" },
+  { kind: "svg", name: "TAGRED", color: "#E53E3E", cassetteSvg: "/projects/cassettes/tagred.svg", alt: "TAGRED", url: "#", comingSoon: true },
+  { kind: "svg", name: "FORM", color: "#805AD5", cassetteSvg: "/projects/cassettes/form.svg", alt: "FORM", url: "#", comingSoon: true },
+  { kind: "svg", name: "CODIGO", color: "#DD6B20", cassetteSvg: "/projects/cassettes/codigo.svg", alt: "CODIGO", url: "#", comingSoon: true },
 ];
 ---
 
@@ -155,12 +156,14 @@ const gridProjects: GridProject[] = [
             </a>
           );
         }
+        const isComingSoon = proj.comingSoon;
         return (
           <a
-            href={proj.url}
-            {...anchorProps}
-            class="proj-card"
+            href={isComingSoon ? undefined : proj.url}
+            {...(isComingSoon ? {} : anchorProps)}
+            class={`proj-card ${isComingSoon ? 'proj-card--coming-soon' : ''}`}
             style={`--card-glow: ${proj.color};`}
+            aria-disabled={isComingSoon ? "true" : undefined}
           >
             <div class="proj-card-inner proj-svg-cassette">
               <img
@@ -170,6 +173,11 @@ const gridProjects: GridProject[] = [
                 loading="lazy"
                 decoding="async"
               />
+              {isComingSoon && (
+                <div class="proj-coming-soon-overlay">
+                  <span class="proj-coming-soon-label">Coming Soon</span>
+                </div>
+              )}
             </div>
           </a>
         );
@@ -248,6 +256,43 @@ const gridProjects: GridProject[] = [
 
   :global(html[data-theme="light"]) .proj-svg-cassette-img {
     filter: sepia(0.15) brightness(0.98);
+  }
+
+  /* ── Coming soon overlay ── */
+  .proj-card--coming-soon {
+    cursor: default;
+    pointer-events: none;
+  }
+  .proj-card--coming-soon .proj-svg-cassette-img {
+    opacity: 0.35;
+    filter: grayscale(0.6);
+  }
+  .proj-coming-soon-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 1.25rem;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .proj-coming-soon-label {
+    font-family: 'PolySans Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(254, 252, 217, 0.7);
+    padding: 6px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 100px;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(4px);
+  }
+  :global(html[data-theme="light"]) .proj-coming-soon-label {
+    color: rgba(254, 252, 217, 0.85);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.55);
   }
 
   /* ── Forktober section ── */
