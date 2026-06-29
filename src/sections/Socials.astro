@@ -1,0 +1,915 @@
+---
+const SOCIALS = [
+  { name: "acmvit.in", url: "https://acmvit.in", icon: "globe" },
+  { name: "email", url: "mailto:hello@acmvit.in", icon: "mail" },
+  { name: "facebook", url: "https://www.facebook.com/acmvitvellore", icon: "facebook" },
+  { name: "github", url: "https://github.com/ACM-VIT", icon: "github" },
+  { name: "hashnode", url: "https://blog.acmvit.in", icon: "hashnode" },
+  { name: "instagram", url: "https://www.instagram.com/acmvit", icon: "instagram" },
+  { name: "linkedin", url: "https://www.linkedin.com/company/acmvit", icon: "linkedin" },
+  { name: "x.com", url: "https://x.com/acm_vit", icon: "x" },
+  { name: "youtube", url: "https://www.youtube.com/@acm_vit", icon: "youtube" },
+  { name: "lifeatacm", url: "https://www.instagram.com/lifeatacm", icon: "heart" },
+  { name: "c2c.acmvit", url: "https://www.instagram.com/c2c.acmvit", icon: "code" },
+];
+
+const ICON_SVGS: Record<string, string> = {
+  globe: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>`,
+  mail: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 01-2.06 0L2 7"/></svg>`,
+  facebook: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>`,
+  github: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 00-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 004 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>`,
+  hashnode: `<svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M22.351 8.019l-6.37-6.37a5.63 5.63 0 00-7.962 0l-6.37 6.37a5.63 5.63 0 000 7.962l6.37 6.37a5.63 5.63 0 007.962 0l6.37-6.37a5.63 5.63 0 000-7.962zM12 15.953a3.953 3.953 0 110-7.906 3.953 3.953 0 010 7.906z"/></svg>`,
+  instagram: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>`,
+  linkedin: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>`,
+  x: `<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`,
+  youtube: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 010-10 2 2 0 011.4-1.4 49.56 49.56 0 0116.2 0A2 2 0 0121.5 7a24.12 24.12 0 010 10 2 2 0 01-1.4 1.4 49.55 49.55 0 01-16.2 0A2 2 0 012.5 17"/><path d="m10 15 5-3-5-3z"/></svg>`,
+  heart: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0016.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 002 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"/></svg>`,
+  code: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
+};
+---
+
+<section id="socials" class="socials-section page-section relative min-h-screen z-[5]">
+  <!-- Fixed boombox revealed as page above scrolls away -->
+  <div class="sticky top-0 left-0 w-full h-screen flex items-center justify-center overflow-hidden bg-[#060606]">
+    <h2 class="sr-only">Socials</h2>
+
+    <!-- ══════ BOOMBOX ══════ -->
+    <div class="boombox">
+
+      <!-- ── Handle ── -->
+      <div class="boombox-handle">
+        <div class="handle-post handle-post-l"></div>
+        <div class="handle-bar">
+          <span class="handle-grip"></span>
+          <span class="handle-grip"></span>
+          <span class="handle-grip"></span>
+          <span class="handle-grip"></span>
+          <span class="handle-grip"></span>
+        </div>
+        <div class="handle-post handle-post-r"></div>
+      </div>
+
+      <!-- ── Main Body ── -->
+      <div class="boombox-body">
+
+        <!-- Corner screws -->
+        <div class="bb-screw bb-screw-tl"></div>
+        <div class="bb-screw bb-screw-tr"></div>
+        <div class="bb-screw bb-screw-bl"></div>
+        <div class="bb-screw bb-screw-br"></div>
+
+        <!-- ── Tuner / Marquee Strip ── -->
+        <div class="tuner-row">
+          <div class="tuner-knob">
+            <div class="tuner-knob-inner"></div>
+          </div>
+          <div class="tuner-strip">
+            <div class="tuner-marks" aria-hidden="true"></div>
+            <div class="tuner-needle"></div>
+            <div class="tuner-marquee">
+              <span>NOW PLAYING&ensp;-&ensp;ACM VIT SOCIALS&ensp;-&ensp;CONNECT WITH US&ensp;-&ensp;NOW PLAYING&ensp;-&ensp;ACM VIT SOCIALS&ensp;-&ensp;CONNECT WITH US&ensp;-&ensp;</span>
+            </div>
+          </div>
+          <div class="tuner-knob">
+            <div class="tuner-knob-inner"></div>
+          </div>
+        </div>
+
+        <!-- ── EQ Buttons Row ── -->
+        <div class="eq-row">
+          {Array.from({length: 20}).map((_, i) => (
+            <div class:list={['eq-btn', i % 3 === 0 ? 'eq-btn-accent' : '']}></div>
+          ))}
+        </div>
+
+        <!-- ── Main Area: Speakers + Center Panel ── -->
+        <div class="boombox-main">
+
+          <!-- Left Speaker -->
+          <div class="speaker-wrap">
+            <div class="speaker">
+              <div class="speaker-grill"></div>
+              <div class="speaker-ring speaker-ring-outer"></div>
+              <div class="speaker-ring speaker-ring-mid"></div>
+              <div class="speaker-dome"></div>
+            </div>
+          </div>
+
+          <!-- Center Panel -->
+          <div class="center-panel">
+
+            <!-- Cassette Window + Reels -->
+            <div class="cassette-deck">
+              <div class="cassette-window">
+                <!-- Left Reel -->
+                <svg class="cassette-reel cassette-reel-l" viewBox="0 0 40 40">
+                  <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                  <circle cx="20" cy="20" r="10" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.6"/>
+                  <circle cx="20" cy="20" r="4" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.2"/>
+                  <g class="reel-spokes-l">
+                    <line x1="20" y1="6" x2="20" y2="2" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-linecap="round"/>
+                    <line x1="20" y1="6" x2="20" y2="2" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-linecap="round" transform="rotate(72,20,20)"/>
+                    <line x1="20" y1="6" x2="20" y2="2" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-linecap="round" transform="rotate(144,20,20)"/>
+                    <line x1="20" y1="6" x2="20" y2="2" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-linecap="round" transform="rotate(216,20,20)"/>
+                    <line x1="20" y1="6" x2="20" y2="2" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-linecap="round" transform="rotate(288,20,20)"/>
+                  </g>
+                </svg>
+                <!-- Right Reel -->
+                <svg class="cassette-reel cassette-reel-r" viewBox="0 0 40 40">
+                  <circle cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                  <circle cx="20" cy="20" r="10" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="0.6"/>
+                  <circle cx="20" cy="20" r="4" fill="none" stroke="#F95F4A" stroke-width="1.2" opacity="0.6"/>
+                  <g class="reel-spokes-r">
+                    <line x1="20" y1="6" x2="20" y2="2" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-linecap="round"/>
+                    <line x1="20" y1="6" x2="20" y2="2" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-linecap="round" transform="rotate(72,20,20)"/>
+                    <line x1="20" y1="6" x2="20" y2="2" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-linecap="round" transform="rotate(144,20,20)"/>
+                    <line x1="20" y1="6" x2="20" y2="2" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-linecap="round" transform="rotate(216,20,20)"/>
+                    <line x1="20" y1="6" x2="20" y2="2" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-linecap="round" transform="rotate(288,20,20)"/>
+                  </g>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Transport Controls -->
+            <div class="transport-row">
+              <button class="transport-btn" data-action="rewind" aria-label="Rewind">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg>
+              </button>
+              <button class="transport-btn" data-action="stop" aria-label="Stop">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
+              </button>
+              <button class="transport-btn transport-play" data-action="play" aria-label="Play">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+              <button class="transport-btn" data-action="forward" aria-label="Fast Forward">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg>
+              </button>
+            </div>
+
+            <!-- Social Buttons Grid -->
+            <div class="social-grid">
+              {SOCIALS.map((social) => (
+                <a
+                  href={social.url}
+                  class="social-btn"
+                  target={social.url.startsWith('mailto:') ? undefined : '_blank'}
+                  rel={social.url.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                  aria-label={social.name}
+                >
+                  <div class="social-btn-face">
+                    <Fragment set:html={ICON_SVGS[social.icon]} />
+                  </div>
+                  <span class="social-btn-label">{social.name}</span>
+                </a>
+              ))}
+            </div>
+
+          </div>
+
+          <!-- Right Speaker -->
+          <div class="speaker-wrap">
+            <div class="speaker">
+              <div class="speaker-grill"></div>
+              <div class="speaker-ring speaker-ring-outer"></div>
+              <div class="speaker-ring speaker-ring-mid"></div>
+              <div class="speaker-dome"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ══════════════════════════════════════
+     BOOMBOX - Full-screen cassette player
+     ══════════════════════════════════════ */
+
+  .boombox {
+    width: 92vw;
+    max-width: 1300px;
+    position: relative;
+  }
+
+  /* ── Handle ── */
+  .boombox-handle {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: 44px;
+    padding: 0 18%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .handle-post {
+    width: 14px;
+    height: 36px;
+    background: linear-gradient(180deg, #2a3240 0%, #222a36 100%);
+    border: 1.5px solid rgba(255,255,255,0.06);
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    flex-shrink: 0;
+  }
+
+  .handle-bar {
+    flex: 1;
+    height: 18px;
+    background: linear-gradient(180deg, #343e4e 0%, #2a3240 100%);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 12px;
+  }
+
+  .handle-grip {
+    width: 10px;
+    height: 8px;
+    border-radius: 3px;
+    background: #1a2030;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* ── Main Body ── */
+  .boombox-body {
+    position: relative;
+    background: linear-gradient(180deg,
+      #2a3444 0%,
+      #232c3a 15%,
+      #1e2838 50%,
+      #1a2434 85%,
+      #16202e 100%
+    );
+    border: 2.5px solid rgba(255,255,255,0.07);
+    border-radius: 18px;
+    box-shadow:
+      inset 0 2px 0 rgba(255,255,255,0.06),
+      inset 0 -3px 8px rgba(0,0,0,0.4),
+      0 30px 80px rgba(0,0,0,0.6),
+      0 10px 30px rgba(0,0,0,0.4);
+    padding: 16px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* ── Corner Screws ── */
+  .bb-screw {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #F95F4A, #c4442e);
+    opacity: 0.55;
+    z-index: 10;
+    box-shadow: inset 0 -1px 2px rgba(0,0,0,0.4);
+  }
+  .bb-screw-tl { top: 10px; left: 10px; }
+  .bb-screw-tr { top: 10px; right: 10px; }
+  .bb-screw-bl { bottom: 10px; left: 10px; }
+  .bb-screw-br { bottom: 10px; right: 10px; }
+
+  /* ── Tuner Strip ── */
+  .tuner-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 8px;
+  }
+
+  .tuner-knob {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #0e141c;
+    border: 2px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  .tuner-knob:hover {
+    border-color: rgba(249,95,74,0.3);
+  }
+
+  .tuner-knob-inner {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #1a2030;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .tuner-strip {
+    flex: 1;
+    height: 30px;
+    background: #060a10;
+    border: 1.5px solid rgba(255,255,255,0.06);
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tuner-marks {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 8px,
+      rgba(255,255,255,0.06) 8px,
+      rgba(255,255,255,0.06) 9px
+    );
+    z-index: 0;
+  }
+
+  .tuner-needle {
+    position: absolute;
+    top: 2px;
+    bottom: 2px;
+    left: 52%;
+    width: 2px;
+    background: #F95F4A;
+    border-radius: 1px;
+    box-shadow: 0 0 6px rgba(249,95,74,0.6);
+    z-index: 2;
+  }
+
+  .tuner-marquee {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .tuner-marquee span {
+    font-family: 'PolySans Mono', monospace;
+    font-size: 10px;
+    color: rgba(249,95,74,0.7);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    animation: marqueeScroll 20s linear infinite;
+    text-shadow: 0 0 6px rgba(249,95,74,0.3);
+  }
+
+  @keyframes marqueeScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── EQ Buttons Row ── */
+  .eq-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 2px 30px;
+  }
+
+  .eq-btn {
+    width: 100%;
+    max-width: 40px;
+    height: 14px;
+    border-radius: 3px;
+    background: #0e141c;
+    border: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+
+  .eq-btn:hover {
+    background: #1a2030;
+    border-color: rgba(255,255,255,0.1);
+  }
+
+  .eq-btn-accent {
+    border-color: rgba(249,95,74,0.15);
+  }
+
+  .eq-btn-accent:hover {
+    border-color: rgba(249,95,74,0.35);
+    box-shadow: 0 0 6px rgba(249,95,74,0.1);
+  }
+
+  /* ── Main Area (speakers + center) ── */
+  .boombox-main {
+    display: flex;
+    align-items: stretch;
+    gap: 16px;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* ── Speakers ── */
+  .speaker-wrap {
+    flex: 0 0 28%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+  }
+
+  .speaker {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #0a0e14;
+    position: relative;
+    box-shadow:
+      inset 0 4px 20px rgba(0,0,0,0.5),
+      inset 0 -2px 10px rgba(0,0,0,0.3),
+      0 2px 8px rgba(0,0,0,0.3);
+    overflow: hidden;
+  }
+
+  .speaker-grill {
+    position: absolute;
+    inset: 6%;
+    border-radius: 50%;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,0.06) 1.2px, transparent 1.2px);
+    background-size: 8px 8px;
+  }
+
+  .speaker-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.04);
+    pointer-events: none;
+  }
+
+  .speaker-ring-outer {
+    inset: 12%;
+  }
+
+  .speaker-ring-mid {
+    inset: 30%;
+  }
+
+  .speaker-dome {
+    position: absolute;
+    inset: 40%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, rgba(255,255,255,0.06), rgba(0,0,0,0.2));
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* ── Center Panel ── */
+  .center-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  /* ── Cassette Deck ── */
+  .cassette-deck {
+    background: #0a0e14;
+    border: 1.5px solid rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  .cassette-window {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20%;
+    background: rgba(0,0,0,0.4);
+    border-radius: 6px;
+    padding: 8px 16px;
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .cassette-reel {
+    width: 48px;
+    height: 48px;
+  }
+
+  .reel-spokes-l {
+    transform-origin: 20px 20px;
+    animation: reelSpin 3s linear infinite;
+  }
+
+  .reel-spokes-r {
+    transform-origin: 20px 20px;
+    animation: reelSpin 2.2s linear infinite reverse;
+  }
+
+  @keyframes reelSpin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* ── Transport Controls ── */
+  .transport-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .transport-btn {
+    width: 36px;
+    height: 30px;
+    border-radius: 5px;
+    background: #0e141c;
+    border: 1.5px solid rgba(255,255,255,0.06);
+    box-shadow:
+      inset 0 -1px 2px rgba(0,0,0,0.3),
+      0 2px 4px rgba(0,0,0,0.3);
+    color: rgba(254,252,217,0.35);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    padding: 0;
+  }
+
+  .transport-btn:hover {
+    color: rgba(254,252,217,0.7);
+    background: #161c28;
+    border-color: rgba(255,255,255,0.1);
+  }
+
+  .transport-btn:active {
+    transform: translateY(1px);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+  }
+
+  .transport-play {
+    width: 38px;
+    height: 32px;
+    background: #F95F4A;
+    border-color: rgba(249,95,74,0.4);
+    color: white;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(249,95,74,0.2), 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  .transport-play:hover {
+    background: #e8513d;
+    color: white;
+    box-shadow: 0 0 16px rgba(249,95,74,0.3), 0 2px 6px rgba(0,0,0,0.4);
+  }
+
+  /* ── Social Buttons Grid ── */
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px 10px;
+    padding: 4px 0;
+  }
+
+  .social-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    outline: none;
+  }
+
+  .social-btn-face {
+    width: 100%;
+    aspect-ratio: 1;
+    max-width: 72px;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #1c2434 0%, #121a26 100%);
+    border: 1.5px solid rgba(255,255,255,0.05);
+    box-shadow:
+      inset 0 -2px 4px rgba(0,0,0,0.3),
+      inset 0 1px 2px rgba(255,255,255,0.03),
+      0 3px 10px rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(254,252,217,0.4);
+    transition: all 0.22s cubic-bezier(0.25,0.1,0.25,1);
+    will-change: transform, box-shadow;
+  }
+
+  .social-btn:hover .social-btn-face {
+    color: #F95F4A;
+    border-color: rgba(249,95,74,0.25);
+    box-shadow:
+      inset 0 -2px 4px rgba(0,0,0,0.3),
+      0 0 20px rgba(249,95,74,0.12),
+      0 6px 14px rgba(0,0,0,0.5);
+    transform: translateY(-2px);
+  }
+
+  .social-btn:active .social-btn-face {
+    transform: translateY(1px);
+    box-shadow:
+      inset 0 2px 6px rgba(0,0,0,0.5),
+      0 0 10px rgba(249,95,74,0.06);
+    transition-duration: 0.06s;
+  }
+
+  .social-btn:focus-visible .social-btn-face {
+    outline: 2px solid #F95F4A;
+    outline-offset: 2px;
+  }
+
+  .social-btn-label {
+    font-family: 'PolySans Mono', monospace;
+    font-size: 9px;
+    font-weight: 400;
+    color: rgba(254,252,217,0.35);
+    letter-spacing: 0.03em;
+    transition: color 0.2s ease;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  .social-btn:hover .social-btn-label {
+    color: rgba(254,252,217,0.75);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .boombox { width: 96vw; }
+    .speaker-wrap { flex: 0 0 24%; }
+    .social-grid { grid-template-columns: repeat(3, 1fr); }
+    .social-btn-face { max-width: 64px; }
+  }
+
+  @media (max-width: 640px) {
+    .boombox-body { padding: 12px 12px 16px; gap: 8px; }
+    .speaker-wrap { display: none; }
+    .boombox-main { gap: 0; }
+    .social-grid { grid-template-columns: repeat(3, 1fr); gap: 10px 12px; }
+    .social-btn-face {
+      max-width: 68px;
+      border-radius: 12px;
+    }
+    .social-btn-face :global(svg) {
+      width: 22px;
+      height: 22px;
+    }
+    .social-btn-label { font-size: 9px; }
+    .boombox-handle { padding: 0 10%; }
+    .eq-row { padding: 2px 10px; gap: 3px; }
+    .cassette-reel { width: 36px; height: 36px; }
+  }
+
+  /* ══════ LIGHT MODE ══════ */
+  :global(html[data-theme="light"]) .boombox-body {
+    background: linear-gradient(180deg,
+      #b8c4d0 0%,
+      #adb8c6 15%,
+      #a4b0be 50%,
+      #9eaab8 85%,
+      #96a2b0 100%
+    );
+    border-color: rgba(0,0,0,0.1);
+    box-shadow:
+      inset 0 2px 0 rgba(255,255,255,0.3),
+      inset 0 -3px 8px rgba(0,0,0,0.08),
+      0 30px 80px rgba(0,0,0,0.15),
+      0 10px 30px rgba(0,0,0,0.08);
+  }
+
+  :global(html[data-theme="light"]) .handle-post {
+    background: linear-gradient(180deg, #8a96a4, #7e8a98);
+    border-color: rgba(0,0,0,0.08);
+  }
+
+  :global(html[data-theme="light"]) .handle-bar {
+    background: linear-gradient(180deg, #96a2b0, #8a96a4);
+    border-color: rgba(0,0,0,0.08);
+  }
+
+  :global(html[data-theme="light"]) .handle-grip {
+    background: #7a8694;
+    border-color: rgba(0,0,0,0.06);
+  }
+
+  :global(html[data-theme="light"]) .tuner-strip {
+    background: #1a1e24;
+  }
+
+  :global(html[data-theme="light"]) .tuner-knob {
+    background: #1a1e24;
+    border-color: rgba(0,0,0,0.15);
+  }
+
+  :global(html[data-theme="light"]) .eq-btn {
+    background: #8a96a4;
+    border-color: rgba(0,0,0,0.06);
+  }
+
+  :global(html[data-theme="light"]) .speaker {
+    background: #2a3040;
+    box-shadow:
+      inset 0 4px 20px rgba(0,0,0,0.3),
+      0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  :global(html[data-theme="light"]) .speaker-grill {
+    background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1.2px, transparent 1.2px);
+  }
+
+  :global(html[data-theme="light"]) .cassette-deck {
+    background: #2a3040;
+    border-color: rgba(0,0,0,0.1);
+  }
+
+  :global(html[data-theme="light"]) .social-btn-face {
+    background: linear-gradient(180deg, #c4d0dc 0%, #b4c0cc 100%);
+    border-color: rgba(0,0,0,0.06);
+    color: rgba(26,26,26,0.35);
+    box-shadow:
+      inset 0 -2px 4px rgba(0,0,0,0.05),
+      inset 0 1px 2px rgba(255,255,255,0.25),
+      0 3px 10px rgba(0,0,0,0.06);
+  }
+
+  :global(html[data-theme="light"]) .social-btn:hover .social-btn-face {
+    color: #F95F4A;
+    border-color: rgba(249,95,74,0.3);
+  }
+
+  :global(html[data-theme="light"]) .social-btn-label {
+    color: rgba(26,26,26,0.35);
+  }
+
+  :global(html[data-theme="light"]) .social-btn:hover .social-btn-label {
+    color: rgba(26,26,26,0.7);
+  }
+
+  :global(html[data-theme="light"]) .transport-btn {
+    background: #8a96a4;
+    border-color: rgba(0,0,0,0.06);
+    color: rgba(26,26,26,0.35);
+  }
+
+  :global(html[data-theme="light"]) .transport-btn:hover {
+    background: #96a2b0;
+    color: rgba(26,26,26,0.6);
+  }
+
+  :global(html[data-theme="light"]) .bb-screw { opacity: 0.4; }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section = document.querySelector(".socials-section");
+
+  if (section) {
+    // ── Knob interactions ──
+    document.querySelectorAll<HTMLElement>(".tuner-knob").forEach((knob) => {
+      knob.addEventListener("click", () => {
+        gsap.fromTo(knob, { scale: 0.9 }, { scale: 1, duration: 0.25, ease: "back.out(3)" });
+      });
+    });
+
+    // ── EQ button interactions ──
+    document.querySelectorAll<HTMLElement>(".eq-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        btn.classList.toggle("eq-btn-accent");
+        gsap.fromTo(btn, { scale: 0.85 }, { scale: 1, duration: 0.2, ease: "back.out(3)" });
+      });
+    });
+
+    // ── Transport controls (linked to CassettePlayer) ──
+    const cpAudio = document.getElementById("cp-audio") as HTMLAudioElement | null;
+    const cpPrev = document.getElementById("cp-prev");
+    const cpNext = document.getElementById("cp-next");
+    const reelL = document.querySelector(".reel-spokes-l") as SVGGElement | null;
+    const reelR = document.querySelector(".reel-spokes-r") as SVGGElement | null;
+    const bbPlayBtn = document.querySelector('.transport-play') as HTMLElement | null;
+
+    // Sync boombox reel speed with audio play state
+    function syncReels(playing: boolean) {
+      if (playing) {
+        if (reelL) reelL.style.animationDuration = "1.5s";
+        if (reelR) reelR.style.animationDuration = "1s";
+      } else {
+        if (reelL) reelL.style.animationDuration = "40s";
+        if (reelR) reelR.style.animationDuration = "40s";
+      }
+    }
+
+    // Sync play button icon (swap play/pause SVG)
+    function syncPlayIcon(playing: boolean) {
+      if (!bbPlayBtn) return;
+      const svg = bbPlayBtn.querySelector("svg");
+      if (!svg) return;
+      if (playing) {
+        // Show pause icon
+        svg.innerHTML = '<rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/>';
+      } else {
+        // Show play icon
+        svg.innerHTML = '<path d="M8 5v14l11-7z" fill="currentColor"/>';
+      }
+    }
+
+    // Listen to CassettePlayer audio events
+    if (cpAudio) {
+      cpAudio.addEventListener("play", () => { syncReels(true); syncPlayIcon(true); });
+      cpAudio.addEventListener("pause", () => { syncReels(false); syncPlayIcon(false); });
+      // Set initial state
+      syncReels(!cpAudio.paused);
+      syncPlayIcon(!cpAudio.paused);
+    }
+
+    document.querySelectorAll<HTMLElement>(".transport-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const action = btn.dataset.action;
+        gsap.fromTo(btn, { scale: 0.88 }, { scale: 1, duration: 0.2, ease: "back.out(3)" });
+
+        if (!cpAudio) return;
+
+        if (action === "play") {
+          if (cpAudio.paused) cpAudio.play().catch(() => {});
+          else cpAudio.pause();
+        } else if (action === "stop") {
+          cpAudio.pause();
+          cpAudio.currentTime = 0;
+        } else if (action === "rewind") {
+          // Trigger CassettePlayer prev track
+          cpPrev?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+          // Fast spin reels briefly
+          if (reelL) { reelL.style.animationDuration = "0.3s"; reelL.style.animationDirection = "reverse"; }
+          if (reelR) { reelR.style.animationDuration = "0.2s"; reelR.style.animationDirection = "reverse"; }
+          setTimeout(() => {
+            const playing = cpAudio && !cpAudio.paused;
+            if (reelL) { reelL.style.animationDirection = "normal"; }
+            if (reelR) { reelR.style.animationDirection = "reverse"; }
+            syncReels(!!playing);
+          }, 800);
+        } else if (action === "forward") {
+          // Trigger CassettePlayer next track
+          cpNext?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+          // Fast spin reels briefly
+          if (reelL) { reelL.style.animationDuration = "0.3s"; }
+          if (reelR) { reelR.style.animationDuration = "0.2s"; }
+          setTimeout(() => {
+            const playing = cpAudio && !cpAudio.paused;
+            if (reelL) { reelL.style.animationDirection = "normal"; }
+            if (reelR) { reelR.style.animationDirection = "reverse"; }
+            syncReels(!!playing);
+          }, 800);
+        }
+      });
+    });
+
+    // ── Social button hover sound ──
+    let audioCtx: AudioContext | null = null;
+
+    function playClick() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(700, now);
+      osc.frequency.exponentialRampToValueAtTime(180, now + 0.025);
+      gain.gain.setValueAtTime(0.035, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+      osc.connect(gain).connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.04);
+    }
+
+    document.querySelectorAll<HTMLElement>(".social-btn").forEach((btn) => {
+      btn.addEventListener("mouseenter", playClick);
+    });
+
+    // ── Speaker pulse on scroll ──
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top 80%",
+      once: true,
+      onEnter: () => {
+        gsap.from(".social-btn", {
+          scale: 0.85,
+          opacity: 0,
+          stagger: 0.03,
+          duration: 0.45,
+          ease: "back.out(1.6)",
+        });
+      },
+    });
+  }
+</script>
