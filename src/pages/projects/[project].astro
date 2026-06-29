@@ -84,6 +84,10 @@ const slugDecorations: Record<string, {
     storeAppleBadge: "/projects/examcooker/app-store-badge.svg",
     storeGoogleBadge: "/projects/examcooker/google-play-badge.png",
   },
+  acmone: {
+    bigLogo: "/projects/acmone/acmone-logo.webp",
+    storeGoogleBadge: "/projects/unipool/google-play-badge.png",
+  },
 };
 const deco = slugDecorations[data.slug] ?? {};
 
@@ -92,6 +96,7 @@ const footerLines: Record<string, string> = {
   unipool: "End of the line. Driver says park.",
   examcooker: "Exam's over. Close your tabs.",
   "cli-rpg": "Game over. Insert coin to continue.",
+  acmone: "Meeting adjourned. See you next stand-up.",
 };
 const footerLine = footerLines[data.slug] ?? "End of the road.";
 
