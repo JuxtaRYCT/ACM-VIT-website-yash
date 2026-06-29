@@ -136,7 +136,11 @@ const events = eventOrder
 
   .events-page__card:hover {
     transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 0 8px 1px #efefef;
+  }
+
+  html[data-theme="light"] .events-page__card:hover {
+    box-shadow: 0 0 8px 1px #F95F4A;
   }
 
   .events-page__cassette {

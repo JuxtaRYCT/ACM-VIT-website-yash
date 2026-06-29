@@ -7,7 +7,7 @@ import { getAssetUrl } from "../utils/cdn";
 import Cassette from "../components/ui/Cassette.astro";
 import Footer from "../layouts/Footer.astro";
 
-const projects = [
+const overlayProjects = [
   {
     name: "ACMOne",
     color: "#F95F4A",
@@ -64,100 +64,22 @@ const projects = [
     image: "/projects/items/5/cassetteSrc.webp",
     alt: "OCS Website",
     url: "https://os.acmvit.in",
-    sizePercent: 80,
+    sizePercent: 100,
     sizeAxis: "width" as const,
-    offsetY: -3,
+    offsetY: 0,
   },
-  {
-    name: "Conclave",
-    color: "#FF6B35",
-    image: "/projects/items/6/cassetteSrc.svg",
-    alt: "Conclave",
-    url: "https://github.com/ACM-VIT/conclave",
-    sizePercent: 85,
-    sizeAxis: "width" as const,
-    offsetY: -5,
-  },
-  {
-    name: "TAGRED",
-    color: "#E53E3E",
-    image: "/projects/items/7/cassetteSrc.svg",
-    alt: "TAGRED",
-    url: "https://github.com/ACM-VIT/TAGRED",
-    sizePercent: 85,
-    sizeAxis: "width" as const,
-    offsetY: -5,
-  },
-  {
-    name: "WENVY",
-    color: "#38B2AC",
-    image: "/projects/items/8/cassetteSrc.svg",
-    alt: "WENVY",
-    url: "https://github.com/ACM-VIT/wenvy",
-    sizePercent: 85,
-    sizeAxis: "width" as const,
-    offsetY: -5,
-  },
-  {
-    name: "CLI-TOP",
-    color: "#48BB78",
-    image: "/projects/items/9/cassetteSrc.svg",
-    alt: "CLI-TOP",
-    url: "https://github.com/ACM-VIT",
-    sizePercent: 85,
-    sizeAxis: "width" as const,
-    offsetY: -5,
-  },
-  {
-    name: "FORM",
-    color: "#805AD5",
-    image: "/projects/items/10/cassetteSrc.svg",
-    alt: "FORM",
-    url: "https://github.com/ACM-VIT",
-    sizePercent: 85,
-    sizeAxis: "width" as const,
-    offsetY: -5,
-  },
-  {
-    name: "CODIGO",
-    color: "#DD6B20",
-    image: "/projects/items/11/cassetteSrc.svg",
-    alt: "CODIGO",
-    url: "https://github.com/ACM-VIT",
-    sizePercent: 85,
-    sizeAxis: "width" as const,
-    offsetY: -5,
-  },
-  {
-    name: "OCS 2022",
-    color: "#8710DB",
-    image: "/projects/items/12/cassetteSrc.svg",
-    alt: "OCS 2022",
-    url: "https://github.com/ACM-VIT",
-    sizePercent: 80,
-    sizeAxis: "width" as const,
-    offsetY: -3,
-  },
-  {
-    name: "OCS 2023",
-    color: "#9F40DB",
-    image: "/projects/items/13/cassetteSrc.svg",
-    alt: "OCS 2023",
-    url: "https://github.com/ACM-VIT",
-    sizePercent: 80,
-    sizeAxis: "width" as const,
-    offsetY: -3,
-  },
-  {
-    name: "OCS 2026",
-    color: "#B721FF",
-    image: "/projects/items/14/cassetteSrc.svg",
-    alt: "OCS 2026",
-    url: "https://github.com/ACM-VIT",
-    sizePercent: 80,
-    sizeAxis: "width" as const,
-    offsetY: -3,
-  },
+];
+
+const svgProjects = [
+  { name: "Conclave", color: "#FF6B35", cassetteSvg: "/projects/cassettes/conclave.svg", alt: "Conclave", url: "https://github.com/ACM-VIT/conclave" },
+  { name: "TAGRED", color: "#E53E3E", cassetteSvg: "/projects/cassettes/tagred.svg", alt: "TAGRED", url: "https://github.com/ACM-VIT/TAGRED" },
+  { name: "WENVY", color: "#38B2AC", cassetteSvg: "/projects/cassettes/wenvy.svg", alt: "WENVY", url: "https://github.com/ACM-VIT/wenvy" },
+  { name: "CLI-TOP", color: "#48BB78", cassetteSvg: "/projects/cassettes/cli-top.svg", alt: "CLI-TOP", url: "https://github.com/ACM-VIT" },
+  { name: "FORM", color: "#805AD5", cassetteSvg: "/projects/cassettes/form.svg", alt: "FORM", url: "https://github.com/ACM-VIT" },
+  { name: "CODIGO", color: "#DD6B20", cassetteSvg: "/projects/cassettes/codigo.svg", alt: "CODIGO", url: "https://github.com/ACM-VIT" },
+  { name: "OCS 2022", color: "#8710DB", cassetteSvg: "/projects/cassettes/ocs-22.svg", alt: "OCS 2022", url: "https://github.com/ACM-VIT" },
+  { name: "OCS 2023", color: "#9F40DB", cassetteSvg: "/projects/cassettes/ocs-23.svg", alt: "OCS 2023", url: "https://github.com/ACM-VIT" },
+  { name: "OCS 2026", color: "#B721FF", cassetteSvg: "/projects/cassettes/ocs-26.svg", alt: "OCS 2026", url: "https://github.com/ACM-VIT" },
 ];
 ---
 
@@ -180,7 +102,7 @@ const projects = [
 
     <!-- Grid -->
     <div class="proj-grid">
-      {projects.map((proj) => (
+      {overlayProjects.map((proj) => (
         <a
           href={proj.url}
           target="_blank"
@@ -196,6 +118,25 @@ const projects = [
               overlaySizePercent={proj.sizePercent}
               overlaySizeAxis={proj.sizeAxis}
               offsetYPercent={proj.offsetY}
+            />
+          </div>
+        </a>
+      ))}
+      {svgProjects.map((proj) => (
+        <a
+          href={proj.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="proj-card"
+          style={`--card-glow: ${proj.color};`}
+        >
+          <div class="proj-card-inner proj-svg-cassette">
+            <img
+              src={getAssetUrl(proj.cassetteSvg)}
+              alt={proj.alt}
+              class="proj-svg-cassette-img"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </a>
@@ -222,7 +163,22 @@ const projects = [
 
 <style>
   .proj-card::after {
-    box-shadow: 0 0 30px 8px var(--card-glow, transparent);
+    box-shadow: 0 0 8px 1px var(--card-glow, transparent);
+  }
+
+  .proj-svg-cassette-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  :global(html[data-theme="light"]) .proj-svg-cassette {
+    background: #1a1a1a;
+    border-radius: 16px;
+  }
+
+  :global(html[data-theme="light"]) .proj-svg-cassette-img {
+    filter: sepia(0.15) brightness(0.98);
   }
 </style>
 
