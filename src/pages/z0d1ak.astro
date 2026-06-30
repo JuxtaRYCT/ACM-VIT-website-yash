@@ -673,10 +673,12 @@ import {
 
   /* ───────────── Faint starfield ───────────── */
   (function starfield() {
-    const canvas = document.getElementById("starfield") as HTMLCanvasElement | null;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const canvasEl = document.getElementById("starfield") as HTMLCanvasElement | null;
+    if (!canvasEl) return;
+    const ctxRef = canvasEl.getContext("2d");
+    if (!ctxRef) return;
+    const canvas: HTMLCanvasElement = canvasEl;
+    const ctx: CanvasRenderingContext2D = ctxRef;
     let w = 0, h = 0, dpr = 1, t = 0, scrollY = 0;
     let stars: { x: number; y: number; r: number; base: number; tw: number; sp: number; depth: number }[] = [];
 
@@ -763,8 +765,9 @@ import {
   /* ───────────── Atlas interaction ───────────── */
   (function atlas() {
     const map = document.getElementById("atlasMap");
-    const panel = document.getElementById("atlPanel");
-    if (!map || !panel) return;
+    const panelEl = document.getElementById("atlPanel");
+    if (!map || !panelEl) return;
+    const panel: HTMLElement = panelEl;
     const starsBtns = Array.from(map.querySelectorAll<HTMLButtonElement>(".atl-star"));
     const lines = Array.from(map.querySelectorAll<SVGLineElement>(".atl-line"));
     const placeEl = panel.querySelector<HTMLElement>(".atp-place")!;
