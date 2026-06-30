@@ -96,10 +96,17 @@
           <circle cx="272" cy="167" r="2.5" class="screw" />
         </g>
 
-        <!-- ACM logo text (hidden, revealed when loaded) -->
-        <text class="acm-reveal" x="140" y="72" text-anchor="middle" dominant-baseline="middle">
+        <!-- Logo reveal (hidden, revealed when loaded). Default: acm text.
+             On the z0d1ak page the preloader swaps in the z0d1ak logo. -->
+        <text class="acm-reveal acm-reveal-text" x="140" y="72" text-anchor="middle" dominant-baseline="middle">
           acm
         </text>
+        <image
+          class="acm-reveal acm-reveal-logo"
+          href="/z0d1ak/z0d1ak_logo.svg"
+          x="108" y="38" width="64" height="66"
+          preserveAspectRatio="xMidYMid meet"
+        />
       </svg>
     </div>
 
@@ -115,6 +122,10 @@
 
 <script>
   const preloader = document.getElementById("preloader");
+  // z0d1ak page: swap the acm reveal for the z0d1ak logo
+  if (preloader && location.pathname.replace(/\/+$/, "") === "/z0d1ak") {
+    preloader.classList.add("preloader--z0d1ak");
+  }
   const progressFill = document.querySelector(".progress-fill") as HTMLElement;
   const cassetteWrapper = document.getElementById("cassette-wrapper");
   const loaderStatus = document.getElementById("loader-status");
@@ -925,6 +936,12 @@
     transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s,
                 transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s;
   }
+
+  /* default: show acm text, hide the z0d1ak logo */
+  .acm-reveal-logo { display: none; }
+  /* on the z0d1ak page (class set by the preloader script): swap them */
+  .preloader--z0d1ak .acm-reveal-text { display: none; }
+  .preloader--z0d1ak .acm-reveal-logo { display: block; }
 
   /* ── LOADED STATE ── */
   .cassette-loaded .reel-left .reel-spokes,

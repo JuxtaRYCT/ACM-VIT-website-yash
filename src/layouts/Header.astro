@@ -153,7 +153,7 @@ const dropdowns: Record<string, DropdownItem[]> = {
             <span class="nav-dot"></span>
             <span class="nav-label">Contact</span>
           </a>
-          <a href="/more" class="nav-item" data-section="more" style="--dot-i:11">
+          <a href="/#more" class="nav-item" data-section="more" style="--dot-i:11">
             <span class="nav-dot"></span>
             <span class="nav-label">More</span>
           </a>
@@ -1033,11 +1033,11 @@ const dropdowns: Record<string, DropdownItem[]> = {
       if (!target) return;
       e.preventDefault();
 
-      // Contact is a 200vh laptop section below lazy-loaded content; a captured
-      // scrollIntoView target goes stale and lands on the gallery. Let the
-      // browser resolve the position via the hash (correct) - CSS
-      // scroll-behavior: smooth keeps it smooth, no full reload.
-      if (id === "contact") {
+      // Contact (200vh) and More (curtain + pinned boombox below it) sit below
+      // lazy-loaded content, so a captured scrollIntoView target goes stale and
+      // lands short. Hash nav lets the browser resolve the correct position - CSS
+      // scroll-behavior: smooth keeps it smooth.
+      if (id === "contact" || id === "more") {
         window.location.hash = id;
         applyNavState(id);
         currentSectionId = id;

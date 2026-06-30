@@ -186,11 +186,15 @@ const videoEndTime = undefined; // Use full video duration (set to specific seco
         </div>
     </section>
 
-    <section id="more" class="page-section">
+    <!-- Curtain: #more sits on top and lifts away to reveal the pinned boombox -->
+    <section id="more" class="page-section relative z-20">
         <MoreTapes />
     </section>
 
-    <Socials />
+    <!-- Boombox is pinned behind; pulled up so it's already in place under #more -->
+    <div class="relative z-[5] -mt-[100vh]">
+        <Socials />
+    </div>
 
     <GrepSideTab />
     <Footer />
