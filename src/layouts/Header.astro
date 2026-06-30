@@ -1,6 +1,7 @@
 ---
 // Header.astro
 import { getAssetUrl } from "../utils/cdn";
+import MobileNavbar from "../components/ui/MobileNavbar.astro";
 
 export interface Props {
   /** When set, replaces the dot nav with a compact subpage pill (page title + back button). */
@@ -206,110 +207,9 @@ const dropdowns: Record<string, DropdownItem[]> = {
         </div>
       </div>
 
-      <!-- Mobile bottom tab bar -->
+      <!-- Mobile bottom navbar (morphing pill: nav / menu / music) -->
       <div class="nav-mobile">
-        <!-- Bottom tab bar -->
-        <div id="mobile-tab-bar" class="mobile-tab-bar">
-          <a href="/#home" class="tab-item" data-tab="home">
-            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
-              <path d="M9 21V13h6v8"/>
-            </svg>
-            <span class="tab-label">Home</span>
-          </a>
-          <a href="/#events" class="tab-item" data-tab="events">
-            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2"/>
-              <path d="M16 2v4M8 2v4M3 10h18"/>
-              <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>
-            </svg>
-            <span class="tab-label">Events</span>
-          </a>
-          <a href="/#projects" class="tab-item" data-tab="projects">
-            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="16 18 22 12 16 6"/>
-              <polyline points="8 6 2 12 8 18"/>
-              <line x1="14" y1="4" x2="10" y2="20"/>
-            </svg>
-            <span class="tab-label">Projects</span>
-          </a>
-          <a href="/#community" class="tab-item" data-tab="community">
-            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-              <circle cx="9" cy="7" r="4"/>
-              <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
-            </svg>
-            <span class="tab-label">Community</span>
-          </a>
-          <button id="mobile-menu-btn" class="tab-item" data-tab="menu" aria-label="Open menu">
-            <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="5" cy="5" r="1.5"/>
-              <circle cx="12" cy="5" r="1.5"/>
-              <circle cx="19" cy="5" r="1.5"/>
-              <circle cx="5" cy="12" r="1.5"/>
-              <circle cx="12" cy="12" r="1.5"/>
-              <circle cx="19" cy="12" r="1.5"/>
-              <circle cx="5" cy="19" r="1.5"/>
-              <circle cx="12" cy="19" r="1.5"/>
-              <circle cx="19" cy="19" r="1.5"/>
-            </svg>
-            <span class="tab-label">More</span>
-          </button>
-        </div>
-
-        <!-- Full menu overlay (opened from More tab) -->
-        <div
-          id="mobile-menu-overlay"
-          class="fixed inset-0 bg-black/95 backdrop-blur-xl z-[100] translate-y-full transition-transform duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] flex flex-col"
-        >
-          <div class="flex items-center justify-between px-6 pt-6 pb-4">
-            <span class="text-[#FEFCD9] text-sm font-light font-['PolySans_Trial'] uppercase tracking-[0.2em] opacity-50">Navigate</span>
-            <button
-              id="mobile-menu-close"
-              class="w-10 h-10 flex items-center justify-center text-[#FEFCD9] rounded-full border border-[#FEFCD9]/20 active:scale-95 transition-transform"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
-          </div>
-          <div class="flex-1 overflow-y-auto px-6 pb-[calc(1rem+env(safe-area-inset-bottom,0px))]">
-            <ul class="flex flex-col gap-1">
-              {
-                [
-                  { id: "about", icon: "info", label: "About" },
-                  { id: "domains", icon: "grid", label: "Domains" },
-                  { id: "events", icon: "calendar", label: "Events" },
-                  { id: "projects", icon: "code", label: "Projects" },
-                  { id: "acm-w", icon: "heart", label: "ACM-W" },
-                  { id: "community", icon: "people", label: "Community" },
-                  { id: "team", icon: "users", label: "Team" },
-                  { id: "blogs", icon: "book", label: "Blogs" },
-                  { id: "partners", icon: "handshake", label: "Partners" },
-                  { id: "gallery", icon: "image", label: "Gallery" },
-                  { id: "contact", icon: "mail", label: "Contact" },
-                  { id: "more", icon: "dots", label: "More" },
-                ].map((item) => {
-                  const href = item.id === "more" ? "/more" : `/#${item.id}`;
-                  return (
-                    <li>
-                      <a
-                        href={href}
-                        class="mobile-nav-link flex items-center gap-4 py-3 px-4 rounded-2xl text-xl font-light font-['PolySans_Trial'] uppercase text-[#FEFCD9] hover:text-[#F95F4A] hover:bg-white/5 active:bg-white/10 transition-all"
-                      >
-                        <span class="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 flex-shrink-0">
-                          <span class="text-xs text-[#F95F4A] font-['PolySans_Mono']">{(item.id === "acm-w" ? "W" : item.label.charAt(0))}</span>
-                        </span>
-                        {item.label.replace("-", " ")}
-                      </a>
-                    </li>
-                  );
-                })
-              }
-            </ul>
-          </div>
-        </div>
+        <MobileNavbar pageTitle={pageTitle} />
       </div>
     </nav>
   </div>
@@ -977,98 +877,6 @@ const dropdowns: Record<string, DropdownItem[]> = {
 
   .nav-mobile {
     display: none;
-    position: relative;
-    pointer-events: auto;
-  }
-
-  /* ── Mobile bottom tab bar ── */
-  .mobile-tab-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 50;
-    display: flex;
-    align-items: stretch;
-    justify-content: space-around;
-    height: calc(64px + env(safe-area-inset-bottom, 0px));
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    background: rgba(6, 2, 2, 0.72);
-    backdrop-filter: blur(32px) saturate(200%);
-    -webkit-backdrop-filter: blur(32px) saturate(200%);
-    border-top: 1px solid rgba(249, 95, 74, 0.2);
-    pointer-events: auto;
-    opacity: 0;
-    transform: translateY(100%);
-    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
-  }
-
-  .mobile-tab-bar.tab-bar-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .tab-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    padding: 6px 0;
-    text-decoration: none;
-    color: rgba(254, 252, 217, 0.45);
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: color 0.25s ease;
-    -webkit-tap-highlight-color: transparent;
-    position: relative;
-  }
-
-  .tab-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%) scaleX(0);
-    width: 32px;
-    height: 2px;
-    border-radius: 0 0 2px 2px;
-    background: #F95F4A;
-    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-  }
-
-  .tab-item.tab-active {
-    color: #F95F4A;
-  }
-
-  .tab-item.tab-active::before {
-    transform: translateX(-50%) scaleX(1);
-  }
-
-  .tab-item:active {
-    transform: scale(0.9);
-  }
-
-  .tab-icon {
-    width: 22px;
-    height: 22px;
-    flex-shrink: 0;
-    transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
-  }
-
-  .tab-item.tab-active .tab-icon {
-    transform: scale(1.1);
-  }
-
-  .tab-label {
-    font-family: 'PolySans Trial', sans-serif;
-    font-size: 9px;
-    font-weight: 400;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    line-height: 1;
   }
 
   /* ── Mobile breakpoints ── */
@@ -1095,35 +903,6 @@ const dropdowns: Record<string, DropdownItem[]> = {
     .nav-mobile {
       display: block;
     }
-    /* Add bottom padding to body so content isn't hidden behind tab bar */
-    :global(body) {
-      padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
-    }
-    /* Hide tab bar when menu overlay is open */
-    body.mobile-menu-open .mobile-tab-bar {
-      opacity: 0;
-      transform: translateY(100%);
-      pointer-events: none;
-    }
-  }
-
-  @media screen and (max-width: 480px) {
-    .tab-icon {
-      width: 20px;
-      height: 20px;
-    }
-    .tab-label {
-      font-size: 8px;
-    }
-    .mobile-tab-bar {
-      height: calc(58px + env(safe-area-inset-bottom, 0px));
-    }
-  }
-
-  /* ── Light mode tab bar ── */
-  :global(html[data-theme="light"]) .mobile-tab-bar {
-    background: rgba(26, 26, 26, 0.82);
-    border-top-color: rgba(255, 255, 255, 0.1);
   }
 </style>
 
@@ -1135,72 +914,6 @@ const dropdowns: Record<string, DropdownItem[]> = {
 
   document.addEventListener("DOMContentLoaded", () => {
     const sections = document.querySelectorAll("section[id], footer[id]");
-
-    // Mobile Tab Bar + Menu
-    const mobileMenuBtn = document.getElementById("mobile-menu-btn");
-    const mobileMenuOverlay = document.getElementById("mobile-menu-overlay");
-    const mobileMenuClose = document.getElementById("mobile-menu-close");
-    const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
-    const mobileTabBar = document.getElementById("mobile-tab-bar");
-    const tabItems = document.querySelectorAll(".tab-item");
-
-    // Show tab bar after a short delay (matches pill intro timing)
-    if (mobileTabBar) {
-      const showTabBar = () => {
-        setTimeout(() => {
-          mobileTabBar.classList.add("tab-bar-visible");
-        }, 600);
-      };
-      if (sessionStorage.getItem("preloaderShown")) {
-        showTabBar();
-      } else {
-        window.addEventListener("preloader:done", showTabBar, { once: true });
-        // Fallback if preloader already done
-        setTimeout(showTabBar, 2000);
-      }
-    }
-
-    function toggleMobileMenu(show) {
-      if (show) {
-        mobileMenuOverlay.classList.remove("translate-y-full");
-        document.body.classList.add("mobile-menu-open");
-      } else {
-        mobileMenuOverlay.classList.add("translate-y-full");
-        document.body.classList.remove("mobile-menu-open");
-      }
-    }
-
-    if (mobileMenuBtn) mobileMenuBtn.addEventListener("click", () => toggleMobileMenu(true));
-    if (mobileMenuClose) mobileMenuClose.addEventListener("click", () => toggleMobileMenu(false));
-    mobileNavLinks.forEach((link) => link.addEventListener("click", () => toggleMobileMenu(false)));
-
-    // Tab bar active state tracking
-    function updateMobileTabActive(sectionId) {
-      if (!tabItems.length) return;
-      const tabMapping = {
-        home: "home",
-        about: "home",
-        "tech-hero": "home",
-        work: "events",
-        events: "events",
-        "projects-intro": "projects",
-        projects: "projects",
-        community: "community",
-        "igniting-minds-section": "community",
-      };
-      const mappedTab = tabMapping[sectionId] || null;
-      tabItems.forEach((tab) => {
-        const tabId = tab.getAttribute("data-tab");
-        tab.classList.toggle("tab-active", tabId === mappedTab);
-      });
-    }
-
-    // Hook into existing section tracking
-    const originalApplyNavState = applyNavState;
-    applyNavState = function(sectionId) {
-      originalApplyNavState(sectionId);
-      updateMobileTabActive(sectionId);
-    };
 
     // Section → nav-item mapping
     const idMapping = {
@@ -1235,10 +948,12 @@ const dropdowns: Record<string, DropdownItem[]> = {
     function applyNavState(sectionId) {
       if (!sectionId || sectionId === "footer") {
         setActiveItem(null);
+        window.dispatchEvent(new CustomEvent("nav:section", { detail: { id: "home" } }));
         return;
       }
       const mappedId = idMapping[sectionId] || sectionId;
       setActiveItem(mappedId);
+      window.dispatchEvent(new CustomEvent("nav:section", { detail: { id: mappedId } }));
     }
 
     // ── Scroll tracking ──

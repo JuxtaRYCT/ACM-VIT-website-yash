@@ -1,0 +1,529 @@
+---
+// Mobile bottom navbar. Single pill morphs between 3 states:
+//   nav   - section label + menu/music buttons
+//   menu  - section list grid + close
+//   music - track info + transport controls + progress + close
+// Solid #1e1e1e fill. GSAP morph between states.
+
+export interface Props {
+  /** Static label for subpages (e.g. "Z0D1AK"). Falls back to live section in nav state. */
+  pageTitle?: string;
+}
+
+const { pageTitle } = Astro.props;
+const initialLabel = pageTitle || "Home";
+const lockedLabel = !!pageTitle;
+
+const navItems = [
+  { id: "about", label: "About", href: "/#about" },
+  { id: "domains", label: "Domains", href: "/#domains" },
+  { id: "events", label: "Events", href: "/#events" },
+  { id: "projects", label: "Projects", href: "/#projects" },
+  { id: "acm-w", label: "ACM-W", href: "/#acm-w" },
+  { id: "community", label: "Community", href: "/community" },
+  { id: "team", label: "Team", href: "/#team" },
+  { id: "blogs", label: "Blogs", href: "/blogs" },
+  { id: "partners", label: "Partners", href: "/#partners" },
+  { id: "gallery", label: "Gallery", href: "/#gallery" },
+  { id: "contact", label: "Contact", href: "/#contact" },
+  { id: "more", label: "More", href: "/more" },
+];
+---
+
+<div
+  id="mn-root"
+  class="mn-root pointer-events-none fixed left-1/2 z-[60] -translate-x-1/2"
+  style="bottom: calc(16px + env(safe-area-inset-bottom, 0px));"
+  data-locked-label={lockedLabel ? "true" : undefined}
+>
+  <div id="mn-pill" class="mn-pill pointer-events-auto overflow-hidden" data-state="nav">
+    <!-- ── NAV state: label + buttons ── -->
+    <div data-panel="nav" class="mn-panel mn-panel-nav flex items-center justify-between gap-2 px-4 py-2">
+      <div class="flex min-w-0 items-center gap-2">
+        <span
+          id="mn-section-dot"
+          class="mn-section-dot inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#F95F4A]"
+        ></span>
+        <span
+          id="mn-label"
+          class="mn-label whitespace-nowrap text-[11px] font-['PolySans_Trial'] uppercase tracking-[0.14em] text-[#FEFCD9]"
+          >{initialLabel}</span
+        >
+      </div>
+      <div class="flex flex-shrink-0 items-center gap-2">
+        <button
+          id="mn-menu-btn"
+          aria-label="Open menu"
+          class="mn-btn flex h-9 w-9 items-center justify-center rounded-full transition-transform active:scale-90"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <circle cx="5" cy="5" r="1.6"></circle>
+            <circle cx="12" cy="5" r="1.6"></circle>
+            <circle cx="19" cy="5" r="1.6"></circle>
+            <circle cx="5" cy="12" r="1.6"></circle>
+            <circle cx="12" cy="12" r="1.6"></circle>
+            <circle cx="19" cy="12" r="1.6"></circle>
+            <circle cx="5" cy="19" r="1.6"></circle>
+            <circle cx="12" cy="19" r="1.6"></circle>
+            <circle cx="19" cy="19" r="1.6"></circle>
+          </svg>
+        </button>
+        <button
+          id="mn-music-btn"
+          aria-label="Open music player"
+          class="mn-btn-primary relative flex h-9 w-9 items-center justify-center rounded-full transition-transform active:scale-90"
+        >
+          <span
+            id="mn-music-eq"
+            class="mn-music-eq hidden items-end gap-[2px]"
+            aria-hidden="true"
+          >
+            <span class="mn-eq-bar h-[5px]"></span>
+            <span class="mn-eq-bar h-[10px]"></span>
+            <span class="mn-eq-bar h-[14px]"></span>
+            <span class="mn-eq-bar h-[7px]"></span>
+          </span>
+          <svg
+            id="mn-music-note"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M9 18V5l12-2v13"></path>
+            <circle cx="6" cy="18" r="3"></circle>
+            <circle cx="18" cy="16" r="3"></circle>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── MENU state: section grid ── -->
+    <div data-panel="menu" class="mn-panel mn-panel-menu hidden flex-col gap-2 px-3 py-3">
+      <div class="flex items-center justify-between px-2 pb-1">
+        <span class="text-[10px] font-['PolySans_Trial'] uppercase tracking-[0.22em] text-[#FEFCD9]/55"
+          >Navigate</span
+        >
+        <button
+          data-mn-close
+          aria-label="Close"
+          class="mn-close flex h-7 w-7 items-center justify-center rounded-full transition-transform active:scale-90"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <ul class="grid grid-cols-2 gap-1.5">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              data-mn-link={item.id}
+              class="mn-link flex items-center gap-2.5 rounded-2xl px-3 py-2.5 text-[#FEFCD9] active:bg-white/10"
+            >
+              <span class="mn-link-dot h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#F95F4A]/55"></span>
+              <span class="text-[11px] font-['PolySans_Trial'] uppercase tracking-[0.1em]">
+                {item.label}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- ── MUSIC state: compact player ── -->
+    <div data-panel="music" class="mn-panel mn-panel-music hidden flex-col gap-3 px-4 py-3">
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0 flex-1">
+          <p class="text-[10px] font-['PolySans_Trial'] uppercase tracking-[0.22em] text-[#FEFCD9]/55">Now Playing</p>
+          <p id="mn-track-title" class="truncate text-[13px] font-['PolySans_Trial'] text-[#FEFCD9]">-</p>
+          <p id="mn-track-artist" class="truncate text-[10px] font-['PolySans_Mono'] uppercase tracking-[0.12em] text-[#FEFCD9]/55">-</p>
+        </div>
+        <button
+          data-mn-close
+          aria-label="Close"
+          class="mn-close mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full transition-transform active:scale-90"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Progress -->
+      <div class="flex items-center gap-2">
+        <span id="mn-time-cur" class="text-[10px] font-['PolySans_Mono'] text-[#FEFCD9]/50">0:00</span>
+        <div id="mn-prog-track" class="relative h-1 flex-1 cursor-pointer rounded-full bg-[#FEFCD9]/15">
+          <div id="mn-prog-fill" class="h-full rounded-full bg-[#F95F4A]" style="width:0%"></div>
+        </div>
+        <span id="mn-time-dur" class="text-[10px] font-['PolySans_Mono'] text-[#FEFCD9]/50">0:00</span>
+      </div>
+
+      <!-- Transport -->
+      <div class="flex items-center justify-center gap-6">
+        <button id="mn-prev" aria-label="Previous track" class="mn-trans flex h-9 w-9 items-center justify-center text-[#FEFCD9] active:scale-90 transition-transform">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18 18V6l-9 6 9 6zM6 6h2v12H6z"/>
+          </svg>
+        </button>
+        <button id="mn-play" aria-label="Play" class="mn-play flex h-12 w-12 items-center justify-center rounded-full bg-[#F95F4A] text-[#FEFCD9] active:scale-90 transition-transform">
+          <svg id="mn-play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <svg id="mn-pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" class="hidden">
+            <rect x="6" y="5" width="4" height="14" rx="1"/>
+            <rect x="14" y="5" width="4" height="14" rx="1"/>
+          </svg>
+        </button>
+        <button id="mn-next" aria-label="Next track" class="mn-trans flex h-9 w-9 items-center justify-center text-[#FEFCD9] active:scale-90 transition-transform">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 6v12l9-6-9-6zm10 0h2v12h-2z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Desktop hide */
+  @media (min-width: 953px) {
+    .mn-root { display: none; }
+  }
+
+  /* Mobile body reserve */
+  @media (max-width: 952px) {
+    :global(body) {
+      padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    }
+  }
+
+  /* Pill - solid 1e1e1e, no glass */
+  .mn-pill {
+    width: 320px;
+    max-width: calc(100vw - 24px);
+    background: #1e1e1e;
+    border-radius: 28px;
+    box-shadow:
+      0 10px 28px rgba(0, 0, 0, 0.55),
+      0 0 0 1px rgba(249, 95, 74, 0.45);
+    opacity: 0;
+    transform: translateY(140%);
+    will-change: width, height, transform;
+  }
+
+  /* Panels stacked; only active visible */
+  .mn-panel { display: none; }
+  .mn-panel-nav { display: flex; }
+
+  /* Action buttons */
+  .mn-btn {
+    background: rgba(254, 252, 217, 0.08);
+    color: #fefcd9;
+    border: 1px solid rgba(254, 252, 217, 0.06);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mn-btn:active { background: rgba(254, 252, 217, 0.16); }
+
+  .mn-btn-primary {
+    background: #f95f4a;
+    color: #fefcd9;
+    border: 1px solid rgba(254, 252, 217, 0.25);
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(249, 95, 74, 0.32);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mn-btn-primary:active { background: #e8513d; }
+
+  .mn-close {
+    background: rgba(254, 252, 217, 0.08);
+    color: #fefcd9;
+    border: 1px solid rgba(254, 252, 217, 0.08);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mn-close:active { background: rgba(254, 252, 217, 0.16); }
+
+  /* Section dot */
+  .mn-section-dot {
+    box-shadow: 0 0 6px rgba(249, 95, 74, 0.6);
+  }
+  .mn-section-dot[data-pink] {
+    background: #ff007a !important;
+    box-shadow: 0 0 6px rgba(255, 0, 122, 0.6);
+  }
+
+  /* Active link in menu */
+  .mn-link[data-active] {
+    background: rgba(249, 95, 74, 0.16);
+  }
+  .mn-link[data-active] .mn-link-dot {
+    background: #f95f4a;
+    box-shadow: 0 0 6px rgba(249, 95, 74, 0.55);
+  }
+  .mn-link[data-active="acm-w"] .mn-link-dot {
+    background: #ff007a;
+    box-shadow: 0 0 6px rgba(255, 0, 122, 0.55);
+  }
+
+  /* Music EQ */
+  .mn-music-eq.is-playing { display: inline-flex; }
+  .mn-music-eq.is-playing ~ #mn-music-note { display: none; }
+  .mn-eq-bar { width: 2px; border-radius: 1px; background: currentColor; }
+  .mn-music-eq.is-playing .mn-eq-bar:nth-child(1) { animation: mnEq1 0.65s ease-in-out infinite; }
+  .mn-music-eq.is-playing .mn-eq-bar:nth-child(2) { animation: mnEq2 0.78s ease-in-out infinite; }
+  .mn-music-eq.is-playing .mn-eq-bar:nth-child(3) { animation: mnEq3 0.55s ease-in-out infinite; }
+  .mn-music-eq.is-playing .mn-eq-bar:nth-child(4) { animation: mnEq4 0.72s ease-in-out infinite; }
+  @keyframes mnEq1 { 0%,100%{height:4px} 30%{height:13px} 60%{height:6px} }
+  @keyframes mnEq2 { 0%,100%{height:11px} 30%{height:4px} 60%{height:10px} }
+  @keyframes mnEq3 { 0%,100%{height:8px} 25%{height:14px} 60%{height:4px} }
+  @keyframes mnEq4 { 0%,100%{height:10px} 35%{height:5px} 65%{height:13px} }
+
+  /* Light mode - same dark pill, just override globals.css text overrides */
+  :global(html[data-theme="light"]) .mn-pill {
+    background: #1e1e1e;
+    box-shadow:
+      0 10px 28px rgba(0, 0, 0, 0.25),
+      0 0 0 1px rgba(249, 95, 74, 0.5);
+  }
+  :global(html[data-theme="light"]) .mn-label,
+  :global(html[data-theme="light"]) .mn-link,
+  :global(html[data-theme="light"]) .mn-link span,
+  :global(html[data-theme="light"]) .mn-close,
+  :global(html[data-theme="light"]) .mn-btn,
+  :global(html[data-theme="light"]) .mn-btn-primary,
+  :global(html[data-theme="light"]) .mn-trans,
+  :global(html[data-theme="light"]) .mn-play,
+  :global(html[data-theme="light"]) #mn-track-title,
+  :global(html[data-theme="light"]) #mn-track-artist,
+  :global(html[data-theme="light"]) #mn-time-cur,
+  :global(html[data-theme="light"]) #mn-time-dur {
+    color: #fefcd9 !important;
+  }
+  :global(html[data-theme="light"]) .mn-section-dot {
+    background: #f95f4a !important;
+  }
+</style>
+
+<script>
+  // @ts-nocheck
+  import { gsap } from "gsap";
+  import { Flip } from "gsap/Flip";
+  gsap.registerPlugin(Flip);
+
+  function initMobileNavbar() {
+    const root = document.getElementById("mn-root");
+    const pill = document.getElementById("mn-pill");
+    const label = document.getElementById("mn-label");
+    const dot = document.getElementById("mn-section-dot");
+    if (!root || !pill || !label) return;
+
+    const lockedLabel = root.dataset.lockedLabel === "true";
+
+    const panelNav = pill.querySelector('[data-panel="nav"]') as HTMLElement;
+    const panelMenu = pill.querySelector('[data-panel="menu"]') as HTMLElement;
+    const panelMusic = pill.querySelector('[data-panel="music"]') as HTMLElement;
+    const panels = { nav: panelNav, menu: panelMenu, music: panelMusic };
+
+    const labelMap: Record<string, string> = {
+      home: "Home", about: "About", domains: "Domains", events: "Events",
+      projects: "Projects", "acm-w": "ACM-W", community: "Community",
+      team: "Team", blogs: "Blogs", partners: "Partners", gallery: "Gallery",
+      contact: "Contact", more: "More",
+    };
+
+    /* ── Section tracking ── */
+    function setActiveSection(id: string) {
+      if (lockedLabel) return;
+      const text =
+        labelMap[id] ||
+        (id ? id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, " ") : "Home");
+      if (label.textContent !== text) {
+        if (dot) {
+          if (id === "acm-w") dot.setAttribute("data-pink", "");
+          else dot.removeAttribute("data-pink");
+        }
+        gsap.timeline()
+          .to(label, { y: -8, opacity: 0, duration: 0.14, ease: "power2.in" })
+          .add(() => { label.textContent = text; })
+          .fromTo(label, { y: 8, opacity: 0 }, { y: 0, opacity: 1, duration: 0.2, ease: "power2.out" });
+      }
+      // Active link highlight in menu
+      pill.querySelectorAll(".mn-link").forEach((l) => {
+        if (l.getAttribute("data-mn-link") === id) l.setAttribute("data-active", id);
+        else l.removeAttribute("data-active");
+      });
+    }
+    window.addEventListener("nav:section", (e: any) => setActiveSection(e.detail?.id));
+
+    /* ── Morph between states (Flip) ── */
+    let morphing = false;
+    function morphTo(nextState: "nav" | "menu" | "music") {
+      const cur = pill.dataset.state as "nav" | "menu" | "music";
+      if (morphing || cur === nextState) return;
+      morphing = true;
+
+      const curPanel = panels[cur];
+      const nextPanel = panels[nextState];
+
+      const state = Flip.getState(pill);
+      curPanel.style.display = "none";
+      nextPanel.style.display = "flex";
+      pill.dataset.state = nextState;
+
+      Flip.from(state, {
+        duration: 0.42,
+        ease: "power3.out",
+        absolute: false,
+        onComplete: () => { morphing = false; },
+      });
+
+      // Fade panel contents in
+      gsap.fromTo(
+        nextPanel.children,
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.28, stagger: 0.035, ease: "power2.out", delay: 0.05 },
+      );
+    }
+
+    document.getElementById("mn-menu-btn")?.addEventListener("click", () => {
+      morphTo("menu");
+    });
+    document.getElementById("mn-music-btn")?.addEventListener("click", () => {
+      morphTo("music");
+    });
+    pill.querySelectorAll("[data-mn-close]").forEach((btn) => {
+      btn.addEventListener("click", () => morphTo("nav"));
+    });
+    pill.querySelectorAll(".mn-link").forEach((link) => {
+      link.addEventListener("click", () => morphTo("nav"));
+    });
+    document.addEventListener("pointerdown", (e) => {
+      if (pill.dataset.state === "nav") return;
+      const target = e.target as Node;
+      if (!pill.contains(target)) morphTo("nav");
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && pill.dataset.state !== "nav") morphTo("nav");
+    });
+
+    /* ── Music player wiring (controls existing CassettePlayer audio + state) ── */
+    const audio = document.getElementById("cp-audio") as HTMLAudioElement | null;
+    const cpSvgTitle = document.getElementById("cp-svg-title");
+    const cpSvgArtist = document.getElementById("cp-svg-artist");
+    const cpPrev = document.getElementById("cp-prev");
+    const cpNext = document.getElementById("cp-next");
+    const cpPlayG = document.getElementById("cp-play-g");
+
+    const trackTitle = document.getElementById("mn-track-title");
+    const trackArtist = document.getElementById("mn-track-artist");
+    const timeCur = document.getElementById("mn-time-cur");
+    const timeDur = document.getElementById("mn-time-dur");
+    const progFill = document.getElementById("mn-prog-fill");
+    const progTrack = document.getElementById("mn-prog-track");
+    const playBtn = document.getElementById("mn-play");
+    const playIcon = document.getElementById("mn-play-icon");
+    const pauseIcon = document.getElementById("mn-pause-icon");
+    const eqWrap = document.getElementById("mn-music-eq");
+    const noteIcon = document.getElementById("mn-music-note");
+
+    const fmt = (s: number) => {
+      if (!isFinite(s) || s < 0) return "0:00";
+      return `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+    };
+
+    function syncTrackText() {
+      if (trackTitle && cpSvgTitle) trackTitle.textContent = cpSvgTitle.textContent || "-";
+      if (trackArtist && cpSvgArtist) trackArtist.textContent = cpSvgArtist.textContent || "-";
+    }
+    syncTrackText();
+
+    if (audio) {
+      audio.addEventListener("timeupdate", () => {
+        if (!audio.duration) return;
+        if (timeCur) timeCur.textContent = fmt(audio.currentTime);
+        if (progFill) (progFill as HTMLElement).style.width = `${(audio.currentTime / audio.duration) * 100}%`;
+      });
+      audio.addEventListener("loadedmetadata", () => {
+        if (timeDur) timeDur.textContent = fmt(audio.duration);
+        syncTrackText();
+      });
+      const reflect = () => {
+        const playing = !audio.paused;
+        playIcon?.classList.toggle("hidden", playing);
+        pauseIcon?.classList.toggle("hidden", !playing);
+        if (playing) {
+          eqWrap?.classList.add("is-playing");
+          if (noteIcon) (noteIcon as HTMLElement).style.display = "none";
+        } else {
+          eqWrap?.classList.remove("is-playing");
+          if (noteIcon) (noteIcon as HTMLElement).style.display = "";
+        }
+        syncTrackText();
+      };
+      audio.addEventListener("play", reflect);
+      audio.addEventListener("pause", reflect);
+      reflect();
+    }
+
+    playBtn?.addEventListener("click", () => {
+      if (!audio) return;
+      if (audio.paused) audio.play().catch(() => {});
+      else audio.pause();
+    });
+    document.getElementById("mn-prev")?.addEventListener("click", () => {
+      cpPrev?.dispatchEvent(new MouseEvent("click"));
+      setTimeout(syncTrackText, 50);
+    });
+    document.getElementById("mn-next")?.addEventListener("click", () => {
+      cpNext?.dispatchEvent(new MouseEvent("click"));
+      setTimeout(syncTrackText, 50);
+    });
+    progTrack?.addEventListener("pointerdown", (e) => {
+      if (!audio || !audio.duration) return;
+      const r = (progTrack as HTMLElement).getBoundingClientRect();
+      const pct = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+      audio.currentTime = pct * audio.duration;
+    });
+
+    /* ── Intro: slide up from below with bounce ── */
+    let played = false;
+    function playIntro() {
+      if (played) return;
+      played = true;
+      gsap.set(pill, { opacity: 0, y: 140, scale: 0.78 });
+      gsap.timeline()
+        .to(pill, { opacity: 1, y: -10, scale: 1.06, duration: 0.42, ease: "power3.out" })
+        .to(pill, { y: 4, scale: 1, duration: 0.18, ease: "power2.inOut" })
+        .to(pill, { y: 0, duration: 0.14, ease: "power2.out" });
+    }
+
+    if (sessionStorage.getItem("preloaderShown")) {
+      setTimeout(playIntro, 500);
+    } else {
+      window.addEventListener("preloader:done", () => setTimeout(playIntro, 500), { once: true });
+      setTimeout(playIntro, 2500);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMobileNavbar, { once: true });
+  } else {
+    initMobileNavbar();
+  }
+</script>
