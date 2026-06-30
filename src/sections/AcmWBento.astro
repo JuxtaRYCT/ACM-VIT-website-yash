@@ -1,35 +1,31 @@
 ---
-// ACM-W Bento
 import { getAssetUrl } from "../utils/cdn";
 ---
 
 <section
-  class="w-full flex flex-col justify-center items-center px-8 md:px-16 pt-16 pb-0 md:pt-10 md:pb-0 min-h-[55vh] md:min-h-[60vh]"
+  class="w-full h-screen relative overflow-hidden select-none"
 >
-  <a
-    href="https://blog.acmvit.in"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="relative w-full max-w-[210px] sm:max-w-[266px] md:max-w-[640px] lg:max-w-[1000px] block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-pink/60 rounded-md"
-  >
-    <!-- Mobile SVG -->
-    <img
-      src={getAssetUrl("/acmw/acmw-bento-phone.webp")}
-      alt="ACM-W bento (mobile)"
-      class="block md:hidden w-full h-auto select-none"
-      loading="lazy"
-      decoding="async"
-    />
+  <img
+    src={getAssetUrl("/acmw/acmw-hero.png")}
+    alt="ACM-W - She Codes. She Leads."
+    class="absolute inset-0 w-full h-full object-cover"
+    loading="lazy"
+    decoding="async"
+  />
 
-    <!--Laptop SVG -->
-    <img
-      src={getAssetUrl("/acmw/acmw-bento.webp")}
-      alt="ACM-W bento"
-      class="hidden md:block w-full h-auto select-none"
-      loading="lazy"
-      decoding="async"
-    />
-  </a>
+  <!-- She Codes. -->
+  <div class="absolute top-[22%] left-[4%] sm:left-[5%]">
+    <p class="acmw-hero-text leading-[0.9]">
+      She<br />Codes.
+    </p>
+  </div>
+
+  <!-- She Leads. -->
+  <div class="absolute bottom-[6%] right-[4%] sm:right-[5%] text-right">
+    <p class="acmw-hero-text leading-[0.9]">
+      She<br />Leads.
+    </p>
+  </div>
 
   <!-- Tubelight under the bento -->
   <div
@@ -42,12 +38,21 @@ import { getAssetUrl } from "../utils/cdn";
       loading="lazy"
       decoding="async"
       class="w-[85vw] max-w-[1440px] opacity-0 select-none z-[-100] rotate-180
-						 [mask-image:radial-gradient(circle,black_20%,transparent_75%)]
-						 [mask-repeat:no-repeat] [mask-position:center] [mask-size:contain]
-						 max-[480px]:w-[98vw] max-[480px]:max-w-none"
+             [mask-image:radial-gradient(circle,black_20%,transparent_75%)]
+             [mask-repeat:no-repeat] [mask-position:center] [mask-size:contain]
+             max-[480px]:w-[98vw] max-[480px]:max-w-none"
     />
   </div>
 </section>
+
+<style>
+  .acmw-hero-text {
+    font-family: "PolySans Bulky Wide", sans-serif;
+    font-weight: 700;
+    color: #e8346c;
+    font-size: clamp(2.2rem, 7vw, 6rem);
+  }
+</style>
 
 <script>
   import { gsap } from "gsap";

@@ -151,9 +151,10 @@
         if (!line1 || !line2 || !section1) return;
 
         // Helper to wrap words in spans
-        const wrapWords = (element: Element) => {
+        const wrapWords = (element: Element, hoverMap?: string[]) => {
           const childNodes = Array.from(element.childNodes);
           element.innerHTML = "";
+          let wordIdx = 0;
 
           childNodes.forEach((node) => {
             if (node.nodeType === Node.TEXT_NODE) {
@@ -166,38 +167,49 @@
                     span.textContent = word;
                     span.className = "hover-scramble inline-block mr-2"; // mr-2 for spacing
                     span.dataset.original = word;
+                    if (hoverMap && hoverMap[wordIdx]) {
+                      span.dataset.hover = hoverMap[wordIdx];
+                    }
+                    wordIdx++;
                     element.appendChild(span);
                     element.appendChild(document.createTextNode(" ")); // Space between words
                   }
                 });
               }
             } else {
-              element.appendChild(node); 
+              element.appendChild(node);
             }
           });
         };
 
         wrapWords(line1);
-        wrapWords(line2);
+        wrapWords(line2, ["alliance", "of", "caffeinated", "misfits"]);
 
-        
+
         gsap.set([line1, line2], { opacity: 1 });
 
-        const words = document.querySelectorAll(".hover-scramble");
-        words.forEach((word) => {
-          if (word instanceof HTMLElement) {
-            word.addEventListener("mouseenter", () => {
-              gsap.to(word, {
-                duration: 0.8,
-                scrambleText: {
-                  text: word.dataset.original || "",
-                  chars: "upperAndLowerCase",
-                  revealDelay: 0.1,
-                  speed: 0.3,
-                },
-              });
+        const scrambleLine = (line: Element, useHover: boolean) => {
+          const wordEls = line.querySelectorAll(".hover-scramble");
+          wordEls.forEach((w) => {
+            if (!(w instanceof HTMLElement)) return;
+            const target = useHover
+              ? w.dataset.hover || w.dataset.original || ""
+              : w.dataset.original || "";
+            gsap.to(w, {
+              duration: 0.8,
+              scrambleText: {
+                text: target,
+                chars: "upperAndLowerCase",
+                revealDelay: 0.1,
+                speed: 0.3,
+              },
             });
-          }
+          });
+        };
+
+        [line1, line2].forEach((line) => {
+          line.addEventListener("mouseenter", () => scrambleLine(line, true));
+          line.addEventListener("mouseleave", () => scrambleLine(line, false));
         });
 
         try {
