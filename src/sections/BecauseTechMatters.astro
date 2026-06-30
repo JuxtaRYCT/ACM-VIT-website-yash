@@ -4,18 +4,17 @@
 
 <div class="relative -mt-28">
   <section
-    class="btm-section w-screen min-h-[130vh] relative flex items-center justify-center overflow-hidden"
+    class="btm-section w-screen min-h-[100vh] relative flex items-center justify-center overflow-hidden"
     id="tech-hero"
   >
-    <!-- Main text -->
     <div class="btm-text-container relative z-10" id="textContainer">
-      <div class="btm-line btm-line-1">
+      <div class="btm-line">
         <span class="btm-word btm-word-accent">because</span>
       </div>
-      <div class="btm-line btm-line-2">
+      <div class="btm-line">
         <span class="btm-word">technology</span>
       </div>
-      <div class="btm-line btm-line-3">
+      <div class="btm-line">
         <span class="btm-word btm-word-outline">matters</span>
       </div>
     </div>
@@ -28,7 +27,6 @@
     background: transparent;
   }
 
-  /* ── Typography ── */
   .btm-text-container {
     display: flex;
     flex-direction: column;
@@ -38,9 +36,7 @@
   }
 
   .btm-line {
-    overflow: visible;
-    opacity: 0;
-    transform: translateY(60px);
+    overflow: hidden;
   }
 
   .btm-word {
@@ -50,7 +46,6 @@
     line-height: 1.05;
     color: #FEFCD9;
     display: inline-block;
-    transition: color 0.6s ease, -webkit-text-stroke 0.6s ease;
   }
 
   .btm-word-accent {
@@ -60,10 +55,15 @@
   .btm-word-outline {
     color: transparent;
     -webkit-text-stroke: 2.5px #FEFCD9;
-    transition: -webkit-text-stroke-color 0.6s ease;
   }
 
-  /* ── Light mode ── */
+  .btm-letter {
+    display: inline-block;
+    transform-origin: 50% 100%;
+    will-change: transform, opacity;
+    opacity: 0;
+  }
+
   :global(html[data-theme="light"]) .btm-word {
     color: #1a1a1a;
   }
@@ -74,7 +74,6 @@
     -webkit-text-stroke-color: #1a1a1a;
   }
 
-  /* ── Mobile ── */
   @media (max-width: 768px) {
     .btm-text-container {
       padding-left: 8vw;
@@ -95,29 +94,76 @@
     const section = document.getElementById("tech-hero");
     if (!section) return;
 
-    const lines = section.querySelectorAll(".btm-line");
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
 
-    // Text reveal - staggered
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: section,
-        start: "top 70%",
-        end: "top 20%",
-        scrub: 0.6,
+    const words = section.querySelectorAll<HTMLElement>(".btm-word");
+
+    // Split words into letters
+    const allLetters: HTMLElement[] = [];
+    words.forEach((word) => {
+      const text = word.textContent || "";
+      word.textContent = "";
+      [...text].forEach((ch) => {
+        const span = document.createElement("span");
+        span.className = "btm-letter";
+        span.textContent = ch;
+        word.appendChild(span);
+        allLetters.push(span);
+      });
+    });
+
+    if (reduceMotion) {
+      gsap.set(allLetters, { opacity: 1 });
+      return;
+    }
+
+    // Initial state: dropped down + rotated
+    gsap.set(allLetters, {
+      yPercent: 110,
+      rotation: -8,
+      opacity: 0,
+    });
+
+    // Reveal once on enter — no pin, no scrub
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top 75%",
+      once: true,
+      onEnter: () => {
+        gsap.to(allLetters, {
+          yPercent: 0,
+          rotation: 0,
+          opacity: 1,
+          duration: 0.9,
+          ease: "power3.out",
+          stagger: { each: 0.025, from: "start" },
+        });
       },
     });
 
-    lines.forEach((line, i) => {
-      tl.to(
-        line,
-        {
-          opacity: 1,
+    // Lightweight hover wave per word
+    words.forEach((word) => {
+      const letters = Array.from(word.querySelectorAll<HTMLElement>(".btm-letter"));
+      word.addEventListener("mouseenter", () => {
+        gsap.to(letters, {
+          y: -14,
+          duration: 0.35,
+          ease: "power2.out",
+          stagger: { each: 0.025, from: "start" },
+          overwrite: "auto",
+        });
+      });
+      word.addEventListener("mouseleave", () => {
+        gsap.to(letters, {
           y: 0,
-          duration: 1,
-          ease: "power3.out",
-        },
-        i * 0.3
-      );
+          duration: 0.5,
+          ease: "elastic.out(1, 0.55)",
+          stagger: { each: 0.015, from: "start" },
+          overwrite: "auto",
+        });
+      });
     });
   };
 

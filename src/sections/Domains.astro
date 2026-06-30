@@ -164,7 +164,11 @@ for (const item of domainItems) {
       .domain-item {
         text-decoration: none;
         cursor: pointer;
-        pointer-events: auto;
+        /* Anchor box stays stacked at center; GSAP only moves the inner
+           frame. Disable hit-testing here so overlapping centered anchors
+           don't steal hover/click from neighbouring cassettes. Hit-testing
+           lives on .cassette-wrapper, which tracks the painted position. */
+        pointer-events: none;
       }
 
       .pin-container,
@@ -206,6 +210,9 @@ for (const item of domainItems) {
         border-radius: 12px;
         background: transparent;
         overflow: hidden;
+        /* Real hit area for hover/click. Toggled on by JS when the section
+           is in view (see setDomainInteractivity). */
+        pointer-events: none;
         /* box-shadow removed as per request */
       }
 
@@ -406,9 +413,10 @@ for (const item of domainItems) {
           if (!items.length || !frames.length || !grid || !subtitle || !bgLayer)
             return;
 
+          const wrappers = document.querySelectorAll(".cassette-wrapper");
           const setDomainInteractivity = (isInteractive: boolean) => {
-            items.forEach((item) => {
-              (item as HTMLElement).style.pointerEvents = isInteractive
+            wrappers.forEach((wrapper) => {
+              (wrapper as HTMLElement).style.pointerEvents = isInteractive
                 ? "auto"
                 : "none";
             });
