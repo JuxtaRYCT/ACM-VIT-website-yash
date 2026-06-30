@@ -1,4 +1,6 @@
 ---
+import fs from "node:fs";
+import path from "node:path";
 import { getAssetUrl } from "../../utils/cdn";
 
 interface Props {
@@ -11,39 +13,58 @@ interface Props {
 const {
     webmSrc = "/videos/dark_bg.webm",
     lightWebmSrc = "/videos/light_bg.webm",
-    startTime = 0,
-    endTime = undefined,
 } = Astro.props;
 
-const normalizedWebmSrc = webmSrc.startsWith("/") ? webmSrc : `/${webmSrc}`;
-const normalizedLightWebmSrc = lightWebmSrc.startsWith("/") ? lightWebmSrc : `/${lightWebmSrc}`;
+const norm = (s: string) => (s.startsWith("/") ? s : `/${s}`);
+const normalizedWebmSrc = norm(webmSrc);
+const normalizedLightWebmSrc = norm(lightWebmSrc);
+
+// Count extracted frames at build time (used for the scroll-up canvas player).
+const framesRoot = path.join(process.cwd(), "public/frames");
+const countFrames = (dir: string) => {
+    try {
+        return fs
+            .readdirSync(path.join(framesRoot, dir))
+            .filter((f) => f.endsWith(".jpg")).length;
+    } catch {
+        return 0;
+    }
+};
+const darkCount = countFrames("dark");
+const lightCount = countFrames("light");
 ---
 
-<div class="scroll-video-container" data-scroll-video-container>
+<div
+    class="scroll-video-container"
+    data-scroll-video-container
+    data-dark-count={darkCount}
+    data-light-count={lightCount}
+>
+    <!-- Scroll DOWN: native video playback -->
     <video
-        class="scroll-video scroll-video-dark"
+        class="scroll-media scroll-media-dark"
         data-scroll-video
-        data-scroll-video-dark
-        data-start-time={startTime}
-        data-end-time={endTime ?? ""}
+        data-fwd-video
+        data-theme-pair="dark"
         muted
         playsinline
         preload="auto"
     >
         <source src={getAssetUrl(normalizedWebmSrc)} type="video/webm" />
     </video>
-
     <video
-        class="scroll-video scroll-video-light"
-        data-scroll-video-light
-        data-start-time={startTime}
-        data-end-time={endTime ?? ""}
+        class="scroll-media scroll-media-light"
+        data-fwd-video
+        data-theme-pair="light"
         muted
         playsinline
         preload="auto"
     >
         <source src={getAssetUrl(normalizedLightWebmSrc)} type="video/webm" />
     </video>
+
+    <!-- Scroll UP: smoothed canvas frame player -->
+    <canvas class="scroll-media dir-hidden" data-scroll-frames></canvas>
 
     <div class="scroll-video-overlay" data-scroll-video-overlay></div>
 
@@ -58,7 +79,7 @@ const normalizedLightWebmSrc = lightWebmSrc.startsWith("/") ? lightWebmSrc : `/$
         width: 100%;
     }
 
-    .scroll-video {
+    .scroll-media {
         position: fixed;
         top: 0;
         left: 0;
@@ -70,26 +91,32 @@ const normalizedLightWebmSrc = lightWebmSrc.startsWith("/") ? lightWebmSrc : `/$
         opacity: 0;
         transform: translateZ(0);
         backface-visibility: hidden;
-        will-change: opacity, transform;
+        will-change: opacity;
         transition: opacity 0.6s ease-out;
     }
 
-    .scroll-video.visible {
+    .scroll-media.visible {
         opacity: 1;
     }
 
-    /* Light mode: swap visibility without killing decoder */
-    :global(html[data-theme="light"]) .scroll-video-dark {
+    /* Direction swap: hide the inactive medium instantly (no cross-fade) */
+    .scroll-media.dir-hidden {
+        opacity: 0 !important;
+        transition: none !important;
+    }
+
+    /* Theme swap for the videos (canvas draws the correct theme itself) */
+    :global(html[data-theme="light"]) .scroll-media-dark {
         visibility: hidden !important;
         pointer-events: none !important;
     }
 
-    .scroll-video-light {
+    .scroll-media-light {
         visibility: hidden;
         pointer-events: none;
     }
 
-    :global(html[data-theme="light"]) .scroll-video-light {
+    :global(html[data-theme="light"]) .scroll-media-light {
         visibility: visible;
     }
 
@@ -119,206 +146,348 @@ const normalizedLightWebmSrc = lightWebmSrc.startsWith("/") ? lightWebmSrc : `/$
 <script>
     import { gsap } from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
+    import { getAssetUrl } from "../../utils/cdn";
 
     gsap.registerPlugin(ScrollTrigger);
 
-    function createSmoothScrubber(video: HTMLVideoElement, container: HTMLElement, overlay: HTMLElement | null) {
-        if (!video || video.dataset.scrollInit === "true") return;
-        video.dataset.scrollInit = "true";
+    type Theme = "dark" | "light";
 
-        const startTime = parseFloat(video.dataset.startTime || "0");
-        // Forward we let the video PLAY (native frame-accurate decode = smoothest
-        // possible). Backward we can't play, so we ease currentTime in small steps
-        // (videos are all-intra, so backward seeks are cheap and stay smooth).
-        const snapStep = 0.02;
+    function initScrollMedia() {
+        const container = document.querySelector(
+            "[data-scroll-video-container]",
+        ) as HTMLElement | null;
+        const canvas = document.querySelector(
+            "[data-scroll-frames]",
+        ) as HTMLCanvasElement | null;
+        const darkVideo = document.querySelector(
+            '[data-fwd-video][data-theme-pair="dark"]',
+        ) as HTMLVideoElement | null;
+        const lightVideo = document.querySelector(
+            '[data-fwd-video][data-theme-pair="light"]',
+        ) as HTMLVideoElement | null;
+        const overlay = document.querySelector(
+            "[data-scroll-video-overlay]",
+        ) as HTMLElement | null;
 
-        const setupScrollTrigger = () => {
-            const videoDuration = video.duration;
-            if (!videoDuration || isNaN(videoDuration) || videoDuration === Infinity) return;
+        if (!container || !canvas || !darkVideo || !lightVideo) return;
+        if (canvas.dataset.scrollInit === "true") return;
+        canvas.dataset.scrollInit = "true";
 
-            video.removeEventListener("loadedmetadata", setupScrollTrigger);
-            video.removeEventListener("durationchange", setupScrollTrigger);
-            video.removeEventListener("canplay", setupScrollTrigger);
-            video.removeEventListener("canplaythrough", setupScrollTrigger);
-            video.removeEventListener("loadeddata", setupScrollTrigger);
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
 
-            const endTime = video.dataset.endTime
-                ? parseFloat(video.dataset.endTime)
-                : videoDuration;
-            const playDuration = endTime - startTime;
+        const counts: Record<Theme, number> = {
+            dark: parseInt(container.dataset.darkCount || "0", 10),
+            light: parseInt(container.dataset.lightCount || "0", 10),
+        };
 
-            video.pause();
-            video.currentTime = startTime;
+        const frames: Record<Theme, HTMLImageElement[]> = { dark: [], light: [] };
+        const requested: Record<Theme, boolean> = { dark: false, light: false };
 
-            let targetTime = startTime;
-            let renderedTime = startTime; // our own smooth cursor, NOT video.currentTime
-            let rafId = 0;
-            let isPlaying = false;
-            let lastFrameAt = 0;
-            let seekBusy = false; // a seek is in flight - don't issue another
+        const frameUrl = (theme: Theme, i: number) =>
+            getAssetUrl(`/frames/${theme}/${String(i + 1).padStart(4, "0")}.jpg`);
 
-            const clamp = (t: number) => Math.max(startTime, Math.min(endTime, t));
+        const currentTheme = (): Theme =>
+            document.documentElement.dataset.theme === "light" ? "light" : "dark";
 
-            // Backward smoothness: only request the next seek once the previous one
-            // has actually landed. Setting currentTime again mid-seek makes the
-            // browser cancel/coalesce seeks and drop frames -> the jitter.
-            const onSeeked = () => {
-                seekBusy = false;
-            };
-            video.addEventListener("seeked", onSeeked);
+        let theme: Theme = currentTheme();
+        const activeVideo = (): HTMLVideoElement =>
+            theme === "dark" ? darkVideo : lightVideo;
 
-            const seekTo = (t: number) => {
-                const clamped = clamp(t);
-                if (seekBusy) return;
-                if (Math.abs(video.currentTime - clamped) < 1e-3) return;
-                seekBusy = true;
-                video.currentTime = clamped;
-            };
+        // ---- shared scroll state ------------------------------------------
+        let dir = 1; // 1 = down (video), -1 = up (canvas)
+        let targetProgress = 0; // 0..1 from scroll
+        let renderedProgress = 0; // 0..1 canonical cursor
+        let prevProgress = 0;
+        let rafId = 0;
+        let lastFrameAt = 0;
+        let isPlaying = false;
 
-            const tick = (now: number) => {
-                rafId = 0;
-                const delta = lastFrameAt ? Math.min((now - lastFrameAt) / 1000, 0.05) : 1 / 60;
-                lastFrameAt = now;
+        const snapTime = 0.02; // seconds, forward settle threshold
+        const smoothing = 0.09; // canvas ease time constant (s)
+        const eps = 1e-4;
+        const dirEps = 0.0008; // scroll-delta noise floor for direction flips
 
-                // While playing forward, the decoder owns the position - track it.
-                if (isPlaying) renderedTime = video.currentTime;
+        // ---- frame loading (for scroll-up canvas) -------------------------
+        const loadTheme = (t: Theme) => {
+            if (requested[t]) return;
+            requested[t] = true;
+            const total = counts[t];
+            for (let i = 0; i < total; i++) {
+                const img = new Image();
+                img.decoding = "async";
+                img.src = frameUrl(t, i);
+                img.onload = () => {
+                    if (dir < 0 && t === theme) drawAt(renderedProgress);
+                };
+                frames[t][i] = img;
+            }
+        };
 
-                const diff = targetTime - renderedTime;
-                const absDiff = Math.abs(diff);
+        // ---- canvas drawing -----------------------------------------------
+        const sizeCanvas = () => {
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = Math.round(window.innerWidth * dpr);
+            canvas.height = Math.round(window.innerHeight * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        };
 
-                // Settled - stop and pause.
-                if (absDiff <= snapStep) {
+        const pickImage = (t: Theme, idx: number): HTMLImageElement | null => {
+            const arr = frames[t];
+            const ready = (img?: HTMLImageElement) =>
+                !!img && img.complete && img.naturalWidth > 0;
+            if (ready(arr[idx])) return arr[idx];
+            for (let d = 1; d < arr.length; d++) {
+                if (ready(arr[idx - d])) return arr[idx - d];
+                if (ready(arr[idx + d])) return arr[idx + d];
+            }
+            return null;
+        };
+
+        const drawCover = (img: HTMLImageElement, alpha: number) => {
+            const cw = window.innerWidth;
+            const ch = window.innerHeight;
+            const iw = img.naturalWidth;
+            const ih = img.naturalHeight;
+            const scale = Math.max(cw / iw, ch / ih);
+            const dw = iw * scale;
+            const dh = ih * scale;
+            ctx.globalAlpha = alpha;
+            ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+        };
+
+        // Sub-frame crossfade: base frame opaque, next frame blended by fraction.
+        const drawAt = (p: number) => {
+            const n = counts[theme];
+            if (n <= 0) return;
+            const f = Math.max(0, Math.min(n - 1, p * (n - 1)));
+            const i0 = Math.floor(f);
+            const i1 = Math.min(n - 1, i0 + 1);
+            const frac = f - i0;
+            const imgA = pickImage(theme, i0);
+            const imgB = i1 !== i0 ? pickImage(theme, i1) : imgA;
+            if (!imgA && !imgB) return;
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            if (imgA) drawCover(imgA, 1);
+            if (imgB && imgB !== imgA && frac > 0.001) drawCover(imgB, frac);
+            ctx.globalAlpha = 1;
+        };
+
+        // ---- direction visibility -----------------------------------------
+        const showVideo = () => {
+            darkVideo.classList.remove("dir-hidden");
+            lightVideo.classList.remove("dir-hidden");
+            canvas.classList.add("dir-hidden");
+        };
+        const showCanvas = () => {
+            darkVideo.classList.add("dir-hidden");
+            lightVideo.classList.add("dir-hidden");
+            canvas.classList.remove("dir-hidden");
+        };
+
+        // ---- main loop -----------------------------------------------------
+        const tick = (now: number) => {
+            rafId = 0;
+            const delta = lastFrameAt
+                ? Math.min((now - lastFrameAt) / 1000, 0.05)
+                : 1 / 60;
+            lastFrameAt = now;
+
+            if (dir > 0) {
+                // SCROLL DOWN -> play the real video forward (native smooth).
+                const v = activeVideo();
+                const dur = v.duration;
+                if (!dur || isNaN(dur) || dur === Infinity) {
+                    rafId = requestAnimationFrame(tick);
+                    return;
+                }
+                const cur = v.currentTime;
+                renderedProgress = cur / dur;
+                const diff = targetProgress * dur - cur;
+
+                if (Math.abs(diff) <= snapTime) {
                     if (isPlaying) {
-                        video.pause();
+                        v.pause();
                         isPlaying = false;
                     }
-                    video.playbackRate = 1;
-                    renderedTime = targetTime;
+                    v.playbackRate = 1;
                     lastFrameAt = 0;
                     return;
                 }
-
                 if (diff > 0) {
-                    // FORWARD: play natively, nudge rate to track the scroll target.
-                    const rate = Math.min(Math.max(absDiff * 3, 0.5), 4);
-                    video.playbackRate = rate;
+                    v.playbackRate = Math.min(Math.max(diff * 3, 0.5), 4);
                     if (!isPlaying) {
-                        seekBusy = false;
-                        video.play().catch(() => {});
+                        v.play().catch(() => {});
                         isPlaying = true;
                     }
-                } else {
-                    // BACKWARD: can't play in reverse. Ease our own cursor and seek
-                    // to it, one in-flight seek at a time.
-                    if (isPlaying) {
-                        video.pause();
-                        isPlaying = false;
-                    }
-                    const ease = 1 - Math.exp(-delta / 0.12);
-                    renderedTime = clamp(renderedTime + diff * ease);
-                    seekTo(renderedTime);
+                } else if (isPlaying) {
+                    // brief overshoot before a direction flip - just hold
+                    v.pause();
+                    isPlaying = false;
                 }
-
                 rafId = requestAnimationFrame(tick);
-            };
-
-            const schedule = () => {
-                if (!rafId) rafId = requestAnimationFrame(tick);
-            };
-
-            ScrollTrigger.create({
-                trigger: container,
-                start: "top top",
-                end: "bottom bottom",
-                scrub: true,
-                invalidateOnRefresh: true,
-                onUpdate: (self) => {
-                    targetTime = clamp(startTime + self.progress * playDuration);
-                    schedule();
-                },
-                onRefresh: (self) => {
-                    targetTime = clamp(startTime + self.progress * playDuration);
-                    if (isPlaying) {
-                        video.pause();
-                        isPlaying = false;
-                    }
-                    renderedTime = targetTime;
-                    seekBusy = false;
-                    video.currentTime = targetTime;
-                },
-            });
-
-            ScrollTrigger.create({
-                trigger: container,
-                start: "top 90%",
-                end: "bottom 60%",
-                onEnter: () => {
-                    video.classList.add("visible");
-                    overlay?.classList.add("visible");
-                    document.body.classList.add("scroll-video-active");
-                },
-                onLeave: () => {
-                    video.classList.remove("visible");
-                    overlay?.classList.remove("visible");
-                    document.body.classList.remove("scroll-video-active");
-                    video.pause();
-                    isPlaying = false;
-                },
-                onEnterBack: () => {
-                    video.classList.add("visible");
-                    overlay?.classList.add("visible");
-                    document.body.classList.add("scroll-video-active");
-                },
-                onLeaveBack: () => {
-                    video.classList.remove("visible");
-                    overlay?.classList.remove("visible");
-                    document.body.classList.remove("scroll-video-active");
-                    video.pause();
-                    isPlaying = false;
-                },
-            });
-
-            window.requestAnimationFrame(() => ScrollTrigger.refresh());
+            } else {
+                // SCROLL UP -> eased canvas frame player (smooth backward).
+                const diff = targetProgress - renderedProgress;
+                if (Math.abs(diff) <= eps) {
+                    renderedProgress = targetProgress;
+                    drawAt(renderedProgress);
+                    lastFrameAt = 0;
+                    return;
+                }
+                const ease = 1 - Math.exp(-delta / smoothing);
+                renderedProgress += diff * ease;
+                drawAt(renderedProgress);
+                rafId = requestAnimationFrame(tick);
+            }
         };
 
-        video.addEventListener("loadedmetadata", setupScrollTrigger);
-        video.addEventListener("durationchange", setupScrollTrigger);
-        video.addEventListener("canplay", setupScrollTrigger);
-        video.addEventListener("canplaythrough", setupScrollTrigger);
-        video.addEventListener("loadeddata", setupScrollTrigger);
+        const schedule = () => {
+            if (!rafId) {
+                lastFrameAt = 0;
+                rafId = requestAnimationFrame(tick);
+            }
+        };
 
-        if (video.readyState >= 1) setupScrollTrigger();
+        const setDir = (nd: number) => {
+            if (nd === dir) return;
+            dir = nd;
+            const v = activeVideo();
+            if (dir > 0) {
+                // -> video: seat it on the current frame, then play.
+                if (v.duration) {
+                    try {
+                        v.currentTime = renderedProgress * v.duration;
+                    } catch {}
+                }
+                showVideo();
+            } else {
+                // -> canvas: sync cursor from the video, then ease/draw.
+                darkVideo.pause();
+                lightVideo.pause();
+                isPlaying = false;
+                if (v.duration) renderedProgress = v.currentTime / v.duration;
+                showCanvas();
+                drawAt(renderedProgress);
+            }
+            lastFrameAt = 0;
+            schedule();
+        };
 
-        video.pause();
-        video.currentTime = startTime;
-    }
+        // ---- wiring --------------------------------------------------------
+        sizeCanvas();
+        loadTheme(theme);
+        const otherTheme: Theme = theme === "dark" ? "light" : "dark";
+        const idle = (cb: () => void) =>
+            "requestIdleCallback" in window
+                ? (window as any).requestIdleCallback(cb)
+                : setTimeout(cb, 1500);
+        idle(() => loadTheme(otherTheme));
 
-    function initScrollVideo() {
-        const container = document.querySelector(
-            "[data-scroll-video-container]",
-        ) as HTMLElement;
-        const overlay = document.querySelector(
-            "[data-scroll-video-overlay]",
-        ) as HTMLElement;
+        let resizeRaf = 0;
+        window.addEventListener("resize", () => {
+            if (resizeRaf) return;
+            resizeRaf = requestAnimationFrame(() => {
+                resizeRaf = 0;
+                sizeCanvas();
+                if (dir < 0) drawAt(renderedProgress);
+            });
+        });
 
-        if (!container) return;
+        const themeObserver = new MutationObserver(() => {
+            const next = currentTheme();
+            if (next === theme) return;
+            const old = activeVideo();
+            theme = next;
+            loadTheme(theme);
+            const v = activeVideo();
+            if (dir > 0) {
+                old.pause();
+                isPlaying = false;
+                if (v.duration) {
+                    try {
+                        v.currentTime = renderedProgress * v.duration;
+                    } catch {}
+                }
+                schedule();
+            } else {
+                drawAt(renderedProgress);
+            }
+        });
+        themeObserver.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["data-theme"],
+        });
 
-        // Both videos are same-length, all-intra _bg.webm, so they share the same
-        // eased-seek scrubber for identical, butter-smooth scroll in both directions.
-        const darkVideo = document.querySelector(
-            "[data-scroll-video-dark]",
-        ) as HTMLVideoElement;
-        if (darkVideo) createSmoothScrubber(darkVideo, container, overlay);
+        ScrollTrigger.create({
+            trigger: container,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: true,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+                const np = self.progress;
+                const d = np - prevProgress;
+                prevProgress = np;
+                targetProgress = np;
+                if (d > dirEps) setDir(1);
+                else if (d < -dirEps) setDir(-1);
+                schedule();
+            },
+            onRefresh: (self) => {
+                targetProgress = self.progress;
+                renderedProgress = self.progress;
+                prevProgress = self.progress;
+                sizeCanvas();
+                const v = activeVideo();
+                if (dir > 0) {
+                    if (v.duration) {
+                        try {
+                            v.currentTime = renderedProgress * v.duration;
+                        } catch {}
+                    }
+                } else {
+                    drawAt(renderedProgress);
+                }
+            },
+        });
 
-        const lightVideo = document.querySelector(
-            "[data-scroll-video-light]",
-        ) as HTMLVideoElement;
-        if (lightVideo) createSmoothScrubber(lightVideo, container, overlay);
+        ScrollTrigger.create({
+            trigger: container,
+            start: "top 90%",
+            end: "bottom 60%",
+            onEnter: () => show(),
+            onLeave: () => hide(),
+            onEnterBack: () => show(),
+            onLeaveBack: () => hide(),
+        });
+
+        function show() {
+            darkVideo.classList.add("visible");
+            lightVideo.classList.add("visible");
+            canvas.classList.add("visible");
+            overlay?.classList.add("visible");
+            document.body.classList.add("scroll-video-active");
+        }
+        function hide() {
+            darkVideo.classList.remove("visible");
+            lightVideo.classList.remove("visible");
+            canvas.classList.remove("visible");
+            overlay?.classList.remove("visible");
+            document.body.classList.remove("scroll-video-active");
+            darkVideo.pause();
+            lightVideo.pause();
+            isPlaying = false;
+        }
+
+        // Start in down/video mode.
+        showVideo();
+        window.requestAnimationFrame(() => ScrollTrigger.refresh());
     }
 
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initScrollVideo);
+        document.addEventListener("DOMContentLoaded", initScrollMedia);
     } else {
-        initScrollVideo();
+        initScrollMedia();
     }
 </script>
