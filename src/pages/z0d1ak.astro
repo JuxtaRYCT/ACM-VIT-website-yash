@@ -2,64 +2,640 @@
 export const prerender = true;
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
-import Footer from "../layouts/Footer.astro";
+import {
+  current,
+  achievements,
+  achievementLines,
+  members,
+  timeline,
+} from "../data/z0d1akData.ts";
 ---
 
 <Layout pageTitle="z0d1ak" backHref="/more">
-  <section class="zodiak-page">
-    <div class="zodiak-inner">
-      <h1 class="zodiak-heading">z0d1ak</h1>
-      <p class="zodiak-subtitle">ACM-VIT CTF Team</p>
-      <p class="zodiak-desc">Our competitive Capture The Flag team. More details coming soon.</p>
+  <!-- Fixed deep-sky backdrop -->
+  <div class="sky" aria-hidden="true">
+    <canvas id="starfield"></canvas>
+  </div>
+
+  <!-- Custom minimal nav -->
+  <nav class="z-nav">
+    <a href="#top" class="z-mark">z·o·d·1·a·k</a>
+    <div class="z-nav-links">
+      <a href="#atlas">Star Atlas</a>
+      <a href="#crew">Crew</a>
+      <a href="#voyage">Voyage</a>
+      <a href="https://ctftime.org/team/373452" target="_blank" rel="noopener">CTFtime ↗</a>
     </div>
-  </section>
-  <Footer />
+  </nav>
+
+  <main class="z-page" id="top">
+    <!-- ───────────────────────── HERO ───────────────────────── -->
+    <section class="hero">
+      <p class="eyebrow" data-h>A Constellation from ACM-VIT</p>
+
+      <h1 class="wordmark" data-h>z0d1ak</h1>
+
+      <p class="tagline" data-h>
+        Navigating the universe of cybersecurity, one constellation of
+        captured flags at a time.
+      </p>
+
+      <svg class="hero-line" viewBox="0 0 600 120" fill="none" preserveAspectRatio="xMidYMid meet" data-h>
+        <polyline
+          class="hl-trail"
+          points="40,80 130,55 210,90 300,45 380,75 470,40 560,70"
+        ></polyline>
+        {
+          [[40,80],[130,55],[210,90],[300,45],[380,75],[470,40],[560,70]].map(([x,y]) => (
+            <circle class="hl-star" cx={x} cy={y} r="3.4" />
+          ))
+        }
+      </svg>
+
+      <div class="hero-stats" data-h>
+        <div class="hstat">
+          <span class="hstat-num">#{current.globalRank}</span>
+          <span class="hstat-label">World Rank</span>
+          <span class="hstat-sub">CTFtime {current.year}</span>
+        </div>
+        <div class="hstat">
+          <span class="hstat-num">#{current.countryRank}</span>
+          <span class="hstat-label">India Rank</span>
+          <span class="hstat-sub">CTFtime {current.year}</span>
+        </div>
+        <div class="hstat">
+          <span class="hstat-num">{Math.round(current.ratingPoints)}</span>
+          <span class="hstat-label">Rating Points</span>
+          <span class="hstat-sub">Season {current.year}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────── CHAPTER I · STAR ATLAS ─────────────────── -->
+    <section class="chapter" id="atlas">
+      <header class="ch-head" data-reveal>
+        <p class="ch-num">Chapter I</p>
+        <h2 class="ch-title">Constellations of achievement</h2>
+      </header>
+
+      <div class="atlas-card" id="atlas-card" data-reveal>
+        <div class="card-tag">
+          <span class="ct-key">Star Atlas</span>
+          <span class="ct-hint">Hover a star to read its story</span>
+        </div>
+
+        <div class="atlas-map" id="atlasMap">
+          <svg class="atlas-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+            {
+              achievementLines.map(([a, b]) => (
+                <line
+                  class="atl-line"
+                  x1={achievements[a].x} y1={achievements[a].y}
+                  x2={achievements[b].x} y2={achievements[b].y}
+                  data-a={a} data-b={b}
+                />
+              ))
+            }
+          </svg>
+          {
+            achievements.map((a, i) => (
+              <button
+                class={`atl-star mag-${a.magnitude}`}
+                style={`left:${a.x}%; top:${a.y}%`}
+                data-i={i}
+                aria-label={`${a.event}, placed ${a.place}`}
+              >
+                <span class="atl-core"></span>
+              </button>
+            ))
+          }
+
+          <div class="atl-panel" id="atlPanel" aria-live="polite">
+            <p class="atp-place"></p>
+            <p class="atp-event"></p>
+            <div class="atp-stats"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="atlas-stats" data-reveal>
+        <div class="ast">
+          <span class="ast-num">{current.events}</span>
+          <span class="ast-label">Events played in {current.year}</span>
+        </div>
+        <div class="ast">
+          <span class="ast-num">World #{current.globalRank}</span>
+          <span class="ast-label">Current global standing</span>
+        </div>
+        <div class="ast">
+          <span class="ast-num">India #{current.countryRank}</span>
+          <span class="ast-label">Current national standing</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────── CHAPTER II · CREW ─────────────────── -->
+    <section class="chapter" id="crew">
+      <header class="ch-head" data-reveal>
+        <p class="ch-num">Chapter II</p>
+        <h2 class="ch-title">A constellation of navigators</h2>
+        <p class="ch-body">
+          Web, pwn, crypto, forensics, reverse engineering and OSINT. Each
+          member is a star in their own discipline. Drawn together by the same
+          competitive sky, they form the constellation that signs every z0d1ak
+          writeup.
+        </p>
+      </header>
+
+      <div class="crew-card" id="crew-card" data-reveal>
+        <div class="card-tag">
+          <span class="ct-key">The Crew</span>
+          <span class="ct-hint">The roster charting the team</span>
+        </div>
+        <div class="crew-sky" id="crewSky">
+          <svg class="crew-lines" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+          {
+            members.map((name, i) => (
+              <div class="crew-star" data-i={i}>
+                <span class="cs-core"></span>
+                <span class="cs-name">{name}</span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────── CHAPTER III · VOYAGE ─────────────────── -->
+    <section class="chapter" id="voyage">
+      <header class="ch-head" data-reveal>
+        <p class="ch-num">Chapter III</p>
+        <h2 class="ch-title">A journey through the cosmos</h2>
+        <p class="ch-body">
+          Two seasons on CTFtime. The comet trail draws itself across z0d1ak's
+          history.
+        </p>
+      </header>
+
+      <div class="voyage">
+        <div class="voyage-trail"></div>
+        {
+          timeline.map((era, i) => (
+            <article class={`era ${i % 2 ? "era-right" : "era-left"}`} data-reveal>
+              <span class="era-node"></span>
+              <p class="era-year">{era.year}</p>
+              <h3 class="era-title">{era.title}</h3>
+              <p class="era-rank">{era.rank}</p>
+              <p class="era-blurb">{era.blurb}</p>
+              <p class="era-meta">{era.rating} rating points · {era.events} events</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- ───────────────────────── FOOTER ───────────────────────── -->
+    <footer class="z-footer">
+      <p class="foot-eyebrow" data-reveal>End of Voyage</p>
+      <h2 class="foot-title" data-reveal>Until the next sky</h2>
+      <p class="foot-lead" data-reveal>
+        z0d1ak is ACM-VIT's flagship Capture The Flag team. We chart new
+        constellations every season.
+      </p>
+
+      <div class="foot-cols">
+        <div class="fcol">
+          <p class="fcol-key">Origin</p>
+          <p>ACM-VIT</p>
+          <p class="fcol-mute">Vellore Institute of Technology, India</p>
+        </div>
+        <div class="fcol">
+          <p class="fcol-key">Charts</p>
+          <a href="https://ctftime.org/team/373452" target="_blank" rel="noopener">CTFtime · /team/373452</a>
+          <p class="fcol-mute">Live rankings &amp; past voyages</p>
+        </div>
+        <div class="fcol">
+          <p class="fcol-key">Signal</p>
+          <a href="https://acmvit.in" target="_blank" rel="noopener">acmvit.in</a>
+          <a href="/more" class="fcol-mute">Reach the chapter</a>
+        </div>
+      </div>
+
+      <div class="foot-base">
+        <span>© {current.year} z0d1ak · ACM-VIT</span>
+        <span>Charted in the open sky</span>
+      </div>
+    </footer>
+  </main>
 </Layout>
 
 <style>
-  .zodiak-page {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 8rem 2rem 4rem;
+  @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap");
+</style>
+
+<style>
+  :root {
+    --serif: "Cormorant Garamond", Georgia, serif;
+    --label: "PolySans Mono", "Inter", system-ui, sans-serif;
+    --ink: #fefcd9;        /* site cream */
+    --ink-soft: #c8c3a6;
+    --muted: #7b7e8c;      /* blue-grey labels */
+    --accent: #f95f4a;     /* site orange */
+    --gold: #e0a06a;       /* warm gold, bridged toward the orange */
+    --star: #f3eecf;
+    --bg-0: #08090f;
+    --line: rgba(160,165,180,0.14);
   }
 
-  .zodiak-inner {
-    max-width: 600px;
+  /* This page owns the whole viewport - silence site chrome */
+  :global(.diamond-grid) { display: none !important; }
+  :global(.site-header) { display: none !important; }
+  :global(body) { background: var(--bg-0); }
+
+  .sky {
+    position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+    background:
+      radial-gradient(120% 80% at 50% -20%, #11142a 0%, #0a0b16 45%, var(--bg-0) 100%);
+  }
+  #starfield { position: absolute; inset: 0; display: block; }
+
+  /* ── Nav ── */
+  .z-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.6rem clamp(1.25rem, 5vw, 3.5rem);
+    font-family: var(--label);
+  }
+  .z-mark {
+    font-size: 0.7rem; letter-spacing: 0.34em; text-transform: lowercase;
+    color: var(--ink); text-decoration: none;
+  }
+  .z-nav-links { display: flex; gap: clamp(1rem, 3vw, 2.5rem); }
+  .z-nav-links a {
+    font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none; transition: color 0.3s ease;
+  }
+  .z-nav-links a:hover { color: var(--ink); }
+
+  /* ── Page scaffold ── */
+  .z-page { position: relative; z-index: 1; color: var(--ink); font-family: var(--serif); }
+  .z-page section { padding: clamp(7rem, 16vh, 12rem) clamp(1.25rem, 6vw, 5rem); }
+
+  .eyebrow, .ch-num, .card-tag, .foot-eyebrow, .fcol-key {
+    font-family: var(--label);
+    font-size: 0.62rem; letter-spacing: 0.32em; text-transform: uppercase;
   }
 
-  .zodiak-heading {
-    font-family: "PolySans Mono", monospace;
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    font-weight: 800;
-    color: #FFFDD0;
-    letter-spacing: 0.05em;
-    margin-bottom: 1rem;
+  /* ── HERO ── */
+  .hero { min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .hero .eyebrow { color: var(--muted); margin-bottom: 2.4rem; }
+  .wordmark {
+    font-family: var(--serif); font-weight: 500;
+    font-size: clamp(4rem, 15vw, 11rem); line-height: 0.82;
+    letter-spacing: 0.02em; color: var(--ink);
+    text-shadow: 0 0 60px rgba(150,170,230,0.18);
+  }
+  .tagline {
+    font-weight: 400; font-style: italic;
+    font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+    color: var(--ink-soft); max-width: 30ch; line-height: 1.5;
+    margin-top: 1.6rem;
+  }
+  .hero-line { width: min(440px, 70vw); height: auto; margin: 3rem 0 3.5rem; overflow: visible; }
+  .hl-trail { stroke: rgba(194,168,120,0.5); stroke-width: 1; fill: none; }
+  .hl-star { fill: var(--gold); filter: drop-shadow(0 0 5px rgba(194,168,120,0.8)); }
+  .hero-stats { display: flex; gap: clamp(2.5rem, 8vw, 6rem); }
+  .hstat { display: flex; flex-direction: column; gap: 0.35rem; }
+  .hstat-num { font-family: var(--serif); font-weight: 500; font-size: clamp(2rem, 4vw, 2.8rem); color: var(--ink); line-height: 1; }
+  .hstat-label { font-family: var(--label); font-size: 0.58rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-soft); }
+  .hstat-sub { font-family: var(--label); font-size: 0.52rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+
+  /* ── Chapters ── */
+  .ch-head { max-width: 640px; margin: 0 auto clamp(3rem, 7vh, 5rem); }
+  .ch-num { color: var(--accent); }
+  .ch-title {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(2.2rem, 5.5vw, 4rem); line-height: 1.05;
+    color: var(--ink); margin: 1rem 0 0;
+  }
+  .ch-body { font-family: var(--serif); font-size: clamp(1.1rem, 2vw, 1.45rem); font-weight: 400; color: var(--ink-soft); line-height: 1.55; margin-top: 1.4rem; }
+
+  .card-tag {
+    display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.5rem;
+  }
+  .ct-key { color: var(--accent); }
+  .ct-hint { font-family: var(--label); font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+
+  /* ── Atlas card ── */
+  .atlas-card, .crew-card {
+    max-width: 1000px; margin: 0 auto; padding: clamp(1.5rem, 4vw, 2.5rem);
+    border: 1px solid var(--line); border-radius: 18px;
+    background: linear-gradient(180deg, rgba(18,22,40,0.55), rgba(8,10,20,0.5));
+  }
+  .atlas-map { position: relative; aspect-ratio: 16 / 7; min-height: 280px; }
+  .atlas-lines, .crew-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .atl-line {
+    stroke: rgba(120,200,230,0.3); stroke-width: 1; vector-effect: non-scaling-stroke;
+    transition: stroke 0.4s ease;
+  }
+  .atl-line.lit { stroke: rgba(140,225,255,0.9); }
+  .atl-star {
+    position: absolute; transform: translate(-50%, -50%);
+    width: 40px; height: 40px; display: grid; place-items: center;
+    background: none; border: 0; padding: 0; cursor: pointer;
+  }
+  .atl-core {
+    border-radius: 50%; background: #eaf2ff;
+    box-shadow: 0 0 8px 2px rgba(150,210,255,0.7);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .mag-1 .atl-core { width: 11px; height: 11px; }
+  .mag-2 .atl-core { width: 8px; height: 8px; }
+  .mag-3 .atl-core { width: 6px; height: 6px; opacity: 0.8; }
+  .atl-star:hover .atl-core, .atl-star.active .atl-core {
+    transform: scale(1.6); box-shadow: 0 0 16px 4px rgba(140,220,255,0.9);
   }
 
-  :global([data-theme="light"]) .zodiak-heading {
-    color: #1a1a1a;
+  .atl-panel {
+    position: absolute; left: 0; bottom: 0;
+    opacity: 0; transition: opacity 0.35s ease; pointer-events: none;
+  }
+  .atl-panel.show { opacity: 1; }
+  .atp-place { font-family: var(--label); font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); }
+  .atp-event { font-family: var(--serif); font-size: clamp(1.4rem, 3vw, 2rem); color: var(--ink); margin: 0.2rem 0 0.5rem; }
+  .atp-stats { display: flex; gap: 2rem; }
+  .atp-stats div { display: flex; flex-direction: column; }
+  .atp-stats b { font-family: var(--serif); font-size: 1.3rem; color: var(--star); font-weight: 500; }
+  .atp-stats span { font-family: var(--label); font-size: 0.52rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+
+  /* atlas stat row */
+  .atlas-stats {
+    max-width: 1000px; margin: 1.5rem auto 0;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+  }
+  .ast { padding: 1.4rem 1.6rem; border: 1px solid var(--line); border-radius: 12px; }
+  .ast-num { display: block; font-family: var(--serif); font-size: 1.7rem; color: var(--ink); }
+  .ast-label { font-family: var(--label); font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+
+  /* ── Crew card ── */
+  .crew-card {
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(55% 60% at 72% 28%, rgba(249,95,74,0.1), transparent 70%),
+      radial-gradient(70% 90% at 42% 60%, rgba(104,78,186,0.38), transparent 70%),
+      linear-gradient(180deg, rgba(18,18,40,0.6), rgba(8,8,18,0.5));
+  }
+  .crew-sky { position: relative; aspect-ratio: 16 / 8; min-height: 340px; }
+  .crew-star { position: absolute; transform: translate(-50%, -50%); display: grid; place-items: center; }
+  .cs-core {
+    width: 8px; height: 8px; border-radius: 50%; background: #fff;
+    box-shadow: 0 0 9px 2px rgba(200,215,255,0.8); transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .crew-star:hover .cs-core { transform: scale(1.7); box-shadow: 0 0 16px 5px rgba(170,200,255,0.95); }
+  .cs-name {
+    position: absolute; top: 100%; margin-top: 7px; white-space: nowrap;
+    font-family: var(--label); font-size: 0.6rem; letter-spacing: 0.1em;
+    color: var(--ink-soft); opacity: 0.7; transition: opacity 0.3s ease, color 0.3s ease;
+  }
+  .crew-star:hover .cs-name { opacity: 1; color: #fff; }
+
+  /* ── Voyage timeline ── */
+  .voyage { position: relative; max-width: 760px; margin: 0 auto; padding: 2rem 0; }
+  .voyage-trail {
+    position: absolute; left: 50%; top: 0; bottom: 0; width: 1px;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, transparent, rgba(249,95,74,0.45), rgba(140,160,220,0.3), transparent);
+  }
+  .era { position: relative; width: 50%; padding: 0 2.5rem; margin: clamp(3rem, 8vh, 6rem) 0; }
+  .era-left { left: 0; text-align: right; }
+  .era-right { left: 50%; text-align: left; }
+  .era-node {
+    position: absolute; top: 0.4rem; width: 11px; height: 11px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 12px 3px rgba(249,95,74,0.6);
+  }
+  .era-left .era-node { right: -5.5px; }
+  .era-right .era-node { left: -5.5px; }
+  .era-year { font-family: var(--label); font-size: 0.62rem; letter-spacing: 0.24em; color: var(--accent); }
+  .era-title { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 400; color: var(--ink); margin: 0.3rem 0; }
+  .era-rank { font-family: var(--label); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+  .era-blurb { font-family: var(--serif); font-size: 1.15rem; color: var(--ink-soft); line-height: 1.55; margin: 0.8rem 0; }
+  .era-meta { font-family: var(--label); font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+  /* ── Footer ── */
+  .z-footer { text-align: center; padding: clamp(7rem, 16vh, 12rem) clamp(1.25rem, 6vw, 5rem) 4rem; }
+  .foot-eyebrow { color: var(--accent); }
+  .foot-title { font-family: var(--serif); font-weight: 400; font-size: clamp(2.5rem, 7vw, 4.5rem); color: var(--ink); margin: 1rem 0; }
+  .foot-lead { font-family: var(--serif); font-size: clamp(1.1rem, 2vw, 1.4rem); color: var(--ink-soft); max-width: 46ch; margin: 0 auto; line-height: 1.55; }
+  .foot-cols {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+    max-width: 760px; margin: clamp(3rem, 7vh, 5rem) auto 0; text-align: left;
+  }
+  .fcol { font-family: var(--label); font-size: 0.72rem; line-height: 1.9; }
+  .fcol-key { color: var(--accent); margin-bottom: 0.8rem; }
+  .fcol a { color: var(--ink-soft); text-decoration: none; display: block; transition: color 0.3s ease; }
+  .fcol a:hover { color: var(--ink); }
+  .fcol p { color: var(--ink-soft); }
+  .fcol-mute { color: var(--muted) !important; }
+  .foot-base {
+    display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    max-width: 760px; margin: 3.5rem auto 0; padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    font-family: var(--label); font-size: 0.56rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
   }
 
-  .zodiak-subtitle {
-    font-family: "PolySans Mono", monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: #FF5F4A;
-    margin-bottom: 1.5rem;
+  [data-reveal], [data-h] { opacity: 0; }
+
+  @media (max-width: 720px) {
+    .z-nav-links a:not([href*="ctftime"]) { display: none; }
+    .atlas-stats, .foot-cols { grid-template-columns: 1fr; }
+    .foot-cols { text-align: center; }
+    .era { width: 100%; left: 0 !important; text-align: left !important; padding: 0 0 0 2rem; }
+    .voyage-trail { left: 4px; }
+    .era-node { left: -1px !important; right: auto !important; }
+    .hero-stats { gap: 2rem; }
   }
 
-  .zodiak-desc {
-    font-family: "PolySans Trial", system-ui, sans-serif;
-    font-size: 1rem;
-    color: rgba(255, 253, 208, 0.6);
-    line-height: 1.6;
-  }
-
-  :global([data-theme="light"]) .zodiak-desc {
-    color: rgba(0, 0, 0, 0.5);
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal], [data-h] { opacity: 1; }
   }
 </style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ───────────── Faint starfield ───────────── */
+  (function starfield() {
+    const canvas = document.getElementById("starfield") as HTMLCanvasElement | null;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    let w = 0, h = 0, dpr = 1, t = 0, scrollY = 0;
+    let stars: { x: number; y: number; r: number; base: number; tw: number; sp: number; depth: number }[] = [];
+
+    function init() {
+      const count = Math.min(150, Math.floor((w * h) / 13000));
+      stars = [];
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * w, y: Math.random() * h,
+          r: 0.3 + Math.random() * 1.1,
+          base: 0.18 + Math.random() * 0.5,
+          tw: Math.random() * Math.PI * 2,
+          sp: 0.003 + Math.random() * 0.008,
+          depth: 0.2 + Math.random() * 1,
+        });
+      }
+    }
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = window.innerWidth; h = window.innerHeight;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      canvas.style.width = w + "px"; canvas.style.height = h + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      init();
+    }
+    function frame() {
+      t += 1;
+      ctx.clearRect(0, 0, w, h);
+      for (const s of stars) {
+        const tw = reduce ? 0.7 : 0.55 + 0.45 * Math.sin(s.tw + t * s.sp * 5);
+        let yy = s.y - scrollY * 0.04 * s.depth;
+        yy = ((yy % h) + h) % h;
+        ctx.globalAlpha = s.base * tw;
+        ctx.fillStyle = "#cdd8f0";
+        ctx.beginPath();
+        ctx.arc(s.x, yy, s.r, 0, 6.2832);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(frame);
+    }
+    window.addEventListener("scroll", () => { scrollY = window.scrollY; }, { passive: true });
+    window.addEventListener("resize", resize);
+    resize();
+    requestAnimationFrame(frame);
+  })();
+
+  /* ───────────── Hero reveal ───────────── */
+  (function hero() {
+    if (reduce) { gsap.set("[data-h]", { opacity: 1 }); return; }
+    const tl = gsap.timeline({ delay: 0.25, defaults: { ease: "power3.out" } });
+    tl.fromTo(".eyebrow[data-h]", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7 })
+      .fromTo(".wordmark", { opacity: 0, y: 30, filter: "blur(14px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2 }, "-=0.3")
+      .fromTo(".tagline", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.6")
+      .fromTo(".hero-line", { opacity: 0 }, { opacity: 1, duration: 1 }, "-=0.4")
+      .fromTo(".hero-stats", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.5");
+
+    // draw the hero trail
+    const trail = document.querySelector<SVGPolylineElement>(".hl-trail");
+    if (trail) {
+      const len = trail.getTotalLength();
+      gsap.set(trail, { strokeDasharray: len, strokeDashoffset: len });
+      gsap.to(trail, { strokeDashoffset: 0, duration: 1.4, delay: 1, ease: "power2.inOut" });
+      gsap.from(".hl-star", { scale: 0, opacity: 0, transformOrigin: "center", duration: 0.5, stagger: 0.08, delay: 1.2, ease: "back.out(2)" });
+    }
+  })();
+
+  /* ───────────── Scroll reveals ───────────── */
+  gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
+    if (reduce) { gsap.set(el, { opacity: 1 }); return; }
+    gsap.fromTo(el, { opacity: 0, y: 30 }, {
+      opacity: 1, y: 0, duration: 1, ease: "power3.out",
+      scrollTrigger: { trigger: el, start: "top 86%" },
+    });
+  });
+
+  /* ───────────── Atlas interaction ───────────── */
+  (function atlas() {
+    const map = document.getElementById("atlasMap");
+    const panel = document.getElementById("atlPanel");
+    if (!map || !panel) return;
+    const starsBtns = Array.from(map.querySelectorAll<HTMLButtonElement>(".atl-star"));
+    const lines = Array.from(map.querySelectorAll<SVGLineElement>(".atl-line"));
+    const placeEl = panel.querySelector<HTMLElement>(".atp-place")!;
+    const eventEl = panel.querySelector<HTMLElement>(".atp-event")!;
+    const statsEl = panel.querySelector<HTMLElement>(".atp-stats")!;
+
+    const data = [
+      { event: "Hackअस्त्र", place: 1, ratingPoints: 50.0, ctfPoints: 9016 },
+      { event: "GPN CTF 2026", place: 2, ratingPoints: 97.334, ctfPoints: 4127 },
+      { event: "Incognito 7.0", place: 3, ratingPoints: 20.781, ctfPoints: 4700 },
+      { event: "KAALCHAKRA Finals", place: 4, ctfPoints: 6850 },
+      { event: "DalCTF 2026", place: 29, ctfPoints: 5358 },
+      { event: "JerseyCTF VI", place: 30, ctfPoints: 15586 },
+      { event: "KubSTU CTF", place: 41, ctfPoints: 21301 },
+    ] as { event: string; place: number; ratingPoints?: number; ctfPoints?: number }[];
+
+    const ordinal = (n: number) => {
+      const s = ["th", "st", "nd", "rd"], v = n % 100;
+      return n + (s[(v - 20) % 10] || s[v] || s[0]) + " place";
+    };
+    function show(i: number) {
+      const d = data[i]; if (!d) return;
+      starsBtns.forEach((b) => b.classList.toggle("active", b.dataset.i === String(i)));
+      lines.forEach((l) => l.classList.toggle("lit", l.dataset.a === String(i) || l.dataset.b === String(i)));
+      placeEl.textContent = ordinal(d.place);
+      eventEl.textContent = d.event;
+      let html = "";
+      if (d.ratingPoints != null) html += `<div><b>${d.ratingPoints}</b><span>Rating pts</span></div>`;
+      if (d.ctfPoints != null) html += `<div><b>${d.ctfPoints.toLocaleString()}</b><span>CTF points</span></div>`;
+      statsEl.innerHTML = html;
+      panel.classList.add("show");
+    }
+    starsBtns.forEach((b) => {
+      const i = parseInt(b.dataset.i || "0", 10);
+      ["mouseenter", "focus", "click"].forEach((ev) => b.addEventListener(ev, () => show(i)));
+    });
+    if (!reduce) {
+      gsap.from(starsBtns, {
+        scale: 0, opacity: 0, duration: 0.6, stagger: 0.07, ease: "back.out(1.8)",
+        scrollTrigger: { trigger: map, start: "top 78%" },
+      });
+    }
+    show(0);
+  })();
+
+  /* ───────────── Crew constellation ───────────── */
+  (function crew() {
+    const sky = document.getElementById("crewSky");
+    if (!sky) return;
+    const nodes = Array.from(sky.querySelectorAll<HTMLElement>(".crew-star"));
+    const svg = sky.querySelector<SVGSVGElement>(".crew-lines");
+    if (!svg) return;
+    const n = nodes.length;
+    const pts: { x: number; y: number }[] = [];
+    nodes.forEach((node, i) => {
+      const tt = i / (n - 1);
+      const x = 8 + tt * 84;
+      const y = 50 + Math.sin(tt * Math.PI * 2.2) * 26 + (i % 2 ? -7 : 7);
+      pts.push({ x, y });
+      node.style.left = x + "%";
+      node.style.top = y + "%";
+    });
+    for (let i = 0; i < n - 1; i++) {
+      const ln = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      ln.setAttribute("x1", String(pts[i].x)); ln.setAttribute("y1", String(pts[i].y));
+      ln.setAttribute("x2", String(pts[i + 1].x)); ln.setAttribute("y2", String(pts[i + 1].y));
+      ln.setAttribute("stroke", "rgba(170,185,230,0.28)");
+      ln.setAttribute("stroke-width", "1");
+      ln.setAttribute("vector-effect", "non-scaling-stroke");
+      svg.appendChild(ln);
+    }
+    if (!reduce) {
+      gsap.from(nodes, {
+        scale: 0, opacity: 0, duration: 0.6, stagger: 0.07, ease: "back.out(1.8)",
+        scrollTrigger: { trigger: sky, start: "top 78%" },
+      });
+      gsap.from(svg.querySelectorAll("line"), {
+        opacity: 0, duration: 0.9, stagger: 0.05,
+        scrollTrigger: { trigger: sky, start: "top 72%" },
+      });
+    }
+  })();
+
+  ScrollTrigger.refresh();
+</script>
