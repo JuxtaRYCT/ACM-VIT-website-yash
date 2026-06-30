@@ -40,31 +40,34 @@ const lightCount = countFrames("light");
     data-dark-count={darkCount}
     data-light-count={lightCount}
 >
-    <!-- Scroll DOWN: native video playback -->
-    <video
-        class="scroll-media scroll-media-dark"
-        data-scroll-video
-        data-fwd-video
-        data-theme-pair="dark"
-        muted
-        playsinline
-        preload="auto"
-    >
-        <source src={getAssetUrl(normalizedWebmSrc)} type="video/webm" />
-    </video>
-    <video
-        class="scroll-media scroll-media-light"
-        data-fwd-video
-        data-theme-pair="light"
-        muted
-        playsinline
-        preload="auto"
-    >
-        <source src={getAssetUrl(normalizedLightWebmSrc)} type="video/webm" />
-    </video>
+    <!-- Wrapper handles the scroll-in/out fade; dir swaps inside are instant -->
+    <div class="scroll-media-stack" data-scroll-media-stack>
+        <!-- Scroll DOWN: native video playback -->
+        <video
+            class="scroll-media scroll-media-dark"
+            data-scroll-video
+            data-fwd-video
+            data-theme-pair="dark"
+            muted
+            playsinline
+            preload="auto"
+        >
+            <source src={getAssetUrl(normalizedWebmSrc)} type="video/webm" />
+        </video>
+        <video
+            class="scroll-media scroll-media-light"
+            data-fwd-video
+            data-theme-pair="light"
+            muted
+            playsinline
+            preload="auto"
+        >
+            <source src={getAssetUrl(normalizedLightWebmSrc)} type="video/webm" />
+        </video>
 
-    <!-- Scroll UP: smoothed canvas frame player -->
-    <canvas class="scroll-media dir-hidden" data-scroll-frames></canvas>
+        <!-- Scroll UP: smoothed canvas frame player -->
+        <canvas class="scroll-media dir-hidden" data-scroll-frames></canvas>
+    </div>
 
     <div class="scroll-video-overlay" data-scroll-video-overlay></div>
 
@@ -79,30 +82,39 @@ const lightCount = countFrames("light");
         width: 100%;
     }
 
-    .scroll-media {
+    /* Wrapper: scroll-in/out fade lives here so dir swaps stay instant. */
+    .scroll-media-stack {
         position: fixed;
         top: 0;
         left: 0;
         width: 100vw;
         height: 100vh;
-        object-fit: cover;
         z-index: -1;
         pointer-events: none;
         opacity: 0;
-        transform: translateZ(0);
-        backface-visibility: hidden;
-        will-change: opacity;
         transition: opacity 0.6s ease-out;
     }
 
-    .scroll-media.visible {
+    .scroll-media-stack.visible {
         opacity: 1;
     }
 
-    /* Direction swap: hide the inactive medium instantly (no cross-fade) */
+    .scroll-media {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        pointer-events: none;
+        opacity: 1;
+        transform: translateZ(0);
+        backface-visibility: hidden;
+    }
+
+    /* Direction swap: hide the inactive medium instantly. */
     .scroll-media.dir-hidden {
-        opacity: 0 !important;
-        transition: none !important;
+        opacity: 0;
     }
 
     /* Theme swap for the videos (canvas draws the correct theme itself) */
@@ -156,6 +168,9 @@ const lightCount = countFrames("light");
         const container = document.querySelector(
             "[data-scroll-video-container]",
         ) as HTMLElement | null;
+        const stack = document.querySelector(
+            "[data-scroll-media-stack]",
+        ) as HTMLElement | null;
         const canvas = document.querySelector(
             "[data-scroll-frames]",
         ) as HTMLCanvasElement | null;
@@ -169,7 +184,7 @@ const lightCount = countFrames("light");
             "[data-scroll-video-overlay]",
         ) as HTMLElement | null;
 
-        if (!container || !canvas || !darkVideo || !lightVideo) return;
+        if (!container || !stack || !canvas || !darkVideo || !lightVideo) return;
         if (canvas.dataset.scrollInit === "true") return;
         canvas.dataset.scrollInit = "true";
 
@@ -244,7 +259,7 @@ const lightCount = countFrames("light");
             return null;
         };
 
-        const drawCover = (img: HTMLImageElement, alpha: number) => {
+        const drawCover = (img: HTMLImageElement) => {
             const cw = window.innerWidth;
             const ch = window.innerHeight;
             const iw = img.naturalWidth;
@@ -252,25 +267,18 @@ const lightCount = countFrames("light");
             const scale = Math.max(cw / iw, ch / ih);
             const dw = iw * scale;
             const dh = ih * scale;
-            ctx.globalAlpha = alpha;
             ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
         };
 
-        // Sub-frame crossfade: base frame opaque, next frame blended by fraction.
+        // Single eased frame - no crossfade (crossfade ghosted the prev frame).
         const drawAt = (p: number) => {
             const n = counts[theme];
             if (n <= 0) return;
-            const f = Math.max(0, Math.min(n - 1, p * (n - 1)));
-            const i0 = Math.floor(f);
-            const i1 = Math.min(n - 1, i0 + 1);
-            const frac = f - i0;
-            const imgA = pickImage(theme, i0);
-            const imgB = i1 !== i0 ? pickImage(theme, i1) : imgA;
-            if (!imgA && !imgB) return;
+            const idx = Math.max(0, Math.min(n - 1, Math.round(p * (n - 1))));
+            const img = pickImage(theme, idx);
+            if (!img) return;
             ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-            if (imgA) drawCover(imgA, 1);
-            if (imgB && imgB !== imgA && frac > 0.001) drawCover(imgB, frac);
-            ctx.globalAlpha = 1;
+            drawCover(img);
         };
 
         // ---- direction visibility -----------------------------------------
@@ -463,16 +471,12 @@ const lightCount = countFrames("light");
         });
 
         function show() {
-            darkVideo.classList.add("visible");
-            lightVideo.classList.add("visible");
-            canvas.classList.add("visible");
+            stack.classList.add("visible");
             overlay?.classList.add("visible");
             document.body.classList.add("scroll-video-active");
         }
         function hide() {
-            darkVideo.classList.remove("visible");
-            lightVideo.classList.remove("visible");
-            canvas.classList.remove("visible");
+            stack.classList.remove("visible");
             overlay?.classList.remove("visible");
             document.body.classList.remove("scroll-video-active");
             darkVideo.pause();

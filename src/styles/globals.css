@@ -318,7 +318,7 @@ html[data-theme="light"] .anim-btn:hover {
 }
 
 /* ── Scroll video light mode - dimmed with warm overlay for readability ── */
-html[data-theme="light"] .scroll-media.visible:not(.dir-hidden) {
+html[data-theme="light"] .scroll-media-stack.visible {
   opacity: 0.45 !important;
 }
 html[data-theme="light"] .scroll-video-overlay.visible {
