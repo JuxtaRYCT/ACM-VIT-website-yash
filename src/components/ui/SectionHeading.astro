@@ -150,4 +150,12 @@ const alignClasses =
     overflow: hidden;
     padding-bottom: 0.08em;
   }
+
+  /* Light mode: cream text with opacity modifiers needs explicit dark color. */
+  :global(html[data-theme="light"]) .sh-eyebrow {
+    color: rgba(26, 26, 26, 0.62) !important;
+  }
+  :global(html[data-theme="light"]) .sh-subtitle {
+    color: rgba(26, 26, 26, 0.72) !important;
+  }
 </style>

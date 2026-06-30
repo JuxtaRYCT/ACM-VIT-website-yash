@@ -30,7 +30,11 @@ export interface Props {
 }
 
 const { project } = Astro.props;
-const accent = project.buttons.primary.backgroundColor;
+// Solid accent only - a gradient breaks `color:` and SVG gradient stops.
+const rawAccent = project.buttons.primary.backgroundColor;
+const accent = /gradient/i.test(rawAccent)
+  ? (rawAccent.match(/#[0-9a-fA-F]{3,8}/)?.[0] ?? "#F95F4A")
+  : rawAccent;
 const learnMoreHref = project.slug ? `/projects/${project.slug}` : "#";
 const icons = project.buttons.icons ?? [];
 ---
@@ -41,7 +45,7 @@ const icons = project.buttons.icons ?? [];
     "--textColor": project.colors.textColor,
     "--hoverShadow": project.colors.hoverShadow,
     "--proj-color": accent,
-    "--proj-color-secondary": "#FEFCD9",
+    "--proj-color-secondary": "#0d0e0d",
   }}
 >
   <div class="parent grid grid-cols-9 grid-rows-5 gap-0 h-full w-full">

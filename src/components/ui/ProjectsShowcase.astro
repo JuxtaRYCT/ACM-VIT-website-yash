@@ -26,11 +26,22 @@ export interface Props {
 
 const { projects = [] } = Astro.props;
 
+// FillButton / Cassette need a SOLID accent (a gradient breaks `color:` and
+// SVG gradient stops). Fall back to the first hex in any gradient string.
+const toSolid = (c: string) => {
+  if (!c) return "#F95F4A";
+  if (/gradient/i.test(c)) {
+    const hex = c.match(/#[0-9a-fA-F]{3,8}/);
+    return hex ? hex[0] : "#F95F4A";
+  }
+  return c;
+};
+
 const items = projects.map((p) => ({
   ...p,
   name: (p.cassette.alt || "").replace(/\s*image$/i, "").trim() || "Project",
   href: p.slug ? `/projects/${p.slug}` : "#",
-  accent: p.buttons.primary.backgroundColor,
+  accent: toSolid(p.buttons.primary.backgroundColor),
   icons: p.buttons.icons ?? [],
 }));
 const total = String(items.length).padStart(2, "0");
@@ -74,7 +85,7 @@ const sectionHeightVh = Math.max(1, items.length) * 100;
               class:list={["text-panel", { "is-active": i === 0 }]}
               data-text-panel
               data-index={i}
-              style={`--proj-color: ${it.accent}; --proj-color-secondary: #FEFCD9; --hoverShadow: ${it.colors.hoverShadow};`}
+              style={`--proj-color: ${it.accent}; --proj-color-secondary: #0d0e0d; --hoverShadow: ${it.colors.hoverShadow};`}
             >
               <span class="panel-eyebrow inline-flex items-center gap-2 font-['PolySans_Trial',sans-serif] text-xs font-light uppercase tracking-[0.3em] text-[#FEFCD9]/70">
                 <span
@@ -141,26 +152,80 @@ const sectionHeightVh = Math.max(1, items.length) * 100;
 </section>
 
 <style>
-  /* Dotted background grid lines. */
+  /* Dotted background grid that doubles as a section scroll indicator.
+     Base dots stay faint; a masked "fill" layer of stronger dots is revealed
+     up to --prog (set from scroll progress), so the grid darkens as the
+     section finishes and recedes (lighter) on the way back / at the start. */
+  .proj-grid-bg {
+    --prog: 0%;
+    --dot-base: rgba(254, 252, 217, 0.12);
+    --dot-fill: rgba(254, 252, 217, 0.55);
+  }
   .grid-v {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 0;
-    border-left: 1px dotted rgba(254, 252, 217, 0.14);
+    width: 2px;
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--dot-base) 0 3px,
+      transparent 3px 17px
+    );
+  }
+  .grid-v::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--dot-fill) 0 3px,
+      transparent 3px 17px
+    );
+    -webkit-mask: linear-gradient(
+      to bottom,
+      #000 0 var(--prog),
+      transparent var(--prog)
+    );
+    mask: linear-gradient(
+      to bottom,
+      #000 0 var(--prog),
+      transparent var(--prog)
+    );
   }
   .grid-h {
     position: absolute;
     left: 0;
     right: 0;
-    height: 0;
-    border-top: 1px dotted rgba(254, 252, 217, 0.14);
+    height: 2px;
+    background: repeating-linear-gradient(
+      to right,
+      var(--dot-base) 0 3px,
+      transparent 3px 17px
+    );
   }
-  :global(html[data-theme="light"]) .grid-v {
-    border-left-color: rgba(38, 59, 51, 0.12);
+  .grid-h::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to right,
+      var(--dot-fill) 0 3px,
+      transparent 3px 17px
+    );
+    -webkit-mask: linear-gradient(
+      to right,
+      #000 0 var(--prog),
+      transparent var(--prog)
+    );
+    mask: linear-gradient(
+      to right,
+      #000 0 var(--prog),
+      transparent var(--prog)
+    );
   }
-  :global(html[data-theme="light"]) .grid-h {
-    border-top-color: rgba(38, 59, 51, 0.12);
+  :global(html[data-theme="light"]) .proj-grid-bg {
+    --dot-base: rgba(38, 59, 51, 0.1);
+    --dot-fill: rgba(38, 59, 51, 0.55);
   }
 
   .text-panel {
@@ -206,6 +271,18 @@ const sectionHeightVh = Math.max(1, items.length) * 100;
     scrollbar-width: none;
   }
 
+  /* Light mode: cream text (with opacity modifiers) escapes the global
+     override, so set readable dark colors explicitly. */
+  :global(html[data-theme="light"]) .panel-title {
+    color: #1a1a1a !important;
+  }
+  :global(html[data-theme="light"]) .panel-desc {
+    color: rgba(26, 26, 26, 0.78) !important;
+  }
+  :global(html[data-theme="light"]) .panel-eyebrow {
+    color: rgba(26, 26, 26, 0.62) !important;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .text-panel,
     .cassette-slide {
@@ -236,6 +313,7 @@ const sectionHeightVh = Math.max(1, items.length) * 100;
     const cassettes = Array.from(
       section.querySelectorAll<HTMLElement>("[data-cassette-slide]"),
     );
+    const gridBg = section.querySelector<HTMLElement>(".proj-grid-bg");
     const n = textPanels.length;
     if (n === 0) return;
 
@@ -265,6 +343,9 @@ const sectionHeightVh = Math.max(1, items.length) * 100;
       onUpdate: (self) => {
         const idx = Math.min(n - 1, Math.max(0, Math.round(self.progress * (n - 1))));
         setActive(idx);
+        // Drive the dotted grid as a section scroll indicator.
+        if (gridBg)
+          gridBg.style.setProperty("--prog", `${(self.progress * 100).toFixed(2)}%`);
       },
     });
 
