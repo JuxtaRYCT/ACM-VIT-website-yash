@@ -50,7 +50,20 @@ const navItems = [
           >{initialLabel}</span
         >
       </div>
-      <div class="flex flex-shrink-0 items-center gap-2">
+      <div class="flex flex-shrink-0 items-center gap-1.5">
+        <button
+          id="mn-theme-btn"
+          aria-label="Toggle theme"
+          class="mn-btn flex h-9 w-9 items-center justify-center rounded-full transition-transform active:scale-90"
+        >
+          <svg id="mn-theme-moon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
+          </svg>
+          <svg id="mn-theme-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+          </svg>
+        </button>
         <button
           id="mn-menu-btn"
           aria-label="Open menu"
@@ -223,7 +236,24 @@ const navItems = [
       0 0 0 1px rgba(249, 95, 74, 0.45);
     opacity: 0;
     transform: translateY(140%);
-    will-change: width, height, transform;
+    will-change: width, transform, background-color, box-shadow;
+  }
+
+  /* Collapsed (intro): pill shrinks to bare music button before Flip-expand */
+  .mn-pill.is-collapsed {
+    width: 44px;
+    background: transparent;
+    box-shadow: none;
+  }
+  .mn-pill.is-collapsed .mn-panel-nav {
+    padding: 4px;
+    gap: 0;
+    justify-content: center;
+  }
+  .mn-pill.is-collapsed .mn-panel-nav > div:first-child,
+  .mn-pill.is-collapsed #mn-theme-btn,
+  .mn-pill.is-collapsed #mn-menu-btn {
+    display: none;
   }
 
   /* Panels stacked; only active visible */
@@ -294,12 +324,19 @@ const navItems = [
   @keyframes mnEq3 { 0%,100%{height:8px} 25%{height:14px} 60%{height:4px} }
   @keyframes mnEq4 { 0%,100%{height:10px} 35%{height:5px} 65%{height:13px} }
 
-  /* Light mode - same dark pill, just override globals.css text overrides */
+  /* Light mode - same dark pill, no orange glow */
   :global(html[data-theme="light"]) .mn-pill {
     background: #1e1e1e;
     box-shadow:
-      0 10px 28px rgba(0, 0, 0, 0.25),
-      0 0 0 1px rgba(249, 95, 74, 0.5);
+      0 10px 28px rgba(0, 0, 0, 0.22),
+      0 0 0 1px rgba(0, 0, 0, 0.18);
+  }
+  :global(html[data-theme="light"]) .mn-btn-primary {
+    box-shadow: none !important;
+  }
+  :global(html[data-theme="light"]) .mn-section-dot,
+  :global(html[data-theme="light"]) .mn-link[data-active] .mn-link-dot {
+    box-shadow: none !important;
   }
   :global(html[data-theme="light"]) .mn-label,
   :global(html[data-theme="light"]) .mn-link,
@@ -401,6 +438,38 @@ const navItems = [
       );
     }
 
+    /* ── Theme toggle ── */
+    const themeBtn = document.getElementById("mn-theme-btn");
+    const moonIcon = document.getElementById("mn-theme-moon");
+    const sunIcon = document.getElementById("mn-theme-sun");
+    function syncThemeIcons() {
+      const isLight = document.documentElement.getAttribute("data-theme") === "light";
+      moonIcon?.classList.toggle("hidden", isLight);
+      sunIcon?.classList.toggle("hidden", !isLight);
+    }
+    syncThemeIcons();
+    themeBtn?.addEventListener("click", () => {
+      const fn = (window as any).acmToggleTheme;
+      if (typeof fn === "function") fn();
+      else {
+        // Fallback: flip data-theme directly
+        const html = document.documentElement;
+        if (html.getAttribute("data-theme") === "light") {
+          html.removeAttribute("data-theme");
+          localStorage.setItem("acm-theme", "dark");
+        } else {
+          html.setAttribute("data-theme", "light");
+          localStorage.setItem("acm-theme", "light");
+        }
+      }
+      setTimeout(syncThemeIcons, 50);
+    });
+    // React to theme changes from elsewhere (bulb pull)
+    new MutationObserver(syncThemeIcons).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
     document.getElementById("mn-menu-btn")?.addEventListener("click", () => {
       morphTo("menu");
     });
@@ -501,23 +570,116 @@ const navItems = [
       audio.currentTime = pct * audio.duration;
     });
 
-    /* ── Intro: slide up from below with bounce ── */
+    /* ── Intro (clip-path approach):
+         1) Pill drops in as bare orange music circle (clip tight around btn,
+            pill bg + shadow invisible)
+         2) Single locked tween: pill bg + shadow fade in, clip-path opens left,
+            pill translates back to 0 → music btn slides into right slot while
+            pill forms around it
+         3) Cross-dissolve label + theme + menu after pill fully formed
+    ── */
     let played = false;
     function playIntro() {
       if (played) return;
       played = true;
-      gsap.set(pill, { opacity: 0, y: 140, scale: 0.78 });
-      gsap.timeline()
-        .to(pill, { opacity: 1, y: -10, scale: 1.06, duration: 0.42, ease: "power3.out" })
-        .to(pill, { y: 4, scale: 1, duration: 0.18, ease: "power2.inOut" })
-        .to(pill, { y: 0, duration: 0.14, ease: "power2.out" });
+
+      const themeBtnEl = document.getElementById("mn-theme-btn");
+      const menuBtnEl = document.getElementById("mn-menu-btn");
+      const musicBtnEl = document.getElementById("mn-music-btn");
+      const labelArea = panelNav.children[0] as HTMLElement | undefined;
+      const popEls = [themeBtnEl, menuBtnEl].filter(Boolean) as HTMLElement[];
+
+      const PILL_W = 320;
+      const RIGHT_PAD = 16; // panel-nav px-4
+      const Y_PAD = 8;      // panel-nav py-2
+      const BTN_W = 36;
+
+      const musicLeftInPill = PILL_W - RIGHT_PAD - BTN_W;       // 268
+      const musicCenterInPill = PILL_W - RIGHT_PAD - BTN_W / 2; // 286
+
+      // Tight clip exactly around music btn — pill bg/border invisible during drop
+      const tightClip =
+        `inset(${Y_PAD}px ${RIGHT_PAD}px ${Y_PAD}px ${musicLeftInPill}px round ${BTN_W / 2}px)`;
+      const expandedClip = `inset(0px 0px 0px 0px round 28px)`;
+
+      // Translate pill left so music btn center sits at viewport center initially
+      const dx = -(musicCenterInPill - PILL_W / 2); // -126
+
+      const dropBg = "rgba(30, 30, 30, 0)";
+      const finalBg = "rgba(30, 30, 30, 1)";
+      const dropShadow = "0 0 0 0 rgba(0,0,0,0), 0 0 0 0 rgba(249,95,74,0)";
+      const finalShadow =
+        "0 10px 28px rgba(0,0,0,0.55), 0 0 0 1px rgba(249,95,74,0.45)";
+
+      // Initial state: only music btn visible
+      gsap.set(pill, {
+        opacity: 0,
+        y: 140,
+        scale: 0.7,
+        x: dx,
+        clipPath: tightClip,
+        backgroundColor: dropBg,
+        boxShadow: dropShadow,
+      });
+      if (labelArea) gsap.set(labelArea, { opacity: 0 });
+      gsap.set(popEls, { opacity: 0 });
+
+      const tl = gsap.timeline();
+
+      // Phase 1: drop in (just the music btn)
+      tl.to(pill, {
+        opacity: 1,
+        y: -8,
+        scale: 1.05,
+        duration: 0.55,
+        ease: "power2.out",
+      })
+        .to(pill, {
+          y: 0,
+          scale: 1,
+          duration: 0.4,
+          ease: "power3.out",
+        })
+
+        // Phase 2: single tween - pill forms (bg+shadow+clip) while music
+        // slides into right slot. All locked to same ease/duration.
+        .to(pill, {
+          x: 0,
+          clipPath: expandedClip,
+          backgroundColor: finalBg,
+          boxShadow: finalShadow,
+          duration: 0.85,
+          ease: "power2.inOut",
+          onComplete: () => {
+            gsap.set(pill, {
+              clearProps: "clipPath,backgroundColor,boxShadow",
+            });
+          },
+        })
+
+        // Phase 3: cross-dissolve label + theme + menu
+        .to(
+          [labelArea, ...popEls].filter(Boolean),
+          {
+            opacity: 1,
+            duration: 0.4,
+            ease: "power2.out",
+            stagger: 0.05,
+          },
+          ">0.05",
+        );
     }
 
+    const INTRO_DELAY = 1000;
     if (sessionStorage.getItem("preloaderShown")) {
-      setTimeout(playIntro, 500);
+      setTimeout(playIntro, INTRO_DELAY);
     } else {
-      window.addEventListener("preloader:done", () => setTimeout(playIntro, 500), { once: true });
-      setTimeout(playIntro, 2500);
+      window.addEventListener(
+        "preloader:done",
+        () => setTimeout(playIntro, INTRO_DELAY),
+        { once: true },
+      );
+      setTimeout(playIntro, 3500);
     }
   }
 

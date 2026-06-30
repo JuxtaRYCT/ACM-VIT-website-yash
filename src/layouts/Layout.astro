@@ -439,6 +439,7 @@ const isLandingPage = Astro.url.pathname === "/";
 
       const toggle = document.getElementById('theme-toggle');
       if (toggle) {
+        // expose theme switch for MobileNavbar (assigned after function decl below)
         const cordSvg = document.getElementById('cord-svg');
         const cordPath = document.getElementById('cord-path');
         const bulbHandle = document.getElementById('bulb-handle');
@@ -517,6 +518,8 @@ const isLandingPage = Astro.url.pathname === "/";
             },
           });
         }
+
+        (window as any).acmToggleTheme = doThemeSwitch;
 
         // ── Pointer drag ──
         toggle.addEventListener('pointerdown', (e) => {
@@ -749,5 +752,12 @@ const isLandingPage = Astro.url.pathname === "/";
   body.mobile-menu-open .brand-logos {
     opacity: 0;
     pointer-events: none;
+  }
+
+  /* Mobile: navbar provides theme toggle, hide bulb cord */
+  @media screen and (max-width: 952px) {
+    :global(.theme-toggle) {
+      display: none !important;
+    }
   }
 </style>
