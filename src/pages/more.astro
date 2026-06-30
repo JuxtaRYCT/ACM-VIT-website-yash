@@ -166,13 +166,6 @@ const icons: Record<string, string> = {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.25rem;
   }
-  /* First tile spans wider on roomy screens, like a featured tape. */
-  @media (min-width: 720px) {
-    .tile-wrap:first-child {
-      grid-column: span 2;
-    }
-  }
-
   .tile-wrap {
     opacity: 0;
     transform: translateY(18px);

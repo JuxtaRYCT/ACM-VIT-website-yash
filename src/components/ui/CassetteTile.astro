@@ -266,3 +266,51 @@ const REEL_GEAR =
     border-color: rgba(0, 0, 0, 0.12);
   }
 </style>
+
+<script>
+  (() => {
+    if ((window as any).__cassetteRollInit) return;
+    (window as any).__cassetteRollInit = true;
+
+    const audio = new Audio("/audio/cassette-roll.mp3");
+    audio.loop = true;
+    audio.volume = 0.18;
+    audio.preload = "auto";
+
+    let prefersReducedMotion = false;
+    try {
+      prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    } catch {}
+
+    const stop = () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+
+    const start = () => {
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+    };
+
+    document.addEventListener("pointerenter", (e) => {
+      if (prefersReducedMotion) return;
+      const target = e.target as Element | null;
+      if (!target || !(target as Element).closest) return;
+      const tile = (target as Element).closest("[data-cassette-tile]");
+      if (!tile) return;
+      start();
+    }, true);
+
+    document.addEventListener("pointerleave", (e) => {
+      const target = e.target as Element | null;
+      if (!target || !(target as Element).closest) return;
+      const tile = (target as Element).closest("[data-cassette-tile]");
+      if (!tile) return;
+      stop();
+    }, true);
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stop();
+    });
+  })();
+</script>
