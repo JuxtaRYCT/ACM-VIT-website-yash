@@ -321,10 +321,13 @@
 .ag-day-label {
   flex-shrink: 0;
   width: 110px;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .ag-day-num {
+  order: 2;
   font-size: clamp(3.5rem, 6vw, 5.5rem);
   font-weight: 900;
   line-height: 0.85;
@@ -334,14 +337,14 @@
 }
 
 .ag-day-abbr {
-  font-size: 0.9rem;
+  order: 1;
+  font-size: 0.72rem;
   font-weight: 800;
+  letter-spacing: 0.18em;
   color: #C44A3F;
-  position: absolute;
-  top: 0;
-  right: 8px;
+  margin-bottom: 0.4rem;
   font-family: "PolySans Mono", monospace;
-  text-transform: capitalize;
+  text-transform: uppercase;
 }
 
 .ag-day-content {
@@ -713,3 +716,79 @@ html[data-theme="light"] .cal-switch-active {
   color: #1A1A1A !important;
   background: rgba(249, 95, 74, 0.12) !important;
 }
+
+/* ══════════════════════════════════════════════════════
+   DARK MODE (site default)
+   The agenda is authored light; these rules flip every
+   surface/text to a dark cassette-themed palette when the
+   site is not in light mode. Light mode keeps the base.
+   ══════════════════════════════════════════════════════ */
+
+html:not([data-theme="light"]) .agenda-side {
+  background: #16171b;
+  color: #FEFCD9;
+}
+html:not([data-theme="light"]) .agenda-side-title { color: #FEFCD9; }
+html:not([data-theme="light"]) .agenda-cal-ico { color: #FEFCD9; }
+
+html:not([data-theme="light"]) .agenda-mini { border-bottom-color: rgba(254, 252, 217, 0.1); }
+html:not([data-theme="light"]) .agenda-mini-head span { color: rgba(254, 252, 217, 0.4); }
+html:not([data-theme="light"]) .ag-mini-d { color: #FEFCD9; }
+html:not([data-theme="light"]) .ag-mini-d:hover { background: rgba(254, 252, 217, 0.08); }
+html:not([data-theme="light"]) .ag-mini-out { color: rgba(254, 252, 217, 0.25); }
+html:not([data-theme="light"]) .ag-mini-now { background: #FF5F4A !important; color: #0d0e0d !important; }
+
+html:not([data-theme="light"]) .agenda-domains { border-bottom-color: rgba(254, 252, 217, 0.1); }
+html:not([data-theme="light"]) .ag-dom-btn {
+  background: rgba(254, 252, 217, 0.06);
+  border-color: rgba(254, 252, 217, 0.12);
+  color: #FEFCD9;
+}
+html:not([data-theme="light"]) .ag-dom-btn:hover { background: rgba(254, 252, 217, 0.12); }
+
+html:not([data-theme="light"]) .agenda-sec-head span { color: #FEFCD9; }
+html:not([data-theme="light"]) .ag-up-item { border-bottom-color: rgba(254, 252, 217, 0.08); }
+html:not([data-theme="light"]) .ag-up-item:hover { background: rgba(254, 252, 217, 0.06); }
+html:not([data-theme="light"]) .ag-up-name { color: #FEFCD9; }
+html:not([data-theme="light"]) .ag-up-meta { color: rgba(254, 252, 217, 0.4); }
+
+html:not([data-theme="light"]) .agenda-body {
+  background: #121317;
+  color: #FEFCD9;
+}
+html:not([data-theme="light"]) .agenda-month { color: #FEFCD9; }
+html:not([data-theme="light"]) .agenda-nav-btn,
+html:not([data-theme="light"]) .agenda-today-btn {
+  background: rgba(254, 252, 217, 0.06);
+  border-color: rgba(254, 252, 217, 0.12);
+  color: #FEFCD9;
+}
+html:not([data-theme="light"]) .agenda-nav-btn:hover,
+html:not([data-theme="light"]) .agenda-today-btn:hover {
+  background: rgba(254, 252, 217, 0.12);
+  border-color: rgba(254, 252, 217, 0.2);
+}
+
+html:not([data-theme="light"]) .ag-day { border-top-color: rgba(254, 252, 217, 0.1); }
+html:not([data-theme="light"]) .ag-day-num { color: #FEFCD9; }
+html:not([data-theme="light"]) .ag-day-now .ag-day-num { color: #FF6F61; }
+html:not([data-theme="light"]) .ag-day-abbr { color: #FF6F61; }
+
+html:not([data-theme="light"]) .ag-event {
+  background: rgba(254, 252, 217, 0.04);
+  border-color: rgba(254, 252, 217, 0.08);
+}
+html:not([data-theme="light"]) .ag-event:hover {
+  background: rgba(254, 252, 217, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+html:not([data-theme="light"]) .ag-ev-start { color: #FEFCD9; }
+html:not([data-theme="light"]) .ag-ev-end { color: rgba(254, 252, 217, 0.4); }
+html:not([data-theme="light"]) .ag-ev-title { color: #FEFCD9; }
+html:not([data-theme="light"]) .ag-ev-loc { color: rgba(254, 252, 217, 0.45); }
+
+html:not([data-theme="light"]) .ag-empty {
+  color: rgba(254, 252, 217, 0.3);
+  border-color: rgba(254, 252, 217, 0.12);
+}
+html:not([data-theme="light"]) .ag-none { color: rgba(254, 252, 217, 0.3); }

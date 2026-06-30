@@ -1036,3 +1036,21 @@ import { forktoberProjectDetails } from "./forktoberProjectsData";
 Object.assign(projectDetails, forktoberProjectDetails);
 
 export const projectSlugs = Object.keys(projectDetails);
+
+// Look up a project's cassette art + accent by display title (case/space/dash
+// insensitive). Used to render real project cassettes on AOI pages.
+const normalizeProjectTitle = (s: string) =>
+  s.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+const projectByNormTitle: Record<string, ProjectDetail> = {};
+for (const p of Object.values(projectDetails)) {
+  projectByNormTitle[normalizeProjectTitle(p.title)] = p;
+}
+
+export function getProjectCassette(
+  title: string,
+): { color: string; image?: string; slug: string } | null {
+  const p = projectByNormTitle[normalizeProjectTitle(title)];
+  if (!p) return null;
+  return { color: p.themeColor, image: p.heroImage ?? p.cassetteSvg, slug: p.slug };
+}

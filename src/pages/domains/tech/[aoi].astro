@@ -7,6 +7,7 @@ import "../../../styles/globals.css";
 import "../../../styles/design-domain.css";
 import { getAssetUrl } from "../../../utils/cdn";
 import ToolCard from "../../../components/ToolCard.astro";
+import ProjectCassetteCard from "../../../components/ui/ProjectCassetteCard.astro";
 import {
   TECH_THEME_COLOR,
   techAOIs,
@@ -96,18 +97,12 @@ const otherAOIs = techAOIs.filter((a) => a.key !== aoiSlug);
           </div>
           <div class="dsg-events-row">
             {aoiData.projects.map((project) => (
-              <div class="dsg-event-card" data-dsg-animate="fade-up">
-                {project.cassette && (
-                  <img
-                    src={getAssetUrl(project.cassette)}
-                    alt={project.title}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                )}
-                <h4>{project.title}</h4>
-                <p>{project.desc}</p>
-              </div>
+              <ProjectCassetteCard
+                title={project.title}
+                desc={project.desc}
+                domainColor={TECH_THEME_COLOR}
+                fallbackImage={project.cassette}
+              />
             ))}
           </div>
         </section>
