@@ -4,6 +4,7 @@ export const projectsData = [
       "src": "/projects/acmone.webp",
       "alt": "ACMOne Image"
     },
+    "slug": "acmone",
     "textContent": {
       "blocks": [
         "ACMOne streamlines operations for ACM VIT's 100+ organizing committee members by centralizing event planning, deadline tracking, ID scanning, and team communication in one unified platform.",
@@ -36,6 +37,7 @@ export const projectsData = [
       "src": "/projects/examcooker.webp",
       "alt": "ExamCooker Image"
     },
+    "slug": "examcooker",
     "textContent": {
       "blocks": [
         "ExamCooker simplifies exam preparation for VIT students by centralizing notes, past papers, and community discussions in one comprehensive platform. Built to perform when the pressure's on, it features an intuitive interface, fast search, and seamless resource sharing that helps students find what they need quickly.",
@@ -77,6 +79,7 @@ export const projectsData = [
       "src": "/projects/CLI-RPG.webp",
       "alt": "CLI RPG Image"
     },
+    "slug": "cli-rpg",
     "textContent": {
       "blocks": [
         "CLI-RPG brings interactive storytelling to the command line through an immersive text-based adventure. Players navigate a mysterious world filled with challenging puzzles, compelling characters, and detailed ASCII art, all enhanced by dynamic music and an integrated audio visualizer.",
@@ -109,6 +112,7 @@ export const projectsData = [
       "src": "/projects/UniPool.webp",
       "alt": "UniPool Image"
     },
+    "slug": "unipool",
     "textContent": {
       "blocks": [
         "UniPool is a comprehensive carpooling platform that connects you across India with seamless ride-sharing solutions. Whether hosting or joining rides, the platform's dynamic search capabilities work nationwide, from campus trips to intercity travel, breaking free from predefined route limitations.",
@@ -141,6 +145,7 @@ export const projectsData = [
       "src": "/projects/localhost.webp",
       "alt": "Localhost Image"
     },
+    "slug": "localhost",
     "textContent": {
       "blocks": [
         "Localhost is a VS Code-inspired platform built for ACM VIT's 2024 organizing committee selections. With its familiar code-editor interface, the platform streamlines the entire recruitment process from application submission to candidate evaluation.",
@@ -184,6 +189,7 @@ export const projectsData = [
       "src": "/projects/Cover.webp",
       "alt": "OCS Website Image"
     },
+    "slug": "ocs-25",
     "textContent": {
       "blocks": [
         "OCS is ACM VIT's 2025 organizing committee selection portal featuring a sleek macOS-inspired interface that transforms recruitment into an interactive desktop experience. The platform showcases the chapter's projects, events, and memories while allowing you to enjoy mini-games like ACM Draw, Doom, and 2048.",
