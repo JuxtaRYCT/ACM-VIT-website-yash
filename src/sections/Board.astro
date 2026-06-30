@@ -32,7 +32,11 @@ const facultyCoordinator = boardMembers.find(
   </div>
 
   <div class="max-w-7xl mx-auto flex flex-col relative z-10">
-    <div class="flex justify-center mb-12">
+    <div class="flex flex-col items-center mb-12">
+      <span class="board-eyebrow mb-5 inline-flex items-center gap-2 font-['PolySans_Trial',sans-serif] text-xs font-light uppercase tracking-[0.35em] text-[#FEFCD9]/70">
+        <span class="board-dot inline-block h-[7px] w-[7px] rounded-full bg-[#ff5f4a]"></span>
+        The people behind the magic
+      </span>
       <img
         src={getAssetUrl("/team/the_team.webp")}
         alt="The Team"
@@ -40,6 +44,10 @@ const facultyCoordinator = boardMembers.find(
         loading="lazy"
         decoding="async"
       />
+      <p class="board-sub mt-6 max-w-2xl text-center font-['PolySans_Trial',sans-serif] text-base font-light leading-relaxed text-[#FEFCD9]/75 sm:text-lg">
+        A chapter is only as strong as its people. Meet the board steering
+        ACM-VIT, then dive into every crew across the years.
+      </p>
     </div>
 
     <!-- Faculty Coordinator - Featured Card -->
@@ -109,6 +117,7 @@ const facultyCoordinator = boardMembers.find(
     <div class="text-center mt-16">
       <AnimatedButton
         text="See the entire crew making magic!"
+        href="/team"
       />
     </div>
   </div>
@@ -191,6 +200,13 @@ const facultyCoordinator = boardMembers.find(
   }
   .grid > div:nth-child(9) {
     animation-delay: 0.9s;
+  }
+
+  :global(html[data-theme="light"]) .board-eyebrow {
+    color: rgba(26, 26, 26, 0.62);
+  }
+  :global(html[data-theme="light"]) .board-sub {
+    color: rgba(26, 26, 26, 0.74);
   }
 
   /* Responsive adjustments */

@@ -1,88 +1,156 @@
 ---
 import AnimatedButton from "../components/ui/AnimatedButton.astro";
+
+const initiatives = [
+  "Hour of Code",
+  "Igniting Minds",
+  "Distinguished Speakers",
+  "Digital Literacy",
+  "Community Outreach",
+];
 ---
 
-<section class="community-landing relative w-full overflow-hidden">
-  <div class="landing-inner">
-    <!-- Left: Cassette -->
-    <div class="landing-cassette">
+<section class="community-landing relative flex min-h-screen w-full items-center overflow-hidden">
+  <!-- Background layers -->
+  <div class="cl-glow" aria-hidden="true"></div>
+  <div class="cl-grid" aria-hidden="true">
+    <span class="cl-grid-v" style="left: 28%"></span>
+    <span class="cl-grid-v" style="left: 64%"></span>
+    <span class="cl-grid-v" style="left: 86%"></span>
+    <span class="cl-grid-h" style="top: 30%"></span>
+    <span class="cl-grid-h" style="top: 72%"></span>
+  </div>
+
+  <div class="cl-inner">
+    <!-- Left: copy -->
+    <div class="cl-left">
+      <span class="cl-eyebrow">
+        <span class="cl-dot"></span>
+        ACM-VIT · Beyond the code
+      </span>
+
+      <h2 class="cl-heading">
+        <span class="cl-word">COMM</span><span class="cl-word accent">UNITY</span>
+      </h2>
+
+      <span class="cl-bar" aria-hidden="true"></span>
+
+      <p class="cl-text">
+        At ACM-VIT, technology is more than just code - it's a tool to uplift,
+        empower, and create meaningful change. Our community-driven initiatives
+        spark curiosity, strengthen digital literacy, and bring the power of
+        technology closer to those who need it most.
+      </p>
+
+      <ul class="cl-pills">
+        {initiatives.map((label) => <li class="cl-pill">{label}</li>)}
+      </ul>
+
+      <div class="cl-cta">
+        <AnimatedButton text="Unravel the tape" href="/community" />
+      </div>
+    </div>
+
+    <!-- Right: cassette hero + floating community moments -->
+    <div class="cl-visual">
+      <div class="cl-cassette-glow" aria-hidden="true"></div>
+
       <img
         src="/community/cassette-igniting-minds.png"
         alt="Igniting Minds cassette"
-        class="landing-cassette-img"
+        class="cl-cassette"
         loading="eager"
         decoding="async"
       />
-    </div>
 
-    <!-- Right: Heading + text + CTA -->
-    <div class="landing-right">
-      <h2 class="landing-heading">
-        COMM<span class="accent">UNITY</span>
-      </h2>
-      <p class="landing-text">
-        At ACM-VIT, technology is more than just code - it's a tool to
-        uplift, empower, and create meaningful change. Our
-        community-driven initiatives aim to spark curiosity,
-        strengthen digital literacy, and bring the power of
-        technology closer to those who need it most. Here's how
-        we're taking that step forward.
-      </p>
-      <div class="landing-cta">
-        <AnimatedButton text="Unravel the tape" href="/community" />
-      </div>
+      <figure class="cl-float cl-float-1" data-parallax="-60">
+        <img src="/community/hour-of-code.png" alt="Hour of Code session" loading="lazy" decoding="async" />
+        <figcaption>Hour of Code</figcaption>
+      </figure>
+
+      <figure class="cl-float cl-float-2" data-parallax="40">
+        <img src="/community/peter-robinson.webp" alt="Distinguished speaker" loading="lazy" decoding="async" />
+        <figcaption>Speakers</figcaption>
+      </figure>
+
+      <figure class="cl-float cl-float-3" data-parallax="-30">
+        <img src="/community/pixel-heart.png" alt="" loading="lazy" decoding="async" />
+      </figure>
     </div>
   </div>
 </section>
 
 <style>
   .community-landing {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 3rem;
-    padding-bottom: 6rem;
+    padding-block: clamp(4rem, 8vh, 7rem);
+    isolation: isolate;
   }
 
-  .landing-inner {
+  /* ── Background ── */
+  .cl-glow {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background:
+      radial-gradient(
+        55% 55% at 72% 42%,
+        rgba(249, 95, 74, 0.3),
+        transparent 70%
+      ),
+      radial-gradient(
+        40% 50% at 18% 80%,
+        rgba(255, 0, 122, 0.14),
+        transparent 70%
+      );
+    animation: clGlowPulse 9s ease-in-out infinite;
+  }
+  @keyframes clGlowPulse {
+    0%, 100% { opacity: 0.85; }
+    50% { opacity: 1; }
+  }
+
+  .cl-grid {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .cl-grid-v {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(254, 252, 217, 0.1) 0 3px,
+      transparent 3px 17px
+    );
+  }
+  .cl-grid-h {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: repeating-linear-gradient(
+      to right,
+      rgba(254, 252, 217, 0.1) 0 3px,
+      transparent 3px 17px
+    );
+  }
+
+  /* ── Layout ── */
+  .cl-inner {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
     align-items: center;
-    gap: clamp(1.5rem, 4vw, 4rem);
+    gap: clamp(2rem, 5vw, 5rem);
     width: 100%;
     max-width: 1500px;
-    padding: 2rem clamp(2rem, 5vw, 4rem);
-    opacity: 0;
-    transform: translateY(30px);
-    animation: landingReveal 1s ease 0.3s forwards;
+    margin: 0 auto;
+    padding: 2rem clamp(1.5rem, 5vw, 4.5rem);
   }
 
-  @keyframes landingReveal {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .landing-cassette {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .landing-cassette-img {
-    width: clamp(320px, 38vw, 560px);
-    height: auto;
-    filter: drop-shadow(0 24px 60px rgba(0, 0, 0, 0.55));
-    animation: cassetteHover 5s ease-in-out infinite;
-  }
-
-  @keyframes cassetteHover {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-10px) rotate(0.4deg); }
-  }
-
-  .landing-right {
+  .cl-left {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -90,48 +158,353 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
     min-width: 0;
   }
 
-  .landing-heading {
+  .cl-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: "PolySans Trial", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(254, 252, 217, 0.7);
+  }
+  .cl-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 9999px;
+    background: #ff5f4a;
+    box-shadow: 0 0 12px rgba(255, 95, 74, 0.8);
+  }
+
+  .cl-heading {
     font-family: "PolySans Trial", system-ui, sans-serif;
-    font-size: clamp(2.75rem, 6.2vw, 7.5rem);
-    line-height: 0.85;
-    color: #FFFDD0;
+    font-size: clamp(3.5rem, 11vw, 10rem);
+    line-height: 0.82;
+    color: #fffdd0;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: -0.05em;
     margin: 0;
     white-space: nowrap;
   }
-
-  .landing-heading .accent {
-    color: #FF5F4A;
+  .cl-heading .accent {
+    background: linear-gradient(120deg, #ff5f4a 0%, #ff007a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .cl-word {
+    display: inline-block;
   }
 
-  .landing-text {
+  .cl-bar {
+    display: block;
+    height: 4px;
+    width: clamp(80px, 12vw, 160px);
+    border-radius: 999px;
+    background: linear-gradient(90deg, #ff5f4a, #ff007a);
+    transform-origin: left;
+  }
+
+  .cl-text {
     font-family: "PolySans Trial", system-ui, sans-serif;
-    font-size: clamp(0.95rem, 1.15vw, 1.15rem);
-    line-height: 1.6;
-    color: rgba(254, 252, 217, 0.78);
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    line-height: 1.65;
+    color: rgba(254, 252, 217, 0.8);
     font-weight: 400;
     margin: 0;
-    max-width: 56ch;
+    max-width: 54ch;
   }
 
-  .landing-cta {
-    margin-top: 0.5rem;
+  .cl-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .cl-pill {
+    font-family: "PolySans Trial", sans-serif;
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(254, 252, 217, 0.82);
+    padding: 0.45rem 0.95rem;
+    border: 1px solid rgba(254, 252, 217, 0.22);
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+    transition:
+      border-color 0.3s ease,
+      color 0.3s ease,
+      background 0.3s ease,
+      transform 0.3s ease;
+  }
+  .cl-pill:hover {
+    color: #0d0e0d;
+    background: #ff5f4a;
+    border-color: #ff5f4a;
+    transform: translateY(-2px);
   }
 
-  @media (max-width: 900px) {
-    .landing-inner {
+  .cl-cta {
+    margin-top: 0.75rem;
+  }
+
+  /* ── Visual ── */
+  .cl-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 480px;
+  }
+
+  .cl-cassette-glow {
+    position: absolute;
+    width: 70%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(249, 95, 74, 0.45), transparent 65%);
+    filter: blur(40px);
+    z-index: 0;
+  }
+
+  .cl-cassette {
+    position: relative;
+    z-index: 2;
+    width: clamp(320px, 36vw, 540px);
+    height: auto;
+    filter: drop-shadow(0 30px 70px rgba(0, 0, 0, 0.6));
+    animation: clCassetteBob 6s ease-in-out infinite;
+  }
+  @keyframes clCassetteBob {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-14px) rotate(0.6deg); }
+  }
+
+  .cl-float {
+    position: absolute;
+    z-index: 3;
+    margin: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 2px solid rgba(254, 252, 217, 0.85);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    background: #0d0e0d;
+    will-change: transform;
+  }
+  .cl-float img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .cl-float figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.4rem 0.6rem;
+    font-family: "PolySans Trial", sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fefcd9;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  }
+
+  /* tilt uses the independent `rotate:` property so GSAP's parallax (which
+     writes `transform`) and the bob (`translate:`) don't clobber it. */
+  .cl-float-1 {
+    width: clamp(120px, 13vw, 190px);
+    aspect-ratio: 4 / 3;
+    top: 4%;
+    left: -2%;
+    rotate: -7deg;
+    animation: clFloatBob 7s ease-in-out infinite;
+  }
+  .cl-float-2 {
+    width: clamp(110px, 11vw, 165px);
+    aspect-ratio: 3 / 4;
+    bottom: 6%;
+    right: 0%;
+    rotate: 6deg;
+    animation: clFloatBob 8s ease-in-out 0.6s infinite;
+  }
+  .cl-float-3 {
+    width: clamp(64px, 6vw, 96px);
+    aspect-ratio: 1;
+    bottom: 16%;
+    left: 6%;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    rotate: -4deg;
+    animation: clFloatBob 5.5s ease-in-out 0.3s infinite;
+  }
+  @keyframes clFloatBob {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -12px; }
+  }
+
+  /* ── Reveal initial state (set before GSAP runs) ── */
+  .cl-eyebrow,
+  .cl-text,
+  .cl-pills,
+  .cl-cta {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  .cl-word {
+    opacity: 0;
+    transform: translateY(110%);
+  }
+  .cl-bar {
+    transform: scaleX(0);
+  }
+  .cl-cassette,
+  .cl-float {
+    opacity: 0;
+  }
+  .cl-heading {
+    overflow: hidden;
+    padding-bottom: 0.06em;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 960px) {
+    .cl-inner {
       grid-template-columns: 1fr;
       text-align: center;
-      gap: 2rem;
+      gap: 2.5rem;
     }
-    .landing-right {
+    .cl-left {
       align-items: center;
-      margin: 0 auto;
+      order: 2;
     }
-    .landing-cassette-img {
-      width: clamp(280px, 70vw, 480px);
+    .cl-visual {
+      order: 1;
+      min-height: 420px;
+    }
+    .cl-pills {
+      justify-content: center;
+    }
+    .cl-text {
+      margin-inline: auto;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cl-glow,
+    .cl-cassette,
+    .cl-float-1,
+    .cl-float-2,
+    .cl-float-3 {
+      animation: none;
+    }
+  }
+
+  /* ── Light mode ── */
+  :global(html[data-theme="light"]) .cl-heading {
+    color: #1a1a1a;
+  }
+  :global(html[data-theme="light"]) .cl-eyebrow {
+    color: rgba(26, 26, 26, 0.62);
+  }
+  :global(html[data-theme="light"]) .cl-text {
+    color: rgba(26, 26, 26, 0.78);
+  }
+  :global(html[data-theme="light"]) .cl-pill {
+    color: rgba(26, 26, 26, 0.78);
+    border-color: rgba(26, 26, 26, 0.22);
+  }
+  :global(html[data-theme="light"]) .cl-pill:hover {
+    color: #fff;
+  }
+  :global(html[data-theme="light"]) .cl-grid-v {
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(38, 59, 51, 0.1) 0 3px,
+      transparent 3px 17px
+    );
+  }
+  :global(html[data-theme="light"]) .cl-grid-h {
+    background: repeating-linear-gradient(
+      to right,
+      rgba(38, 59, 51, 0.1) 0 3px,
+      transparent 3px 17px
+    );
+  }
+  :global(html[data-theme="light"]) .cl-glow {
+    opacity: 0.6;
+  }
 </style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initCommunity() {
+    const section = document.querySelector<HTMLElement>(".community-landing");
+    if (!section || section.dataset.clInit) return;
+    section.dataset.clInit = "1";
+
+    const q = gsap.utils.selector(section);
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top 72%",
+        toggleActions: "play none none reverse",
+      },
+    });
+
+    tl.to(q(".cl-eyebrow"), { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" })
+      .to(
+        q(".cl-word"),
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out", stagger: 0.12 },
+        "-=0.2",
+      )
+      .to(q(".cl-bar"), { scaleX: 1, duration: 0.6, ease: "power3.out" }, "-=0.4")
+      .to(q(".cl-text"), { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, "-=0.4")
+      .to(q(".cl-pills"), { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, "-=0.35")
+      .to(q(".cl-cta"), { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, "-=0.3")
+      .to(
+        q(".cl-cassette"),
+        { opacity: 1, duration: 0.7, ease: "power2.out" },
+        "<-0.4",
+      )
+      .to(
+        q(".cl-float"),
+        { opacity: 1, duration: 0.6, ease: "power2.out", stagger: 0.12 },
+        "-=0.4",
+      );
+
+    // Scroll parallax on floating cards.
+    q("[data-parallax]").forEach((el) => {
+      const depth = parseFloat((el as HTMLElement).dataset.parallax || "0");
+      gsap.to(el, {
+        y: depth,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+        },
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initCommunity);
+  } else {
+    initCommunity();
+  }
+  window.addEventListener("variants-mounted", () => initCommunity());
+</script>
