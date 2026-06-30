@@ -2,60 +2,82 @@
 export const prerender = true;
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
+import Footer from "../layouts/Footer.astro";
+import AnimatedButton from "../components/ui/AnimatedButton.astro";
+import { getAssetUrl } from "../utils/cdn";
 import {
   current,
+  bestWorldRank,
   achievements,
   achievementLines,
   members,
   timeline,
+  present,
+  recentResults,
 } from "../data/z0d1akData.ts";
 ---
 
 <Layout pageTitle="z0d1ak" backHref="/more">
-  <!-- Fixed deep-sky backdrop -->
+  <!-- Fixed deep-sky backdrop, tuned to the site's warm-on-black palette -->
   <div class="sky" aria-hidden="true">
+    <div class="z-glow"></div>
+    <div class="z-grid">
+      <span class="zg-v" style="left: 18%"></span>
+      <span class="zg-v" style="left: 50%"></span>
+      <span class="zg-v" style="left: 82%"></span>
+    </div>
     <canvas id="starfield"></canvas>
   </div>
-
-  <!-- Custom minimal nav -->
-  <nav class="z-nav">
-    <a href="#top" class="z-mark">z·o·d·1·a·k</a>
-    <div class="z-nav-links">
-      <a href="#atlas">Star Atlas</a>
-      <a href="#crew">Crew</a>
-      <a href="#voyage">Voyage</a>
-      <a href="https://ctftime.org/team/373452" target="_blank" rel="noopener">CTFtime ↗</a>
-    </div>
-  </nav>
 
   <main class="z-page" id="top">
     <!-- ───────────────────────── HERO ───────────────────────── -->
     <section class="hero">
-      <p class="eyebrow" data-h>A Constellation from ACM-VIT</p>
+      <div class="hero-top">
+        <p class="eyebrow" data-h>A CTF Team from ACM-VIT</p>
+        <p class="tagline" data-h>
+          Navigating the universe of cybersecurity, one constellation of
+          captured flags at a time.
+        </p>
+        <a class="hero-site" href="https://z0d1ak.acmvit.in/" target="_blank" rel="noopener" data-h>
+          z0d1ak.acmvit.in ↗
+        </a>
+      </div>
 
+      <!-- z0d1ak rises from behind the ridge -->
       <h1 class="wordmark" data-h>z0d1ak</h1>
 
-      <p class="tagline" data-h>
-        Navigating the universe of cybersecurity, one constellation of
-        captured flags at a time.
+      <!-- warm light spilling from behind the mountains -->
+      <div class="hero-horizon"></div>
+      <img
+        class="hero-mountain"
+        src={getAssetUrl("/z0d1ak/mountain.png")}
+        alt=""
+        aria-hidden="true"
+        draggable="false"
+      />
+    </section>
+
+    <!-- Rank band, just under the horizon -->
+    <section class="rank-band">
+      <header class="ch-head" data-reveal>
+        <p class="ch-num">Celestial Coordinates</p>
+        <h2 class="ch-title">Fixed points in the sky</h2>
+      </header>
+      <p class="about-lead" data-reveal>
+        z0d1ak is the competitive Capture The Flag team of ACM-VIT, Vellore
+        Institute of Technology. The team competes in CTF events worldwide
+        across web exploitation, binary exploitation, cryptography, reverse
+        engineering, forensics and OSINT.
       </p>
-
-      <svg class="hero-line" viewBox="0 0 600 120" fill="none" preserveAspectRatio="xMidYMid meet" data-h>
-        <polyline
-          class="hl-trail"
-          points="40,80 130,55 210,90 300,45 380,75 470,40 560,70"
-        ></polyline>
-        {
-          [[40,80],[130,55],[210,90],[300,45],[380,75],[470,40],[560,70]].map(([x,y]) => (
-            <circle class="hl-star" cx={x} cy={y} r="3.4" />
-          ))
-        }
-      </svg>
-
-      <div class="hero-stats" data-h>
+      <div class="hero-stats" data-reveal>
+        <div class="hstat">
+          <span class="hstat-num">#{bestWorldRank}</span>
+          <span class="hstat-label">Best World Rank</span>
+          <span class="hstat-sub">All-time peak</span>
+        </div>
         <div class="hstat">
           <span class="hstat-num">#{current.globalRank}</span>
-          <span class="hstat-label">World Rank</span>
+          <span class="hstat-label">Current World Rank</span>
           <span class="hstat-sub">CTFtime {current.year}</span>
         </div>
         <div class="hstat">
@@ -124,13 +146,46 @@ import {
           <span class="ast-label">Events played in {current.year}</span>
         </div>
         <div class="ast">
-          <span class="ast-num">World #{current.globalRank}</span>
-          <span class="ast-label">Current global standing</span>
+          <span class="ast-num">World #{bestWorldRank}</span>
+          <span class="ast-label">Best global standing</span>
         </div>
         <div class="ast">
           <span class="ast-num">India #{current.countryRank}</span>
           <span class="ast-label">Current national standing</span>
         </div>
+      </div>
+
+      <!-- The logbook: recent rated events -->
+      <div class="logbook" data-reveal>
+        <div class="card-tag logbook-tag">
+          <span class="ct-key">The Logbook</span>
+          <span class="ct-hint">Recent expeditions, newest first</span>
+        </div>
+        <table class="log-table">
+          <thead>
+            <tr>
+              <th class="col-event">Competition</th>
+              <th class="col-place">Place</th>
+              <th class="col-pts">CTF Points</th>
+              <th class="col-rating">Rating</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              recentResults.map((r) => (
+                <tr>
+                  <td class="col-event">{r.event}</td>
+                  <td class={`col-place ${r.place <= 10 ? "podium" : ""}`}>#{r.place}</td>
+                  <td class="col-pts">{r.ctfPoints.toLocaleString()}</td>
+                  <td class="col-rating">{r.ratingPoints.toFixed(2)}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        <a class="log-link" href="https://ctftime.org/team/373452" target="_blank" rel="noopener">
+          Full results on CTFtime ↗
+        </a>
       </div>
     </section>
 
@@ -138,31 +193,31 @@ import {
     <section class="chapter" id="crew">
       <header class="ch-head" data-reveal>
         <p class="ch-num">Chapter II</p>
-        <h2 class="ch-title">A constellation of navigators</h2>
+        <h2 class="ch-title">The navigators</h2>
         <p class="ch-body">
           Web, pwn, crypto, forensics, reverse engineering and OSINT. Each
-          member is a star in their own discipline. Drawn together by the same
-          competitive sky, they form the constellation that signs every z0d1ak
-          writeup.
+          member is a star in their own discipline, and together they form the
+          constellation that signs every z0d1ak writeup.
         </p>
       </header>
 
-      <div class="crew-card" id="crew-card" data-reveal>
-        <div class="card-tag">
-          <span class="ct-key">The Crew</span>
-          <span class="ct-hint">The roster charting the team</span>
-        </div>
-        <div class="crew-sky" id="crewSky">
-          <svg class="crew-lines" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
-          {
-            members.map((name, i) => (
-              <div class="crew-star" data-i={i}>
-                <span class="cs-core"></span>
-                <span class="cs-name">{name}</span>
-              </div>
-            ))
-          }
-        </div>
+      <div class="crew-grid" id="crewGrid">
+        {
+          members.map((m, i) => (
+            <a
+              class="crew-card2"
+              href={`https://ctftime.org/user/${m.id}`}
+              target="_blank"
+              rel="noopener"
+              data-reveal
+              style={`--d:${i * 0.05}s`}
+            >
+              <span class="cc-star">✦</span>
+              <span class="cc-name">{m.name}</span>
+              <span class="cc-role">CTFtime profile ↗</span>
+            </a>
+          ))
+        }
       </div>
     </section>
 
@@ -179,6 +234,9 @@ import {
 
       <div class="voyage">
         <div class="voyage-trail"></div>
+
+        <p class="voyage-origin" data-reveal>The launch</p>
+
         {
           timeline.map((era, i) => (
             <article class={`era ${i % 2 ? "era-right" : "era-left"}`} data-reveal>
@@ -187,46 +245,39 @@ import {
               <h3 class="era-title">{era.title}</h3>
               <p class="era-rank">{era.rank}</p>
               <p class="era-blurb">{era.blurb}</p>
-              <p class="era-meta">{era.rating} rating points · {era.events} events</p>
+              <div class="era-chips">
+                <span>{era.rating} rating pts</span>
+                <span>{era.events} events</span>
+              </div>
+              <p class="era-highlight">{era.highlight}</p>
             </article>
           ))
         }
+
+        <div class="voyage-now" data-reveal>
+          <span class="now-head"></span>
+          <p class="now-label">{present.label}</p>
+          <p class="now-rank">{present.rank}</p>
+          <p class="now-note">{present.note}</p>
+        </div>
       </div>
     </section>
 
-    <!-- ───────────────────────── FOOTER ───────────────────────── -->
-    <footer class="z-footer">
-      <p class="foot-eyebrow" data-reveal>End of Voyage</p>
-      <h2 class="foot-title" data-reveal>Until the next sky</h2>
-      <p class="foot-lead" data-reveal>
+    <!-- ───────────────────── CLOSING SENDOFF ───────────────────── -->
+    <section class="sendoff">
+      <p class="eyebrow" data-reveal>End of Voyage</p>
+      <h2 class="sendoff-title" data-reveal>Until the next sky</h2>
+      <p class="sendoff-lead" data-reveal>
         z0d1ak is ACM-VIT's flagship Capture The Flag team. We chart new
         constellations every season.
       </p>
-
-      <div class="foot-cols">
-        <div class="fcol">
-          <p class="fcol-key">Origin</p>
-          <p>ACM-VIT</p>
-          <p class="fcol-mute">Vellore Institute of Technology, India</p>
-        </div>
-        <div class="fcol">
-          <p class="fcol-key">Charts</p>
-          <a href="https://ctftime.org/team/373452" target="_blank" rel="noopener">CTFtime · /team/373452</a>
-          <p class="fcol-mute">Live rankings &amp; past voyages</p>
-        </div>
-        <div class="fcol">
-          <p class="fcol-key">Signal</p>
-          <a href="https://acmvit.in" target="_blank" rel="noopener">acmvit.in</a>
-          <a href="/more" class="fcol-mute">Reach the chapter</a>
-        </div>
+      <div class="sendoff-ctas" data-reveal>
+        <AnimatedButton text="Visit z0d1ak.acmvit.in" href="https://z0d1ak.acmvit.in/" />
+        <AnimatedButton text="Follow on CTFtime" href="https://ctftime.org/team/373452" />
       </div>
-
-      <div class="foot-base">
-        <span>© {current.year} z0d1ak · ACM-VIT</span>
-        <span>Charted in the open sky</span>
-      </div>
-    </footer>
+    </section>
   </main>
+  <Footer />
 </Layout>
 
 <style>
@@ -238,62 +289,90 @@ import {
     --serif: "Cormorant Garamond", Georgia, serif;
     --label: "PolySans Mono", "Inter", system-ui, sans-serif;
     --ink: #fefcd9;        /* site cream */
-    --ink-soft: #c8c3a6;
-    --muted: #7b7e8c;      /* blue-grey labels */
+    --ink-soft: rgba(254,252,217,0.72);
+    --muted: rgba(254,252,217,0.42);
     --accent: #f95f4a;     /* site orange */
+    --pink: #ff007a;       /* site pink */
     --gold: #e0a06a;       /* warm gold, bridged toward the orange */
-    --star: #f3eecf;
-    --bg-0: #08090f;
-    --line: rgba(160,165,180,0.14);
+    --star: #fef3da;
+    --bg-0: #050505;       /* site dark */
+    --line: rgba(254,252,217,0.12);
   }
 
-  /* This page owns the whole viewport - silence site chrome */
+  /* Match the site's subpage scaffold - keep header/footer, drop the landing grid */
   :global(.diamond-grid) { display: none !important; }
-  :global(.site-header) { display: none !important; }
   :global(body) { background: var(--bg-0); }
 
   .sky {
     position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+    background: var(--bg-0);
+  }
+  .z-glow {
+    position: absolute; inset: 0;
     background:
-      radial-gradient(120% 80% at 50% -20%, #11142a 0%, #0a0b16 45%, var(--bg-0) 100%);
+      radial-gradient(42% 38% at 86% 44%, rgba(255,0,122,0.1), transparent 70%),
+      radial-gradient(50% 40% at 50% 108%, rgba(249,95,74,0.12), transparent 70%);
+  }
+
+  .z-grid { position: absolute; inset: 0; }
+  .zg-v {
+    position: absolute; top: 0; bottom: 0; width: 2px;
+    background: repeating-linear-gradient(
+      to bottom, rgba(254,252,217,0.06) 0 3px, transparent 3px 18px);
   }
   #starfield { position: absolute; inset: 0; display: block; }
 
-  /* ── Nav ── */
-  .z-nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 40;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.6rem clamp(1.25rem, 5vw, 3.5rem);
-    font-family: var(--label);
-  }
-  .z-mark {
-    font-size: 0.7rem; letter-spacing: 0.34em; text-transform: lowercase;
-    color: var(--ink); text-decoration: none;
-  }
-  .z-nav-links { display: flex; gap: clamp(1rem, 3vw, 2.5rem); }
-  .z-nav-links a {
-    font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--muted); text-decoration: none; transition: color 0.3s ease;
-  }
-  .z-nav-links a:hover { color: var(--ink); }
 
   /* ── Page scaffold ── */
   .z-page { position: relative; z-index: 1; color: var(--ink); font-family: var(--serif); }
   .z-page section { padding: clamp(7rem, 16vh, 12rem) clamp(1.25rem, 6vw, 5rem); }
 
-  .eyebrow, .ch-num, .card-tag, .foot-eyebrow, .fcol-key {
+  .eyebrow, .ch-num, .card-tag {
     font-family: var(--label);
     font-size: 0.62rem; letter-spacing: 0.32em; text-transform: uppercase;
   }
+  /* site eyebrow-with-dot rhythm */
+  .eyebrow, .ch-num { display: inline-flex; align-items: center; gap: 0.6rem; }
+  .eyebrow::before, .ch-num::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent); flex: none;
+  }
 
   /* ── HERO ── */
-  .hero { min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-  .hero .eyebrow { color: var(--muted); margin-bottom: 2.4rem; }
+  .hero { position: relative; min-height: 100svh; overflow: hidden; display: flex; flex-direction: column; }
+  .hero-top {
+    position: relative; z-index: 4; text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 4vh clamp(1.25rem, 6vw, 5rem) 0;
+  }
+  .hero .eyebrow { color: var(--ink-soft); margin-bottom: 1.8rem; }
+
+  /* z0d1ak rests on the ridge, lower edge tucking behind the peaks */
   .wordmark {
+    position: absolute; left: 0; right: 0; bottom: 36vh; z-index: 2;
+    text-align: center;
     font-family: var(--serif); font-weight: 500;
-    font-size: clamp(4rem, 15vw, 11rem); line-height: 0.82;
+    font-size: clamp(4rem, 17vw, 14rem); line-height: 0.78;
     letter-spacing: 0.02em; color: var(--ink);
-    text-shadow: 0 0 60px rgba(150,170,230,0.18);
+    text-shadow: 0 0 90px rgba(255,140,60,0.45), 0 0 34px rgba(249,95,74,0.3);
+    filter: brightness(0.45); will-change: filter, opacity;
+  }
+
+  /* warm light blooming from behind the mountains, fading up into the stars */
+  .hero-horizon {
+    position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
+    width: 150%; height: 92vh; z-index: 1; pointer-events: none;
+    opacity: 0; will-change: opacity;
+    -webkit-mask-image: linear-gradient(180deg, #000 84%, transparent 93%);
+            mask-image: linear-gradient(180deg, #000 84%, transparent 93%);
+    background: radial-gradient(58% 54% at 50% 66%,
+      rgba(255,150,60,0.82) 0%, rgba(255,110,40,0.55) 16%,
+      rgba(249,95,74,0.34) 34%, rgba(255,40,90,0.14) 54%, transparent 74%);
+  }
+  .hero-mountain {
+    position: absolute; left: 0; bottom: 7vh; width: 100%;
+    height: 46vh; object-fit: contain; object-position: 50% 100%;
+    z-index: 3; pointer-events: none; user-select: none;
   }
   .tagline {
     font-weight: 400; font-style: italic;
@@ -301,14 +380,35 @@ import {
     color: var(--ink-soft); max-width: 30ch; line-height: 1.5;
     margin-top: 1.6rem;
   }
-  .hero-line { width: min(440px, 70vw); height: auto; margin: 3rem 0 3.5rem; overflow: visible; }
-  .hl-trail { stroke: rgba(194,168,120,0.5); stroke-width: 1; fill: none; }
-  .hl-star { fill: var(--gold); filter: drop-shadow(0 0 5px rgba(194,168,120,0.8)); }
-  .hero-stats { display: flex; gap: clamp(2.5rem, 8vw, 6rem); }
-  .hstat { display: flex; flex-direction: column; gap: 0.35rem; }
-  .hstat-num { font-family: var(--serif); font-weight: 500; font-size: clamp(2rem, 4vw, 2.8rem); color: var(--ink); line-height: 1; }
-  .hstat-label { font-family: var(--label); font-size: 0.58rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--ink-soft); }
-  .hstat-sub { font-family: var(--label); font-size: 0.52rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .hero-site {
+    margin-top: 1.6rem;
+    font-family: var(--label); font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--ink-soft); text-decoration: none;
+    border-bottom: 1px solid rgba(254,252,217,0.25); padding-bottom: 2px;
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+  .hero-site:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ── Rank band (under the horizon) ── */
+  .rank-band {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    padding-top: clamp(2rem, 5vh, 3.5rem) !important;
+    padding-bottom: clamp(4rem, 9vh, 7rem) !important;
+  }
+  .about-lead {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(1.15rem, 2.1vw, 1.5rem); line-height: 1.6;
+    color: var(--ink-soft); max-width: 60ch; margin: 0 auto 3rem; text-align: center;
+  }
+  .hero-line { width: min(440px, 70vw); height: auto; margin: 0 0 2.6rem; overflow: visible; }
+  .hl-trail { stroke: rgba(249,95,74,0.5); stroke-width: 1; fill: none; }
+  .hl-star { fill: var(--gold); filter: drop-shadow(0 0 5px rgba(249,95,74,0.7)); }
+  .hero-stats { display: flex; gap: clamp(3rem, 9vw, 7rem); flex-wrap: wrap; justify-content: center; }
+  .hstat { display: flex; flex-direction: column; gap: 0.7rem; }
+  .hstat-num { font-family: var(--serif); font-weight: 500; font-size: clamp(3.5rem, 7vw, 5.5rem); color: var(--ink); line-height: 1; text-shadow: 0 0 40px rgba(255,140,60,0.25); }
+  .hstat-label { font-family: var(--label); font-size: 0.82rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--ink); }
+  .hstat-sub { font-family: var(--label); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
 
   /* ── Chapters ── */
   .ch-head { max-width: 640px; margin: 0 auto clamp(3rem, 7vh, 5rem); }
@@ -327,33 +427,33 @@ import {
   .ct-hint { font-family: var(--label); font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
 
   /* ── Atlas card ── */
-  .atlas-card, .crew-card {
+  .atlas-card {
     max-width: 1000px; margin: 0 auto; padding: clamp(1.5rem, 4vw, 2.5rem);
     border: 1px solid var(--line); border-radius: 18px;
-    background: linear-gradient(180deg, rgba(18,22,40,0.55), rgba(8,10,20,0.5));
+    background: linear-gradient(180deg, rgba(20,16,14,0.6), rgba(8,6,5,0.55));
   }
   .atlas-map { position: relative; aspect-ratio: 16 / 7; min-height: 280px; }
-  .atlas-lines, .crew-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .atlas-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
   .atl-line {
-    stroke: rgba(120,200,230,0.3); stroke-width: 1; vector-effect: non-scaling-stroke;
+    stroke: rgba(254,252,217,0.22); stroke-width: 1; vector-effect: non-scaling-stroke;
     transition: stroke 0.4s ease;
   }
-  .atl-line.lit { stroke: rgba(140,225,255,0.9); }
+  .atl-line.lit { stroke: var(--accent); }
   .atl-star {
     position: absolute; transform: translate(-50%, -50%);
     width: 40px; height: 40px; display: grid; place-items: center;
     background: none; border: 0; padding: 0; cursor: pointer;
   }
   .atl-core {
-    border-radius: 50%; background: #eaf2ff;
-    box-shadow: 0 0 8px 2px rgba(150,210,255,0.7);
+    border-radius: 50%; background: var(--star);
+    box-shadow: 0 0 8px 2px rgba(254,243,218,0.6);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   .mag-1 .atl-core { width: 11px; height: 11px; }
   .mag-2 .atl-core { width: 8px; height: 8px; }
   .mag-3 .atl-core { width: 6px; height: 6px; opacity: 0.8; }
   .atl-star:hover .atl-core, .atl-star.active .atl-core {
-    transform: scale(1.6); box-shadow: 0 0 16px 4px rgba(140,220,255,0.9);
+    transform: scale(1.6); box-shadow: 0 0 16px 4px rgba(249,95,74,0.85);
   }
 
   .atl-panel {
@@ -377,86 +477,151 @@ import {
   .ast-num { display: block; font-family: var(--serif); font-size: 1.7rem; color: var(--ink); }
   .ast-label { font-family: var(--label); font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
 
-  /* ── Crew card ── */
-  .crew-card {
-    position: relative; overflow: hidden;
+  /* ── Logbook table ── */
+  .logbook { max-width: 1000px; margin: 2.5rem auto 0; }
+  .logbook-tag { margin-bottom: 1rem; }
+  .log-table { width: 100%; border-collapse: collapse; }
+  .log-table thead th {
+    font-family: var(--label); font-size: 0.56rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); text-align: right; font-weight: 400;
+    padding: 0 0 0.9rem; border-bottom: 1px solid var(--line);
+  }
+  .log-table th.col-event, .log-table td.col-event { text-align: left; }
+  .log-table tbody td {
+    font-family: var(--serif); font-size: clamp(1rem, 1.6vw, 1.25rem);
+    color: var(--ink-soft); text-align: right;
+    padding: 0.95rem 0; border-bottom: 1px solid rgba(254,252,217,0.06);
+    transition: color 0.25s ease;
+  }
+  .log-table td.col-event { color: var(--ink); font-weight: 500; }
+  .log-table tbody tr:hover td { color: var(--ink); }
+  .log-table td.col-rating { color: var(--accent); font-variant-numeric: tabular-nums; }
+  .log-table td.col-place.podium { color: var(--star); }
+  .log-table td.col-place.podium::after { content: " ★"; color: var(--accent); font-size: 0.7em; }
+  .log-link {
+    display: inline-block; margin-top: 1.6rem;
+    font-family: var(--label); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none; transition: color 0.3s ease;
+  }
+  .log-link:hover { color: var(--accent); }
+
+  /* ── Crew grid (members) ── */
+  .crew-grid {
+    max-width: 1000px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1rem;
+  }
+  .crew-card2 {
+    position: relative; padding: 1.6rem 1.4rem; border-radius: 14px;
+    border: 1px solid var(--line); text-decoration: none; color: inherit;
+    background: linear-gradient(180deg, rgba(20,16,14,0.55), rgba(8,6,5,0.5));
+    display: flex; flex-direction: column; gap: 0.4rem;
+    transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+  }
+  .crew-card2:hover {
+    transform: translateY(-3px); border-color: rgba(249,95,74,0.5);
     background:
-      radial-gradient(55% 60% at 72% 28%, rgba(249,95,74,0.1), transparent 70%),
-      radial-gradient(70% 90% at 42% 60%, rgba(104,78,186,0.38), transparent 70%),
-      linear-gradient(180deg, rgba(18,18,40,0.6), rgba(8,8,18,0.5));
+      radial-gradient(90% 80% at 50% 0%, rgba(249,95,74,0.14), transparent 70%),
+      linear-gradient(180deg, rgba(20,16,14,0.6), rgba(8,6,5,0.5));
   }
-  .crew-sky { position: relative; aspect-ratio: 16 / 8; min-height: 340px; }
-  .crew-star { position: absolute; transform: translate(-50%, -50%); display: grid; place-items: center; }
-  .cs-core {
-    width: 8px; height: 8px; border-radius: 50%; background: #fff;
-    box-shadow: 0 0 9px 2px rgba(200,215,255,0.8); transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .crew-star:hover .cs-core { transform: scale(1.7); box-shadow: 0 0 16px 5px rgba(170,200,255,0.95); }
-  .cs-name {
-    position: absolute; top: 100%; margin-top: 7px; white-space: nowrap;
-    font-family: var(--label); font-size: 0.6rem; letter-spacing: 0.1em;
-    color: var(--ink-soft); opacity: 0.7; transition: opacity 0.3s ease, color 0.3s ease;
-  }
-  .crew-star:hover .cs-name { opacity: 1; color: #fff; }
+  .cc-star { font-size: 0.9rem; color: var(--accent); text-shadow: 0 0 12px rgba(249,95,74,0.6); }
+  .cc-name { font-family: var(--serif); font-size: 1.4rem; color: var(--ink); line-height: 1.1; word-break: break-word; }
+  .cc-role { font-family: var(--label); font-size: 0.54rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); transition: color 0.3s ease; }
+  .crew-card2:hover .cc-role { color: var(--accent); }
 
   /* ── Voyage timeline ── */
-  .voyage { position: relative; max-width: 760px; margin: 0 auto; padding: 2rem 0; }
+  .voyage { position: relative; max-width: 780px; margin: 0 auto; padding: 1rem 0 2rem; }
   .voyage-trail {
     position: absolute; left: 50%; top: 0; bottom: 0; width: 1px;
     transform: translateX(-50%);
-    background: linear-gradient(180deg, transparent, rgba(249,95,74,0.45), rgba(140,160,220,0.3), transparent);
+    background: linear-gradient(180deg,
+      transparent 0%, rgba(140,160,220,0.25) 8%, rgba(249,95,74,0.5) 55%, rgba(255,140,60,0.9) 92%, transparent 100%);
+  }
+  .voyage-origin {
+    position: relative; text-align: center; z-index: 1;
+    font-family: var(--label); font-size: 0.6rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 1.5rem;
+  }
+  .voyage-origin::after {
+    content: ""; display: block; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--ink-soft); margin: 1rem auto 0; box-shadow: 0 0 10px 2px rgba(254,252,217,0.5);
   }
   .era { position: relative; width: 50%; padding: 0 2.5rem; margin: clamp(3rem, 8vh, 6rem) 0; }
   .era-left { left: 0; text-align: right; }
   .era-right { left: 50%; text-align: left; }
   .era-node {
-    position: absolute; top: 0.4rem; width: 11px; height: 11px; border-radius: 50%;
-    background: var(--accent); box-shadow: 0 0 12px 3px rgba(249,95,74,0.6);
+    position: absolute; top: 0.4rem; width: 13px; height: 13px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 14px 4px rgba(249,95,74,0.6);
   }
-  .era-left .era-node { right: -5.5px; }
-  .era-right .era-node { left: -5.5px; }
-  .era-year { font-family: var(--label); font-size: 0.62rem; letter-spacing: 0.24em; color: var(--accent); }
+  .era-left .era-node { right: -6.5px; }
+  .era-right .era-node { left: -6.5px; }
+  .era-year { font-family: var(--label); font-size: 0.66rem; letter-spacing: 0.24em; color: var(--accent); }
   .era-title { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 400; color: var(--ink); margin: 0.3rem 0; }
   .era-rank { font-family: var(--label); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
   .era-blurb { font-family: var(--serif); font-size: 1.15rem; color: var(--ink-soft); line-height: 1.55; margin: 0.8rem 0; }
-  .era-meta { font-family: var(--label); font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .era-chips { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+  .era-left .era-chips { justify-content: flex-end; }
+  .era-chips span {
+    font-family: var(--label); font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--ink-soft); padding: 0.4rem 0.8rem; border: 1px solid var(--line); border-radius: 999px;
+  }
+  .era-highlight {
+    margin-top: 0.9rem; font-family: var(--label); font-size: 0.6rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent);
+  }
 
-  /* ── Footer ── */
-  .z-footer { text-align: center; padding: clamp(7rem, 16vh, 12rem) clamp(1.25rem, 6vw, 5rem) 4rem; }
-  .foot-eyebrow { color: var(--accent); }
-  .foot-title { font-family: var(--serif); font-weight: 400; font-size: clamp(2.5rem, 7vw, 4.5rem); color: var(--ink); margin: 1rem 0; }
-  .foot-lead { font-family: var(--serif); font-size: clamp(1.1rem, 2vw, 1.4rem); color: var(--ink-soft); max-width: 46ch; margin: 0 auto; line-height: 1.55; }
-  .foot-cols {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
-    max-width: 760px; margin: clamp(3rem, 7vh, 5rem) auto 0; text-align: left;
+  /* comet head: present day */
+  .voyage-now { position: relative; text-align: center; z-index: 1; margin-top: 1rem; }
+  .now-head {
+    display: block; width: 18px; height: 18px; border-radius: 50%; margin: 0 auto 1.4rem;
+    background: radial-gradient(circle, #fff, var(--accent) 60%, transparent 75%);
+    box-shadow: 0 0 26px 8px rgba(255,140,60,0.65);
+    animation: now-pulse 2.6s ease-in-out infinite;
   }
-  .fcol { font-family: var(--label); font-size: 0.72rem; line-height: 1.9; }
-  .fcol-key { color: var(--accent); margin-bottom: 0.8rem; }
-  .fcol a { color: var(--ink-soft); text-decoration: none; display: block; transition: color 0.3s ease; }
-  .fcol a:hover { color: var(--ink); }
-  .fcol p { color: var(--ink-soft); }
-  .fcol-mute { color: var(--muted) !important; }
-  .foot-base {
-    display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
-    max-width: 760px; margin: 3.5rem auto 0; padding-top: 1.5rem;
-    border-top: 1px solid var(--line);
-    font-family: var(--label); font-size: 0.56rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
+  @keyframes now-pulse { 0%,100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.18); opacity: 1; } }
+  .now-label { font-family: var(--label); font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--muted); }
+  .now-rank { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.6rem); color: var(--ink); margin: 0.4rem 0 0.5rem; }
+  .now-note { font-family: var(--serif); font-size: 1.1rem; color: var(--ink-soft); max-width: 32ch; margin: 0 auto; line-height: 1.5; }
+
+  /* ── Closing sendoff (sits above the site Footer) ── */
+  .sendoff { text-align: center; }
+  .sendoff .eyebrow { color: var(--accent); margin-bottom: 1.2rem; }
+  .sendoff-title { font-family: var(--serif); font-weight: 400; font-size: clamp(2.5rem, 7vw, 4.5rem); color: var(--ink); margin: 0.4rem 0; }
+  .sendoff-lead { font-family: var(--label); font-size: clamp(0.9rem, 1.6vw, 1.05rem); font-weight: 300; color: var(--ink-soft); max-width: 48ch; margin: 1rem auto 0; line-height: 1.7; }
+  .sendoff-ctas {
+    display: flex; flex-wrap: wrap; gap: 1.25rem; justify-content: center; align-items: center; margin-top: 2.5rem;
   }
+  .sendoff-ctas :global(.anim-btn-anchor) { width: auto; }
+  .sendoff-cta {
+    display: inline-block; padding: 0.85rem 1.8rem;
+    border: 1px solid var(--accent); border-radius: 999px;
+    font-family: var(--label); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink); text-decoration: none;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .sendoff-cta:hover { background: var(--accent); color: #fff; }
+  .sendoff-cta.primary { background: var(--accent); color: #fff; }
+  .sendoff-cta.primary:hover { background: var(--pink); border-color: var(--pink); }
 
   [data-reveal], [data-h] { opacity: 0; }
 
   @media (max-width: 720px) {
-    .z-nav-links a:not([href*="ctftime"]) { display: none; }
-    .atlas-stats, .foot-cols { grid-template-columns: 1fr; }
-    .foot-cols { text-align: center; }
+    .atlas-stats { grid-template-columns: 1fr; }
     .era { width: 100%; left: 0 !important; text-align: left !important; padding: 0 0 0 2rem; }
+    .era-left .era-chips { justify-content: flex-start; }
     .voyage-trail { left: 4px; }
+    .voyage-origin, .voyage-now { text-align: left; }
+    .voyage-origin::after, .now-head { margin-left: 0; }
     .era-node { left: -1px !important; right: auto !important; }
-    .hero-stats { gap: 2rem; }
+    .hero-stats { gap: 2rem 3rem; }
+    .log-table thead th, .log-table tbody td { font-size: 0.78rem; padding-block: 0.7rem; }
+    .log-table .col-pts { display: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     [data-reveal], [data-h] { opacity: 1; }
+    .hero-horizon { opacity: 1; }
+    .wordmark { filter: brightness(1); }
+    .now-head { animation: none !important; }
   }
 </style>
 
@@ -506,7 +671,7 @@ import {
         let yy = s.y - scrollY * 0.04 * s.depth;
         yy = ((yy % h) + h) % h;
         ctx.globalAlpha = s.base * tw;
-        ctx.fillStyle = "#cdd8f0";
+        ctx.fillStyle = "#f4ecd0";
         ctx.beginPath();
         ctx.arc(s.x, yy, s.r, 0, 6.2832);
         ctx.fill();
@@ -520,24 +685,31 @@ import {
     requestAnimationFrame(frame);
   })();
 
-  /* ───────────── Hero reveal ───────────── */
+  /* ───────────── Hero reveal (waits for the preloader to lift) ───────────── */
   (function hero() {
-    if (reduce) { gsap.set("[data-h]", { opacity: 1 }); return; }
-    const tl = gsap.timeline({ delay: 0.25, defaults: { ease: "power3.out" } });
-    tl.fromTo(".eyebrow[data-h]", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7 })
-      .fromTo(".wordmark", { opacity: 0, y: 30, filter: "blur(14px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2 }, "-=0.3")
-      .fromTo(".tagline", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.6")
-      .fromTo(".hero-line", { opacity: 0 }, { opacity: 1, duration: 1 }, "-=0.4")
-      .fromTo(".hero-stats", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.5");
+    const startHero = () => {
+      if (reduce) {
+        gsap.set(["[data-h]", ".hero-horizon"], { opacity: 1 });
+        gsap.set(".wordmark", { filter: "brightness(1)" });
+        return;
+      }
+      // horizon ignites + wordmark brightens, both lit up from black together
+      gsap.fromTo(".hero-horizon", { opacity: 0 }, { opacity: 1, duration: 2.6, ease: "power2.out" });
+      gsap.fromTo(".wordmark", { filter: "brightness(0.4)" }, { filter: "brightness(1)", duration: 2.6, ease: "power2.out" });
 
-    // draw the hero trail
-    const trail = document.querySelector<SVGPolylineElement>(".hl-trail");
-    if (trail) {
-      const len = trail.getTotalLength();
-      gsap.set(trail, { strokeDasharray: len, strokeDashoffset: len });
-      gsap.to(trail, { strokeDashoffset: 0, duration: 1.4, delay: 1, ease: "power2.inOut" });
-      gsap.from(".hl-star", { scale: 0, opacity: 0, transformOrigin: "center", duration: 0.5, stagger: 0.08, delay: 1.2, ease: "back.out(2)" });
-    }
+      const tl = gsap.timeline({ delay: 0.1, defaults: { ease: "power3.out" } });
+      tl.fromTo(".eyebrow[data-h]", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7 })
+        .fromTo(".wordmark", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1.2 }, "-=0.3")
+        .fromTo(".tagline", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.8 }, "-=0.6")
+        .fromTo(".hero-site", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.7 }, "-=0.4");
+    };
+
+    let started = false;
+    const go = () => { if (started) return; started = true; startHero(); };
+    window.addEventListener("preloader:done", go, { once: true });
+    // fallbacks: no preloader present, or the event already fired
+    if (!document.getElementById("preloader")) go();
+    else window.setTimeout(go, 6000);
   })();
 
   /* ───────────── Scroll reveals ───────────── */
@@ -620,7 +792,7 @@ import {
       const ln = document.createElementNS("http://www.w3.org/2000/svg", "line");
       ln.setAttribute("x1", String(pts[i].x)); ln.setAttribute("y1", String(pts[i].y));
       ln.setAttribute("x2", String(pts[i + 1].x)); ln.setAttribute("y2", String(pts[i + 1].y));
-      ln.setAttribute("stroke", "rgba(170,185,230,0.28)");
+      ln.setAttribute("stroke", "rgba(254,252,217,0.22)");
       ln.setAttribute("stroke-width", "1");
       ln.setAttribute("vector-effect", "non-scaling-stroke");
       svg.appendChild(ln);
