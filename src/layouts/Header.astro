@@ -1317,6 +1317,18 @@ const dropdowns: Record<string, DropdownItem[]> = {
       const target = document.getElementById(id);
       if (!target) return;
       e.preventDefault();
+
+      // Contact is a 200vh laptop section below lazy-loaded content; a captured
+      // scrollIntoView target goes stale and lands on the gallery. Let the
+      // browser resolve the position via the hash (correct) - CSS
+      // scroll-behavior: smooth keeps it smooth, no full reload.
+      if (id === "contact") {
+        window.location.hash = id;
+        applyNavState(id);
+        currentSectionId = id;
+        return;
+      }
+
       target.scrollIntoView({ behavior: "smooth", block: "start" });
       // Clean URL - no hash
       history.replaceState(null, "", window.location.pathname);

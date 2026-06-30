@@ -1,26 +1,29 @@
 ---
 interface Props {
-  href: string;
+  href?: string;
   label: string;
   external?: boolean;
   class?: string;
+  type?: "button" | "submit" | "reset";
 }
 
-const { href, label, external = false, class: className = "" } = Astro.props;
+const { href, label, external = false, class: className = "", type } = Astro.props;
+const Tag = href ? "a" : "button";
 ---
 
-<a
+<Tag
   href={href}
+  type={href ? undefined : type || "button"}
   class:list={["fill-btn", className]}
-  {...external ? { target: "_blank", rel: "noopener noreferrer" } : {}}
+  {...href && external ? { target: "_blank", rel: "noopener noreferrer" } : {}}
   data-fill-btn
 >
   <span class="fill-btn__bg" aria-hidden="true" />
   <span class="fill-btn__content">
     <slot name="icon" />
-    {label}
+    <span class="fill-btn__label">{label}</span>
   </span>
-</a>
+</Tag>
 
 <style>
   .fill-btn {
@@ -37,9 +40,9 @@ const { href, label, external = false, class: className = "" } = Astro.props;
     text-transform: uppercase;
     text-decoration: none;
     font-weight: 700;
-    background: var(--proj-color);
-    color: var(--proj-color-secondary, #0d0e0d);
-    border: 1px solid var(--proj-color);
+    background: var(--proj-color, #1c1917);
+    color: var(--proj-color-secondary, #fefcd9);
+    border: 1px solid var(--proj-color, #1c1917);
     overflow: hidden;
     cursor: pointer;
     transition: color 0.35s ease, border-color 0.35s ease, transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -60,7 +63,12 @@ const { href, label, external = false, class: className = "" } = Astro.props;
     z-index: 0;
   }
 
-  .fill-btn:hover .fill-btn__bg {
+  .fill-btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  .fill-btn:hover:not(:disabled) .fill-btn__bg {
     scale: 1;
   }
 

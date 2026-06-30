@@ -1,4 +1,6 @@
 ---
+import FillButton from "../components/ui/FillButton.astro";
+
 const SUBJECTS = [
   "General Inquiry",
   "Collaboration",
@@ -18,7 +20,7 @@ const SUBJECTS = [
       id="laptop-canvas"
       class="w-[80%] h-[80%] object-contain brightness-125"></canvas>
     <div
-      class="contact-heading absolute top-[25%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10 opacity-0 pointer-events-none"
+      class="contact-heading absolute top-48 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10 opacity-0 pointer-events-none"
     >
       <div
         class="justify-start text-white text-5xl font-semibold font-['PolySans_Trial'] uppercase"
@@ -87,13 +89,7 @@ const SUBJECTS = [
         </label>
 
         <div class="mt-2 flex flex-col items-center gap-2">
-          <button
-            type="submit"
-            class="group relative inline-flex h-10 w-36 items-center justify-center overflow-hidden rounded-full bg-stone-900 text-sm font-medium text-[#FEFCD9] transition-all hover:bg-stone-800 active:scale-[0.97] disabled:opacity-60"
-          >
-            <span class="relative z-10">Submit</span>
-            <span class="absolute inset-0 -translate-x-full bg-[#F95F4A] transition-transform duration-300 group-hover:translate-x-0"></span>
-          </button>
+          <FillButton type="submit" label="Submit" class="contact-submit" />
           <p class="contact-status hidden text-center text-xs"></p>
         </div>
       </form>
@@ -129,6 +125,28 @@ const SUBJECTS = [
 
   .contact-input::placeholder {
     color: #a8a29e;
+  }
+
+  /* Filled submit button (FillButton component): orange pill in both themes,
+     fills with #1e1e1e on hover with orange text. !important beats the
+     component's Astro-scoped (higher specificity) theme rules. */
+  :global(.contact-submit),
+  :global(html[data-theme="light"] .contact-submit) {
+    --fill-bg: #1e1e1e !important;
+    background: #f95f4a !important;
+    color: #1e1e1e !important;
+    border-color: #f95f4a !important;
+  }
+  :global(.contact-submit .fill-btn__label) {
+    color: #1e1e1e !important;
+  }
+  :global(.contact-submit:hover:not(:disabled)),
+  :global(html[data-theme="light"] .contact-submit:hover:not(:disabled)) {
+    color: #f95f4a !important;
+    border-color: #1e1e1e !important;
+  }
+  :global(.contact-submit:hover:not(:disabled) .fill-btn__label) {
+    color: #f95f4a !important;
   }
 </style>
 
@@ -365,7 +383,7 @@ const SUBJECTS = [
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
-      const btnLabel = btn.querySelector("span:first-child") as HTMLElement;
+      const btnLabel = btn.querySelector(".fill-btn__label") as HTMLElement;
       const original = btnLabel.textContent!;
 
       btn.disabled = true;

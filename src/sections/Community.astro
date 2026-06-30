@@ -1,13 +1,5 @@
 ---
 import AnimatedButton from "../components/ui/AnimatedButton.astro";
-
-const initiatives = [
-  "Hour of Code",
-  "Igniting Minds",
-  "Distinguished Speakers",
-  "Digital Literacy",
-  "Community Outreach",
-];
 ---
 
 <section class="community-landing relative flex min-h-screen w-full items-center overflow-hidden">
@@ -30,7 +22,13 @@ const initiatives = [
       </span>
 
       <h2 class="cl-heading">
-        <span class="cl-word">COMM</span><span class="cl-word accent">UNITY</span>
+        <span class="cl-word">COMM</span><span class="cl-unity-line"><span class="cl-word accent">UNITY</span><img
+            src="/community/pixel-heart.png"
+            alt=""
+            class="cl-heart"
+            loading="lazy"
+            decoding="async"
+          /></span>
       </h2>
 
       <span class="cl-bar" aria-hidden="true"></span>
@@ -41,10 +39,6 @@ const initiatives = [
         spark curiosity, strengthen digital literacy, and bring the power of
         technology closer to those who need it most.
       </p>
-
-      <ul class="cl-pills">
-        {initiatives.map((label) => <li class="cl-pill">{label}</li>)}
-      </ul>
 
       <div class="cl-cta">
         <AnimatedButton text="Unravel the tape" href="/community" />
@@ -62,20 +56,6 @@ const initiatives = [
         loading="eager"
         decoding="async"
       />
-
-      <figure class="cl-float cl-float-1" data-parallax="-60">
-        <img src="/community/hour-of-code.png" alt="Hour of Code session" loading="lazy" decoding="async" />
-        <figcaption>Hour of Code</figcaption>
-      </figure>
-
-      <figure class="cl-float cl-float-2" data-parallax="40">
-        <img src="/community/peter-robinson.webp" alt="Distinguished speaker" loading="lazy" decoding="async" />
-        <figcaption>Speakers</figcaption>
-      </figure>
-
-      <figure class="cl-float cl-float-3" data-parallax="-30">
-        <img src="/community/pixel-heart.png" alt="" loading="lazy" decoding="async" />
-      </figure>
     </div>
   </div>
 </section>
@@ -179,14 +159,15 @@ const initiatives = [
 
   .cl-heading {
     font-family: "PolySans Trial", system-ui, sans-serif;
-    font-size: clamp(3.5rem, 11vw, 10rem);
-    line-height: 0.82;
+    font-size: clamp(2.75rem, 7.5vw, 7rem);
+    line-height: 0.95;
     color: #fffdd0;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: -0.05em;
     margin: 0;
-    white-space: nowrap;
+    max-width: 100%;
+    word-break: break-word;
   }
   .cl-heading .accent {
     background: linear-gradient(120deg, #ff5f4a 0%, #ff007a 100%);
@@ -196,6 +177,22 @@ const initiatives = [
   }
   .cl-word {
     display: inline-block;
+  }
+  .cl-unity-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25em;
+  }
+  .cl-heart {
+    width: clamp(2rem, 4vw, 3.4rem);
+    height: auto;
+    flex-shrink: 0;
+    image-rendering: pixelated;
+    animation: clHeartBeat 1.4s ease-in-out infinite;
+  }
+  @keyframes clHeartBeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
   }
 
   .cl-bar {
@@ -215,38 +212,6 @@ const initiatives = [
     font-weight: 400;
     margin: 0;
     max-width: 54ch;
-  }
-
-  .cl-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .cl-pill {
-    font-family: "PolySans Trial", sans-serif;
-    font-size: 0.72rem;
-    font-weight: 400;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(254, 252, 217, 0.82);
-    padding: 0.45rem 0.95rem;
-    border: 1px solid rgba(254, 252, 217, 0.22);
-    border-radius: 999px;
-    backdrop-filter: blur(6px);
-    transition:
-      border-color 0.3s ease,
-      color 0.3s ease,
-      background 0.3s ease,
-      transform 0.3s ease;
-  }
-  .cl-pill:hover {
-    color: #0d0e0d;
-    background: #ff5f4a;
-    border-color: #ff5f4a;
-    transform: translateY(-2px);
   }
 
   .cl-cta {
@@ -285,93 +250,26 @@ const initiatives = [
     50% { transform: translateY(-14px) rotate(0.6deg); }
   }
 
-  .cl-float {
-    position: absolute;
-    z-index: 3;
-    margin: 0;
-    border-radius: 14px;
-    overflow: hidden;
-    border: 2px solid rgba(254, 252, 217, 0.85);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
-    background: #0d0e0d;
-    will-change: transform;
-  }
-  .cl-float img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .cl-float figcaption {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 0.4rem 0.6rem;
-    font-family: "PolySans Trial", sans-serif;
-    font-size: 0.62rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #fefcd9;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-  }
-
-  /* tilt uses the independent `rotate:` property so GSAP's parallax (which
-     writes `transform`) and the bob (`translate:`) don't clobber it. */
-  .cl-float-1 {
-    width: clamp(120px, 13vw, 190px);
-    aspect-ratio: 4 / 3;
-    top: 4%;
-    left: -2%;
-    rotate: -7deg;
-    animation: clFloatBob 7s ease-in-out infinite;
-  }
-  .cl-float-2 {
-    width: clamp(110px, 11vw, 165px);
-    aspect-ratio: 3 / 4;
-    bottom: 6%;
-    right: 0%;
-    rotate: 6deg;
-    animation: clFloatBob 8s ease-in-out 0.6s infinite;
-  }
-  .cl-float-3 {
-    width: clamp(64px, 6vw, 96px);
-    aspect-ratio: 1;
-    bottom: 16%;
-    left: 6%;
-    border: none;
-    box-shadow: none;
-    background: transparent;
-    rotate: -4deg;
-    animation: clFloatBob 5.5s ease-in-out 0.3s infinite;
-  }
-  @keyframes clFloatBob {
-    0%, 100% { translate: 0 0; }
-    50% { translate: 0 -12px; }
-  }
 
   /* ── Reveal initial state (set before GSAP runs) ── */
   .cl-eyebrow,
   .cl-text,
-  .cl-pills,
   .cl-cta {
     opacity: 0;
     transform: translateY(22px);
   }
   .cl-word {
     opacity: 0;
-    transform: translateY(110%);
+    transform: translateY(40%);
   }
   .cl-bar {
     transform: scaleX(0);
   }
-  .cl-cassette,
-  .cl-float {
+  .cl-cassette {
     opacity: 0;
   }
   .cl-heading {
-    overflow: hidden;
-    padding-bottom: 0.06em;
+    padding: 0.12em 0;
   }
 
   /* ── Responsive ── */
@@ -389,9 +287,6 @@ const initiatives = [
       order: 1;
       min-height: 420px;
     }
-    .cl-pills {
-      justify-content: center;
-    }
     .cl-text {
       margin-inline: auto;
     }
@@ -400,9 +295,7 @@ const initiatives = [
   @media (prefers-reduced-motion: reduce) {
     .cl-glow,
     .cl-cassette,
-    .cl-float-1,
-    .cl-float-2,
-    .cl-float-3 {
+    .cl-heart {
       animation: none;
     }
   }
@@ -416,13 +309,6 @@ const initiatives = [
   }
   :global(html[data-theme="light"]) .cl-text {
     color: rgba(26, 26, 26, 0.78);
-  }
-  :global(html[data-theme="light"]) .cl-pill {
-    color: rgba(26, 26, 26, 0.78);
-    border-color: rgba(26, 26, 26, 0.22);
-  }
-  :global(html[data-theme="light"]) .cl-pill:hover {
-    color: #fff;
   }
   :global(html[data-theme="light"]) .cl-grid-v {
     background: repeating-linear-gradient(
@@ -472,17 +358,11 @@ const initiatives = [
       )
       .to(q(".cl-bar"), { scaleX: 1, duration: 0.6, ease: "power3.out" }, "-=0.4")
       .to(q(".cl-text"), { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, "-=0.4")
-      .to(q(".cl-pills"), { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, "-=0.35")
       .to(q(".cl-cta"), { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, "-=0.3")
       .to(
         q(".cl-cassette"),
         { opacity: 1, duration: 0.7, ease: "power2.out" },
         "<-0.4",
-      )
-      .to(
-        q(".cl-float"),
-        { opacity: 1, duration: 0.6, ease: "power2.out", stagger: 0.12 },
-        "-=0.4",
       );
 
     // Scroll parallax on floating cards.

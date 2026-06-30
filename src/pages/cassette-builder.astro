@@ -3,7 +3,7 @@ export const prerender = true;
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
 import Footer from "../layouts/Footer.astro";
-import CassetteBuilder from "../components/ui/CassetteBuilder";
+import CassetteBuilder from "../components/ui/CassetteBuilder.astro";
 ---
 
 <Layout pageTitle="Cassette Builder" backHref="/more">
@@ -12,7 +12,7 @@ import CassetteBuilder from "../components/ui/CassetteBuilder";
       <h1 class="builder-heading">Build Your Cassette</h1>
       <p class="builder-subtitle">Customize colors, add your art, drop a Spotify track</p>
 
-      <CassetteBuilder client:only="react" />
+      <CassetteBuilder />
     </div>
   </section>
   <Footer />

@@ -56,10 +56,13 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
   }
 
   .gallery-btn-row {
-    position: relative;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 8%;
     z-index: 10;
-    margin-top: -40%;
-    margin-bottom: 20%;
+    display: flex;
+    justify-content: center;
   }
 
   .gallery-frame::after {
