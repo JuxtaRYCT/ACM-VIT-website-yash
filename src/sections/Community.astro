@@ -292,6 +292,17 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
     }
   }
 
+  /* Match the uniform landing-page cassette width on phones (same 250px as the
+     domain / about cassettes). Aspect ratio preserved via height: auto. */
+  @media (max-width: 768px) {
+    .cl-cassette {
+      width: 250px;
+    }
+    .cl-visual {
+      min-height: 320px;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .cl-glow,
     .cl-cassette,

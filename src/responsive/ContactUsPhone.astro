@@ -3,6 +3,17 @@ import { getAssetUrl } from "../utils/cdn";
 const fallbackEmail = "hello@acmvit.in";
 const rawEndpoint = (import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? "").trim();
 const formAction = rawEndpoint ? undefined : `mailto:${fallbackEmail}`;
+
+// Keep in sync with the desktop ContactUs form field set.
+const SUBJECTS = [
+  "General Inquiry",
+  "Collaboration",
+  "Sponsorship",
+  "Join ACM",
+  "Event Info",
+  "Feedback",
+  "Other",
+];
 ---
 
 <section class="w-full px-4 py-12">
@@ -68,6 +79,31 @@ const formAction = rawEndpoint ? undefined : `mailto:${fallbackEmail}`;
           pattern="^[0-9+()\s-]{7,}$"
           class="rounded-2xl border-2 border-dashed border-white/35 bg-transparent px-4 py-3 text-base text-white outline-none transition focus:border-[#F95F4A]"
         />
+      </label>
+
+      <label
+        class="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.35em] text-white/60"
+      >
+        Organization
+        <input
+          type="text"
+          name="organization"
+          class="rounded-2xl border-2 border-dashed border-white/35 bg-transparent px-4 py-3 text-base text-white outline-none transition focus:border-[#F95F4A]"
+        />
+      </label>
+
+      <label
+        class="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.35em] text-white/60"
+      >
+        Subject
+        <select
+          name="subject"
+          required
+          class="rounded-2xl border-2 border-dashed border-white/35 bg-transparent px-4 py-3 text-base text-white outline-none transition focus:border-[#F95F4A] appearance-none cursor-pointer"
+        >
+          <option value="" disabled selected class="text-black">Select...</option>
+          {SUBJECTS.map((s) => <option value={s} class="text-black">{s}</option>)}
+        </select>
       </label>
 
       <label
