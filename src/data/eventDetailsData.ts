@@ -318,7 +318,6 @@ export const eventDetails: Record<string, EventDetail> = {
           { name: "Twilio", tier: "Patron", logo: "/events/c2c/sponsors/twilio.svg" },
           { name: "Zulip", tier: "Chat Partner", logo: "/events/c2c/sponsors/zulip.svg" },
           { name: "Custom Baba", tier: "Merchandise Partner", logo: "/events/c2c/sponsors/custombaba.svg" },
-          { name: "The Photography Club (TPC)", tier: "Media Partner", logo: "/events/c2c/sponsors/tpc.svg" },
           { name: "Ozonetel", tier: "Cloud Partner", logo: "/events/c2c/sponsors/ozonetel.svg" },
           { name: "GeeksforGeeks", tier: "Coding Partner", logo: "/events/c2c/sponsors/geeksforgeeks.svg" },
           { name: "npm", tier: "Sponsor", logo: "/events/c2c/sponsors/npm.svg" },
