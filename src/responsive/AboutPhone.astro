@@ -6,9 +6,7 @@ import { getAssetUrl } from "../utils/cdn";
 <div class="w-full overflow-hidden">
   <!-- About Section 1 -->
   <section
-    class="about-section-phone section-1 w-full h-screen relative flex flex-col justify-center px-4 py-8 overflow-hidden bg-center bg-cover bg-no-repeat radial-overlay"
-    data-bg={getAssetUrl("/about/about-acmvit.jpeg")}
-    style="background-color: #0d0e0d;"
+    class="about-section-phone section-1 w-full h-screen relative flex flex-col justify-center px-4 py-8 overflow-hidden radial-overlay"
   >
     <div
       class="content-wrapper flex flex-col items-center justify-center h-full gap-4"
@@ -46,9 +44,7 @@ import { getAssetUrl } from "../utils/cdn";
 
   <!-- About Section 2 -->
   <section
-    class="about-section-phone section-2 w-full h-screen relative flex flex-col justify-center px-4 py-8 overflow-hidden bg-center bg-cover bg-no-repeat radial-overlay"
-    data-bg={getAssetUrl("/about/about-vit.jpeg")}
-    style="background-color: #0d0e0d;"
+    class="about-section-phone section-2 w-full h-screen relative flex flex-col justify-center px-4 py-8 overflow-hidden radial-overlay"
   >
     <div
       class="content-wrapper flex flex-col items-center justify-center h-full gap-4"
@@ -87,9 +83,7 @@ import { getAssetUrl } from "../utils/cdn";
 
   <!-- About Section 3 -->
   <section
-    class="about-section-phone section-3 w-full h-screen relative flex flex-col justify-center px-4 py-8 overflow-hidden bg-center bg-cover bg-no-repeat radial-overlay"
-    data-bg={getAssetUrl("/about/about-acm.jpeg")}
-    style="background-color: #0d0e0d;"
+    class="about-section-phone section-3 w-full h-screen relative flex flex-col justify-center px-4 py-8 overflow-hidden radial-overlay"
   >
     <div
       class="content-wrapper flex flex-col items-center justify-center h-full gap-4"
@@ -136,8 +130,8 @@ import { getAssetUrl } from "../utils/cdn";
     inset: 0;
     background-image: radial-gradient(
       circle at 30% 50%,
-      rgba(26, 26, 26, 0.6) 0%,
-      rgba(6, 6, 6, 0.85) 70%
+      rgba(6, 6, 6, 0.12) 0%,
+      rgba(6, 6, 6, 0.3) 75%
     );
     pointer-events: none;
     z-index: 0;
@@ -155,33 +149,6 @@ import { getAssetUrl } from "../utils/cdn";
   gsap.registerPlugin(ScrollTrigger);
 
   function initPhoneAnimations() {
-    console.log("Initializing Phone Animations");
-    const lazySections = document.querySelectorAll(".about-section-phone");
-    const loadBg = (section: Element) => {
-      if (!(section instanceof HTMLElement)) return;
-      const bg = section.dataset.bg;
-      if (!bg) return;
-      section.style.backgroundImage = `url(${bg})`;
-      section.removeAttribute("data-bg");
-    };
-
-    if ("IntersectionObserver" in window) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              loadBg(entry.target);
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { rootMargin: "200px 0px", threshold: 0.01 }
-      );
-      lazySections.forEach((section) => observer.observe(section));
-    } else {
-      lazySections.forEach(loadBg);
-    }
-
     const sections = document.querySelectorAll(".about-section-phone");
 
     sections.forEach((section, index) => {

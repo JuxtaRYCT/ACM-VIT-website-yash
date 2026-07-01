@@ -30,7 +30,6 @@ import GrepSideTab from "../components/ui/GrepSideTab.astro";
 // Responsive variants
 import AboutPhone from "../responsive/AboutPhone.astro";
 import DomainsPhone from "../responsive/DomainsPhone.astro";
-import ProjectScreenPhone from "../responsive/ProjectScreenPhone.astro";
 import GalleryPhone from "../responsive/GalleryPhone.astro";
 import ContactUsPhone from "../responsive/ContactUsPhone.astro";
 import AnimatedButton from "../components/ui/AnimatedButton.astro";
@@ -144,14 +143,7 @@ const videoEndTime = undefined; // Use full video duration (set to specific seco
     <ProjectsIntro />
 
     <section id="projects" class="page-section">
-        <div data-variant-host>
-            <template data-variant="desktop">
-                <Projects projects={projectsData} />
-            </template>
-            <template data-variant="mobile">
-                <ProjectScreenPhone projects={projectsData} />
-            </template>
-        </div>
+        <Projects projects={projectsData} />
         <div class="proj-cta relative w-full flex items-center justify-center h-[45vh] overflow-hidden">
             <div class="proj-cta-grid pointer-events-none absolute inset-0 z-0" aria-hidden="true">
                 <span class="cta-grid-v" style="left: 52%"></span>
@@ -186,7 +178,7 @@ const videoEndTime = undefined; // Use full video duration (set to specific seco
     <section id="partners" class="page-section">
         <Partners />
         <div
-            class="relative z-20 flex flex-nowrap items-center justify-center gap-6 w-full -mt-48 pb-16 [&_.anim-btn-anchor]:w-auto [&_.anim-btn]:whitespace-nowrap"
+            class="relative z-20 flex flex-col md:flex-row md:flex-nowrap items-center justify-center gap-6 w-full -mt-48 pb-16 [&_.anim-btn-anchor]:w-auto [&_.anim-btn]:whitespace-nowrap"
         >
             <AnimatedButton text="Partner With Us" href="/#contact" />
             <AnimatedButton text="Checkout All our partners" href="/partners" />

@@ -35,6 +35,7 @@ html {
 [data-scroll-video-container] .video-bg-section,
 [data-scroll-video-container] .radial-bg,
 [data-scroll-video-container] .about-section,
+[data-scroll-video-container] .about-section-phone,
 [data-scroll-video-container] .about-container,
 [data-scroll-video-container] .hero-section,
 [data-scroll-video-container] .tech-hero-section {
@@ -89,6 +90,19 @@ html[data-theme="light"] body::before {
   z-index: 9990;
   pointer-events: none;
   box-shadow: inset 0 0 200px 80px rgba(215, 145, 100, 0.6);
+}
+
+/* Glow too strong on small screens - keep subtle. Scales down across breakpoints. */
+@media (max-width: 768px) {
+  html[data-theme="light"] body::before {
+    box-shadow: inset 0 0 110px 30px rgba(215, 145, 100, 0.28);
+  }
+}
+
+@media (max-width: 480px) {
+  html[data-theme="light"] body::before {
+    box-shadow: inset 0 0 80px 18px rgba(215, 145, 100, 0.22);
+  }
 }
 
 html[data-theme="light"] .diamond-grid {

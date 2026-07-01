@@ -83,6 +83,21 @@ const Tag = href ? "a" : "div";
     margin-right: 0.75rem;
   }
 
+  /* Smaller label on small devices */
+  @media (max-width: 768px) {
+    .anim-btn-label {
+      font-size: 1rem;
+      margin-right: 0.6rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .anim-btn-label {
+      font-size: 0.9rem;
+      margin-right: 0.5rem;
+    }
+  }
+
   .anim-btn-icon {
     width: 40px;
     height: 40px;

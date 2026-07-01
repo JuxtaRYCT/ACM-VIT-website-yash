@@ -8,7 +8,7 @@ import { getAssetUrl } from "../utils/cdn";
   <img
     src={getAssetUrl("/acmw/acmw-hero.png")}
     alt="ACM-W"
-    class="absolute inset-0 w-full h-full object-cover"
+    class="acmw-hero-img absolute inset-0 w-full h-full object-cover"
     loading="lazy"
     decoding="async"
   />
@@ -46,6 +46,26 @@ import { getAssetUrl } from "../utils/cdn";
 </section>
 
 <style>
+  /* Face (profile eye/nose/lips) sits at ~55-78% horizontally in the 16:9 art.
+     object-cover crops the sides on narrow viewports, so bias the focal point
+     toward the face as the screen narrows. Widest desktop shows the whole
+     image, so center is fine there. */
+  .acmw-hero-img {
+    object-position: 64% 45%; /* narrow / portrait phones - lock onto face */
+  }
+
+  @media (min-aspect-ratio: 1/1) {
+    .acmw-hero-img {
+      object-position: 58% 42%; /* landscape tablets / short windows */
+    }
+  }
+
+  @media (min-aspect-ratio: 16/10) {
+    .acmw-hero-img {
+      object-position: center; /* wide desktop - full image visible */
+    }
+  }
+
   .acmw-hero-text {
     font-family: "PolySans Bulky Wide", sans-serif;
     font-weight: 700;
