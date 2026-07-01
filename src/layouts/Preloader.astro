@@ -678,6 +678,11 @@
 
   // ── Internal navigation: show preloader curtain before navigating ──
   document.addEventListener('click', (e) => {
+    // Respect new-tab / new-window intents: cmd/ctrl/shift/alt + click,
+    // middle-click, or an already-handled event. Let the browser do its thing.
+    if (e.defaultPrevented) return;
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
     const anchor = (e.target as HTMLElement).closest('a[href]') as HTMLAnchorElement | null;
     if (!anchor) return;
     const href = anchor.getAttribute('href');

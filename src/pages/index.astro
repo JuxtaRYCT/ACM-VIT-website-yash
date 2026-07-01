@@ -3,6 +3,7 @@ export const prerender = true;
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
 import { reader } from "../utils/reader";
+import { projectSlugs } from "../data/projectDetailsData";
 
 // Sections
 import Hero from "../sections/Hero.astro";
@@ -42,9 +43,25 @@ import ScrollVideo from "../components/ui/ScrollVideo.astro";
 import Footer from "../layouts/Footer.astro";
 
 const projectsCms = await reader.singletons.projects.read();
+
+// Wire each CMS project to its detail page (/projects/<slug>). CMS has no slug
+// field, so derive one from the cassette alt ("ACMOne Image" -> "acmone") and
+// validate against the real detail-page slugs. Explicit aliases cover cases
+// where the alt doesn't kebab-case cleanly to the slug.
+const slugAliases: Record<string, string> = {
+  "ocs website": "ocs-25",
+};
+const validSlugs = new Set(projectSlugs);
+const resolveSlug = (alt: string): string | undefined => {
+  const base = alt.replace(/\s*image$/i, "").trim().toLowerCase();
+  const derived = slugAliases[base] ?? base.replace(/\s+/g, "-");
+  return validSlugs.has(derived) ? derived : undefined;
+};
+
 const projectsData = (projectsCms?.items ?? [])
   .filter((project) => project.cassetteSrc && project.cassetteAlt && project.description1)
   .map((p) => ({
+  slug: resolveSlug(p.cassetteAlt!),
   cassette: { src: p.cassetteSrc!, alt: p.cassetteAlt! },
   textContent: { blocks: [p.description1, ...(p.description2 ? [p.description2] : [])] },
   buttons: {

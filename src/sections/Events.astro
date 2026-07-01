@@ -325,6 +325,8 @@ const worksHeightMobile = works.length * 45;
     onClick(event: MouseEvent) {
       // Force navigation to detail page even if a parent layer swallows the
       // anchor click (e.g. the SVG mask overlay sitting above the scene).
+      // Let the browser handle new-tab intents (modifier keys / middle-click).
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const target = event.target as HTMLElement | null;
       if (target && target.closest("a")) return; // anchor handles it natively
       event.preventDefault();
@@ -534,6 +536,8 @@ const worksHeightMobile = works.length * 45;
       // Click delegation - catches clicks that pass through the mask overlay
       // but miss a-work elements due to sticky stacking context issues.
       this.el.addEventListener("click", (e: MouseEvent) => {
+        // Let the browser handle new-tab intents (modifier keys / middle-click).
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
         const target = e.target as HTMLElement;
         if (target.closest("a-work")) return;
 
