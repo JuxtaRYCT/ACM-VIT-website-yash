@@ -14,6 +14,7 @@ import Projects from "../sections/Projects.astro";
 import AcmWMotto from "../sections/AcmWMotto.astro";
 import AcmWContent from "../sections/AcmWContent.astro";
 import AcmWBento from "../sections/AcmWBento.astro";
+import AcmWBentoGrid from "../sections/AcmWBentoGrid.astro";
 import Board from "../sections/Board.astro";
 import Blogs from "../sections/Blogs.astro";
 import Partners from "../sections/Partners.astro";
@@ -134,17 +135,25 @@ const videoEndTime = undefined; // Use full video duration (set to specific seco
                 <ProjectScreenPhone projects={projectsData} />
             </template>
         </div>
-        <div class="w-full flex justify-center py-10">
+        <div class="proj-cta relative w-full flex items-center justify-center h-[45vh] overflow-hidden">
+            <div class="proj-cta-grid pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+                <span class="cta-grid-v" style="left: 52%"></span>
+                <span class="cta-grid-v" style="left: 74%"></span>
+                <span class="cta-grid-v" style="left: 93%"></span>
+            </div>
+            <div class="relative z-10">
             <AnimatedButton
                 text="Checkout all cool projects"
                 href="/projects"
             />
+            </div>
         </div>
     </section>
 
     <section id="acm-w" class="page-section">
         <AcmWBento />
         <AcmWContent />
+        <AcmWBentoGrid />
     </section>
 
     <section id="community" class="page-section">
@@ -199,3 +208,25 @@ const videoEndTime = undefined; // Use full video duration (set to specific seco
     <GrepSideTab />
     <Footer />
 </Layout>
+
+<style>
+    /* Continue the ProjectsShowcase dotted vertical lines into the CTA block. */
+    .cta-grid-v {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: repeating-linear-gradient(
+            to bottom,
+            rgba(254, 252, 217, 0.55) 0 3px,
+            transparent 3px 17px
+        );
+    }
+    :global(html[data-theme="light"]) .cta-grid-v {
+        background: repeating-linear-gradient(
+            to bottom,
+            rgba(38, 59, 51, 0.55) 0 3px,
+            transparent 3px 17px
+        );
+    }
+</style>

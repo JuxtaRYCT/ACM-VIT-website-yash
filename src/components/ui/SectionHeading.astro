@@ -62,8 +62,8 @@ const alignClasses =
   <h2
     class="sh-title m-0 font-['PolySans_Trial',sans-serif] text-4xl font-bold uppercase leading-[0.95] tracking-[-0.03em] text-[#FEFCD9] sm:text-6xl lg:text-7xl"
   >
-    <span class="sh-word inline-block">{title}</span>
-    {accent && <span class="sh-word inline-block text-[var(--accent)]"> {accent}</span>}
+    {title && <span class="sh-word inline-block">{title} </span>}
+    {accent && <span class="sh-word inline-block text-[var(--accent)]">{accent}</span>}
   </h2>
 
   <span

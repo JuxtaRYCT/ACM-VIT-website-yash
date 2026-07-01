@@ -1,38 +1,44 @@
 ---
+// ACM-W Bento grid (links to the blog). Restored showcase; anchor target for
+// the header "Showcase" nav item (#acm-w-bento).
 import { getAssetUrl } from "../utils/cdn";
 ---
 
 <section
-  class="w-full h-screen relative overflow-hidden select-none"
+  id="acm-w-bento"
+  class="w-full flex flex-col justify-center items-center px-8 md:px-16 pt-16 pb-10 md:py-10 min-h-[55vh] md:min-h-[60vh]"
 >
-  <img
-    src={getAssetUrl("/acmw/acmw-hero.png")}
-    alt="ACM-W"
-    class="absolute inset-0 w-full h-full object-cover"
-    loading="lazy"
-    decoding="async"
-  />
+  <a
+    href="https://blog.acmvit.in"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="relative w-full max-w-[210px] sm:max-w-[266px] md:max-w-[640px] lg:max-w-[1000px] block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-pink/60 rounded-md"
+  >
+    <!-- Mobile -->
+    <img
+      src={getAssetUrl("/acmw/acmw-bento-phone.webp")}
+      alt="ACM-W bento (mobile)"
+      class="block md:hidden w-full h-auto select-none"
+      loading="lazy"
+      decoding="async"
+    />
 
-  <!-- She Codes. -->
-  <div class="absolute top-[5%] left-[4%] sm:left-[5%]">
-    <p class="acmw-hero-text leading-[0.9]">
-      She<br />Codes.
-    </p>
-  </div>
-
-  <!-- She Leads. -->
-  <div class="absolute bottom-[5%] right-[4%] sm:right-[5%] text-right">
-    <p class="acmw-hero-text leading-[0.9]">
-      She<br />Leads.
-    </p>
-  </div>
+    <!-- Laptop -->
+    <img
+      src={getAssetUrl("/acmw/acmw-bento.webp")}
+      alt="ACM-W bento"
+      class="hidden md:block w-full h-auto select-none"
+      loading="lazy"
+      decoding="async"
+    />
+  </a>
 
   <!-- Tubelight under the bento -->
   <div
-    class="relative flex items-center justify-center mt-[-150px] mb-[-260px] max-[480px]:mt-[-10px] max-[480px]:mb-[-120px]"
+    class="relative flex items-center justify-center mt-[-150px] max-[480px]:mt-[-10px]"
   >
     <img
-      id="bento-tubelight"
+      id="acmw-bento-grid-tubelight"
       src={getAssetUrl("/effects/white_tubelight.png")}
       alt="Decorative tubelight"
       loading="lazy"
@@ -45,15 +51,6 @@ import { getAssetUrl } from "../utils/cdn";
   </div>
 </section>
 
-<style>
-  .acmw-hero-text {
-    font-family: "PolySans Bulky Wide", sans-serif;
-    font-weight: 700;
-    color: #e8346c;
-    font-size: clamp(2.2rem, 7vw, 6rem);
-  }
-</style>
-
 <script>
   import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -61,7 +58,7 @@ import { getAssetUrl } from "../utils/cdn";
   gsap.registerPlugin(ScrollTrigger);
 
   document.addEventListener("DOMContentLoaded", () => {
-    const light = document.getElementById("bento-tubelight");
+    const light = document.getElementById("acmw-bento-grid-tubelight");
     if (!light) return;
     const tl = gsap.timeline({
       scrollTrigger: {

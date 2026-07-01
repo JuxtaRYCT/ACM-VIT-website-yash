@@ -58,13 +58,21 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
       their peers.
     </div>
 
-    <!-- Learn More Button -->
-    <AnimatedButton
-      text="Learn more"
-      href="https://women.acm.org"
-      target="_blank"
-      iconBg="#ff007a"
-    />
+    <!-- Action Buttons -->
+    <div class="flex flex-nowrap items-center justify-center gap-6 [&_.anim-btn-anchor]:w-auto [&_.anim-btn]:whitespace-nowrap">
+      <AnimatedButton
+        text="Learn more"
+        href="https://women.acm.org"
+        target="_blank"
+        iconBg="#ff007a"
+      />
+      <AnimatedButton
+        text="ACM-W Website"
+        href="https://w.acmvit.in"
+        target="_blank"
+        iconBg="#ff007a"
+      />
+    </div>
   </div>
 </section>
 
