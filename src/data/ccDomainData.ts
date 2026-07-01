@@ -21,7 +21,7 @@ export interface CcEvent {
 const t = (name: string, slug: string, colorHex: string, opts: { isDark?: boolean; monochrome?: boolean } = {}): CcTool => ({
   name,
   slug,
-  svgFile: `/domains/cc/tools/${slug}.svg`,
+  svgFile: `/domains/cc/tools/cc-tool-${slug}.svg`,
   colorHex,
   isDark: opts.isDark,
   monochrome: opts.monochrome,
@@ -58,13 +58,13 @@ export const ccStats: { value: string; label: string }[] = [];
 export const ccEvents: CcEvent[] = [
   {
     title: "Reverse Coding",
-    cassette: "/events/reverse-coding-cassette.svg",
+    cassette: "/events/events-reverse-coding-cassette.svg",
     desc: "VIT's largest competitive coding event. Months of preparation, multi-round contest format, and questions that push every skill bracket from beginner to expert.",
     slug: "reverse-coding",
   },
   {
     title: "Code++",
-    cassette: "/events/code-plusplus-cassette.svg",
+    cassette: "/events/events-code-plusplus-cassette.svg",
     desc: "A focused four-hour competitive coding sprint, curated problem set and live leaderboard, run by the Competitive Coding domain.",
     slug: "code-plusplus",
   },

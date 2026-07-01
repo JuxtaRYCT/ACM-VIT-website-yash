@@ -1,16 +1,16 @@
 {
   "cassetteImages": [
-    "/events/apptitude-cassette.svg",
-    "/events/c2c-cassette.svg",
-    "/events/codart-cassette.svg",
-    "/events/code-plusplus-cassette.svg",
-    "/events/codex-cryptum-cassette.svg",
-    "/events/cryptic-hunt-cassette.svg",
-    "/events/forktober-cassette.svg",
-    "/events/inspiher-cassette.svg",
-    "/events/neural-hack-cassette.svg",
-    "/events/reverse-coding-cassette.svg",
-    "/events/the-tiny-hack-cassette.svg"
+    "/events/events-apptitude-cassette.svg",
+    "/events/events-c2c-cassette.svg",
+    "/events/events-codart-cassette.svg",
+    "/events/events-code-plusplus-cassette.svg",
+    "/events/events-codex-cryptum-cassette.svg",
+    "/events/events-cryptic-hunt-cassette.svg",
+    "/events/events-forktober-cassette.svg",
+    "/events/events-inspiher-cassette.svg",
+    "/events/events-neural-hack-cassette.svg",
+    "/events/events-reverse-coding-cassette.svg",
+    "/events/events-the-tiny-hack-cassette.svg"
   ],
   "info": [
     { "key": "Pen", "title": "CodePen", "site": "https://codepen.io/wodniack", "description": "A showcase of creative code snippets and experiments." },

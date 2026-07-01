@@ -69,8 +69,8 @@ export const projectCassettes: GridProject[] = [
     sizeAxis: "width",
     offsetY: -3,
   },
-  { kind: "svg", name: "OCS 2022", color: "#8710DB", cassetteSvg: "/projects/cassettes/ocs-22.svg", alt: "OCS '22", url: "/projects/ocs-22" },
-  { kind: "svg", name: "OCS 2023", color: "#9F40DB", cassetteSvg: "/projects/cassettes/ocs-23.svg", alt: "OCS '23", url: "/projects/ocs-23" },
+  { kind: "svg", name: "OCS 2022", color: "#8710DB", cassetteSvg: "/projects/cassettes/projects-cassettes-ocs-22.svg", alt: "OCS '22", url: "/projects/ocs-22" },
+  { kind: "svg", name: "OCS 2023", color: "#9F40DB", cassetteSvg: "/projects/cassettes/projects-cassettes-ocs-23.svg", alt: "OCS '23", url: "/projects/ocs-23" },
   {
     kind: "overlay",
     name: "Localhost",
@@ -93,13 +93,13 @@ export const projectCassettes: GridProject[] = [
     sizeAxis: "width",
     offsetY: 0,
   },
-  { kind: "svg", name: "OCS 2026", color: "#EFE28B", cassetteSvg: "/projects/cassettes/ocs-26.svg", alt: "OCS '26", url: "/projects/ocs-26" },
-  { kind: "svg", name: "Conclave", color: "#FF6B35", cassetteSvg: "/projects/cassettes/conclave.svg", alt: "Conclave", url: "/projects/conclave" },
-  { kind: "svg", name: "WENVY", color: "#F03104", cassetteSvg: "/projects/cassettes/wenvy.svg", alt: "WENVY", url: "/projects/wenvy" },
-  { kind: "svg", name: "CLI-TOP", color: "#48BB78", cassetteSvg: "/projects/cassettes/cli-top.svg", alt: "CLI-TOP", url: "/projects/cli-top" },
-  { kind: "svg", name: "TAGRED", color: "#E53E3E", cassetteSvg: "/projects/cassettes/tagred.svg", alt: "TAGRED", url: "#", comingSoon: true },
-  { kind: "svg", name: "FORM", color: "#805AD5", cassetteSvg: "/projects/cassettes/form.svg", alt: "FORM", url: "#", comingSoon: true },
-  { kind: "svg", name: "CODIGO", color: "#DD6B20", cassetteSvg: "/projects/cassettes/codigo.svg", alt: "CODIGO", url: "#", comingSoon: true },
+  { kind: "svg", name: "OCS 2026", color: "#EFE28B", cassetteSvg: "/projects/cassettes/projects-cassettes-ocs-26.svg", alt: "OCS '26", url: "/projects/ocs-26" },
+  { kind: "svg", name: "Conclave", color: "#FF6B35", cassetteSvg: "/projects/cassettes/projects-cassettes-conclave.svg", alt: "Conclave", url: "/projects/conclave" },
+  { kind: "svg", name: "WENVY", color: "#F03104", cassetteSvg: "/projects/cassettes/projects-cassettes-wenvy.svg", alt: "WENVY", url: "/projects/wenvy" },
+  { kind: "svg", name: "CLI-TOP", color: "#48BB78", cassetteSvg: "/projects/cassettes/projects-cassettes-cli-top.svg", alt: "CLI-TOP", url: "/projects/cli-top" },
+  { kind: "svg", name: "TAGRED", color: "#E53E3E", cassetteSvg: "/projects/cassettes/projects-cassettes-tagred.svg", alt: "TAGRED", url: "#", comingSoon: true },
+  { kind: "svg", name: "FORM", color: "#805AD5", cassetteSvg: "/projects/cassettes/projects-cassettes-form.svg", alt: "FORM", url: "#", comingSoon: true },
+  { kind: "svg", name: "CODIGO", color: "#DD6B20", cassetteSvg: "/projects/cassettes/projects-cassettes-codigo.svg", alt: "CODIGO", url: "#", comingSoon: true },
 ];
 
 const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");

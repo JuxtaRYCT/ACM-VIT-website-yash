@@ -21,7 +21,7 @@ export interface MgmtEvent {
 const t = (name: string, slug: string, colorHex: string, opts: { isDark?: boolean; monochrome?: boolean } = {}): MgmtTool => ({
   name,
   slug,
-  svgFile: `/domains/management/tools/${slug}.svg`,
+  svgFile: `/domains/management/tools/management-tool-${slug}.svg`,
   colorHex,
   isDark: opts.isDark,
   monochrome: opts.monochrome,
@@ -65,24 +65,24 @@ export const mgmtStats: { value: string; label: string }[] = [];
 export const mgmtEvents: MgmtEvent[] = [
   {
     title: "Every ACM-VIT Event",
-    cassette: "/cassettes/Cassette_Management.svg",
+    cassette: "/cassettes/cassettes-cassette-management.svg",
     desc: "From Code2Create and Cryptic Hunt to InspiHer and Reverse Coding, Management runs marketing, sponsorship outreach, content and on-ground coordination for every flagship the chapter ships.",
   },
   {
     title: "Code2Create",
-    cassette: "/events/c2c-cassette.webp",
+    cassette: "/events/events-c2c-cassette.webp",
     desc: "Sponsorships, brand partnerships, social media campaigns and on-site coordination for ACM-VIT's flagship hackathon.",
     slug: "code2create",
   },
   {
     title: "Cryptic Hunt",
-    cassette: "/events/cryptic-hunt-cassette.svg",
+    cassette: "/events/events-cryptic-hunt-cassette.svg",
     desc: "Marketing campaigns and sponsor onboarding for one of India's largest scavenger hunts.",
     slug: "cryptic-hunt",
   },
   {
     title: "Reverse Coding",
-    cassette: "/events/reverse-coding-cassette.svg",
+    cassette: "/events/events-reverse-coding-cassette.svg",
     desc: "Outreach, partner deals and social rollout for ACM-VIT's signature competitive programming event.",
     slug: "reverse-coding",
   },

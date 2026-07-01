@@ -8,7 +8,7 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
 
   <!-- Mailbox illustration -->
   <div class="absolute left-6 bottom-6 sm:left-12 sm:bottom-12 opacity-70">
-    <img src="/assets/grep/mailbox.svg" alt="" class="w-40 sm:w-56 md:w-64" />
+    <img src="/grep/grep-mailbox.svg" alt="" class="w-40 sm:w-56 md:w-64" />
   </div>
 
   <!-- Content -->
@@ -56,7 +56,7 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
 <style>
   @font-face {
     font-family: "ChessType";
-    src: url("/fonts/ChessType.ttf") format("truetype");
+    src: url("/fonts/fonts-chesstype.ttf") format("truetype");
     font-display: swap;
   }
 
@@ -179,7 +179,7 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
   // Inject keyboard SVG inline for CSS hover interactivity
   const container = document.getElementById("grep-keyboard-bg");
   if (container) {
-    fetch("/assets/grep/keyboard.svg")
+    fetch("/grep/grep-keyboard.svg")
       .then((r) => r.text())
       .then((svg) => {
         container.innerHTML = svg;

@@ -51,12 +51,12 @@ const items = photos.map((p, i) => ({
 // Cassette artwork per event (falls back to a generic tape for events without
 // dedicated art, e.g. Hack Story).
 const cassetteArt: Record<string, string> = {
-  "Reverse Coding": "/events/reverse-coding-cassette.webp",
-  Code2Create: "/events/c2c-cassette.webp",
-  "Cryptic Hunt": "/events/cryptic-hunt-cassette.webp",
-  "Hack Story": "/cassettes/casette-layout-orange.webp",
+  "Reverse Coding": "/events/events-reverse-coding-cassette.webp",
+  Code2Create: "/events/events-c2c-cassette.webp",
+  "Cryptic Hunt": "/events/events-cryptic-hunt-cassette.webp",
+  "Hack Story": "/cassettes/cassettes-cassette-layout-orange.webp",
 };
-const FALLBACK_ART = "/cassettes/casette-layout-white.webp";
+const FALLBACK_ART = "/cassettes/cassettes-cassette-layout-white.webp";
 
 type YearGroup = { year: string; events: { title: string; event: string }[] };
 const galleryYears: YearGroup[] = [

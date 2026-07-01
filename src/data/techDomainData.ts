@@ -39,7 +39,7 @@ export interface TechAOI {
 const t = (name: string, slug: string, colorHex: string, opts: { isDark?: boolean; monochrome?: boolean } = {}): TechTool => ({
   name,
   slug,
-  svgFile: `/domains/tech/tools/${slug}.svg`,
+  svgFile: `/domains/tech/tools/tech-tool-${slug}.svg`,
   colorHex,
   isDark: opts.isDark,
   monochrome: opts.monochrome,
@@ -159,7 +159,7 @@ export const techAOIs: TechAOI[] = [
       "App Development is one of the oldest and strongest teams at VIT. We build apps both for ACM events and during our project cycles, then push them live so people actually use them.",
       "We work across the entire mobile stack, React Native, Flutter, Kotlin, SwiftUI, picking whichever fits the project. Members rotate through every layer so the team grows engineers, not framework specialists.",
     ],
-    cassetteSrc: "/aois/tech/cassettes/appdev.png",
+    cassetteSrc: "/aois/tech/cassettes/aois-tech-cassettes-appdev.png",
     tools: ["flutter", "react-native", "expo", "swift", "swiftui", "kotlin", "jetpack-compose", "android-studio", "xcode", "realm", "sqlite", "appwrite", "fastlane", "typescript", "git"],
     projects: [
       { title: "UniPool", desc: "Carpooling app for university students, matching riders and drivers across campus routes." },
@@ -170,8 +170,8 @@ export const techAOIs: TechAOI[] = [
       { title: "Code2Create", desc: "Companion app for ACM-VIT's flagship hackathon Code2Create." },
     ],
     events: [
-      { title: "Code2Create", cassette: "/events/c2c-cassette.webp", desc: "Companion app for ACM-VIT's hackathon, shipped each edition.", slug: "code2create" },
-      { title: "Cryptic Hunt", cassette: "/events/cryptic-hunt-cassette.svg", desc: "Mobile app powering one of India's largest scavenger hunts.", slug: "cryptic-hunt" },
+      { title: "Code2Create", cassette: "/events/events-c2c-cassette.webp", desc: "Companion app for ACM-VIT's hackathon, shipped each edition.", slug: "code2create" },
+      { title: "Cryptic Hunt", cassette: "/events/events-cryptic-hunt-cassette.svg", desc: "Mobile app powering one of India's largest scavenger hunts.", slug: "cryptic-hunt" },
     ],
   },
   {
@@ -182,7 +182,7 @@ export const techAOIs: TechAOI[] = [
       "Web Development covers everything from event websites and project frontends to the backends powering apps and portals. We also build the enrollments website every year, each edition gets a brand new theme, fresh features and a few hidden easter eggs.",
       "We write the backends for Cryptic Hunt, Code2Create and Reverse Coding among others. Several events draw huge participation, so keeping these systems fast and resilient under load is part of the job.",
     ],
-    cassetteSrc: "/aois/tech/cassettes/webdev.png",
+    cassetteSrc: "/aois/tech/cassettes/aois-tech-cassettes-webdev.png",
     tools: ["nextjs", "react", "nodejs", "go", "typescript", "javascript", "tailwindcss", "shadcn", "prisma", "trpc", "graphql", "apollographql", "express", "fastify", "nestjs", "hono", "postgresql", "mysql", "mongodb", "redis", "cockroachdb", "supabase", "firebase", "docker", "kubernetes", "nginx", "vercel", "cloudflare", "git", "github", "postman"],
     projects: [
       { title: "ExamCooker", desc: "Web counterpart to the ExamCooker app, indexed and searchable VIT academic resources." },
@@ -193,10 +193,10 @@ export const techAOIs: TechAOI[] = [
       { title: "ACMOne", desc: "Web dashboard for ACM's internal management tool." },
     ],
     events: [
-      { title: "Code2Create", cassette: "/events/c2c-cassette.webp", desc: "Event website + backend for ACM-VIT's flagship hackathon.", slug: "code2create" },
-      { title: "Cryptic Hunt", cassette: "/events/cryptic-hunt-cassette.svg", desc: "Backend systems powering the Cryptic Hunt app and live event.", slug: "cryptic-hunt" },
-      { title: "Neural Hack Portal", cassette: "/events/neural-hack-cassette.svg", desc: "Submission and judging portal for Neural Hack.", external: true, href: "https://nh.acmvit.in/" },
-      { title: "Reverse Coding", cassette: "/events/reverse-coding-cassette.svg", desc: "Contest portal and backend infra for Reverse Coding.", slug: "reverse-coding" },
+      { title: "Code2Create", cassette: "/events/events-c2c-cassette.webp", desc: "Event website + backend for ACM-VIT's flagship hackathon.", slug: "code2create" },
+      { title: "Cryptic Hunt", cassette: "/events/events-cryptic-hunt-cassette.svg", desc: "Backend systems powering the Cryptic Hunt app and live event.", slug: "cryptic-hunt" },
+      { title: "Neural Hack Portal", cassette: "/events/events-neural-hack-cassette.svg", desc: "Submission and judging portal for Neural Hack.", external: true, href: "https://nh.acmvit.in/" },
+      { title: "Reverse Coding", cassette: "/events/events-reverse-coding-cassette.svg", desc: "Contest portal and backend infra for Reverse Coding.", slug: "reverse-coding" },
     ],
   },
   {
@@ -208,10 +208,10 @@ export const techAOIs: TechAOI[] = [
       "Recently, ACM-VIT members have contributed to the sglang repository, with others making meaningful contributions to repos from LLVM, OpenAI and more.",
       "Every Hacktoberfest, FOSS runs Forktober, our open source festival, packed with curated repositories, sessions and workshops to help students land their first open source contribution.",
     ],
-    cassetteSrc: "/aois/tech/cassettes/foss.png",
+    cassetteSrc: "/aois/tech/cassettes/aois-tech-cassettes-foss.png",
     tools: ["gitlab", "github", "git", "ubuntu", "arch-linux", "debian", "fedora", "gnu", "gcc", "cmake", "bazel", "meson", "nix", "homebrew", "podman", "openapi", "apache", "neovim", "vim", "blender", "krita", "gimp", "libreoffice", "linux"],
     events: [
-      { title: "Forktober", cassette: "/events/forktober-cassette.svg", desc: "ACM-VIT's open source festival run every Hacktoberfest. Curated repositories, sessions and workshops to land first contributions.", slug: "forktober" },
+      { title: "Forktober", cassette: "/events/events-forktober-cassette.svg", desc: "ACM-VIT's open source festival run every Hacktoberfest. Curated repositories, sessions and workshops to land first contributions.", slug: "forktober" },
     ],
   },
   {
@@ -222,7 +222,7 @@ export const techAOIs: TechAOI[] = [
       "Game Studios is the newest AOI but has already shipped a few titles. CLI-RPG is a command-line role playing game written in Rust. Tagred is set in VIT itself, using the campus map as its world with original characters and storylines.",
       "The Cryptic Hunt game uses the VIT map to deliver puzzle questions during the event's night leg, guiding participants as they navigate the campus. The team also builds game elements for hackathon and coding portals across ACM's other events.",
     ],
-    cassetteSrc: "/aois/tech/cassettes/gamestudios.png",
+    cassetteSrc: "/aois/tech/cassettes/aois-tech-cassettes-gamestudios.png",
     tools: ["unity", "unreal-engine", "godot", "houdini", "aseprite", "spine", "rive", "csharp", "cplusplus", "opengl", "vulkan", "sdl", "git"],
     projects: [
       { title: "CLI-RPG", desc: "Command-line role playing game written in Rust." },
@@ -230,7 +230,7 @@ export const techAOIs: TechAOI[] = [
       { title: "Cryptic Hunt Game", desc: "Map-based puzzle game guiding Cryptic Hunt participants through campus at night." },
     ],
     events: [
-      { title: "Cryptic Hunt", cassette: "/events/cryptic-hunt-cassette.svg", desc: "Game systems and map-based puzzles powering Cryptic Hunt nights.", slug: "cryptic-hunt" },
+      { title: "Cryptic Hunt", cassette: "/events/events-cryptic-hunt-cassette.svg", desc: "Game systems and map-based puzzles powering Cryptic Hunt nights.", slug: "cryptic-hunt" },
     ],
   },
   {
@@ -242,10 +242,10 @@ export const techAOIs: TechAOI[] = [
       "When Cryptic Hunt opens or a hackathon portal goes live, DevOps is the team watching the dashboards, scaling capacity, debugging incidents and making sure none of the work the rest of the chapter shipped goes dark.",
       "Beyond reactive ops, DevOps owns the long game, monitoring, observability, secrets handling, infrastructure-as-code and the boring discipline that makes the exciting parts of every other AOI possible.",
     ],
-    cassetteSrc: "/aois/tech/cassettes/devops.png",
+    cassetteSrc: "/aois/tech/cassettes/aois-tech-cassettes-devops.png",
     tools: ["terraform", "ansible", "helm", "jenkins", "github-actions", "gitlab-ci", "circleci", "argo-cd", "prometheus", "grafana", "traefik", "aws", "azure", "gcp", "opentelemetry", "vault", "consul", "docker", "kubernetes", "nginx", "linux"],
     projects: [
-      { title: "All ACM-VIT Infra", cassette: "/cassettes/Cassette_Tech.svg", desc: "DevOps quietly runs every deployed ACM-VIT project, from the websites and apps you see to the keys, queues and dashboards you do not." },
+      { title: "All ACM-VIT Infra", cassette: "/cassettes/cassettes-cassette-tech.svg", desc: "DevOps quietly runs every deployed ACM-VIT project, from the websites and apps you see to the keys, queues and dashboards you do not." },
     ],
   },
 ];

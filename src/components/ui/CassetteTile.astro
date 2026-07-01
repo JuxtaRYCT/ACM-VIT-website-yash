@@ -82,7 +82,7 @@ const REEL_GEAR =
     content: "";
     position: absolute;
     inset: 0;
-    background-image: url("/backgrounds/noise.webp");
+    background-image: url("/backgrounds/backgrounds-noise.webp");
     background-size: cover;
     opacity: 0.06;
     pointer-events: none;
@@ -272,7 +272,7 @@ const REEL_GEAR =
     if ((window as any).__cassetteRollInit) return;
     (window as any).__cassetteRollInit = true;
 
-    const audio = new Audio("/audio/cassette-roll.mp3");
+    const audio = new Audio("/audio/audio-cassette-roll.mp3");
     audio.loop = true;
     audio.volume = 0.18;
     audio.preload = "auto";

@@ -103,13 +103,13 @@
         </text>
         <image
           class="acm-reveal acm-reveal-logo"
-          href="/z0d1ak/z0d1ak_logo.svg"
+          href="/z0d1ak/z0d1ak-logo.svg"
           x="108" y="38" width="64" height="66"
           preserveAspectRatio="xMidYMid meet"
         />
         <image
           class="acm-reveal acm-reveal-trophy"
-          href="/ui/trophy.png"
+          href="/ui/ui-trophy.png"
           x="113" y="37" width="54" height="70"
           preserveAspectRatio="xMidYMid meet"
         />
@@ -442,19 +442,19 @@
       urls.forEach((url) => upsert(url, 4));
     });
 
-    upsert(getAssetUrl("/backgrounds/background_pattern.webp"), 7);
-    upsert(getAssetUrl("/backgrounds/glow_ball_red.webp"), 7);
-    upsert(getAssetUrl("/logos/acm_topleft.webp"), 9);
+    upsert(getAssetUrl("/backgrounds/backgrounds-background-pattern.webp"), 7);
+    upsert(getAssetUrl("/backgrounds/backgrounds-glow-ball-red.webp"), 7);
+    upsert(getAssetUrl("/logos/logos-acm-topleft.webp"), 9);
     upsert(getAssetUrl("/acmw/acmw-bento.webp"), 5);
     upsert(getAssetUrl("/acmw/acmw-bento-phone.webp"), 5);
-    upsert(getAssetUrl("/about/Cassette.webp"), 6);
-    upsert(getAssetUrl("/about/2.webp"), 6);
-    upsert(getAssetUrl("/about/3.webp"), 6);
-    upsert(getAssetUrl("/cassettes/Cassette_Tech.webp"), 6);
-    upsert(getAssetUrl("/cassettes/Cassette_cc.webp"), 6);
-    upsert(getAssetUrl("/cassettes/Cassette_Design.webp"), 6);
-    upsert(getAssetUrl("/cassettes/Cassette_Management.webp"), 6);
-    upsert(getAssetUrl("/cassettes/Cassette_Research.webp"), 6);
+    upsert(getAssetUrl("/about/about-acmvit-cassette.webp"), 6);
+    upsert(getAssetUrl("/about/about-acm-cassette.webp"), 6);
+    upsert(getAssetUrl("/about/about-vit-cassette.webp"), 6);
+    upsert(getAssetUrl("/cassettes/cassettes-cassette-tech.webp"), 6);
+    upsert(getAssetUrl("/cassettes/cassettes-cassette-cc.webp"), 6);
+    upsert(getAssetUrl("/cassettes/cassettes-cassette-design.webp"), 6);
+    upsert(getAssetUrl("/cassettes/cassettes-cassette-management.webp"), 6);
+    upsert(getAssetUrl("/cassettes/cassettes-cassette-research.webp"), 6);
 
     return Array.from(map.entries())
       .sort((a, b) => b[1] - a[1])

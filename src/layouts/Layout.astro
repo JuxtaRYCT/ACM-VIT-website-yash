@@ -65,7 +65,7 @@ const isLandingPage = Astro.url.pathname === "/";
     <link
       rel="preload"
       as="image"
-      href={getAssetUrl("/logos/acm_topleft.webp")}
+      href={getAssetUrl("/logos/logos-acm-topleft.webp")}
       fetchpriority="high"
     />
     {
@@ -73,7 +73,7 @@ const isLandingPage = Astro.url.pathname === "/";
         <link
           rel="preload"
           as="image"
-          href={getAssetUrl("/logos/VIT.webp")}
+          href={getAssetUrl("/logos/logos-vit.webp")}
           fetchpriority="high"
         />
       )
@@ -81,13 +81,13 @@ const isLandingPage = Astro.url.pathname === "/";
     <link
       rel="preload"
       as="image"
-      href={getAssetUrl("/backgrounds/background_pattern.webp")}
+      href={getAssetUrl("/backgrounds/backgrounds-background-pattern.webp")}
       fetchpriority="high"
     />
     <link
       rel="preload"
       as="image"
-      href={getAssetUrl("/frames/dark/0001.jpg")}
+      href={getAssetUrl("/scroll-video-frames/dark/0001.jpg")}
       fetchpriority="high"
     />
 
@@ -110,12 +110,12 @@ const isLandingPage = Astro.url.pathname === "/";
 
     <div
       class="diamond-grid"
-      style={`background-image: url('${getAssetUrl("/backgrounds/background_pattern.webp")}');`}
+      style={`background-image: url('${getAssetUrl("/backgrounds/backgrounds-background-pattern.webp")}');`}
     >
     </div>
     <div class="brand-logos" aria-label={isLandingPage ? "ACM-VIT and VIT" : "ACM-VIT"}>
       <img
-        src={getAssetUrl("/logos/acm_topleft.webp")}
+        src={getAssetUrl("/logos/logos-acm-topleft.webp")}
         alt="ACM-VIT"
         class="acm-logo"
         loading="eager"
@@ -125,7 +125,7 @@ const isLandingPage = Astro.url.pathname === "/";
       {
         isLandingPage && (
           <img
-            src={getAssetUrl("/logos/VIT.webp")}
+            src={getAssetUrl("/logos/logos-vit.webp")}
             alt="VIT"
             class="vit-logo"
             loading="eager"

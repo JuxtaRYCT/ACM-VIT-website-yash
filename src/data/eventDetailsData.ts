@@ -99,7 +99,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeKey: "tech",
     themeColor: "#D4A341",
     hideCtaBanner: true,
-    cassetteSvg: "/events/apptitude-cassette.svg",
+    cassetteSvg: "/events/events-apptitude-cassette.svg",
     shortDescription:
       "Apptitude is ACM-VIT's national-level app development hackathon designed to encourage students to build innovative mobile applications that solve real-world problems. Free registration, 36 hours, open to all.",
     longDescription: [
@@ -155,7 +155,7 @@ export const eventDetails: Record<string, EventDetail> = {
     eyebrow: "ACM-VIT · ACM-W · Flagship Hackathon",
     themeKey: "brand",
     themeColor: "#4AB887",
-    cassetteSvg: "/events/c2c-cassette.svg",
+    cassetteSvg: "/events/events-c2c-cassette.svg",
     shortDescription:
       "Code2Create (C2C) is ACM-VIT's flagship hackathon. First conducted in 2017 and now six editions deep, it has grown into a national platform for builders from across India to ship real solutions to real problems.",
     longDescription: [
@@ -204,14 +204,14 @@ export const eventDetails: Record<string, EventDetail> = {
           { label: "@c2c.acmvit", href: "https://instagram.com/c2c.acmvit" },
         ],
         collectibles: [
-          { name: "C2C 6.0 Sticker - Variant 1", image: "/events/c2c/sticker-1.png", desc: "First sticker variant from the 2025 edition." },
-          { name: "C2C 6.0 Sticker - Variant 2", image: "/events/c2c/sticker-2.png", desc: "Second sticker variant from the 2025 edition." },
+          { name: "C2C 6.0 Sticker - Variant 1", image: "/events/c2c/events-c2c-sticker-1.png", desc: "First sticker variant from the 2025 edition." },
+          { name: "C2C 6.0 Sticker - Variant 2", image: "/events/c2c/events-c2c-sticker-2.png", desc: "Second sticker variant from the 2025 edition." },
           { name: "RunPod Credits", desc: "USD 25 in compute credits from RunPod for every participant." },
           { name: "ElevenLabs Credits", desc: "USD 50 in API credits from ElevenLabs for every participant." },
         ],
         sponsors: [
-          { name: "RunPod", tier: "Platinum", logo: "/events/c2c/sponsors/runpod.svg" },
-          { name: "ElevenLabs", tier: "Gold", logo: "/events/c2c/sponsors/elevenlabs.svg" },
+          { name: "RunPod", tier: "Platinum", logo: "/events/c2c/sponsors/events-c2c-sponsors-runpod.svg" },
+          { name: "ElevenLabs", tier: "Gold", logo: "/events/c2c/sponsors/events-c2c-sponsors-elevenlabs.svg" },
         ],
       },
       {
@@ -223,25 +223,25 @@ export const eventDetails: Record<string, EventDetail> = {
           { name: "Patron Stickers", desc: "Sticker pack from the edition's industry patrons." },
         ],
         sponsors: [
-          { name: "Meribachat", tier: "Gold", logo: "/events/c2c/sponsors/meribachat.svg" },
-          { name: "Mcwitties", tier: "Silver", logo: "/events/c2c/sponsors/mcwitties.svg" },
-          { name: "Capital Inc.", tier: "Silver", logo: "/events/c2c/sponsors/capitalinc.svg" },
-          { name: "Skill Oxide", tier: "Silver", logo: "/events/c2c/sponsors/skilloxide.svg" },
-          { name: "OneDrop", tier: "Silver", logo: "/events/c2c/sponsors/onedrop.svg" },
-          { name: "GitHub", tier: "Sponsor", logo: "/events/c2c/sponsors/github.svg" },
-          { name: "Sashido", tier: "Sponsor", logo: "/events/c2c/sponsors/sashido.svg" },
-          { name: "Wolfram Language", tier: "Sponsor", logo: "/events/c2c/sponsors/wolframlanguage.svg" },
-          { name: "Balsamiq", tier: "Sponsor", logo: "/events/c2c/sponsors/balsamiq.svg" },
-          { name: "Replit", tier: "Sponsor", logo: "/events/c2c/sponsors/replit.svg" },
-          { name: "Taskade", tier: "Sponsor", logo: "/events/c2c/sponsors/taskade.svg" },
-          { name: "O'Reilly", tier: "Sponsor", logo: "/events/c2c/sponsors/oreilly.svg" },
-          { name: "Bilda", tier: "Sponsor", logo: "/events/c2c/sponsors/bilda.svg" },
-          { name: "Sticker Mule", tier: "Sponsor", logo: "/events/c2c/sponsors/stickermule.svg" },
-          { name: "EchoAR", tier: "Sponsor", logo: "/events/c2c/sponsors/echoar.svg" },
-          { name: "Axure", tier: "Sponsor", logo: "/events/c2c/sponsors/axure.svg" },
+          { name: "Meribachat", tier: "Gold", logo: "/events/c2c/sponsors/events-c2c-sponsors-meribachat.svg" },
+          { name: "Mcwitties", tier: "Silver", logo: "/events/c2c/sponsors/events-c2c-sponsors-mcwitties.svg" },
+          { name: "Capital Inc.", tier: "Silver", logo: "/events/c2c/sponsors/events-c2c-sponsors-capitalinc.svg" },
+          { name: "Skill Oxide", tier: "Silver", logo: "/events/c2c/sponsors/events-c2c-sponsors-skilloxide.svg" },
+          { name: "OneDrop", tier: "Silver", logo: "/events/c2c/sponsors/events-c2c-sponsors-onedrop.svg" },
+          { name: "GitHub", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-github.svg" },
+          { name: "Sashido", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-sashido.svg" },
+          { name: "Wolfram Language", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-wolframlanguage.svg" },
+          { name: "Balsamiq", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-balsamiq.svg" },
+          { name: "Replit", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-replit.svg" },
+          { name: "Taskade", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-taskade.svg" },
+          { name: "O'Reilly", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-oreilly.svg" },
+          { name: "Bilda", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-bilda.svg" },
+          { name: "Sticker Mule", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-stickermule.svg" },
+          { name: "EchoAR", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-echoar.svg" },
+          { name: "Axure", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-axure.svg" },
           { name: "Egghead.io", tier: "Sponsor" },
-          { name: "C4 Projects", tier: "Mentoring Partner", logo: "/events/c2c/sponsors/c4projects.svg" },
-          { name: "Zuddl", tier: "Portal Partner", logo: "/events/c2c/sponsors/zuddl.svg" },
+          { name: "C4 Projects", tier: "Mentoring Partner", logo: "/events/c2c/sponsors/events-c2c-sponsors-c4projects.svg" },
+          { name: "Zuddl", tier: "Portal Partner", logo: "/events/c2c/sponsors/events-c2c-sponsors-zuddl.svg" },
         ],
       },
       {
@@ -253,19 +253,19 @@ export const eventDetails: Record<string, EventDetail> = {
           { name: "Patron Stickers", desc: "Sticker pack from sponsoring patrons of the edition." },
         ],
         sponsors: [
-          { name: "JetBrains", tier: "Patron", logo: "/events/c2c/sponsors/jetbrains.svg" },
-          { name: "DigitalOcean", tier: "Patron", logo: "/events/c2c/sponsors/digitalocean.svg" },
-          { name: "Slack", tier: "Patron", logo: "/events/c2c/sponsors/slack.svg" },
-          { name: "CloudSploit", tier: "Patron", logo: "/events/c2c/sponsors/cloudsploit.svg" },
-          { name: "GeeksforGeeks", tier: "Patron", logo: "/events/c2c/sponsors/geeksforgeeks.svg" },
-          { name: "Wolfram Alpha", tier: "Patron", logo: "/events/c2c/sponsors/wolframalpha.svg" },
-          { name: "Coding Blocks", tier: "Patron", logo: "/events/c2c/sponsors/codingblocks.svg" },
-          { name: "Axure", tier: "Patron", logo: "/events/c2c/sponsors/axure.svg" },
-          { name: "Rosenfeld", tier: "Patron", logo: "/events/c2c/sponsors/rosenfeld.svg" },
-          { name: "GitHub", tier: "Sponsor", logo: "/events/c2c/sponsors/github.svg" },
-          { name: "Devfolio", tier: "Platinum Sponsor", logo: "/events/c2c/sponsors/devfolio.svg" },
-          { name: "Fold", tier: "Sponsor", logo: "/events/c2c/sponsors/fold.svg" },
-          { name: "Matic", tier: "Sponsor", logo: "/events/c2c/sponsors/matic.svg" },
+          { name: "JetBrains", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-jetbrains.svg" },
+          { name: "DigitalOcean", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-digitalocean.svg" },
+          { name: "Slack", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-slack.svg" },
+          { name: "CloudSploit", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-cloudsploit.svg" },
+          { name: "GeeksforGeeks", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-geeksforgeeks.svg" },
+          { name: "Wolfram Alpha", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-wolframalpha.svg" },
+          { name: "Coding Blocks", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-codingblocks.svg" },
+          { name: "Axure", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-axure.svg" },
+          { name: "Rosenfeld", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-rosenfeld.svg" },
+          { name: "GitHub", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-github.svg" },
+          { name: "Devfolio", tier: "Platinum Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-devfolio.svg" },
+          { name: "Fold", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-fold.svg" },
+          { name: "Matic", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-matic.svg" },
         ],
       },
       {
@@ -277,28 +277,28 @@ export const eventDetails: Record<string, EventDetail> = {
           { name: "Patron Stickers", desc: "Sticker pack from the edition's industry patrons." },
         ],
         sponsors: [
-          { name: "GitHub", tier: "Title Sponsor", logo: "/events/c2c/sponsors/github.svg" },
-          { name: "HackerEarth", tier: "Platform Sponsor", logo: "/events/c2c/sponsors/hackerearth.svg" },
-          { name: "Indriya Construction Company", tier: "Platinum Sponsor", logo: "/events/c2c/sponsors/indriya.svg" },
-          { name: "DigitalOcean", tier: "Cloud Partner", logo: "/events/c2c/sponsors/digitalocean.svg" },
-          { name: "IBM", tier: "Innovation Partner", logo: "/events/c2c/sponsors/ibm.svg" },
-          { name: "Hasura", tier: "Innovation Partner", logo: "/events/c2c/sponsors/hasura.svg" },
-          { name: "Coding Blocks", tier: "Learning Partner", logo: "/events/c2c/sponsors/codingblocks.svg" },
-          { name: "AnitaB.org", tier: "Patron", logo: "/events/c2c/sponsors/anitab.svg" },
-          { name: "Axure RP", tier: "Patron", logo: "/events/c2c/sponsors/axure.svg" },
-          { name: "Bugsee", tier: "Patron", logo: "/events/c2c/sponsors/bugsee.svg" },
-          { name: "CloudSploit", tier: "Patron", logo: "/events/c2c/sponsors/cloudsploit.svg" },
-          { name: "InVision", tier: "Patron", logo: "/events/c2c/sponsors/invision.svg" },
-          { name: "Jenkins", tier: "Patron", logo: "/events/c2c/sponsors/jenkins.svg" },
-          { name: "JetBrains", tier: "Patron", logo: "/events/c2c/sponsors/jetbrains.svg" },
-          { name: "Sketch", tier: "Patron", logo: "/events/c2c/sponsors/sketch.svg" },
-          { name: "Slang Labs", tier: "Patron", logo: "/events/c2c/sponsors/slanglabs.svg" },
-          { name: "Shift", tier: "Patron", logo: "/events/c2c/sponsors/shift.svg" },
-          { name: "Sticker Mule", tier: "Patron", logo: "/events/c2c/sponsors/stickermule.svg" },
-          { name: "Taskade", tier: "Patron", logo: "/events/c2c/sponsors/taskade.svg" },
-          { name: "TTA", tier: "Patron", logo: "/events/c2c/sponsors/tta.svg" },
-          { name: ".Tech Domains", tier: "Patron", logo: "/events/c2c/sponsors/techdomains.svg" },
-          { name: "Wolfram Language", tier: "Patron", logo: "/events/c2c/sponsors/wolframlanguage.svg" },
+          { name: "GitHub", tier: "Title Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-github.svg" },
+          { name: "HackerEarth", tier: "Platform Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-hackerearth.svg" },
+          { name: "Indriya Construction Company", tier: "Platinum Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-indriya.svg" },
+          { name: "DigitalOcean", tier: "Cloud Partner", logo: "/events/c2c/sponsors/events-c2c-sponsors-digitalocean.svg" },
+          { name: "IBM", tier: "Innovation Partner", logo: "/events/c2c/sponsors/events-c2c-sponsors-ibm.svg" },
+          { name: "Hasura", tier: "Innovation Partner", logo: "/events/c2c/sponsors/events-c2c-sponsors-hasura.svg" },
+          { name: "Coding Blocks", tier: "Learning Partner", logo: "/events/c2c/sponsors/events-c2c-sponsors-codingblocks.svg" },
+          { name: "AnitaB.org", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-anitab.svg" },
+          { name: "Axure RP", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-axure.svg" },
+          { name: "Bugsee", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-bugsee.svg" },
+          { name: "CloudSploit", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-cloudsploit.svg" },
+          { name: "InVision", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-invision.svg" },
+          { name: "Jenkins", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-jenkins.svg" },
+          { name: "JetBrains", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-jetbrains.svg" },
+          { name: "Sketch", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-sketch.svg" },
+          { name: "Slang Labs", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-slanglabs.svg" },
+          { name: "Shift", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-shift.svg" },
+          { name: "Sticker Mule", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-stickermule.svg" },
+          { name: "Taskade", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-taskade.svg" },
+          { name: "TTA", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-tta.svg" },
+          { name: ".Tech Domains", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-techdomains.svg" },
+          { name: "Wolfram Language", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-wolframlanguage.svg" },
         ],
       },
       {
@@ -310,21 +310,21 @@ export const eventDetails: Record<string, EventDetail> = {
           { name: "Patron Stickers", desc: "Sticker pack from the edition's industry patrons." },
         ],
         sponsors: [
-          { name: "JSP Projects Pvt. Ltd.", tier: "Gold Sponsor", logo: "/events/c2c/sponsors/jsp.svg" },
-          { name: "Balsamiq", tier: "Silver Sponsor", logo: "/events/c2c/sponsors/balsamiq.svg" },
-          { name: "GitLab", tier: "Diversity Sponsor", logo: "/events/c2c/sponsors/gitlab.svg" },
-          { name: "Iconscout", tier: "Patron", logo: "/events/c2c/sponsors/iconscout.svg" },
-          { name: "Slack", tier: "Patron", logo: "/events/c2c/sponsors/slack.svg" },
-          { name: "Twilio", tier: "Patron", logo: "/events/c2c/sponsors/twilio.svg" },
-          { name: "Zulip", tier: "Chat Partner", logo: "/events/c2c/sponsors/zulip.svg" },
-          { name: "Custom Baba", tier: "Merchandise Partner", logo: "/events/c2c/sponsors/custombaba.svg" },
-          { name: "Ozonetel", tier: "Cloud Partner", logo: "/events/c2c/sponsors/ozonetel.svg" },
-          { name: "GeeksforGeeks", tier: "Coding Partner", logo: "/events/c2c/sponsors/geeksforgeeks.svg" },
-          { name: "npm", tier: "Sponsor", logo: "/events/c2c/sponsors/npm.svg" },
-          { name: "Product Hunt", tier: "Sponsor", logo: "/events/c2c/sponsors/producthunt.svg" },
-          { name: "Zeplin", tier: "Sponsor", logo: "/events/c2c/sponsors/zeplin.svg" },
-          { name: "Travis CI", tier: "Sponsor", logo: "/events/c2c/sponsors/travisci.svg" },
-          { name: "Docker", tier: "Sponsor", logo: "/events/c2c/sponsors/docker.svg" },
+          { name: "JSP Projects Pvt. Ltd.", tier: "Gold Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-jsp.svg" },
+          { name: "Balsamiq", tier: "Silver Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-balsamiq.svg" },
+          { name: "GitLab", tier: "Diversity Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-gitlab.svg" },
+          { name: "Iconscout", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-iconscout.svg" },
+          { name: "Slack", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-slack.svg" },
+          { name: "Twilio", tier: "Patron", logo: "/events/c2c/sponsors/events-c2c-sponsors-twilio.svg" },
+          { name: "Zulip", tier: "Chat Partner", logo: "/events/c2c/sponsors/events-c2c-sponsors-zulip.svg" },
+          { name: "Custom Baba", tier: "Merchandise Partner", logo: "/events/c2c/sponsors/events-c2c-sponsors-custombaba.svg" },
+          { name: "Ozonetel", tier: "Cloud Partner", logo: "/events/c2c/sponsors/events-c2c-sponsors-ozonetel.svg" },
+          { name: "GeeksforGeeks", tier: "Coding Partner", logo: "/events/c2c/sponsors/events-c2c-sponsors-geeksforgeeks.svg" },
+          { name: "npm", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-npm.svg" },
+          { name: "Product Hunt", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-producthunt.svg" },
+          { name: "Zeplin", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-zeplin.svg" },
+          { name: "Travis CI", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-travisci.svg" },
+          { name: "Docker", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-docker.svg" },
         ],
       },
       {
@@ -336,8 +336,8 @@ export const eventDetails: Record<string, EventDetail> = {
           { name: "Patron Stickers", desc: "Sticker pack from the inaugural edition's patrons." },
         ],
         sponsors: [
-          { name: "Transitus", tier: "Sponsor", logo: "/events/c2c/sponsors/transitus.svg" },
-          { name: "Tricentis", tier: "Sponsor", logo: "/events/c2c/sponsors/tricentis.svg" },
+          { name: "Transitus", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-transitus.svg" },
+          { name: "Tricentis", tier: "Sponsor", logo: "/events/c2c/sponsors/events-c2c-sponsors-tricentis.svg" },
         ],
       },
     ],
@@ -351,7 +351,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeKey: "cc",
     themeColor: "#F06465",
     hideCtaBanner: true,
-    cassetteSvg: "/events/codart-cassette.svg",
+    cassetteSvg: "/events/events-codart-cassette.svg",
     shortDescription:
       "Codart is a standout ACM-VIT event combining competitive programming with dart throwing. You don't just need accuracy with your coding skills - you need aiming skills too.",
     longDescription: [
@@ -403,7 +403,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeColor: "#FF007A",
     themeColorSecondary: "#7F30FF",
     hideCtaBanner: true,
-    cassetteSvg: "/events/code-plusplus-cassette.svg",
+    cassetteSvg: "/events/events-code-plusplus-cassette.svg",
     shortDescription:
       "Code Plus Plus (Code++) is ACM-VIT's annual competitive coding competition that challenges an individual's mathematical prowess and logical thinking skills. Open to everyone - from absolute beginners to seasoned professionals.",
     longDescription: [
@@ -463,7 +463,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeKey: "cc",
     themeColor: "#FF7A01",
     hideCtaBanner: true,
-    cassetteSvg: "/events/codex-cryptum-cassette.svg",
+    cassetteSvg: "/events/events-codex-cryptum-cassette.svg",
     shortDescription:
       "Codex Cryptum is ACM-VIT's cybersecurity workshop series where students learn the basics of cybersecurity, exploits, cryptography, and digital forensics - the perfect preparation for Cryptic Hunt.",
     longDescription: [
@@ -541,7 +541,7 @@ export const eventDetails: Record<string, EventDetail> = {
     eyebrow: "ACM-VIT · Campus Scavenger Hunt",
     themeKey: "cc",
     themeColor: "#F5753B",
-    cassetteSvg: "/events/cryptic-hunt-cassette.svg",
+    cassetteSvg: "/events/events-cryptic-hunt-cassette.svg",
     shortDescription:
       "Cryptic Hunt is ACM-VIT's flagship scavenger hunt - a 36-hour campus-wide adventure where teams decode multi-layered clues, scan QR codes, and race across VIT Vellore to top the leaderboard.",
     longDescription: [
@@ -612,8 +612,8 @@ export const eventDetails: Record<string, EventDetail> = {
           { label: "Solutions", href: "https://github.com/ACM-VIT/Cryptic-Hunt-Solutions-2025" },
         ],
         collectibles: [
-          { name: "CH Espresso Sticker", image: "/events/cryptic-hunt/ch-espresso.png", desc: "Limited-edition Cryptic Hunt sticker from the 2025 edition." },
-          { name: "CH Timeless Sticker", image: "/events/cryptic-hunt/ch-timeless.png", desc: "Limited-edition Cryptic Hunt sticker from the 2025 edition." },
+          { name: "CH Espresso Sticker", image: "/events/cryptic-hunt/events-cryptic-hunt-ch-espresso.png", desc: "Limited-edition Cryptic Hunt sticker from the 2025 edition." },
+          { name: "CH Timeless Sticker", image: "/events/cryptic-hunt/events-cryptic-hunt-ch-timeless.png", desc: "Limited-edition Cryptic Hunt sticker from the 2025 edition." },
         ],
         sponsors: [
           { name: "Hey Hoku", tier: "Sponsor" },
@@ -657,7 +657,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeKey: "tech",
     themeColor: "#EFEFEF",
     hideCtaBanner: true,
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     shortDescription:
       "Forktober is ACM-VIT's annual open-source initiative conducted as part of the global Hacktoberfest celebration. It equips students with the practical skills needed to contribute confidently to open-source projects.",
     longDescription: [
@@ -779,7 +779,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeKey: "management",
     themeColor: "#CE307D",
     hideCtaBanner: true,
-    cassetteSvg: "/events/inspiher-cassette.svg",
+    cassetteSvg: "/events/events-inspiher-cassette.svg",
     isAcmW: true,
     shortDescription:
       "inspiHer is ACM-VIT's flagship podcast and speaker series organized under ACM-W, created to showcase the journeys of accomplished women in technology, research, entrepreneurship, design, and STEM through candid conversations.",
@@ -865,7 +865,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeKey: "research",
     themeColor: "#FA0148",
     hideCtaBanner: true,
-    cassetteSvg: "/events/neural-hack-cassette.svg",
+    cassetteSvg: "/events/events-neural-hack-cassette.svg",
     shortDescription:
       "The Neural Hack is a 36-hour data-centric AI and Machine Learning hackathon by ACM-W VIT that emphasises data understanding, cleaning, pipeline design, and problem-solving beyond basic model-building.",
     longDescription: [
@@ -948,7 +948,7 @@ export const eventDetails: Record<string, EventDetail> = {
     eyebrow: "ACM-VIT · RCPC · Competitive Coding",
     themeKey: "cc",
     themeColor: "#9B51E0",
-    cassetteSvg: "/events/reverse-coding-cassette.svg",
+    cassetteSvg: "/events/events-reverse-coding-cassette.svg",
     shortDescription:
       "Reverse Coding (RCPC) is one of the premier competitive coding events hosted by ACM-VIT. An unconventional reverse-engineering competition where participants decipher hidden code logic based on provided input-output patterns or executable files - no problem statements, just test cases.",
     longDescription: [
@@ -1100,7 +1100,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeColor: "#D6696E",
     themeColorSecondary: "#0D8ADE",
     hideCtaBanner: true,
-    cassetteSvg: "/events/the-tiny-hack-cassette.svg",
+    cassetteSvg: "/events/events-the-tiny-hack-cassette.svg",
     shortDescription:
       "The Tiny Hack is a 10-hour hackathon designed for individuals interested in developing innovative projects in a short amount of time, focused on creating small but impactful solutions to real-world problems using technology.",
     longDescription: [
@@ -1166,7 +1166,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeKey: "brand",
     themeColor: "#7496D8",
     hideCtaBanner: true,
-    cassetteSvg: "/events/bethebuilder-cassette.png",
+    cassetteSvg: "/events/events-bethebuilder-cassette.png",
     shortDescription:
       "Be The Builder is ACM-VIT's internal ideathon for new recruits - a space where freshly inducted members meet each other, ideate together, interact across domains, and get to know how the chapter functions.",
     longDescription: [
@@ -1203,7 +1203,7 @@ export const eventDetails: Record<string, EventDetail> = {
     eyebrow: "ACM-VIT · Student Well-being",
     themeKey: "brand",
     hideCtaBanner: true,
-    cassetteSvg: "/events/casa-cassette.png",
+    cassetteSvg: "/events/events-casa-cassette.png",
     shortDescription:
       "CASA (Campaign Against Substance Abuse) is an annual event conducted by ACM-VIT under VIT's larger CASA initiative, bringing highly trained counsellors to speak to students about the dangers and consequences of substance abuse.",
     longDescription: [
@@ -1245,7 +1245,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeKey: "research",
     themeColor: "#2C4840",
     hideCtaBanner: true,
-    cassetteSvg: "/events/deepfake-cassette.png",
+    cassetteSvg: "/events/events-deepfake-cassette.png",
     shortDescription:
       "Deepfake: The Digital Doppelganger is a workshop conducted by ACM-VIT in 2025 on deepfake detection and the basics of machine learning, attended by more than 100 participants.",
     longDescription: [
@@ -1289,7 +1289,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeKey: "research",
     themeColor: "#F3ED99",
     hideCtaBanner: true,
-    cassetteSvg: "/events/peter-robinson-cassette.png",
+    cassetteSvg: "/events/events-peter-robinson-cassette.png",
     shortDescription:
       "A Distinguished Speaker Session where Dr. Peter Robinson, Professor Emeritus of Computer Technology at the University of Cambridge, explored Human-Computer Interaction and its intersection with Affective Computing.",
     longDescription: [
@@ -1309,7 +1309,7 @@ export const eventDetails: Record<string, EventDetail> = {
       name: "Dr. Peter Robinson",
       role: "Professor Emeritus of Computer Technology",
       institution: "University of Cambridge",
-      image: "/community/peter-robinson.jpg",
+      image: "/community/community-peter-robinson.jpg",
       bio: [
         "Peter Robinson is Professor Emeritus of Computer Technology and a Fellow of Gonville & Caius College at the University of Cambridge. He was part of the Rainbow Group in the Computer Laboratory, where his research focused on Human-Computer Interaction and Affective Computing - designing systems that can recognise, interpret, and respond to human emotions.",
         "His work has explored how computers can understand facial expressions, tone of voice, and body language to build more intuitive and emotionally aware interfaces. His contributions have significantly shaped the field of emotion-sensing technology and its applications in education, healthcare, and assistive systems.",
@@ -1337,7 +1337,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeKey: "research",
     themeColor: "#F3ED99",
     hideCtaBanner: true,
-    cassetteSvg: "/events/federica-sarro-cassette.png",
+    cassetteSvg: "/events/events-federica-sarro-cassette.png",
     shortDescription:
       "ACM-VIT hosted an insightful session with Dr. Federica Sarro, Professor of Software Engineering at University College London, exploring search-based software engineering for modern software systems.",
     longDescription: [
@@ -1357,7 +1357,7 @@ export const eventDetails: Record<string, EventDetail> = {
       name: "Dr. Federica Sarro",
       role: "Professor of Software Engineering",
       institution: "University College London (UCL)",
-      image: "/community/federica-sarro.jpg",
+      image: "/community/community-federica-sarro.jpg",
       bio: [
         "Federica Sarro is Professor of Software Engineering at University College London (UCL), where she heads the Software Systems Engineering group and leads the SOLAR (Software Analysis and Learning) research group. Her research focuses on search-based software engineering, software effort estimation, and app store analysis.",
         "She has served as Chair of the IEEE Technical Council on Software Engineering (TCSE) since January 2025. Her work applies intelligent optimisation and machine learning techniques to solve complex software engineering problems, and has been widely recognised through publications in top venues and best paper awards.",
@@ -1385,7 +1385,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeKey: "brand",
     themeColor: "#F95F4A",
     hideCtaBanner: true,
-    cassetteSvg: "/events/kickstart-learn-cassette.png",
+    cassetteSvg: "/events/events-kickstart-learn-cassette.png",
     shortDescription:
       "ACM-VIT's orientation event for freshers - helping new students navigate campus life, kickstart their tech journey, and discover how to become a part of ACM-VIT.",
     longDescription: [
@@ -1422,7 +1422,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeColor: "#00689D",
     themeColorSecondary: "#E5243B",
     hideCtaBanner: true,
-    cassetteSvg: "/events/sdg-cassette.png",
+    cassetteSvg: "/events/events-sdg-cassette.png",
     shortDescription:
       "Every year during VIT's SDG Week, ACM-VIT conducts hands-on workshops where students build MERN stack solutions addressing one of the United Nations' Sustainable Development Goals.",
     longDescription: [

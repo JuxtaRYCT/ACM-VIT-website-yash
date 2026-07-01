@@ -4,7 +4,7 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
 import { getAssetUrl } from "../utils/cdn";
 import { getAllPosts } from "../lib/blog";
 
-const fallbackCover = "/blogs/placeholder.webp";
+const fallbackCover = "/blogs/blogs-placeholder.webp";
 
 type MarqueeBlog = {
   link: string;
@@ -51,7 +51,7 @@ const loopBottom = [...rowBottom, ...rowBottom];
       class="w-12 h-12 md:w-20 md:h-20 lg:w-24 lg:h-24 relative justify-self-start"
     >
       <img
-        src={getAssetUrl("/icons/rotate.webp")}
+        src={getAssetUrl("/icons/icons-rotate.webp")}
         class="rotate-svg w-full h-full block"
         loading="lazy"
         decoding="async"
@@ -71,7 +71,7 @@ const loopBottom = [...rowBottom, ...rowBottom];
       class="w-12 h-12 md:w-20 md:h-20 lg:w-24 lg:h-24 relative justify-self-end"
     >
       <img
-        src={getAssetUrl("/icons/rotate.webp")}
+        src={getAssetUrl("/icons/icons-rotate.webp")}
         class="rotate-svg w-full h-full block"
         loading="lazy"
         decoding="async"

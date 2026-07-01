@@ -71,7 +71,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "online",
     statusNote: "Actively maintained · Forktober 2025",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "13", label: "Contributors" },
       { value: "36", label: "Pull requests" },
@@ -111,7 +111,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "online",
     statusNote: "Actively maintained · Forktober 2025",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "8", label: "Contributors" },
       { value: "20", label: "Pull requests" },
@@ -151,7 +151,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "online",
     statusNote: "Actively maintained · Forktober 2025",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "11", label: "Contributors" },
       { value: "22", label: "Pull requests" },
@@ -191,7 +191,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2023 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "7", label: "Contributors" },
       { value: "49", label: "Pull requests" },
@@ -231,7 +231,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2023 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "5", label: "Contributors" },
       { value: "3", label: "Pull requests" },
@@ -270,7 +270,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2023 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "6", label: "Contributors" },
       { value: "7", label: "Pull requests" },
@@ -310,7 +310,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2022 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "65", label: "Contributors" },
       { value: "171", label: "Pull requests" },
@@ -350,7 +350,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2022 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "18", label: "Contributors" },
       { value: "41", label: "Pull requests" },
@@ -390,7 +390,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2022 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "11", label: "Contributors" },
       { value: "22", label: "Pull requests" },
@@ -430,7 +430,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2022 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "7", label: "Contributors" },
       { value: "9", label: "Pull requests" },
@@ -470,7 +470,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2022 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "10", label: "Contributors" },
       { value: "23", label: "Pull requests" },
@@ -510,7 +510,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2022 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "14", label: "Contributors" },
       { value: "22", label: "Pull requests" },
@@ -550,7 +550,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2022 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "11", label: "Contributors" },
       { value: "13", label: "Pull requests" },
@@ -590,7 +590,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2022 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "20", label: "Contributors" },
       { value: "42", label: "Pull requests" },
@@ -630,7 +630,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2022 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "6", label: "Contributors" },
       { value: "6", label: "Pull requests" },
@@ -669,7 +669,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2022 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "6", label: "Contributors" },
       { value: "4", label: "Pull requests" },
@@ -709,7 +709,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2022 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "5", label: "Contributors" },
       { value: "5", label: "Pull requests" },
@@ -747,7 +747,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2022 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "10", label: "Contributors" },
       { value: "11", label: "Pull requests" },
@@ -787,7 +787,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2022 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "1", label: "Contributors" },
       { value: "2", label: "Pull requests" },
@@ -822,7 +822,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2022 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "2", label: "Contributors" },
       { value: "0", label: "Pull requests" },
@@ -858,7 +858,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2021 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "7", label: "Contributors" },
       { value: "11", label: "Pull requests" },
@@ -898,7 +898,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2021 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "7", label: "Contributors" },
       { value: "13", label: "Pull requests" },
@@ -938,7 +938,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2021 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "3", label: "Contributors" },
       { value: "9", label: "Pull requests" },
@@ -974,7 +974,7 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
     ],
     status: "archived",
     statusNote: "Forktober 2021 · Archived",
-    cassetteSvg: "/events/forktober-cassette.svg",
+    cassetteSvg: "/events/events-forktober-cassette.svg",
     stats: [
       { value: "4", label: "Contributors" },
       { value: "7", label: "Pull requests" },

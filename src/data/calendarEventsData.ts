@@ -14,12 +14,12 @@ export interface CalendarEvent {
 }
 
 export const DOMAIN_COLORS: Record<EventDomain, { bg: string; text: string; border: string; label: string; cassette: string }> = {
-  tech:       { bg: 'rgba(155, 81, 224, 0.2)',  text: '#9B51E0', border: '#9B51E0', label: 'Tech',               cassette: '/cassettes/Cassette_Tech.webp' },
-  design:     { bg: 'rgba(255, 0, 84, 0.2)', text: '#FF0054', border: '#FF0054', label: 'Design',             cassette: '/cassettes/Cassette_Design.webp' },
-  research:   { bg: 'rgba(19, 93, 226, 0.2)', text: '#135DE2', border: '#135DE2', label: 'Research',           cassette: '/cassettes/Cassette_Research.webp' },
-  management: { bg: 'rgba(0, 180, 180, 0.2)',   text: '#00B4B4', border: '#00B4B4', label: 'Management',         cassette: '/cassettes/Cassette_Management.webp' },
-  cc:         { bg: 'rgba(66, 205, 157, 0.2)',   text: '#42CD9D', border: '#42CD9D', label: 'Competitive Coding', cassette: '/cassettes/Cassette_cc.webp' },
-  blog:       { bg: 'rgba(249, 95, 74, 0.2)',    text: '#F95F4A', border: '#F95F4A', label: 'Blog Post',          cassette: '/cassettes/Cassette_Tech.webp' },
+  tech:       { bg: 'rgba(155, 81, 224, 0.2)',  text: '#9B51E0', border: '#9B51E0', label: 'Tech',               cassette: '/cassettes/cassettes-cassette-tech.webp' },
+  design:     { bg: 'rgba(255, 0, 84, 0.2)', text: '#FF0054', border: '#FF0054', label: 'Design',             cassette: '/cassettes/cassettes-cassette-design.webp' },
+  research:   { bg: 'rgba(19, 93, 226, 0.2)', text: '#135DE2', border: '#135DE2', label: 'Research',           cassette: '/cassettes/cassettes-cassette-research.webp' },
+  management: { bg: 'rgba(0, 180, 180, 0.2)',   text: '#00B4B4', border: '#00B4B4', label: 'Management',         cassette: '/cassettes/cassettes-cassette-management.webp' },
+  cc:         { bg: 'rgba(66, 205, 157, 0.2)',   text: '#42CD9D', border: '#42CD9D', label: 'Competitive Coding', cassette: '/cassettes/cassettes-cassette-cc.webp' },
+  blog:       { bg: 'rgba(249, 95, 74, 0.2)',    text: '#F95F4A', border: '#F95F4A', label: 'Blog Post',          cassette: '/cassettes/cassettes-cassette-tech.webp' },
 };
 
 export const SAMPLE_EVENTS: CalendarEvent[] = [

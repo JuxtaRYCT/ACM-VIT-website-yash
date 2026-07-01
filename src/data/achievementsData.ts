@@ -12,7 +12,7 @@ export type Achievement = {
   blurb: string;
   /** Optional placement tag, e.g. "1st", "Gold", "Winner". */
   place?: string;
-  /** Optional visual asset (badge, photo, logo). Public path, e.g. "/ui/acm-celeb.png". */
+  /** Optional visual asset (badge, photo, logo). Public path, e.g. "/ui/ui-acm-celeb.png". */
   image?: string;
 };
 
@@ -39,7 +39,7 @@ export const achievements: Achievement[] = [
     place: "Winner",
     blurb: "Replace with the real story once the details land.",
     // Drop a public asset path here to show a badge/photo on the card:
-    // image: "/ui/acm-celeb.png",
+    // image: "/ui/ui-acm-celeb.png",
   },
   {
     title: "Another Milestone",

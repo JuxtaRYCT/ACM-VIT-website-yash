@@ -11,8 +11,8 @@ interface Props {
 }
 
 const {
-    webmSrc = "/videos/dark_bg.webm",
-    lightWebmSrc = "/videos/light_bg.webm",
+    webmSrc = "/videos/videos-dark-bg.webm",
+    lightWebmSrc = "/videos/videos-light-bg.webm",
 } = Astro.props;
 
 const norm = (s: string) => (s.startsWith("/") ? s : `/${s}`);
@@ -20,7 +20,7 @@ const normalizedWebmSrc = norm(webmSrc);
 const normalizedLightWebmSrc = norm(lightWebmSrc);
 
 // Count extracted frames at build time (used for the scroll-up canvas player).
-const framesRoot = path.join(process.cwd(), "public/frames");
+const framesRoot = path.join(process.cwd(), "public/scroll-video-frames");
 const countFrames = (dir: string) => {
     try {
         return fs
@@ -200,7 +200,7 @@ const lightCount = countFrames("light");
         const requested: Record<Theme, boolean> = { dark: false, light: false };
 
         const frameUrl = (theme: Theme, i: number) =>
-            getAssetUrl(`/frames/${theme}/${String(i + 1).padStart(4, "0")}.jpg`);
+            getAssetUrl(`/scroll-video-frames/${theme}/${String(i + 1).padStart(4, "0")}.jpg`);
 
         const currentTheme = (): Theme =>
             document.documentElement.dataset.theme === "light" ? "light" : "dark";

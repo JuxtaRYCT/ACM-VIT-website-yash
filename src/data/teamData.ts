@@ -2,7 +2,7 @@
 // One shared face is used for every cassette for now; real faces get swapped
 // in later by replacing PLACEHOLDER_FACE / wiring real per-member data.
 
-export const PLACEHOLDER_FACE = "/community/peter-robinson.webp";
+export const PLACEHOLDER_FACE = "/community/community-peter-robinson.webp";
 
 export const teamYears = [2026, 2025, 2024, 2023] as const;
 
