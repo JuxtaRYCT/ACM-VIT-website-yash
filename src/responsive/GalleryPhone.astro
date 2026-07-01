@@ -1,6 +1,5 @@
 ---
 // Gallery_Phone.astro
-import ProofGallery from "../components/overlays/ProofGallery.astro";
 import { getAssetUrl } from "../utils/cdn";
 ---
 
@@ -109,19 +108,17 @@ import { getAssetUrl } from "../utils/cdn";
     </div>
 
     <div class="px-4 w-full flex justify-center">
-      <div
-        onclick="window.openProofGallery()"
+      <a
+        href="/gallery"
         class="w-[90%] max-w-[280px] h-8 bg-[#F95F4A] rounded-[41px] outline -outline-offset-1 outline-yellow-50
-           flex items-center justify-center hover:scale-105 transition-transform duration-200 cursor-pointer"
-        role="button"
-        tabindex="0"
+           flex items-center justify-center hover:scale-105 transition-transform duration-200 cursor-pointer no-underline"
       >
         <span
           class="text-white text-[8px] font-light font-['PolySans_Trial'] uppercase tracking-wider"
         >
           Proof We Actually Do Stuff - View Photos!
         </span>
-      </div>
+      </a>
     </div>
 
     <div class="gallery-frame relative w-full overflow-hidden mt-2">
@@ -134,7 +131,6 @@ import { getAssetUrl } from "../utils/cdn";
       />
     </div>
   </div>
-  <ProofGallery />
 </section>
 
 <style>

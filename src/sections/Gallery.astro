@@ -1,7 +1,6 @@
 ---
 // Gallery.astro
 import { getAssetUrl } from "../utils/cdn";
-import ProofGallery from "../components/overlays/ProofGallery.astro";
 import AnimatedButton from "../components/ui/AnimatedButton.astro";
 ---
 
@@ -27,16 +26,10 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
   <div class="gallery-btn-row">
     <AnimatedButton
       text="Proof we actually do stuff - view photos!"
-      onclick="window.openProofGallery()"
+      href="/gallery"
     />
   </div>
-  <ProofGallery />
 </section>
-
-<script>
-  // Ensure the function is available (if ProofGallery script hasn't run yet, though it should have)
-  // Actually, Astro scripts module hoist, so it might be fine, but let's be safe.
-</script>
 
 <style>
   .gallery-section {

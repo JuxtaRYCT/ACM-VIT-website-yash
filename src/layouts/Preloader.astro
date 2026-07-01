@@ -107,6 +107,12 @@
           x="108" y="38" width="64" height="66"
           preserveAspectRatio="xMidYMid meet"
         />
+        <image
+          class="acm-reveal acm-reveal-trophy"
+          href="/ui/trophy.png"
+          x="113" y="37" width="54" height="70"
+          preserveAspectRatio="xMidYMid meet"
+        />
       </svg>
     </div>
 
@@ -125,6 +131,10 @@
   // z0d1ak page: swap the acm reveal for the z0d1ak logo
   if (preloader && location.pathname.replace(/\/+$/, "") === "/z0d1ak") {
     preloader.classList.add("preloader--z0d1ak");
+  }
+  // achievements page: swap the acm reveal for the gold trophy
+  if (preloader && location.pathname.replace(/\/+$/, "") === "/achievements") {
+    preloader.classList.add("preloader--achievements");
   }
   const progressFill = document.querySelector(".progress-fill") as HTMLElement;
   const cassetteWrapper = document.getElementById("cassette-wrapper");
@@ -157,6 +167,7 @@
     if (p.includes('/calendar')) return '#FFB347';
     if (p.includes('/community')) return '#F95F4A';
     if (p.includes('/cassette-builder')) return '#EDA35F';
+    if (p.includes('/achievements')) return '#D4AF37';
     return '#F95F4A';
   };
 
@@ -937,11 +948,15 @@
                 transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s;
   }
 
-  /* default: show acm text, hide the z0d1ak logo */
-  .acm-reveal-logo { display: none; }
+  /* default: show acm text, hide the swap-in glyphs */
+  .acm-reveal-logo,
+  .acm-reveal-trophy { display: none; }
   /* on the z0d1ak page (class set by the preloader script): swap them */
   .preloader--z0d1ak .acm-reveal-text { display: none; }
   .preloader--z0d1ak .acm-reveal-logo { display: block; }
+  /* on the achievements page: bring up the gold trophy */
+  .preloader--achievements .acm-reveal-text { display: none; }
+  .preloader--achievements .acm-reveal-trophy { display: block; }
 
   /* ── LOADED STATE ── */
   .cassette-loaded .reel-left .reel-spokes,
