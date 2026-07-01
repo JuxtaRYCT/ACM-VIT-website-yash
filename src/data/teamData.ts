@@ -5,7 +5,6 @@
 export const PLACEHOLDER_FACE = "/community/peter-robinson.webp";
 
 export const teamYears = [2026, 2025, 2024, 2023] as const;
-export type TeamYear = (typeof teamYears)[number];
 
 export interface TeamDivisionDef {
   key: string;

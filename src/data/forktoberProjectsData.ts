@@ -997,5 +997,3 @@ export const forktoberProjectDetails: Record<string, ProjectDetail> = {
   },
 };
 
-export const forktoberSlugs = Object.keys(forktoberProjectDetails);
-
