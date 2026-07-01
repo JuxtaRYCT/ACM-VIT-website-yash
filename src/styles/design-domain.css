@@ -58,6 +58,7 @@
   font-family: 'PolySans Trial', sans-serif;
   font-size: clamp(0.9rem, 1.5vw, 1.1rem);
   line-height: 1.7;
+  color: var(--domain-color, #FF0054); /* fallback: WebKit <16.2 lacks color-mix */
   color: color-mix(in srgb, var(--domain-color, #FF0054) 55%, #FFFDD0 45%);
   max-width: 600px;
   opacity: 0;
@@ -228,6 +229,7 @@
   font-family: 'PolySans Trial', sans-serif;
   font-size: 1rem;
   line-height: 1.8;
+  color: var(--domain-color, #FF0054); /* fallback: WebKit <16.2 lacks color-mix */
   color: color-mix(in srgb, var(--domain-color, #FF0054) 55%, #FFFDD0 45%);
 }
 
@@ -498,6 +500,7 @@
   font-family: 'PolySans Trial', sans-serif;
   font-size: 0.95rem;
   line-height: 1.7;
+  color: var(--domain-color, #FF0054); /* fallback: WebKit <16.2 lacks color-mix */
   color: color-mix(in srgb, var(--domain-color, #FF0054) 55%, #FFFDD0 45%);
   margin-bottom: 1.5rem;
 }
@@ -597,6 +600,7 @@
   font-family: 'PolySans Trial', sans-serif;
   font-size: 0.85rem;
   line-height: 1.5;
+  color: var(--domain-color, #FF0054); /* fallback: WebKit <16.2 lacks color-mix */
   color: color-mix(in srgb, var(--domain-color, #FF0054) 55%, #FFFDD0 45%);
 }
 
@@ -617,6 +621,7 @@
   font-size: clamp(1.1rem, 2vw, 1.5rem);
   font-weight: 500;
   font-style: italic;
+  color: var(--domain-color, #FF0054); /* fallback: WebKit <16.2 lacks color-mix */
   color: color-mix(in srgb, var(--domain-color, #FF0054) 60%, #FFFDD0 40%);
   letter-spacing: 0.02em;
   max-width: 600px;
@@ -803,6 +808,7 @@ html[data-theme="light"] .dsg-hero-title {
 }
 
 html[data-theme="light"] .dsg-hero-desc {
+  color: var(--domain-color, #FF0054); /* fallback: WebKit <16.2 lacks color-mix */
   color: color-mix(in srgb, var(--domain-color, #FF0054) 65%, #1a1a1a 35%);
 }
 
@@ -819,6 +825,7 @@ html[data-theme="light"] .dsg-about-heading {
 }
 
 html[data-theme="light"] .dsg-about-body p {
+  color: var(--domain-color, #FF0054); /* fallback: WebKit <16.2 lacks color-mix */
   color: color-mix(in srgb, var(--domain-color, #FF0054) 65%, #1a1a1a 35%);
 }
 
@@ -896,6 +903,7 @@ html[data-theme="light"] .dsg-aoi-info h3 {
 }
 
 html[data-theme="light"] .dsg-aoi-info p {
+  color: var(--domain-color, #FF0054); /* fallback: WebKit <16.2 lacks color-mix */
   color: color-mix(in srgb, var(--domain-color, #FF0054) 65%, #1a1a1a 35%);
 }
 
@@ -913,10 +921,12 @@ html[data-theme="light"] .dsg-event-card h4 {
 }
 
 html[data-theme="light"] .dsg-event-card p {
+  color: var(--domain-color, #FF0054); /* fallback: WebKit <16.2 lacks color-mix */
   color: color-mix(in srgb, var(--domain-color, #FF0054) 65%, #1a1a1a 35%);
 }
 
 html[data-theme="light"] .dsg-footer-msg {
+  color: var(--domain-color, #FF0054); /* fallback: WebKit <16.2 lacks color-mix */
   color: color-mix(in srgb, var(--domain-color, #FF0054) 65%, #1a1a1a 35%);
 }
 
