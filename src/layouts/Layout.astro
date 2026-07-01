@@ -39,6 +39,28 @@ const isLandingPage = Astro.url.pathname === "/";
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/webp" href={getAssetUrl("/favicon.webp")} />
 
+    <!-- webp-first failsafe: if a .webp image fails to load, fall back to the
+         original raster/vector kept alongside it (png -> jpg -> jpeg -> svg). -->
+    <script is:inline>
+      (function () {
+        var EXT = [".png", ".jpg", ".jpeg", ".svg"];
+        document.addEventListener(
+          "error",
+          function (e) {
+            var el = e.target;
+            if (!el || el.tagName !== "IMG") return;
+            var src = el.currentSrc || el.src || "";
+            if (src.slice(-5) !== ".webp") return;
+            var step = parseInt(el.getAttribute("data-fb") || "-1", 10) + 1;
+            if (step >= EXT.length) return;
+            el.setAttribute("data-fb", step);
+            el.src = src.slice(0, -5) + EXT[step];
+          },
+          true
+        );
+      })();
+    </script>
+
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl.toString()} />
@@ -87,7 +109,7 @@ const isLandingPage = Astro.url.pathname === "/";
     <link
       rel="preload"
       as="image"
-      href={getAssetUrl("/scroll-video-frames/dark/0001.jpg")}
+      href={getAssetUrl("/scroll-video-frames/dark/0001.webp")}
       fetchpriority="high"
     />
 

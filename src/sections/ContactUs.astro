@@ -184,7 +184,7 @@ const SUBJECTS = [
     const clamped = Math.max(0, Math.min(frameCount - 1, keyIdx));
     const actual = keyframes[clamped];
     return getAssetUrl(
-      `/contact-scroll-frames/frame_${(actual + 1).toString().padStart(4, "0")}.png`
+      `/contact-scroll-frames/frame_${(actual + 1).toString().padStart(4, "0")}.webp`
     );
   };
 
@@ -215,18 +215,26 @@ const SUBJECTS = [
 
     const img = new Image();
     img.decoding = "async";
-    img.src = frameUrl(idx);
+
+    const load = (url: string) => {
+      img.src = url;
+      if (typeof img.decode === "function") return img.decode();
+      return new Promise<void>((r) => {
+        if (img.complete) return r();
+        img.onload = () => r();
+        img.onerror = () => r();
+      });
+    };
 
     try {
-      if (typeof img.decode === "function") await img.decode();
-      else
-        await new Promise<void>((r) => {
-          if (img.complete) return r();
-          img.onload = () => r();
-          img.onerror = () => r();
-        });
+      await load(frameUrl(idx));
     } catch {
-      /* decode can reject */
+      // failsafe: fall back to the original .png frame if webp fails
+      try {
+        await load(frameUrl(idx).replace(/\.webp$/, ".png"));
+      } catch {
+        /* decode can reject */
+      }
     }
 
     pendingFrames.delete(idx);

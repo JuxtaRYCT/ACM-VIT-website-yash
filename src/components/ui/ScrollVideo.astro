@@ -25,7 +25,7 @@ const countFrames = (dir: string) => {
     try {
         return fs
             .readdirSync(path.join(framesRoot, dir))
-            .filter((f) => f.endsWith(".jpg")).length;
+            .filter((f) => f.endsWith(".webp")).length;
     } catch {
         return 0;
     }
@@ -200,7 +200,7 @@ const lightCount = countFrames("light");
         const requested: Record<Theme, boolean> = { dark: false, light: false };
 
         const frameUrl = (theme: Theme, i: number) =>
-            getAssetUrl(`/scroll-video-frames/${theme}/${String(i + 1).padStart(4, "0")}.jpg`);
+            getAssetUrl(`/scroll-video-frames/${theme}/${String(i + 1).padStart(4, "0")}.webp`);
 
         const currentTheme = (): Theme =>
             document.documentElement.dataset.theme === "light" ? "light" : "dark";
@@ -231,10 +231,17 @@ const lightCount = countFrames("light");
             for (let i = 0; i < total; i++) {
                 const img = new Image();
                 img.decoding = "async";
-                img.src = frameUrl(t, i);
                 img.onload = () => {
                     if (dir < 0 && t === theme) drawAt(renderedProgress);
                 };
+                // failsafe: fall back to original .jpg frame if webp fails
+                img.onerror = () => {
+                    if (!img.dataset.fb) {
+                        img.dataset.fb = "1";
+                        img.src = img.src.replace(/\.webp$/, ".jpg");
+                    }
+                };
+                img.src = frameUrl(t, i);
                 frames[t][i] = img;
             }
         };

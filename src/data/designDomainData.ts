@@ -56,7 +56,7 @@ export const designAOIs: DesignAOI[] = [
       "UI/UX design at ACM-VIT is about building interfaces that feel intuitive from the first tap. We research user behavior, wireframe flows, prototype interactions, and test with real people before a single line of code is written.",
       "From event registration portals to our own website, every surface a user touches is shaped by this AOI. We work closely with the Tech domain to ensure our designs translate faithfully into production.",
     ],
-    cassetteSrc: "/aois/design/cassettes/aois-design-cassettes-uiux.png",
+    cassetteSrc: "/aois/design/cassettes/aois-design-cassettes-uiux.webp",
     tools: ["figma", "framer", "sketch", "canva", "shadcn"],
   },
   {
@@ -67,7 +67,7 @@ export const designAOIs: DesignAOI[] = [
       "Illustrations are the signature element of ACM-VIT's visual identity. From social media posts and event posters to merchandise and website assets, our illustrators create original artwork that sets us apart.",
       "We work across digital and traditional media, blending vector art, raster painting, and mixed-media techniques to tell stories that resonate with our audience.",
     ],
-    cassetteSrc: "/aois/design/cassettes/aois-design-cassettes-illustrations.png",
+    cassetteSrc: "/aois/design/cassettes/aois-design-cassettes-illustrations.webp",
     tools: ["illustrator", "krita", "photoshop", "affinity-designer"],
   },
   {
@@ -78,7 +78,7 @@ export const designAOIs: DesignAOI[] = [
       "Motion graphics bridge the gap between static design and full video production. We create animated logos, event teasers, social media reels, and UI micro-interactions that capture attention and communicate quickly.",
       "Our motion designers work with After Effects, Rive, and GSAP to build everything from short promotional loops to complex interactive animations on the web.",
     ],
-    cassetteSrc: "/aois/design/cassettes/aois-design-cassettes-motiongraphics.png",
+    cassetteSrc: "/aois/design/cassettes/aois-design-cassettes-motiongraphics.webp",
     tools: ["after-effects", "rive", "gsap", "premiere-pro"],
   },
   {
@@ -89,7 +89,7 @@ export const designAOIs: DesignAOI[] = [
       "3D design at ACM-VIT spans product visualization, environment modeling, and real-time 3D experiences. We use Blender, Spline, and game engines to create assets for events, the website, and experimental projects.",
       "From stylized low-poly scenes to photorealistic renders, 3D work adds a layer of depth and immersion that flat design simply cannot match.",
     ],
-    cassetteSrc: "/aois/design/cassettes/aois-design-cassettes-3d.png",
+    cassetteSrc: "/aois/design/cassettes/aois-design-cassettes-3d.webp",
     tools: ["blender", "spline", "unity", "unreal-engine", "houdini"],
   },
   {
@@ -100,7 +100,7 @@ export const designAOIs: DesignAOI[] = [
       "Video editing is the final mile of our visual pipeline. Event recaps, promotional trailers, speaker highlight reels, and documentary-style content all pass through our editors before reaching an audience.",
       "We focus on pacing, color grading, sound design, and platform-specific formatting to ensure every video lands with maximum impact.",
     ],
-    cassetteSrc: "/aois/design/cassettes/aois-design-cassettes-video-editing.png",
+    cassetteSrc: "/aois/design/cassettes/aois-design-cassettes-video-editing.webp",
     tools: ["premiere-pro", "davinci-resolve", "after-effects", "lightroom"],
   },
 ];

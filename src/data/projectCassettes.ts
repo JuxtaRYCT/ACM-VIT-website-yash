@@ -93,7 +93,7 @@ export const projectCassettes: GridProject[] = [
     sizeAxis: "width",
     offsetY: 0,
   },
-  { kind: "svg", name: "OCS 2026", color: "#EFE28B", cassetteSvg: "/projects/cassettes/projects-cassettes-ocs-26.svg", alt: "OCS '26", url: "/projects/ocs-26" },
+  { kind: "svg", name: "OCS 2026", color: "#EFE28B", cassetteSvg: "/projects/cassettes/projects-cassettes-ocs-26.webp", alt: "OCS '26", url: "/projects/ocs-26" },
   { kind: "svg", name: "Conclave", color: "#FF6B35", cassetteSvg: "/projects/cassettes/projects-cassettes-conclave.svg", alt: "Conclave", url: "/projects/conclave" },
   { kind: "svg", name: "WENVY", color: "#F03104", cassetteSvg: "/projects/cassettes/projects-cassettes-wenvy.svg", alt: "WENVY", url: "/projects/wenvy" },
   { kind: "svg", name: "CLI-TOP", color: "#48BB78", cassetteSvg: "/projects/cassettes/projects-cassettes-cli-top.svg", alt: "CLI-TOP", url: "/projects/cli-top" },

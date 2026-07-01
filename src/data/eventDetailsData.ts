@@ -204,8 +204,8 @@ export const eventDetails: Record<string, EventDetail> = {
           { label: "@c2c.acmvit", href: "https://instagram.com/c2c.acmvit" },
         ],
         collectibles: [
-          { name: "C2C 6.0 Sticker - Variant 1", image: "/events/c2c/events-c2c-sticker-1.png", desc: "First sticker variant from the 2025 edition." },
-          { name: "C2C 6.0 Sticker - Variant 2", image: "/events/c2c/events-c2c-sticker-2.png", desc: "Second sticker variant from the 2025 edition." },
+          { name: "C2C 6.0 Sticker - Variant 1", image: "/events/c2c/events-c2c-sticker-1.webp", desc: "First sticker variant from the 2025 edition." },
+          { name: "C2C 6.0 Sticker - Variant 2", image: "/events/c2c/events-c2c-sticker-2.webp", desc: "Second sticker variant from the 2025 edition." },
           { name: "RunPod Credits", desc: "USD 25 in compute credits from RunPod for every participant." },
           { name: "ElevenLabs Credits", desc: "USD 50 in API credits from ElevenLabs for every participant." },
         ],
@@ -612,8 +612,8 @@ export const eventDetails: Record<string, EventDetail> = {
           { label: "Solutions", href: "https://github.com/ACM-VIT/Cryptic-Hunt-Solutions-2025" },
         ],
         collectibles: [
-          { name: "CH Espresso Sticker", image: "/events/cryptic-hunt/events-cryptic-hunt-ch-espresso.png", desc: "Limited-edition Cryptic Hunt sticker from the 2025 edition." },
-          { name: "CH Timeless Sticker", image: "/events/cryptic-hunt/events-cryptic-hunt-ch-timeless.png", desc: "Limited-edition Cryptic Hunt sticker from the 2025 edition." },
+          { name: "CH Espresso Sticker", image: "/events/cryptic-hunt/events-cryptic-hunt-ch-espresso.webp", desc: "Limited-edition Cryptic Hunt sticker from the 2025 edition." },
+          { name: "CH Timeless Sticker", image: "/events/cryptic-hunt/events-cryptic-hunt-ch-timeless.webp", desc: "Limited-edition Cryptic Hunt sticker from the 2025 edition." },
         ],
         sponsors: [
           { name: "Hey Hoku", tier: "Sponsor" },
@@ -1100,7 +1100,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeColor: "#D6696E",
     themeColorSecondary: "#0D8ADE",
     hideCtaBanner: true,
-    cassetteSvg: "/events/events-the-tiny-hack-cassette.svg",
+    cassetteSvg: "/events/events-the-tiny-hack-cassette.webp",
     shortDescription:
       "The Tiny Hack is a 10-hour hackathon designed for individuals interested in developing innovative projects in a short amount of time, focused on creating small but impactful solutions to real-world problems using technology.",
     longDescription: [
@@ -1166,7 +1166,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeKey: "brand",
     themeColor: "#7496D8",
     hideCtaBanner: true,
-    cassetteSvg: "/events/events-bethebuilder-cassette.png",
+    cassetteSvg: "/events/events-bethebuilder-cassette.webp",
     shortDescription:
       "Be The Builder is ACM-VIT's internal ideathon for new recruits - a space where freshly inducted members meet each other, ideate together, interact across domains, and get to know how the chapter functions.",
     longDescription: [
@@ -1203,7 +1203,7 @@ export const eventDetails: Record<string, EventDetail> = {
     eyebrow: "ACM-VIT · Student Well-being",
     themeKey: "brand",
     hideCtaBanner: true,
-    cassetteSvg: "/events/events-casa-cassette.png",
+    cassetteSvg: "/events/events-casa-cassette.webp",
     shortDescription:
       "CASA (Campaign Against Substance Abuse) is an annual event conducted by ACM-VIT under VIT's larger CASA initiative, bringing highly trained counsellors to speak to students about the dangers and consequences of substance abuse.",
     longDescription: [
@@ -1245,7 +1245,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeKey: "research",
     themeColor: "#2C4840",
     hideCtaBanner: true,
-    cassetteSvg: "/events/events-deepfake-cassette.png",
+    cassetteSvg: "/events/events-deepfake-cassette.webp",
     shortDescription:
       "Deepfake: The Digital Doppelganger is a workshop conducted by ACM-VIT in 2025 on deepfake detection and the basics of machine learning, attended by more than 100 participants.",
     longDescription: [
@@ -1289,7 +1289,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeKey: "research",
     themeColor: "#F3ED99",
     hideCtaBanner: true,
-    cassetteSvg: "/events/events-peter-robinson-cassette.png",
+    cassetteSvg: "/events/events-peter-robinson-cassette.webp",
     shortDescription:
       "A Distinguished Speaker Session where Dr. Peter Robinson, Professor Emeritus of Computer Technology at the University of Cambridge, explored Human-Computer Interaction and its intersection with Affective Computing.",
     longDescription: [
@@ -1309,7 +1309,7 @@ export const eventDetails: Record<string, EventDetail> = {
       name: "Dr. Peter Robinson",
       role: "Professor Emeritus of Computer Technology",
       institution: "University of Cambridge",
-      image: "/community/community-peter-robinson.jpg",
+      image: "/community/community-peter-robinson.webp",
       bio: [
         "Peter Robinson is Professor Emeritus of Computer Technology and a Fellow of Gonville & Caius College at the University of Cambridge. He was part of the Rainbow Group in the Computer Laboratory, where his research focused on Human-Computer Interaction and Affective Computing - designing systems that can recognise, interpret, and respond to human emotions.",
         "His work has explored how computers can understand facial expressions, tone of voice, and body language to build more intuitive and emotionally aware interfaces. His contributions have significantly shaped the field of emotion-sensing technology and its applications in education, healthcare, and assistive systems.",
@@ -1337,7 +1337,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeKey: "research",
     themeColor: "#F3ED99",
     hideCtaBanner: true,
-    cassetteSvg: "/events/events-federica-sarro-cassette.png",
+    cassetteSvg: "/events/events-federica-sarro-cassette.webp",
     shortDescription:
       "ACM-VIT hosted an insightful session with Dr. Federica Sarro, Professor of Software Engineering at University College London, exploring search-based software engineering for modern software systems.",
     longDescription: [
@@ -1357,7 +1357,7 @@ export const eventDetails: Record<string, EventDetail> = {
       name: "Dr. Federica Sarro",
       role: "Professor of Software Engineering",
       institution: "University College London (UCL)",
-      image: "/community/community-federica-sarro.jpg",
+      image: "/community/community-federica-sarro.webp",
       bio: [
         "Federica Sarro is Professor of Software Engineering at University College London (UCL), where she heads the Software Systems Engineering group and leads the SOLAR (Software Analysis and Learning) research group. Her research focuses on search-based software engineering, software effort estimation, and app store analysis.",
         "She has served as Chair of the IEEE Technical Council on Software Engineering (TCSE) since January 2025. Her work applies intelligent optimisation and machine learning techniques to solve complex software engineering problems, and has been widely recognised through publications in top venues and best paper awards.",
@@ -1385,7 +1385,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeKey: "brand",
     themeColor: "#F95F4A",
     hideCtaBanner: true,
-    cassetteSvg: "/events/events-kickstart-learn-cassette.png",
+    cassetteSvg: "/events/events-kickstart-learn-cassette.webp",
     shortDescription:
       "ACM-VIT's orientation event for freshers - helping new students navigate campus life, kickstart their tech journey, and discover how to become a part of ACM-VIT.",
     longDescription: [
@@ -1422,7 +1422,7 @@ export const eventDetails: Record<string, EventDetail> = {
     themeColor: "#00689D",
     themeColorSecondary: "#E5243B",
     hideCtaBanner: true,
-    cassetteSvg: "/events/events-sdg-cassette.png",
+    cassetteSvg: "/events/events-sdg-cassette.webp",
     shortDescription:
       "Every year during VIT's SDG Week, ACM-VIT conducts hands-on workshops where students build MERN stack solutions addressing one of the United Nations' Sustainable Development Goals.",
     longDescription: [
