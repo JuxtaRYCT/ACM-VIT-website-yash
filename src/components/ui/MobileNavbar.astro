@@ -72,7 +72,7 @@ const subsections: Record<string, SubItem[]> = {
     { title: "Merchandise", desc: "Official ACM-VIT merch & collectibles", href: "/merchandise" },
     { title: "GREP Newsletter", desc: "Our bi-annual technical newsletter", href: "/grep" },
     { title: "z0d1ak", desc: "ACM-VIT's competitive CTF team", href: "/z0d1ak" },
-    { title: "Achievements", desc: "Awards, recognitions & milestones", href: "/more" },
+    { title: "Achievements", desc: "Awards, recognitions & milestones", href: "/achievements" },
     { title: "Cassette Builder", desc: "Design your own custom cassette", href: "/cassette-builder" },
     { title: "Calendar", desc: "Upcoming events & important dates", href: "/calendar" },
   ],
@@ -96,7 +96,7 @@ const navItems = [
   { id: "partners", label: "Partners", href: "/#partners" },
   { id: "gallery", label: "Gallery", href: "/#gallery" },
   { id: "contact", label: "Contact", href: "/#contact" },
-  { id: "more", label: "More", href: "/more" },
+  { id: "more", label: "More", href: "/#more" },
 ].map((item) => ({ ...item, hasSub: !!subsections[item.id] }));
 ---
 

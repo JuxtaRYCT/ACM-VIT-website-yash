@@ -1,0 +1,306 @@
+---
+export const prerender = true;
+import Layout from "../layouts/Layout.astro";
+import "../styles/globals.css";
+import Footer from "../layouts/Footer.astro";
+
+type Link = { label: string; href: string; external?: boolean };
+type Group = { title: string; links: Link[] };
+
+const groups: Group[] = [
+  {
+    title: "Main",
+    links: [
+      { label: "Home", href: "/" },
+      { label: "About", href: "/#about" },
+      { label: "Domains", href: "/#domains" },
+      { label: "Events", href: "/#events" },
+      { label: "Projects", href: "/#projects" },
+      { label: "ACM-W", href: "/#acm-w" },
+      { label: "Community", href: "/#community" },
+      { label: "Gallery", href: "/#gallery" },
+      { label: "Partners", href: "/#partners" },
+      { label: "Contact", href: "/#contact" },
+    ],
+  },
+  {
+    title: "Domains",
+    links: [
+      { label: "Tech", href: "/domains/tech" },
+      { label: "Competitive Coding", href: "/domains/cc" },
+      { label: "Design", href: "/domains/design" },
+      { label: "Management", href: "/domains/management" },
+      { label: "Research", href: "/domains/research" },
+    ],
+  },
+  {
+    title: "Events",
+    links: [
+      { label: "All Events", href: "/events" },
+      { label: "Code2Create", href: "/events/code2create" },
+      { label: "Cryptic Hunt", href: "/events/cryptic-hunt" },
+      { label: "Reverse Coding", href: "/events/reverse-coding" },
+      { label: "Codex Cryptum", href: "/events/codex-cryptum" },
+      { label: "Forktober Fest", href: "/events/forktober" },
+      { label: "The Tiny Hack", href: "/events/the-tiny-hack" },
+      { label: "Apptitude", href: "/events/apptitude" },
+      { label: "Codart", href: "/events/codart" },
+      { label: "Code Plus Plus", href: "/events/code-plus-plus" },
+      { label: "inspiHer", href: "/events/inspiher" },
+      { label: "The Neural Hack", href: "/events/neural-hack" },
+    ],
+  },
+  {
+    title: "Projects",
+    links: [
+      { label: "All Projects", href: "/projects" },
+      { label: "ACMOne", href: "/projects/acmone" },
+      { label: "ExamCooker", href: "/projects/examcooker" },
+      { label: "CLI-RPG", href: "/projects/cli-rpg" },
+      { label: "UniPool", href: "/projects/unipool" },
+      { label: "LOCALHOST", href: "/projects/localhost" },
+      { label: "OCS-25", href: "/projects/ocs-25" },
+    ],
+  },
+  {
+    title: "Merchandise",
+    links: [
+      { label: "Merch Store", href: "/merchandise" },
+      { label: "2026 Collection", href: "/merchandise/2026" },
+      { label: "2025 Collection", href: "/merchandise/2025" },
+      { label: "2024 Collection", href: "/merchandise/2024" },
+      { label: "2023 Collection", href: "/merchandise/2023" },
+      { label: "Board Farewell", href: "/merchandise/board-farewell" },
+      { label: "Other Merchandise", href: "/merchandise/other" },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      { label: "Blogs", href: "/blogs" },
+      { label: "GREP Newsletter", href: "/grep" },
+      { label: "Gallery", href: "/gallery" },
+      { label: "Achievements", href: "/achievements" },
+      { label: "Cassette Builder", href: "/cassette-builder" },
+      { label: "Design Guide", href: "/design-guide" },
+      { label: "Calendar", href: "/calendar" },
+    ],
+  },
+  {
+    title: "Community & Teams",
+    links: [
+      { label: "Team", href: "/team" },
+      { label: "Partners", href: "/partners" },
+      { label: "z0d1ak (CTF Team)", href: "/z0d1ak" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { label: "Code of Conduct", href: "/code-of-conduct" },
+      { label: "FAQs", href: "/faqs" },
+    ],
+  },
+  {
+    title: "Social",
+    links: [
+      { label: "Instagram", href: "https://www.instagram.com/acmvit", external: true },
+      { label: "X (Twitter)", href: "https://x.com/acm_vit", external: true },
+      { label: "LinkedIn", href: "https://www.linkedin.com/company/acmvit", external: true },
+      { label: "YouTube", href: "https://www.youtube.com/@acm_vit", external: true },
+      { label: "Facebook", href: "https://www.facebook.com/acmvitvellore", external: true },
+      { label: "Medium", href: "https://medium.com/acmvit", external: true },
+    ],
+  },
+];
+
+const totalPages = groups.reduce(
+  (n, g) => n + g.links.filter((l) => !l.external).length,
+  0
+);
+---
+
+<Layout pageTitle="Sitemap" backHref="/">
+  <main class="sitemap-page">
+    <header class="sitemap-head">
+      <p class="sitemap-eyebrow">ACM-VIT</p>
+      <h1 class="sitemap-title">sitemap</h1>
+      <p class="sitemap-sub">
+        Every page across the ACM-VIT universe, in one place - {totalPages} destinations.
+      </p>
+    </header>
+
+    <div class="sitemap-grid">
+      {
+        groups.map((group) => (
+          <section class="sitemap-col" aria-labelledby={`grp-${group.title}`}>
+            <h2 class="sitemap-col-title" id={`grp-${group.title}`}>
+              {group.title}
+            </h2>
+            <ul class="sitemap-links">
+              {group.links.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    class="sitemap-link"
+                    {...(link.external
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                  >
+                    <span>{link.label}</span>
+                    <svg
+                      class="sitemap-link-arrow"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <line x1="7" y1="17" x2="17" y2="7" />
+                      <polyline points="7 7 17 7 17 17" />
+                    </svg>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .sitemap-page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 7rem 1.5rem 5rem;
+    color: #fff;
+  }
+
+  .sitemap-head {
+    padding-bottom: 3rem;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .sitemap-eyebrow {
+    font-family: "PolySans Trial", sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-primary-orange, #f95f4a);
+    margin: 0 0 0.75rem;
+  }
+
+  .sitemap-title {
+    font-family: "PolySans Bulky Wide", sans-serif;
+    font-weight: 700;
+    text-transform: lowercase;
+    font-size: clamp(2.75rem, 8vw, 5.5rem);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    margin: 0;
+    color: #fefcd9;
+  }
+
+  .sitemap-sub {
+    font-family: "PolySans Trial", sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 1.25rem 0 0;
+    max-width: 42ch;
+  }
+
+  .sitemap-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 2.5rem 2rem;
+  }
+
+  @media (min-width: 480px) {
+    .sitemap-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 768px) {
+    .sitemap-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1024px) {
+    .sitemap-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .sitemap-col-title {
+    font-family: "PolySans Trial", sans-serif;
+    font-weight: 500;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.14);
+  }
+
+  .sitemap-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .sitemap-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: "PolySans Trial", sans-serif;
+    font-weight: 400;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.82);
+    text-decoration: none;
+    padding: 0.3rem 0;
+    transition:
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .sitemap-link-arrow {
+    opacity: 0;
+    transform: translate(-3px, 3px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+    color: var(--color-primary-orange, #f95f4a);
+  }
+
+  .sitemap-link:hover,
+  .sitemap-link:focus-visible {
+    color: #fff;
+    outline: none;
+  }
+
+  .sitemap-link:hover .sitemap-link-arrow,
+  .sitemap-link:focus-visible .sitemap-link-arrow {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sitemap-link,
+    .sitemap-link-arrow {
+      transition: none;
+    }
+  }
+</style>

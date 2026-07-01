@@ -1,349 +1,209 @@
 ---
 // Footer.astro
 import { getAssetUrl } from "../utils/cdn";
+
+type FooterLink = { label: string; href: string };
+type FooterColumn = { title: string; links: FooterLink[] };
+
+const footerNav: FooterColumn[] = [
+  {
+    title: "Explore",
+    links: [
+      { label: "About", href: "/#about" },
+      { label: "Domains", href: "/#domains" },
+      { label: "Events", href: "/#events" },
+      { label: "Projects", href: "/#projects" },
+      { label: "ACM-W", href: "/#acm-w" },
+      { label: "Community", href: "/#community" },
+    ],
+  },
+  {
+    title: "Domains",
+    links: [
+      { label: "Tech", href: "/domains/tech" },
+      { label: "Competitive Coding", href: "/domains/cc" },
+      { label: "Design", href: "/domains/design" },
+      { label: "Management", href: "/domains/management" },
+      { label: "Research", href: "/domains/research" },
+    ],
+  },
+  {
+    title: "Events",
+    links: [
+      { label: "All Events", href: "/events" },
+      { label: "Code2Create", href: "/events/code2create" },
+      { label: "Cryptic Hunt", href: "/events/cryptic-hunt" },
+      { label: "Reverse Coding", href: "/events/reverse-coding" },
+      { label: "Forktober", href: "/events/forktober" },
+      { label: "The Tiny Hack", href: "/events/the-tiny-hack" },
+      { label: "Apptitude", href: "/events/apptitude" },
+    ],
+  },
+  {
+    title: "Projects",
+    links: [
+      { label: "All Projects", href: "/projects" },
+      { label: "ACMOne", href: "/projects/acmone" },
+      { label: "ExamCooker", href: "/projects/examcooker" },
+      { label: "CLI-RPG", href: "/projects/cli-rpg" },
+      { label: "UniPool", href: "/projects/unipool" },
+      { label: "LOCALHOST", href: "/projects/localhost" },
+      { label: "OCS-25", href: "/projects/ocs-25" },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      { label: "Blogs", href: "/blogs" },
+      { label: "GREP Newsletter", href: "/grep" },
+      { label: "Gallery", href: "/gallery" },
+      { label: "Achievements", href: "/achievements" },
+      { label: "Merchandise", href: "/merchandise" },
+      { label: "Cassette Builder", href: "/cassette-builder" },
+      { label: "Design Guide", href: "/design-guide" },
+    ],
+  },
+  {
+    title: "Community",
+    links: [
+      { label: "Team", href: "/team" },
+      { label: "Partners", href: "/partners" },
+      { label: "z0d1ak", href: "/z0d1ak" },
+      { label: "Calendar", href: "/calendar" },
+      { label: "FAQs", href: "/faqs" },
+      { label: "Code of Conduct", href: "/code-of-conduct" },
+    ],
+  },
+];
+
+// Nested .map() JSX misbehaves inside <template> elements, so pre-render the
+// footer columns to a trusted HTML string and inject with set:html.
+const footerColumnsHtml = footerNav
+  .map(
+    (col) => `
+      <div class="flex flex-col gap-4">
+        <h3 class="footer-col-title">${col.title}</h3>
+        <ul class="flex flex-col gap-2.5">
+          ${col.links
+            .map(
+              (l) =>
+                `<li><a href="${l.href}" class="footer-link">${l.label}</a></li>`
+            )
+            .join("")}
+        </ul>
+      </div>`
+  )
+  .join("");
 ---
 
 <div data-variant-host>
   <template data-variant="desktop">
-    <footer id="footer" class="relative w-full overflow-hidden m-0 p-0 flex flex-col">
-      <div
-        class="hidden md:block w-full max-w-[1438px] h-0 outline outline-offset-[-0.50px] outline-white mx-auto"
-      >
-      </div>
-
-      <div class="relative z-10 hidden md:flex flex-col min-h-[50vh] pb-8">
-        <div class="grow flex flex-col lg:flex-row items-start gap-10 lg:gap-0 justify-between px-6 lg:px-16 pt-6">
-          <div class="shrink-0 w-full lg:w-auto">
-            <div
-              class="text-yellow-50 text-xl font-bold font-['PolySans_Trial'] leading-tight"
-              style="font-family: 'PolySans Bold', 'PolySans Trial', sans-serif;"
-            >
+    <footer
+      id="footer"
+      class="footer-gradient relative w-full overflow-hidden m-0 p-0 flex flex-col"
+    >
+      <div class="relative z-10 hidden md:block px-6 lg:px-16 pt-16 pb-24">
+        <div
+          class="mx-auto flex w-full max-w-[1600px] flex-col gap-14 lg:flex-row lg:gap-20"
+        >
+          <!-- Identity -->
+          <div class="flex shrink-0 flex-col gap-7 lg:w-[300px]">
+            <h2 class="footer-title text-yellow-50">
               association for<br />computing machinery
-            </div>
-            <div
-              class="w-fit my-4 relative flex items-center border border-zinc-100 rounded-full px-6 py-1.5 pr-8"
+            </h2>
+
+            <span class="footer-status" style="--dot: #0270f3">
+              <span class="footer-status-dot"></span>
+              All systems online
+            </span>
+
+            <a
+              href="https://w3w.co/static.grips.limelight"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group relative block h-36 w-56 overflow-hidden rounded-xl border border-zinc-800"
             >
-              <!-- glowign dot -->
-              <div
-                class="w-3 h-3 bg-green-500 rounded-full shadow-[0_0_8px_2px_rgba(34,197,94,0.6)]
-            animate-[pulse_1.5s_ease-in-out_infinite]"
+              <img
+                src={getAssetUrl("/footer/VIT-Map.png")}
+                alt="Map to Vellore Institute of Technology"
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+                decoding="async"
+              />
+              <span
+                class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"
+              ></span>
+              <span
+                class="absolute bottom-2 left-3 font-['PolySans_Trial'] text-[11px] text-white/90"
+                >Vellore, India</span
               >
-              </div>
+            </a>
 
-              <div
-                class="ml-3 text-zinc-100 text-[13px] font-thin font-['PolySans_Trial'] whitespace-nowrap"
+            <a href="/sitemap" class="footer-sitemap-btn group">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
               >
-                All systems online
-              </div>
-            </div>
-
-            <div class="mt-6 relative w-48 h-32 lg:w-52 lg:h-36">
-              <a
-                href="https://w3w.co/static.grips.limelight"
-                target="_blank"
-                rel="noopener noreferrer"
+                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="3" width="7" height="7" rx="1" />
+                <rect x="3" y="14" width="7" height="7" rx="1" />
+                <rect x="14" y="14" width="7" height="7" rx="1" />
+              </svg>
+              <span>View sitemap</span>
+              <svg
+                class="footer-sitemap-arrow"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
               >
-                <img
-                  src={getAssetUrl("/footer/VIT-Map.png")}
-                  alt="VIT Map"
-                  class="w-full h-full object-cover rounded-lg shadow-lg border border-zinc-700"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </a>
-              <div
-                class="absolute inset-0 opacity-30 bg-linear-to-b from-white to-red-500 rounded-lg pointer-events-none"
-              >
-              </div>
-            </div>
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </a>
           </div>
 
-          <!-- Navigation Sections -->
-          <div class="flex w-full lg:w-auto justify-start items-start gap-6 lg:gap-8 flex-wrap">
-            <!-- About Section -->
-            <div
-              class="w-16 inline-flex flex-col justify-start items-start gap-4"
-            >
-              <div
-                class="footer-section-title text-yellow-50 text-base font-light font-['PolySans_Trial'] uppercase"
-              >
-                About
-              </div>
-              <div
-                class="self-stretch flex flex-col justify-start items-start gap-2"
-              >
-                <a
-                  href="/#about"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  ACM-VIT
-                </a>
-                <a
-                  href="https://vit.ac.in"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  VIT
-                </a>
-                <a
-                  href="https://www.acm.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  ACM
-                </a>
-              </div>
-            </div>
-
-            <!-- Domains Section -->
-            <div
-              class="w-44 inline-flex flex-col justify-start items-start gap-4"
-            >
-              <div
-                class="footer-section-title text-yellow-50 text-base font-light font-['PolySans_Trial'] uppercase"
-              >
-                Domains
-              </div>
-              <div
-                class="self-stretch flex flex-col justify-start items-start gap-2"
-              >
-                <a
-                  href="/#domains"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  tech
-                </a>
-                <a
-                  href="/#domains"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  competitive coding
-                </a>
-                <a
-                  href="/#domains"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  design
-                </a>
-                <a
-                  href="/#domains"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  management
-                </a>
-                <a
-                  href="/#domains"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  research
-                </a>
-              </div>
-            </div>
-
-            <!-- Events Section -->
-            <div
-              class="w-36 inline-flex flex-col justify-start items-start gap-4"
-            >
-              <div
-                class="footer-section-title text-yellow-50 text-base font-light font-['PolySans_Trial'] uppercase"
-              >
-                Events
-              </div>
-              <div
-                class="self-stretch flex flex-col justify-start items-start gap-2"
-              >
-                <a
-                  href="/#events"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  Code2CREATE
-                </a>
-                <a
-                  href="/#events"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  CRYPTIC HUNT
-                </a>
-                <a
-                  href="/#events"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  REVERSE CODING
-                </a>
-                <a
-                  href="/#events"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  CODEX CRYPTUM
-                </a>
-                <a
-                  href="/#events"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  FORKTOBER
-                </a>
-                <a
-                  href="/#events"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  THE TINY HACK
-                </a>
-                <a
-                  href="/#events"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  APPTITUDE
-                </a>
-                <a
-                  href="/#events"
-                  class="self-stretch text-primary-orange text-base font-light font-['PolySans_Trial'] uppercase hover:text-red-400 transition-colors"
-                >
-                  MORE
-                </a>
-              </div>
-            </div>
-
-            <!-- Projects Section -->
-            <div
-              class="w-24 inline-flex flex-col justify-start items-start gap-4"
-            >
-              <div
-                class="footer-section-title text-yellow-50 text-base font-light font-['PolySans_Trial'] uppercase"
-              >
-                Projects
-              </div>
-              <div
-                class="self-stretch h-44 flex flex-col justify-start items-start gap-2"
-              >
-                <a
-                  href="/#projects"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  ACMONE
-                </a>
-                <a
-                  href="/#projects"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  CLI-RPG
-                </a>
-                <a
-                  href="/#projects"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  EXAMCOOKER
-                </a>
-                <a
-                  href="/#projects"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  CLITOP
-                </a>
-                <a
-                  href="/#projects"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  LOCALHOST
-                </a>
-                <a
-                  href="/#projects"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  OS
-                </a>
-                <a
-                  href="/#projects"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  UNIPOOL
-                </a>
-              </div>
-            </div>
-
-            <!-- ACM-W Section -->
-            <div
-              class="w-16 inline-flex flex-col justify-start items-start gap-4"
-            >
-              <div
-                class="footer-section-title text-yellow-50 text-base font-light font-['PolySans_Trial'] uppercase"
-              >
-                ACM-W
-              </div>
-              <div
-                class="self-stretch flex flex-col justify-start items-start gap-2"
-              >
-                <a
-                  href="/#acm-w"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  about w
-                </a>
-                <a
-                  href="/#acm-w"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  events
-                </a>
-              </div>
-            </div>
-
-            <!-- More Section -->
-            <div
-              class="w-24 inline-flex flex-col justify-start items-start gap-4"
-            >
-              <div
-                class="footer-section-title text-primary-orange text-base font-light font-['PolySans_Trial'] uppercase"
-              >
-                More
-              </div>
-              <div
-                class="self-stretch flex flex-col justify-start items-start gap-2"
-              >
-                <a
-                  href="/#team"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  team
-                </a>
-                <a
-                  href="/#blogs"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  blogs
-                </a>
-                <a
-                  href="/#partners"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  partners
-                </a>
-                <a
-                  href="/#gallery"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  gallery
-                </a>
-                <a
-                  href="/#contact"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  contact us
-                </a>
-                <a
-                  href="/z0d1ak"
-                  class="self-stretch text-white text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >
-                  z0d1ak
-                </a>
-              </div>
-            </div>
-          </div>
+          <!-- Link grid -->
+          <nav
+            aria-label="Footer navigation"
+            class="grid grow grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-3 xl:grid-cols-6"
+            set:html={footerColumnsHtml}
+          >
+          </nav>
         </div>
       </div>
 
-      <div class="hidden md:flex w-full flex-col items-center justify-center relative">
+      <!-- Footer video banner with overlaid bottom section -->
+      <div class="footer-video hidden md:block relative z-10 w-full mt-auto overflow-hidden">
+        <video
+          class="block w-full h-auto"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+        >
+          <source src={getAssetUrl("/videos/footer-walkman.webm")} type="video/webm" />
+          <source src={getAssetUrl("/videos/footer-walkman.mp4")} type="video/mp4" />
+        </video>
+        <div class="footer-video-tint" aria-hidden="true"></div>
+        <div class="footer-video-fade" aria-hidden="true"></div>
+        <span class="footer-wordmark">because technology matters</span>
+
+        <!-- Bottom section overlaid on the video -->
+        <div class="absolute inset-x-0 top-0 z-20 flex w-full flex-col items-center justify-center pt-10 lg:pt-16">
         <div
           class="flex flex-col items-center justify-center mb-4 z-30 relative"
         >
@@ -445,23 +305,7 @@ import { getAssetUrl } from "../utils/cdn";
             >
           </div>
         </div>
-        <div
-          class="absolute left-1/2 -translate-x-1/2 -bottom-110 -z-10 text-neutral-400 text-[260px] md:text-[320px] lg:text-[460px] xl:text-[568.78px] font-bold font-['PolySans_Trial'] leading-none opacity-100 select-none pointer-events-none"
-          style="line-height:0.8;"
-        >
-          acm
         </div>
-      </div>
-      <!-- Footer Background -->
-      <div class="hidden md:flex w-full justify-center items-end mt-auto">
-        <img
-          src={getAssetUrl("/footer/footer-background.webp")}
-          alt="Footer Background"
-          class="block w-full max-w-none h-auto object-contain"
-          style="min-width:100vw;"
-          loading="lazy"
-          decoding="async"
-        />
       </div>
     </footer>
   </template>
@@ -470,263 +314,84 @@ import { getAssetUrl } from "../utils/cdn";
     <!-- Phone Screen Version -->
     <footer
       id="footer"
-      class="relative w-full h-auto overflow-hidden min-h-svh pb-0 flex flex-col"
+      class="footer-gradient relative w-full h-auto overflow-hidden pb-0 flex flex-col"
     >
-      <!-- Divider line -->
-      <div
-        class="w-full h-0 outline outline-offset-[-0.5px] outline-white mx-auto"
-      >
-      </div>
-
       <!-- Content -->
-      <div class="relative z-10 flex flex-col px-4 sm:px-8 md:px-10 pt-4 gap-6">
-        <!-- Title -->
-        <div
-          class="text-yellow-50 text-base sm:text-lg md:text-xl font-bold leading-tight text-center font-['PolySans_Trial'] mb-2"
+      <div class="relative z-10 flex flex-col gap-8 px-5 sm:px-8 pt-8 pb-6">
+        <!-- Identity -->
+        <div class="flex flex-col items-center gap-4 text-center">
+          <h2 class="footer-title footer-title--mobile text-yellow-50">
+            association for<br />computing machinery
+          </h2>
+          <span class="footer-status" style="--dot: #0270f3">
+            <span class="footer-status-dot"></span>
+            All systems online
+          </span>
+        </div>
+
+        <!-- Link grid -->
+        <nav
+          aria-label="Footer navigation"
+          class="grid grid-cols-2 gap-x-6 gap-y-8"
+          set:html={footerColumnsHtml}
         >
-          association for computing machinery
-        </div>
+        </nav>
 
-        <!-- Navigation Sections (mobile grid) -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 relative z-20">
-          <!-- About Section -->
-          <div
-            class="w-full inline-flex flex-col justify-start items-start gap-2 sm:gap-3"
+        <a href="/sitemap" class="footer-sitemap-btn group self-start">
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
           >
-            <div
-              class="text-yellow-50 text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase"
-            >
-              About
-            </div>
-            <div class="flex flex-col justify-start items-start gap-1">
-              <a
-                href="/#about"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >ACM-VIT</a
-              >
-              <a
-                href="https://vit.ac.in"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >VIT</a
-              >
-              <a
-                href="https://www.acm.org"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >ACM</a
-              >
-            </div>
-          </div>
-
-          <!-- Domains Section -->
-          <div
-            class="w-full inline-flex flex-col justify-start items-start gap-2 sm:gap-3"
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+          <span>View sitemap</span>
+          <svg
+            class="footer-sitemap-arrow"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
           >
-            <div
-              class="text-yellow-50 text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase"
-            >
-              Domains
-            </div>
-            <div class="flex flex-col justify-start items-start gap-1">
-              <a
-                href="/#domains"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >tech</a
-              >
-              <a
-                href="/#domains"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >competitive coding</a
-              >
-              <a
-                href="/#domains"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >design</a
-              >
-              <a
-                href="/#domains"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >management</a
-              >
-              <a
-                href="/#domains"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >research</a
-              >
-            </div>
-          </div>
-
-          <!-- Events Section -->
-          <div
-            class="w-full inline-flex flex-col justify-start items-start gap-2 sm:gap-3"
-          >
-            <div
-              class="text-yellow-50 text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase"
-            >
-              Events
-            </div>
-            <div class="flex flex-col justify-start items-start gap-1">
-              <a
-                href="/#events"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >Code2CREATE</a
-              >
-              <a
-                href="/#events"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >CRYPTIC HUNT</a
-              >
-              <a
-                href="/#events"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >REVERSE CODING</a
-              >
-              <a
-                href="/#events"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >CODEX CRYPTUM</a
-              >
-              <a
-                href="/#events"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >FORKTOBER</a
-              >
-              <a
-                href="/#events"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >THE TINY HACK</a
-              >
-              <a
-                href="/#events"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >APPTITUDE</a
-              >
-              <a
-                href="/#events"
-                class="text-primary-orange text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-red-400 transition-colors"
-                >MORE</a
-              >
-            </div>
-          </div>
-
-          <!-- Projects Section -->
-          <div
-            class="w-full inline-flex flex-col justify-start items-start gap-2 sm:gap-3"
-          >
-            <div
-              class="text-yellow-50 text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase"
-            >
-              Projects
-            </div>
-            <div class="flex flex-col justify-start items-start gap-1">
-              <a
-                href="/#projects"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >ACMONE</a
-              >
-              <a
-                href="/#projects"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >CLI-RPG</a
-              >
-              <a
-                href="/#projects"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >EXAMCOOKER</a
-              >
-              <a
-                href="/#projects"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >CLITOP</a
-              >
-              <a
-                href="/#projects"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >LOCALHOST</a
-              >
-              <a
-                href="/#projects"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >OS</a
-              >
-              <a
-                href="/#projects"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >UNIPOOL</a
-              >
-            </div>
-          </div>
-
-          <!-- ACM-W Section -->
-          <div
-            class="w-full inline-flex flex-col justify-start items-start gap-2 sm:gap-3"
-          >
-            <div
-              class="text-yellow-50 text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase"
-            >
-              ACM-W
-            </div>
-            <div class="flex flex-col justify-start items-start gap-1">
-              <a
-                href="/#acm-w"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >about w</a
-              >
-              <a
-                href="/#acm-w"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >events</a
-              >
-            </div>
-          </div>
-
-          <!-- More Section -->
-          <div
-            class="w-full inline-flex flex-col justify-start items-start gap-2 sm:gap-3"
-          >
-            <div
-              class="text-primary-orange text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase"
-            >
-              More
-            </div>
-            <div class="flex flex-col justify-start items-start gap-1">
-              <a
-                href="/#team"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >team</a
-              >
-              <a
-                href="/#blogs"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >blogs</a
-              >
-              <a
-                href="/#partners"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >partners</a
-              >
-              <a
-                href="/#gallery"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >gallery</a
-              >
-              <a
-                href="/#contact"
-                class="text-white text-xs sm:text-sm md:text-base font-light font-['PolySans_Trial'] uppercase hover:text-yellow-50 transition-colors"
-                >contact us</a
-              >
-            </div>
-          </div>
-        </div>
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </a>
       </div>
 
-      <!-- Bottom Section (mobile) -->
-      <div
-        class="w-full flex flex-col items-center justify-center relative px-4 pt-4"
-      >
+      <!-- Footer video banner (mobile) with overlaid bottom section -->
+      <div class="footer-video relative z-10 w-full mt-auto overflow-hidden">
+        <video
+          class="block w-full h-auto"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+        >
+          <source src={getAssetUrl("/videos/footer-walkman.webm")} type="video/webm" />
+          <source src={getAssetUrl("/videos/footer-walkman.mp4")} type="video/mp4" />
+        </video>
+        <div class="footer-video-tint" aria-hidden="true"></div>
+        <div class="footer-video-fade" aria-hidden="true"></div>
+        <span class="footer-wordmark">because technology matters</span>
+
+        <!-- Bottom section overlaid on the video -->
+        <div class="absolute inset-x-0 top-0 z-20 flex w-full flex-col items-center justify-center px-4 pt-6">
         <div
           class="flex flex-col items-center justify-center mb-4 z-30 relative"
         >
@@ -828,45 +493,201 @@ import { getAssetUrl } from "../utils/cdn";
               >crafted with love by ACM-VIT</span
             >
           </div>
-          <div class="mt-6 text-center">
-            <div
-              class="text-neutral-400 text-[160px] sm:text-[200px] md:text-[260px] font-bold font-['PolySans_Trial'] leading-none opacity-100 select-none pointer-events-none"
-              style="line-height:0.8;"
-            >
-              acm
-            </div>
-          </div>
         </div>
-      </div>
-
-      <!-- Footer Background (mobile) -->
-      <div class="w-full flex justify-center items-end mt-auto pointer-events-none">
-        <img
-          src={getAssetUrl("/footer/footer-background.webp")}
-          alt="Footer Background"
-          class="block w-full max-w-none h-auto object-contain opacity-90"
-          loading="lazy"
-          decoding="async"
-        />
+        </div>
       </div>
     </footer>
   </template>
 </div>
 
 <style>
-  @media (min-width: 768px) {
-    .footer-section-title {
-      display: inline-block;
-      padding: 0 0 0.25rem 0;
-      font-family: "PolySans_Trial", "PolySans Bold", sans-serif;
-      font-size: 1rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      border-bottom: 2px dashed currentColor;
-      background: transparent;
-      margin-bottom: 0.5em;
-      font-weight: 400;
-      box-sizing: border-box;
+  /* Footer identity title */
+  .footer-title {
+    font-family: "PolySans Bulky Wide", sans-serif;
+    font-weight: 700;
+    text-transform: lowercase;
+    font-size: 1.6rem;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .footer-title--mobile {
+    font-size: 1.25rem;
+  }
+
+  /* Status badge - mirrors .proj-status-badge on /projects/[project] */
+  .footer-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    padding: 6px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.02);
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.62rem;
+    line-height: 1;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #0270f3;
+  }
+  .footer-status-dot {
+    position: relative;
+    /* top: 1px; */
+    bottom: 2px;
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--dot);
+    box-shadow: 0 0 12px var(--dot);
+    animation: footer-status-pulse 5s ease-in-out infinite;
+  }
+  @keyframes footer-status-pulse {
+    0%,
+    100% {
+      opacity: 0.7;
+      transform: scale(1);
     }
+    50% {
+      opacity: 1;
+      transform: scale(1.18);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .footer-status-dot {
+      animation: none;
+    }
+  }
+
+  /* Column heading + nav link live inside set:html content, so they miss
+     Astro's scoping attribute - target them globally. */
+  :global(.footer-col-title) {
+    font-family: "PolySans Trial", sans-serif;
+    font-weight: 500;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+    margin: 0;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.14);
+  }
+
+  :global(.footer-link) {
+    display: inline-block;
+    font-family: "PolySans Trial", sans-serif;
+    font-weight: 400;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    color: rgba(255, 255, 255, 0.72);
+    text-decoration: none;
+    transition: color 0.18s ease;
+  }
+  :global(.footer-link:hover),
+  :global(.footer-link:focus-visible) {
+    color: #fff;
+    outline: none;
+  }
+
+  /* Sitemap button */
+  .footer-sitemap-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    width: fit-content;
+    padding: 0.6rem 1.1rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 9999px;
+    font-family: "PolySans Trial", sans-serif;
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.02);
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease,
+      color 0.2s ease;
+  }
+  .footer-sitemap-btn:hover,
+  .footer-sitemap-btn:focus-visible {
+    border-color: var(--color-primary-orange, #f95f4a);
+    background: rgba(249, 95, 74, 0.08);
+    color: #fff;
+    outline: none;
+  }
+  .footer-sitemap-arrow {
+    transition: transform 0.2s ease;
+  }
+  .footer-sitemap-btn:hover .footer-sitemap-arrow,
+  .footer-sitemap-btn:focus-visible .footer-sitemap-arrow {
+    transform: translateX(3px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.footer-link),
+    .footer-sitemap-btn,
+    .footer-sitemap-arrow {
+      transition: none;
+    }
+  }
+
+  /* Full-footer tonal transition: blends section above into the black video band.
+     Transparent at top (matches the section above), ramps to solid black by the
+     point the video begins, so there is no hard seam anywhere. */
+  .footer-gradient {
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.35) 30%,
+      rgba(0, 0, 0, 0.75) 60%,
+      rgba(0, 0, 0, 0.95) 82%,
+      #000 100%
+    );
+  }
+
+  /* Small tagline over the video */
+  .footer-wordmark {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 1.25rem;
+    z-index: 3;
+    width: 100%;
+    text-align: center;
+    font-family: "PolySans Bulky Wide", sans-serif;
+    font-weight: 700;
+    text-transform: lowercase;
+    line-height: 1;
+    font-size: 1.5rem;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.75);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Orangish tint over footer video */
+  .footer-video-tint {
+    position: absolute;
+    inset: 0;
+    background: #f95f4a;
+    mix-blend-mode: multiply;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  /* Fade top of video into footer background - soft ramp, no hard black cap */
+  .footer-video-fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.92) 0%,
+      rgba(0, 0, 0, 0.5) 25%,
+      rgba(0, 0, 0, 0) 55%
+    );
+    pointer-events: none;
   }
 </style>
