@@ -523,7 +523,7 @@ html[data-theme="light"] .bulb-tooltip {
   border-color: rgba(249, 95, 74, 0.25);
 }
 
-@media (max-width: 952px) {
+@media (max-width: 1024px) {
   .theme-toggle {
     right: 70px;
   }

@@ -189,7 +189,22 @@ import { getAssetUrl } from "../utils/cdn";
     }
   }
 
-  @media (min-width: 769px) and (max-width: 1099px) and (min-height: 601px) {
+  /* ── Tablet tier (768–1024): narrow the text columns so they never collide
+     with the side cassettes, and pull the cassettes in a touch. Widths are
+     applied independent of height; the font bump keeps enough height. ── */
+  @media (min-width: 769px) and (max-width: 1024px) {
+    #about-acmvit .text-container,
+    #about-vit .text-container,
+    #about-acm .text-container {
+      width: 44vw;
+    }
+    .about-container .cassette-container {
+      width: 380px;
+      height: 380px;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) and (min-height: 601px) {
     #about-acmvit .text-container > div,
     #about-vit .text-container > div,
     #about-acm .text-container > div {

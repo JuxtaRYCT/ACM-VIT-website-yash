@@ -1375,7 +1375,7 @@ const worksHeightMobile = works.length * 45;
     }
 
     @media only screen and (max-width: 767px) and (orientation: landscape),
-      only screen and (max-width: 576px) {
+      only screen and (max-width: 640px) {
       background: var(--color-secondary);
 
       .s__mask-outer {
@@ -1455,7 +1455,7 @@ const worksHeightMobile = works.length * 45;
       /* z-index: 20; REMOVED - This hid the mask */
 
       @media only screen and (max-width: 767px) and (orientation: landscape),
-        only screen and (max-width: 576px) {
+        only screen and (max-width: 640px) {
         transform: none;
       }
     }
@@ -1469,12 +1469,12 @@ const worksHeightMobile = works.length * 45;
       height: 80svh;
       pointer-events: none;
 
-      @media only screen and (max-width: 987px) {
+      @media only screen and (max-width: 1024px) {
         --width: clamp(11rem, 22vw, 13rem);
       }
 
       @media only screen and (max-width: 767px) and (orientation: landscape),
-        only screen and (max-width: 576px) {
+        only screen and (max-width: 640px) {
         --width: min(42vw, 11rem);
       }
     }
@@ -1592,7 +1592,7 @@ const worksHeightMobile = works.length * 45;
           pointer-events: auto;
         }
 
-        @media only screen and (max-width: 987px) {
+        @media only screen and (max-width: 1024px) {
           transform: rotateY(calc(var(--progress) * -20deg))
             translate3d(
               calc(var(--progress) * (100vw + 240%) - 50%),
@@ -1614,7 +1614,7 @@ const worksHeightMobile = works.length * 45;
       transform: translate3d(0, calc(var(--scroll-progress) * -5%), 10);
 
       @media only screen and (max-width: 767px) and (orientation: landscape),
-        only screen and (max-width: 576px) {
+        only screen and (max-width: 640px) {
         transform: none;
       }
     }
@@ -1636,7 +1636,7 @@ const worksHeightMobile = works.length * 45;
     will-change: transform;
 
     @media only screen and (max-width: 767px) and (orientation: landscape),
-      only screen and (max-width: 576px) {
+      only screen and (max-width: 640px) {
       padding: 0.25rem;
     }
 
@@ -1668,7 +1668,7 @@ const worksHeightMobile = works.length * 45;
       transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s ease;
 
       @media only screen and (max-width: 767px) and (orientation: landscape),
-        only screen and (max-width: 576px) {
+        only screen and (max-width: 640px) {
         max-width: 80vw;
         max-height: 80vh;
       }
@@ -1704,7 +1704,7 @@ const worksHeightMobile = works.length * 45;
       text-transform: uppercase;
 
       @media only screen and (max-width: 767px) and (orientation: landscape),
-        only screen and (max-width: 576px) {
+        only screen and (max-width: 640px) {
         display: none;
       }
     }
@@ -1830,7 +1830,7 @@ const worksHeightMobile = works.length * 45;
     margin-top: 0.25rem;
   }
 
-  @media only screen and (max-width: 576px) {
+  @media only screen and (max-width: 640px) {
     .a__cta-glass {
       min-width: 240px;
       min-height: 141px;

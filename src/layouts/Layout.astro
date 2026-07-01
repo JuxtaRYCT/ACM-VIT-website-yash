@@ -663,13 +663,13 @@ const isLandingPage = Astro.url.pathname === "/";
     object-fit: contain;
   }
 
-  @media screen and (max-width: 952px) {
+  @media screen and (max-width: 1024px) {
     .brand-logos {
       transform: scale(0.7);
     }
   }
 
-  @media screen and (min-width: 769px) and (max-width: 952px) {
+  @media screen and (min-width: 769px) and (max-width: 1024px) {
     .brand-logos {
       right: 20px;
       transform: none;
@@ -742,7 +742,7 @@ const isLandingPage = Astro.url.pathname === "/";
     }
   }
 
-  @media screen and (max-width: 427px) {
+  @media screen and (max-width: 480px) {
     .brand-logos {
       transform: none;
     }
@@ -759,7 +759,7 @@ const isLandingPage = Astro.url.pathname === "/";
   }
 
   /* Mobile: navbar provides theme toggle, hide bulb cord */
-  @media screen and (max-width: 952px) {
+  @media screen and (max-width: 1024px) {
     :global(.theme-toggle) {
       display: none !important;
     }

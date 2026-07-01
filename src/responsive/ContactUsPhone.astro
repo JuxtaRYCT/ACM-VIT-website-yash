@@ -1,5 +1,6 @@
 ---
 import { getAssetUrl } from "../utils/cdn";
+import FillButton from "../components/ui/FillButton.astro";
 const fallbackEmail = "hello@acmvit.in";
 const rawEndpoint = (import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? "").trim();
 const formAction = rawEndpoint ? undefined : `mailto:${fallbackEmail}`;
@@ -118,12 +119,9 @@ const SUBJECTS = [
         ></textarea>
       </label>
 
-      <button
-        type="submit"
-        class="mt-2 inline-flex items-center justify-center rounded-full border border-white/60 px-8 py-3 text-lg font-semibold uppercase tracking-[0.35em] text-white transition hover:bg-white/10"
-      >
-        Submit
-      </button>
+      <div class="mt-2 flex justify-center">
+        <FillButton type="submit" label="Submit" class="contact-submit" />
+      </div>
     </form>
   </div>
 </section>
