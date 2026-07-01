@@ -4,11 +4,12 @@ import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
 import AnimatedButton from "../components/ui/AnimatedButton.astro";
 
-import IgnitingMinds from "../sections/IgnitingMinds.astro";
-import HourOfCode from "../sections/HourOfCode.astro";
+import Outreach from "../sections/Outreach.astro";
+import Sdg from "../sections/Sdg.astro";
 import KickStartLearn from "../sections/KickStartLearn.astro";
 import CommunityPrograms from "../sections/CommunityPrograms.astro";
-import DistinguishedSpeaker from "../sections/DistinguishedSpeaker.astro";
+import AcmWCommunity from "../sections/AcmWCommunity.astro";
+import AcmAward from "../sections/AcmAward.astro";
 
 import Footer from "../layouts/Footer.astro";
 
@@ -43,11 +44,11 @@ const yearsSince = new Date().getFullYear() - 2009;
     </section>
 
     <div data-tape-section>
-      <IgnitingMinds />
+      <Outreach />
     </div>
 
     <div data-tape-section>
-      <HourOfCode />
+      <Sdg />
     </div>
 
     <div data-tape-section>
@@ -59,7 +60,11 @@ const yearsSince = new Date().getFullYear() - 2009;
     </div>
 
     <div data-tape-section>
-      <DistinguishedSpeaker />
+      <AcmWCommunity />
+    </div>
+
+    <div data-tape-section>
+      <AcmAward />
     </div>
 
     <section class="tape-closing" id="tape-closing">
