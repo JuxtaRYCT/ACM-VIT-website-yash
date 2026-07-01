@@ -26,6 +26,21 @@ if (cdnEnv) {
   }
 }
 
+const mediaCdnEnv = import.meta.env.PUBLIC_MEDIA_CDN_URL;
+let mediaOrigin: string | null = null;
+if (mediaCdnEnv) {
+  try {
+    const origin = new URL(mediaCdnEnv).origin;
+    // Avoid emitting a duplicate hint if media shares the asset CDN origin.
+    if (origin !== cdnOrigin) mediaOrigin = origin;
+  } catch {
+    mediaOrigin = null;
+  }
+}
+// Cleaned base used by the client-side media failsafe to map a failed CDN
+// URL back to its origin-local path.
+const mediaCdnBase = mediaCdnEnv ? mediaCdnEnv.replace(/\/$/, "") : "";
+
 const title = "ACM-VIT";
 const description =
   "ACM-VIT is the official student chapter of the Association for Computing Machinery at VIT Vellore, focused on building impactful technology, encouraging innovation, and growing a collaborative student community.";
@@ -61,6 +76,46 @@ const isLandingPage = Astro.url.pathname === "/";
       })();
     </script>
 
+    <!-- media CDN failsafe: if a <video>/<audio> served from the media CDN
+         fails to load (404 / network), rewrite its source(s) back to the
+         origin-local path and reload once. <source> fallback does NOT fire on
+         network errors, so this is handled in JS. No-op when the CDN is unset. -->
+    <script is:inline define:vars={{ mediaCdnBase }}>
+      (function () {
+        if (!mediaCdnBase) return;
+        var toLocal = function (url) {
+          if (typeof url !== "string" || url.indexOf(mediaCdnBase) !== 0) return null;
+          return url.slice(mediaCdnBase.length) || null;
+        };
+        var recover = function (media) {
+          if (!media || media.getAttribute("data-media-fb")) return;
+          media.setAttribute("data-media-fb", "1");
+          var sources = media.querySelectorAll("source");
+          if (sources.length) {
+            var swapped = false;
+            sources.forEach(function (s) {
+              var local = toLocal(s.getAttribute("src"));
+              if (local) { s.setAttribute("src", local); swapped = true; }
+            });
+            if (swapped) media.load();
+          } else {
+            var local = toLocal(media.currentSrc || media.src);
+            if (local) { media.src = local; media.load(); }
+          }
+        };
+        document.addEventListener(
+          "error",
+          function (e) {
+            var el = e.target;
+            if (!el || !el.tagName) return;
+            if (el.tagName === "SOURCE") recover(el.parentElement);
+            else if (el.tagName === "VIDEO" || el.tagName === "AUDIO") recover(el);
+          },
+          true
+        );
+      })();
+    </script>
+
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl.toString()} />
@@ -84,6 +139,8 @@ const isLandingPage = Astro.url.pathname === "/";
 
     {cdnOrigin && <link rel="dns-prefetch" href={cdnOrigin} />}
     {cdnOrigin && <link rel="preconnect" href={cdnOrigin} crossorigin />}
+    {mediaOrigin && <link rel="dns-prefetch" href={mediaOrigin} />}
+    {mediaOrigin && <link rel="preconnect" href={mediaOrigin} crossorigin />}
     <link
       rel="preload"
       as="image"

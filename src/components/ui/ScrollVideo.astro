@@ -1,7 +1,7 @@
 ---
 import fs from "node:fs";
 import path from "node:path";
-import { getAssetUrl } from "../../utils/cdn";
+import { getAssetUrl, getMediaUrl } from "../../utils/cdn";
 
 interface Props {
     webmSrc?: string;
@@ -52,7 +52,7 @@ const lightCount = countFrames("light");
             playsinline
             preload="auto"
         >
-            <source src={getAssetUrl(normalizedWebmSrc)} type="video/webm" />
+            <source src={getMediaUrl(normalizedWebmSrc)} type="video/webm" />
         </video>
         <video
             class="scroll-media scroll-media-light"
@@ -62,7 +62,7 @@ const lightCount = countFrames("light");
             playsinline
             preload="auto"
         >
-            <source src={getAssetUrl(normalizedLightWebmSrc)} type="video/webm" />
+            <source src={getMediaUrl(normalizedLightWebmSrc)} type="video/webm" />
         </video>
 
         <!-- Scroll UP: smoothed canvas frame player -->

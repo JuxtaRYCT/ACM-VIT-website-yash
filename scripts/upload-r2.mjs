@@ -77,6 +77,8 @@ async function uploadFile(filePath) {
       Key: relativePath,
       Body: fileContent,
       ContentType: contentType,
+      // Bundled assets are content-hashed, so they can be cached forever.
+      CacheControl: "public, max-age=31556926, immutable",
     });
 
     await s3Client.send(command);

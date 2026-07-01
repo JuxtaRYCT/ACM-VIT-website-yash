@@ -1,6 +1,6 @@
 ---
 // Footer.astro
-import { getAssetUrl } from "../utils/cdn";
+import { getAssetUrl, getMediaUrl } from "../utils/cdn";
 
 const currentYear = new Date().getFullYear();
 
@@ -247,8 +247,8 @@ const footerColumnsHtml = footerNav
           playsinline
           preload="metadata"
         >
-          <source src={getAssetUrl("/videos/videos-footer-walkman.webm")} type="video/webm" />
-          <source src={getAssetUrl("/videos/videos-footer-walkman.mp4")} type="video/mp4" />
+          <source src={getMediaUrl("/videos/videos-footer-walkman.webm")} type="video/webm" />
+          <source src={getMediaUrl("/videos/videos-footer-walkman.mp4")} type="video/mp4" />
         </video>
         <div class="footer-video-tint" aria-hidden="true"></div>
         <div class="footer-video-fade" aria-hidden="true"></div>
@@ -374,8 +374,8 @@ const footerColumnsHtml = footerNav
           playsinline
           preload="metadata"
         >
-          <source src={getAssetUrl("/videos/videos-footer-walkman.webm")} type="video/webm" />
-          <source src={getAssetUrl("/videos/videos-footer-walkman.mp4")} type="video/mp4" />
+          <source src={getMediaUrl("/videos/videos-footer-walkman.webm")} type="video/webm" />
+          <source src={getMediaUrl("/videos/videos-footer-walkman.mp4")} type="video/mp4" />
         </video>
         <div class="footer-video-tint" aria-hidden="true"></div>
         <div class="footer-video-fade" aria-hidden="true"></div>

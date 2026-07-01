@@ -268,14 +268,24 @@ const REEL_GEAR =
 </style>
 
 <script>
+  import { getMediaUrl } from "../../utils/cdn";
+
   (() => {
     if ((window as any).__cassetteRollInit) return;
     (window as any).__cassetteRollInit = true;
 
-    const audio = new Audio("/audio/audio-cassette-roll.mp3");
+    const ROLL_LOCAL = "/audio/audio-cassette-roll.mp3";
+    const audio = new Audio(getMediaUrl(ROLL_LOCAL));
     audio.loop = true;
     audio.volume = 0.18;
     audio.preload = "auto";
+    // Failsafe: detached Audio isn't caught by the global handler, so fall back
+    // to the origin-local file here if the CDN copy fails.
+    audio.addEventListener("error", () => {
+      if (audio.src.endsWith(ROLL_LOCAL)) return;
+      audio.src = ROLL_LOCAL;
+      audio.load();
+    });
 
     let prefersReducedMotion = false;
     try {

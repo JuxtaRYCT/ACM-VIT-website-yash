@@ -139,6 +139,7 @@
 
 <script>
   import { gsap } from 'gsap';
+  import { getMediaUrl } from '../../utils/cdn';
 
   const PLAYLIST = [
     { title: "Experience", artist: "Ludovico Einaudi", src: "/audio/audio-experience-ludovico-einaudi.mp3" },
@@ -208,10 +209,29 @@
     return `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
   };
 
+  // Failsafe: if the CDN copy 404s / fails, fall back to the origin-local mp3
+  // for the current track and reload once. Re-armed per loadTrack.
+  let mediaFellBack = false;
+  audio.addEventListener('error', () => {
+    if (mediaFellBack) return;
+    const local = PLAYLIST[idx]?.src;
+    if (!local || audio.src.endsWith(local)) return;
+    mediaFellBack = true;
+    const wasPlaying = !audio.paused && !audio.ended;
+    const at = audio.currentTime || 0;
+    audio.src = local;
+    audio.load();
+    if (at > 0) audio.addEventListener('loadedmetadata', () => {
+      try { audio.currentTime = at; } catch { /* ignore */ }
+    }, { once: true });
+    if (wasPlaying) audio.play().catch(() => {});
+  });
+
   function loadTrack(i: number, autoplay = false, startTime = 0) {
     idx = ((i % PLAYLIST.length) + PLAYLIST.length) % PLAYLIST.length;
     const t = PLAYLIST[idx];
-    audio.src = t.src;
+    mediaFellBack = false;
+    audio.src = getMediaUrl(t.src);
     audio.load();
     svgTitle.textContent = t.title;
     svgArtist.textContent = t.artist;
