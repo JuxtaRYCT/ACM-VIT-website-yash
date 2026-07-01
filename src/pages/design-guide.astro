@@ -1,0 +1,832 @@
+---
+export const prerender = true;
+import Layout from "../layouts/Layout.astro";
+import "../styles/globals.css";
+import Footer from "../layouts/Footer.astro";
+import SectionHeading from "../components/ui/SectionHeading.astro";
+import FillButton from "../components/ui/FillButton.astro";
+import AnimatedButton from "../components/ui/AnimatedButton.astro";
+import CassetteTile from "../components/ui/CassetteTile.astro";
+import { getAssetUrl } from "../utils/cdn";
+
+type Swatch = { name: string; hex: string; note: string };
+
+const coreColors: Swatch[] = [
+  { name: "Primary Orange", hex: "#F95F4A", note: "The brand color. CTAs, links, accents." },
+  { name: "Pink", hex: "#FF007A", note: "ACM-W, merch, secondary accents." },
+  { name: "Blue", hex: "#135DE2", note: "GREP, informational highlights." },
+  { name: "Green", hex: "#42CD9D", note: "z0d1ak, success states." },
+  { name: "Gold", hex: "#F2C94C", note: "Achievements, celebratory moments." },
+  { name: "Purple", hex: "#9B51E0", note: "Cassette Builder, creative tools." },
+  { name: "Teal", hex: "#008080", note: "Calendar, scheduling contexts." },
+  { name: "Cyan", hex: "#00B4D8", note: "FAQs, reference & docs pages." },
+];
+
+const baseColors: Swatch[] = [
+  { name: "Ink (dark bg)", hex: "#0D0E0D", note: "Default site background." },
+  { name: "Cream", hex: "#FEFCD9", note: "Primary text on dark, sticker labels." },
+  { name: "Paper (light bg)", hex: "#F5EDE4", note: "Light-mode background." },
+  { name: "Charcoal (light text)", hex: "#1A1A1A", note: "Primary text on light mode." },
+];
+
+const doList = [
+  "Dry, self-aware wit - we can laugh at ourselves",
+  "Cassette & mixtape metaphors where they fit naturally",
+  "Plain dashes for breaks in a sentence - like this",
+  "Short, confident sentences over long corporate ones",
+  "Specific numbers and details over vague hype",
+];
+
+const dontList = [
+  "Don't reach for em dashes - use a plain dash instead",
+  "Don't call every event a \"flagship\" - save the word for when it's true",
+  "Don't force a cassette pun where it doesn't fit",
+  "Don't write copy that could belong to any other org",
+  "Don't oversell - let the work speak first",
+];
+---
+
+<Layout pageTitle="Design Guide" backHref="/more">
+  <main class="dg-page relative w-full overflow-hidden">
+    <div class="dg-glow" aria-hidden="true"></div>
+    <div class="dg-grid-bg" aria-hidden="true">
+      <span class="dg-v" style="left: 20%"></span>
+      <span class="dg-v" style="left: 50%"></span>
+      <span class="dg-v" style="left: 80%"></span>
+    </div>
+
+    <div class="dg-inner relative z-10 mx-auto w-full max-w-5xl px-5 pb-28 pt-32 sm:px-8">
+      <SectionHeading
+        eyebrow="ACM-VIT · Sleeve Notes"
+        title="Design"
+        accent="Guide"
+        subtitle="How ACM-VIT looks, sounds, and talks - for anyone building alongside us, on or off the site."
+        align="left"
+        class="mb-10 !px-0"
+      />
+
+      <div class="dg-hero-art" data-reveal>
+        <img
+          src={getAssetUrl("/design-guide/design-guide-hero.png")}
+          alt="Illustrated doodle collage - the Design Guide cover art"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+
+      <!-- ─────────── Brand Marks ─────────── -->
+      <section class="dg-section" id="marks" data-reveal>
+        <header class="dg-head">
+          <span class="dg-num">01</span>
+          <h2 class="dg-title">Brand Marks</h2>
+        </header>
+
+        <div class="dg-marks-grid">
+          <div class="dg-mark-card dg-mark-dark">
+            <img src={getAssetUrl("/logos/acm_topleft.webp")} alt="ACM-VIT primary logo" loading="lazy" decoding="async" />
+            <span class="dg-mark-label">Primary mark - on dark</span>
+          </div>
+          <div class="dg-mark-card dg-mark-light">
+            <img src={getAssetUrl("/logos/acm-logo-black.webp")} alt="ACM-VIT logo, black variant" loading="lazy" decoding="async" />
+            <span class="dg-mark-label">Black variant - on light / print</span>
+          </div>
+          <div class="dg-mark-card dg-mark-dark">
+            <img src={getAssetUrl("/logos/VIT.webp")} alt="VIT logo, paired mark" loading="lazy" decoding="async" />
+            <span class="dg-mark-label">VIT pairing - homepage only</span>
+          </div>
+          <div class="dg-mark-card dg-mark-dark">
+            <img src={getAssetUrl("/logos/acmw-logo.webp")} alt="ACM-W sub-brand logo" loading="lazy" decoding="async" />
+            <span class="dg-mark-label">ACM-W - sub-brand mark</span>
+          </div>
+        </div>
+
+        <div class="dg-rules">
+          <div class="dg-rule-col">
+            <p class="dg-rule-label dg-rule-good">Do</p>
+            <ul>
+              <li>Keep clear space around the mark equal to the diamond's own width</li>
+              <li>Use the black variant on light or busy backgrounds</li>
+              <li>Scale proportionally - the diamond never distorts</li>
+            </ul>
+          </div>
+          <div class="dg-rule-col">
+            <p class="dg-rule-label dg-rule-bad">Don't</p>
+            <ul>
+              <li>Recolor the mark outside the approved variants</li>
+              <li>Rotate, skew, or add effects like drop shadows</li>
+              <li>Place it on a background it can't be read against</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────── Color System ─────────── -->
+      <section class="dg-section" id="color" data-reveal>
+        <header class="dg-head">
+          <span class="dg-num">02</span>
+          <h2 class="dg-title">Color System</h2>
+        </header>
+        <p class="dg-lede">
+          One accent color per context, not a rainbow per page. Click any swatch to copy its hex.
+        </p>
+
+        <div class="dg-swatch-grid">
+          {
+            coreColors.map((c) => (
+              <button class="dg-swatch" type="button" data-copy-hex={c.hex} style={`--sw: ${c.hex}`}>
+                <span class="dg-swatch-chip"></span>
+                <span class="dg-swatch-meta">
+                  <span class="dg-swatch-name">{c.name}</span>
+                  <span class="dg-swatch-hex">{c.hex}</span>
+                  <span class="dg-swatch-note">{c.note}</span>
+                </span>
+              </button>
+            ))
+          }
+        </div>
+
+        <p class="dg-lede dg-lede-tight">Base - the neutrals everything else sits on.</p>
+        <div class="dg-swatch-grid dg-swatch-grid-base">
+          {
+            baseColors.map((c) => (
+              <button class="dg-swatch" type="button" data-copy-hex={c.hex} style={`--sw: ${c.hex}`}>
+                <span class="dg-swatch-chip"></span>
+                <span class="dg-swatch-meta">
+                  <span class="dg-swatch-name">{c.name}</span>
+                  <span class="dg-swatch-hex">{c.hex}</span>
+                  <span class="dg-swatch-note">{c.note}</span>
+                </span>
+              </button>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- ─────────── Typography ─────────── -->
+      <section class="dg-section" id="type" data-reveal>
+        <header class="dg-head">
+          <span class="dg-num">03</span>
+          <h2 class="dg-title">Typography</h2>
+        </header>
+
+        <div class="dg-type-specimen">
+          <span class="dg-type-tag">Display / Headings</span>
+          <p class="dg-type-sample dg-type-trial">PolySans Trial</p>
+          <p class="dg-type-desc">Bold, uppercase, tight tracking. Used for every heading and button label site-wide.</p>
+        </div>
+
+        <div class="dg-type-specimen">
+          <span class="dg-type-tag">Labels / Body / Mono</span>
+          <p class="dg-type-sample dg-type-mono">PolySans Mono - eyebrows, tags, running copy</p>
+          <p class="dg-type-desc">Wide letter-spacing for labels and tags; comfortable line-height for longer body copy.</p>
+        </div>
+
+        <div class="dg-type-specimen">
+          <span class="dg-type-tag">Editorial accent - used sparingly</span>
+          <p class="dg-type-sample dg-type-serif">Cormorant Garamond</p>
+          <p class="dg-type-desc">Reserved for one-off editorial moments, like the Achievements page. Not a default.</p>
+        </div>
+      </section>
+
+      <!-- ─────────── Voice & Tone ─────────── -->
+      <section class="dg-section" id="voice" data-reveal>
+        <header class="dg-head">
+          <span class="dg-num">04</span>
+          <h2 class="dg-title">Voice &amp; Tone</h2>
+        </header>
+        <p class="dg-lede">Write like a person who's actually building this stuff, not marketing it.</p>
+
+        <div class="dg-rules dg-rules-voice">
+          <div class="dg-rule-col">
+            <p class="dg-rule-label dg-rule-good">Do</p>
+            <ul>{doList.map((d) => <li>{d}</li>)}</ul>
+          </div>
+          <div class="dg-rule-col">
+            <p class="dg-rule-label dg-rule-bad">Don't</p>
+            <ul>{dontList.map((d) => <li>{d}</li>)}</ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────── Components ─────────── -->
+      <section class="dg-section" id="components" data-reveal>
+        <header class="dg-head">
+          <span class="dg-num">05</span>
+          <h2 class="dg-title">Components</h2>
+        </header>
+
+        <div class="dg-component-block">
+          <span class="dg-component-label">Fill Button - primary action</span>
+          <div class="dg-component-stage">
+            <FillButton label="Explore Projects" href="/projects" />
+          </div>
+        </div>
+
+        <div class="dg-component-block dg-component-block-dark">
+          <span class="dg-component-label">Animated Button - hero CTA</span>
+          <div class="dg-component-stage">
+            <AnimatedButton text="Partner With Us" href="/#contact" />
+          </div>
+        </div>
+
+        <div class="dg-component-block">
+          <span class="dg-component-label">Cassette Tile - every card on /more</span>
+          <div class="dg-component-stage dg-component-stage-tile">
+            <CassetteTile
+              title="Example Tile"
+              desc="Corner screws, cream sticker, spinning reels on hover"
+              href="/more"
+              accent="#F95F4A"
+              tag="DEMO"
+            >
+              <Fragment slot="icon" set:html={`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2"/><circle cx="16" cy="12" r="2"/><path d="M10 12h4"/></svg>`} />
+            </CassetteTile>
+          </div>
+        </div>
+
+        <p class="dg-component-note">
+          Accordions live on <a href="/faqs">the FAQs page</a> - same card language, a grid-rows collapse and a rotating play icon.
+        </p>
+      </section>
+
+      <!-- ─────────── Motion ─────────── -->
+      <section class="dg-section" id="motion" data-reveal>
+        <header class="dg-head">
+          <span class="dg-num">06</span>
+          <h2 class="dg-title">Motion</h2>
+        </header>
+        <div class="dg-motion-grid">
+          <div class="dg-motion-card">
+            <p class="dg-motion-title">Easing</p>
+            <p class="dg-motion-body"><code>power3.out</code> for reveals, <code>cubic-bezier(0.25, 0.1, 0.25, 1)</code> for hovers. Nothing bounces unless it's a bulb cord.</p>
+          </div>
+          <div class="dg-motion-card">
+            <p class="dg-motion-title">Buttons</p>
+            <p class="dg-motion-body">Snappy expand, not a slow reveal - a dark pill with an accent circle, expanding to show its label on hover.</p>
+          </div>
+          <div class="dg-motion-card">
+            <p class="dg-motion-title">Scroll reveals</p>
+            <p class="dg-motion-body">Opacity + <code>y: 24–30px</code>, staggered lightly. Always guarded by <code>prefers-reduced-motion</code>.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────── Assets ─────────── -->
+      <div class="dg-cta" data-reveal>
+        <p class="dg-cta-eyebrow">Need the files?</p>
+        <h3 class="dg-cta-title">Grab the real assets</h3>
+        <p class="dg-cta-body">Build your own cassette, browse the merch line, or just reach out if something here doesn't cover it.</p>
+        <div class="dg-cta-actions">
+          <FillButton label="Cassette Builder" href="/cassette-builder" class="dg-cta-btn" />
+          <FillButton label="Get in touch" href="/#contact" class="dg-cta-btn dg-cta-btn-alt" />
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&display=swap");
+</style>
+
+<style>
+  .dg-page {
+    min-height: 100vh;
+  }
+
+  .dg-glow {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(45% 30% at 20% 8%, rgba(249, 95, 74, 0.16), transparent 70%),
+      radial-gradient(40% 35% at 85% 40%, rgba(0, 180, 216, 0.08), transparent 70%);
+  }
+  .dg-grid-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .dg-v {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: repeating-linear-gradient(to bottom, rgba(254, 252, 217, 0.06) 0 3px, transparent 3px 18px);
+  }
+  :global(html[data-theme="light"]) .dg-v {
+    background: repeating-linear-gradient(to bottom, rgba(38, 59, 51, 0.07) 0 3px, transparent 3px 18px);
+  }
+
+  /* ── Section scaffold ── */
+  .dg-section {
+    margin-bottom: 5rem;
+  }
+  .dg-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    margin-bottom: 1.4rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid rgba(254, 252, 217, 0.12);
+  }
+  .dg-num {
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: #f95f4a;
+  }
+  .dg-title {
+    margin: 0;
+    font-family: "PolySans Trial", sans-serif;
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    color: #fefcd9;
+  }
+  .dg-lede {
+    margin: 0 0 1.6rem;
+    max-width: 60ch;
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: rgba(254, 252, 217, 0.65);
+  }
+  .dg-lede-tight {
+    margin-top: 2.2rem;
+    margin-bottom: 1rem;
+  }
+  :global(html[data-theme="light"]) .dg-head {
+    border-bottom-color: rgba(26, 26, 26, 0.12);
+  }
+  :global(html[data-theme="light"]) .dg-title {
+    color: #1a1a1a;
+  }
+  :global(html[data-theme="light"]) .dg-lede {
+    color: rgba(26, 26, 26, 0.65);
+  }
+
+  /* ── Hero art ── */
+  .dg-hero-art {
+    position: relative;
+    margin-bottom: 4rem;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(254, 252, 217, 0.12);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  }
+  .dg-hero-art img {
+    display: block;
+    width: 100%;
+    height: clamp(220px, 34vw, 420px);
+    object-fit: cover;
+  }
+  .dg-hero-art::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(13, 14, 13, 0) 45%, rgba(13, 14, 13, 0.85) 100%);
+    pointer-events: none;
+  }
+  :global(html[data-theme="light"]) .dg-hero-art {
+    border-color: rgba(26, 26, 26, 0.12);
+  }
+  :global(html[data-theme="light"]) .dg-hero-art::after {
+    background: linear-gradient(180deg, rgba(245, 237, 228, 0) 45%, rgba(245, 237, 228, 0.9) 100%);
+  }
+
+  /* ── Brand marks ── */
+  .dg-marks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .dg-mark-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem 1rem 1.2rem;
+    border-radius: 16px;
+    border: 1px solid rgba(254, 252, 217, 0.1);
+  }
+  .dg-mark-dark {
+    background: #0a0a0a;
+  }
+  .dg-mark-light {
+    background: #f2ede2;
+  }
+  .dg-mark-card img {
+    height: 56px;
+    width: auto;
+    object-fit: contain;
+  }
+  .dg-mark-label {
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(254, 252, 217, 0.5);
+    text-align: center;
+  }
+  .dg-mark-light .dg-mark-label {
+    color: rgba(26, 26, 26, 0.55);
+  }
+
+  /* ── Do / Don't rules ── */
+  .dg-rules {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .dg-rule-col ul {
+    margin: 0.6rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .dg-rule-col li {
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: rgba(254, 252, 217, 0.7);
+    padding-left: 1.1rem;
+    position: relative;
+  }
+  .dg-rule-col li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+  .dg-rule-good li::before {
+    background: #42cd9d;
+  }
+  .dg-rule-bad li::before {
+    background: #f95f4a;
+  }
+  .dg-rule-label {
+    margin: 0;
+    font-family: "PolySans Trial", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .dg-rule-good {
+    color: #42cd9d;
+  }
+  .dg-rule-bad {
+    color: #f95f4a;
+  }
+  :global(html[data-theme="light"]) .dg-rule-col li {
+    color: rgba(26, 26, 26, 0.68);
+  }
+
+  /* ── Color swatches ── */
+  .dg-swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.75rem;
+  }
+  .dg-swatch-grid-base {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+  .dg-swatch {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.75rem;
+    border-radius: 12px;
+    border: 1px solid rgba(254, 252, 217, 0.1);
+    background: rgba(254, 252, 217, 0.02);
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+  .dg-swatch:hover {
+    border-color: color-mix(in srgb, var(--sw) 55%, transparent);
+    transform: translateY(-2px);
+  }
+  .dg-swatch-chip {
+    flex: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: var(--sw);
+    border: 1px solid rgba(254, 252, 217, 0.18);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--sw) 35%, transparent);
+  }
+  .dg-swatch-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+  .dg-swatch-name {
+    font-family: "PolySans Trial", sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #fefcd9;
+  }
+  .dg-swatch-hex {
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.68rem;
+    color: color-mix(in srgb, var(--sw) 65%, #808080 35%);
+  }
+  .dg-swatch-note {
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.62rem;
+    color: rgba(254, 252, 217, 0.45);
+    line-height: 1.4;
+  }
+  .dg-swatch.is-copied .dg-swatch-hex::after {
+    content: " · copied";
+    color: #42cd9d;
+  }
+  :global(html[data-theme="light"]) .dg-swatch {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(26, 26, 26, 0.1);
+  }
+  :global(html[data-theme="light"]) .dg-swatch-name {
+    color: #1a1a1a;
+  }
+  :global(html[data-theme="light"]) .dg-swatch-note {
+    color: rgba(26, 26, 26, 0.5);
+  }
+
+  /* ── Typography specimens ── */
+  .dg-type-specimen {
+    padding: 1.6rem 0;
+    border-bottom: 1px solid rgba(254, 252, 217, 0.08);
+  }
+  .dg-type-specimen:last-child {
+    border-bottom: none;
+  }
+  .dg-type-tag {
+    display: block;
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #f95f4a;
+    margin-bottom: 0.6rem;
+  }
+  .dg-type-sample {
+    margin: 0;
+    color: #fefcd9;
+  }
+  .dg-type-trial {
+    font-family: "PolySans Trial", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    letter-spacing: -0.02em;
+  }
+  .dg-type-mono {
+    font-family: "PolySans Mono", monospace;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+  }
+  .dg-type-serif {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+  }
+  .dg-type-desc {
+    margin: 0.7rem 0 0;
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.76rem;
+    line-height: 1.6;
+    color: rgba(254, 252, 217, 0.55);
+  }
+  :global(html[data-theme="light"]) .dg-type-specimen {
+    border-bottom-color: rgba(26, 26, 26, 0.08);
+  }
+  :global(html[data-theme="light"]) .dg-type-sample {
+    color: #1a1a1a;
+  }
+  :global(html[data-theme="light"]) .dg-type-desc {
+    color: rgba(26, 26, 26, 0.55);
+  }
+
+  /* ── Components ── */
+  .dg-component-block {
+    padding: 1.6rem;
+    border-radius: 16px;
+    border: 1px solid rgba(254, 252, 217, 0.1);
+    margin-bottom: 1rem;
+  }
+  .dg-component-block-dark {
+    background: #0a0a0a;
+  }
+  .dg-component-label {
+    display: block;
+    margin-bottom: 1.1rem;
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(254, 252, 217, 0.5);
+  }
+  .dg-component-stage {
+    display: flex;
+    justify-content: flex-start;
+  }
+  .dg-component-stage-tile {
+    max-width: 320px;
+  }
+  .dg-component-note {
+    margin: 1rem 0 0;
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.78rem;
+    color: rgba(254, 252, 217, 0.6);
+  }
+  .dg-component-note a {
+    color: #00b4d8;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  :global(html[data-theme="light"]) .dg-component-block:not(.dg-component-block-dark) {
+    background: rgba(255, 255, 255, 0.35);
+  }
+  :global(html[data-theme="light"]) .dg-component-note {
+    color: rgba(26, 26, 26, 0.6);
+  }
+
+  /* ── Motion ── */
+  .dg-motion-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+  .dg-motion-card {
+    padding: 1.4rem;
+    border-radius: 14px;
+    border: 1px solid rgba(254, 252, 217, 0.1);
+    background: rgba(254, 252, 217, 0.02);
+  }
+  .dg-motion-title {
+    margin: 0 0 0.5rem;
+    font-family: "PolySans Trial", sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #fefcd9;
+  }
+  .dg-motion-body {
+    margin: 0;
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.76rem;
+    line-height: 1.6;
+    color: rgba(254, 252, 217, 0.6);
+  }
+  .dg-motion-body code {
+    color: #00b4d8;
+    font-size: 0.72rem;
+  }
+  :global(html[data-theme="light"]) .dg-motion-card {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(26, 26, 26, 0.1);
+  }
+  :global(html[data-theme="light"]) .dg-motion-title {
+    color: #1a1a1a;
+  }
+  :global(html[data-theme="light"]) .dg-motion-body {
+    color: rgba(26, 26, 26, 0.6);
+  }
+
+  /* ── Bottom CTA ── */
+  .dg-cta {
+    margin-top: 5rem;
+    padding: 2.5rem 2rem;
+    border-radius: 20px;
+    text-align: center;
+    background: radial-gradient(80% 100% at 50% 0%, rgba(249, 95, 74, 0.12), transparent 70%);
+    border: 1px solid rgba(254, 252, 217, 0.1);
+  }
+  .dg-cta-eyebrow {
+    margin: 0;
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #f95f4a;
+  }
+  .dg-cta-title {
+    margin: 0.7rem 0 0;
+    font-family: "PolySans Trial", sans-serif;
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    font-weight: 700;
+    color: #fefcd9;
+  }
+  .dg-cta-body {
+    margin: 0.6rem auto 0;
+    max-width: 42ch;
+    font-family: "PolySans Mono", monospace;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: rgba(254, 252, 217, 0.65);
+  }
+  .dg-cta-actions {
+    margin-top: 1.6rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .dg-cta :global(.dg-cta-btn) {
+    --proj-color: #f95f4a;
+    --proj-color-secondary: #0d0e0d;
+  }
+  .dg-cta :global(.dg-cta-btn-alt) {
+    --proj-color: #fefcd9;
+    --proj-color-secondary: #1c1917;
+  }
+  :global(html[data-theme="light"]) .dg-cta {
+    border-color: rgba(26, 26, 26, 0.1);
+    background: radial-gradient(80% 100% at 50% 0%, rgba(249, 95, 74, 0.1), transparent 70%);
+  }
+  :global(html[data-theme="light"]) .dg-cta-title {
+    color: #1a1a1a;
+  }
+  :global(html[data-theme="light"]) .dg-cta-body {
+    color: rgba(26, 26, 26, 0.65);
+  }
+
+  [data-reveal] {
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .dg-rules {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement | null;
+    const swatch = target?.closest<HTMLElement>("[data-copy-hex]");
+    if (!swatch) return;
+
+    const hex = swatch.dataset.copyHex;
+    if (!hex) return;
+
+    navigator.clipboard?.writeText(hex).then(() => {
+      swatch.classList.add("is-copied");
+      window.setTimeout(() => swatch.classList.remove("is-copied"), 1400);
+    });
+  });
+
+  function initDesignGuideReveal() {
+    const els = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    if (!els.length) return;
+
+    import("gsap").then(({ gsap }) => {
+      import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
+        gsap.registerPlugin(ScrollTrigger);
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        els.forEach((el) => {
+          if (reduce) {
+            gsap.set(el, { opacity: 1 });
+            return;
+          }
+          gsap.fromTo(
+            el,
+            { opacity: 0, y: 24 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power3.out",
+              scrollTrigger: { trigger: el, start: "top 88%" },
+            },
+          );
+        });
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initDesignGuideReveal);
+  } else {
+    initDesignGuideReveal();
+  }
+</script>
