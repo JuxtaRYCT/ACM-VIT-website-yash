@@ -132,6 +132,15 @@ const navItems = [
           </svg>
         </button>
         <button
+          id="mn-merch-btn"
+          aria-label="Browse collection"
+          class="mn-merch-btn mn-btn hidden h-9 w-9 flex-shrink-0 items-center justify-center rounded-full transition-transform active:scale-90"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path>
+          </svg>
+        </button>
+        <button
           id="mn-menu-btn"
           aria-label="Open menu"
           class="mn-btn flex h-9 w-9 items-center justify-center rounded-full transition-transform active:scale-90"
@@ -233,18 +242,23 @@ const navItems = [
                 {item.label}
               </span>
               {item.hasSub && (
-                <svg
-                  class="mn-link-caret h-3 w-3 flex-shrink-0 text-[#FEFCD9]/40"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.4"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                <span
+                  data-mn-caret={item.id}
+                  class="mn-link-caret-hit -my-2 -mr-1 flex flex-shrink-0 items-center px-2 py-2"
                   aria-hidden="true"
                 >
-                  <path d="M9 6l6 6-6 6" />
-                </svg>
+                  <svg
+                    class="mn-link-caret h-3 w-3 text-[#FEFCD9]/40"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M9 6l6 6-6 6" />
+                  </svg>
+                </span>
               )}
             </a>
           </li>
@@ -252,37 +266,31 @@ const navItems = [
       </ul>
     </div>
 
-    <!-- ── SUBMENU state: section subsections (built from data) ── -->
-    <div data-panel="submenu" class="mn-panel mn-panel-sub hidden flex-col gap-2 px-3 py-3">
-      <div class="flex items-center justify-between px-1 pb-0.5">
+    <!-- ── SUBMENU state: FaceTime-style section panel (built from data) ── -->
+    <div data-panel="submenu" class="mn-panel mn-panel-sub hidden flex-col gap-3.5 px-4 py-3.5">
+      <!-- Header: avatar glyph + title/subtitle + info (go to section) -->
+      <div class="flex items-center gap-3">
+        <span id="mn-sub-avatar" class="mn-sub-avatar flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full">
+          <span id="mn-sub-glyph" class="mn-sub-glyph">-</span>
+        </span>
+        <div class="min-w-0 flex-1">
+          <p id="mn-sub-title" class="mn-sub-title truncate">-</p>
+          <p id="mn-sub-subtitle" class="mn-sub-subtitle truncate">-</p>
+        </div>
         <button
-          data-mn-back
-          aria-label="Back to menu"
-          class="mn-close flex h-7 w-7 items-center justify-center rounded-full transition-transform active:scale-90"
+          id="mn-sub-goto"
+          aria-label="Go to section"
+          class="mn-sub-info flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full transition-transform active:scale-90"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
-        </button>
-        <span id="mn-sub-title" class="text-[10px] font-['PolySans_Trial'] uppercase tracking-[0.22em] text-[#FEFCD9]/55">-</span>
-        <button
-          data-mn-close
-          aria-label="Close"
-          class="mn-close flex h-7 w-7 items-center justify-center rounded-full transition-transform active:scale-90"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-            <line x1="18" y1="6" x2="6" y2="18"></line>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 11v5" stroke-width="2" stroke-linecap="round" />
+            <circle cx="12" cy="7.7" r="1.15" fill="currentColor" stroke="none" />
           </svg>
         </button>
       </div>
-      <button id="mn-sub-goto" class="mn-sub-goto flex items-center justify-center gap-2 rounded-2xl px-3 py-2.5">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M12 5v14M5 12l7 7 7-7" />
-        </svg>
-        <span class="text-[11px] font-['PolySans_Trial'] uppercase tracking-[0.1em]">Go to section</span>
-      </button>
-      <ul id="mn-sub-list" class="flex max-h-[46vh] flex-col gap-1.5 overflow-y-auto"></ul>
+      <!-- Round subsection buttons + red "hang up" back button (built in JS) -->
+      <div id="mn-sub-list" class="mn-sub-grid flex max-h-[42vh] flex-wrap justify-center gap-x-3 gap-y-3 overflow-y-auto"></div>
     </div>
 
     <!-- Subsection data for client submenu build -->
@@ -428,6 +436,35 @@ const navItems = [
         class="mn-notes-input h-[150px] w-full resize-none rounded-2xl px-3 py-2.5 text-[12px] leading-relaxed text-[#FEFCD9] outline-none"
       ></textarea>
     </div>
+
+    <!-- ── MERCH state: collection nav (proxies to hidden [data-vw-dock]) ── -->
+    <div data-panel="merch" class="mn-panel mn-panel-merch hidden flex-col gap-2.5 px-4 py-3">
+      <div class="flex items-center justify-between px-1">
+        <div class="min-w-0">
+          <p class="text-[10px] font-['PolySans_Trial'] uppercase tracking-[0.22em] text-[#FEFCD9]/55">Collection</p>
+          <p id="mn-merch-name" class="truncate text-[14px] font-['PolySans_Trial'] font-semibold text-[#FEFCD9]">-</p>
+        </div>
+        <button
+          data-mn-close
+          aria-label="Close"
+          class="mn-close mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full transition-transform active:scale-90"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="flex items-center gap-3">
+        <button id="mn-merch-prev" aria-label="Previous item" class="mn-btn flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full transition-transform active:scale-90">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
+        </button>
+        <div id="mn-merch-dots" class="flex flex-1 flex-wrap items-center justify-center gap-2.5"></div>
+        <button id="mn-merch-next" aria-label="Next item" class="mn-btn flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full transition-transform active:scale-90">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -534,44 +571,102 @@ const navItems = [
   .mn-link-caret { transition: transform 0.28s cubic-bezier(0.25, 0.1, 0.25, 1), color 0.2s ease; }
   .mn-link:active .mn-link-caret { transform: translateX(2px); color: #f95f4a; }
 
-  /* Submenu: "Go to section" primary button */
-  .mn-sub-goto {
-    background: rgba(249, 95, 74, 0.14);
-    color: #f95f4a;
-    border: 1px solid rgba(249, 95, 74, 0.3);
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    transition: background 0.2s ease;
+  /* ── Submenu: FaceTime-style call panel ── */
+  /* Header avatar — orange arc halo behind a section glyph */
+  .mn-sub-avatar {
+    background: radial-gradient(circle at 30% 30%, #ff8b52, #f95f4a 55%, #7a1e12 100%);
+    box-shadow: 0 0 0 1px rgba(249, 95, 74, 0.35), 0 4px 12px rgba(249, 95, 74, 0.3);
   }
-  .mn-sub-goto:active { background: rgba(249, 95, 74, 0.24); }
-
-  /* Submenu subsection tiles (built in JS → need :global so Astro scoping
-     doesn't strip these; dynamically created nodes lack the scope attribute). */
-  :global(.mn-sub-item) {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    border-radius: 16px;
-    padding: 10px 12px;
-    text-decoration: none;
-    background: rgba(254, 252, 217, 0.04);
-    border: 1px solid rgba(254, 252, 217, 0.06);
-    -webkit-tap-highlight-color: transparent;
+  .mn-sub-glyph {
+    font-family: "PolySans Trial", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e1e1e;
+    line-height: 1;
   }
-  :global(.mn-sub-item:active) { background: rgba(254, 252, 217, 0.1); }
-  :global(.mn-sub-item-title) {
+  .mn-sub-title {
+    font-family: "PolySans Trial", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fefcd9;
+    line-height: 1.15;
+  }
+  .mn-sub-subtitle {
     font-family: "PolySans Trial", sans-serif;
     font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #fefcd9;
+    color: rgba(254, 252, 217, 0.5);
+    line-height: 1.2;
+    margin-top: 1px;
   }
-  :global(.mn-sub-item-desc) {
+  /* Info (i) button — go to full section */
+  .mn-sub-info {
+    background: rgba(254, 252, 217, 0.08);
+    color: rgba(254, 252, 217, 0.7);
+    border: 1px solid rgba(254, 252, 217, 0.08);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mn-sub-info:active { background: rgba(254, 252, 217, 0.16); }
+
+  /* Round subsection buttons (built in JS → :global so Astro scoping doesn't
+     strip styles from dynamically created nodes). */
+  :global(.mn-sub-btn) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    width: 62px;
+    text-decoration: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+  :global(.mn-sub-btn-circle) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 9999px;
+    transition: transform 0.16s cubic-bezier(0.25, 0.1, 0.25, 1), filter 0.2s ease;
+  }
+  :global(.mn-sub-btn:active .mn-sub-btn-circle) { transform: scale(0.9); }
+  :global(.mn-sub-btn-glyph) {
     font-family: "PolySans Trial", sans-serif;
-    font-size: 10.5px;
-    line-height: 1.3;
-    color: rgba(254, 252, 217, 0.45);
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1;
   }
+  :global(.mn-sub-btn-label) {
+    font-family: "PolySans Trial", sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.02em;
+    color: rgba(254, 252, 217, 0.65);
+    text-align: center;
+    line-height: 1.15;
+    max-width: 62px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* Light circle (white bg, dark glyph) */
+  :global(.mn-sub-btn.is-light .mn-sub-btn-circle) { background: #fefcd9; }
+  :global(.mn-sub-btn.is-light .mn-sub-btn-glyph) { color: #1e1e1e; }
+  /* Dark circle (muted bg, light glyph) */
+  :global(.mn-sub-btn.is-dark .mn-sub-btn-circle) {
+    background: rgba(254, 252, 217, 0.1);
+    border: 1px solid rgba(254, 252, 217, 0.08);
+  }
+  :global(.mn-sub-btn.is-dark .mn-sub-btn-glyph) { color: #fefcd9; }
+  /* Red circle (hang-up style back) */
+  :global(.mn-sub-btn.is-red .mn-sub-btn-circle) {
+    background: #f5473d;
+    color: #fefcd9;
+    box-shadow: 0 4px 12px rgba(245, 71, 61, 0.35);
+  }
+
   #mn-sub-list { scrollbar-width: none; }
   #mn-sub-list::-webkit-scrollbar { display: none; }
 
@@ -622,6 +717,39 @@ const navItems = [
   }
   .mn-notes-input::placeholder { color: rgba(254, 252, 217, 0.25); }
   .mn-notes-input:focus { border-color: rgba(249, 95, 74, 0.4); }
+
+  /* Merch collection dots (mirror the hidden merch dock; per-item accent via
+     --dot-c). Built in JS → :global so Astro scoping keeps the styles. */
+  :global(.mn-merch-dot) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 9999px;
+    background: rgba(254, 252, 217, 0.08);
+    border: 1px solid rgba(254, 252, 217, 0.08);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.16s cubic-bezier(0.25, 0.1, 0.25, 1), background 0.2s ease, border-color 0.2s ease;
+  }
+  :global(.mn-merch-dot span) {
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: rgba(254, 252, 217, 0.4);
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  :global(.mn-merch-dot:active) { transform: scale(0.9); }
+  :global(.mn-merch-dot.is-active) {
+    background: rgba(249, 95, 74, 0.18); /* solid fallback (older iPad WebKit) */
+    background: color-mix(in srgb, var(--dot-c, #f95f4a) 22%, transparent);
+    border-color: var(--dot-c, #f95f4a);
+  }
+  :global(.mn-merch-dot.is-active span) {
+    background: var(--dot-c, #f95f4a);
+    transform: scale(1.15);
+  }
 
   /* Music EQ */
   .mn-music-eq.is-playing { display: inline-flex; }
@@ -690,7 +818,8 @@ const navItems = [
     const panelSub = pill.querySelector('[data-panel="submenu"]') as HTMLElement;
     const panelBlog = pill.querySelector('[data-panel="blog"]') as HTMLElement;
     const panelNotes = pill.querySelector('[data-panel="notes"]') as HTMLElement;
-    const panels = { nav: panelNav, menu: panelMenu, music: panelMusic, submenu: panelSub, blog: panelBlog, notes: panelNotes };
+    const panelMerch = pill.querySelector('[data-panel="merch"]') as HTMLElement;
+    const panels = { nav: panelNav, menu: panelMenu, music: panelMusic, submenu: panelSub, blog: panelBlog, notes: panelNotes, merch: panelMerch };
     type PanelState = keyof typeof panels;
 
     const labelMap: Record<string, string> = {
@@ -803,10 +932,21 @@ const navItems = [
        scrollIntoView({behavior:"smooth"}) is unreliable on mobile Safari (often
        jumps instantly). Animate window.scrollTo ourselves so it's smooth on
        every mobile browser, and recompute target top at click time. */
+    // The site scrolls the <body> element (Layout sets html,body{height:100%;
+    // overflow-x:hidden} → body becomes the scroll container, NOT the window).
+    // Detect the element that actually scrolls so this works on every page.
+    function getScroller(): HTMLElement {
+      const se = (document.scrollingElement || document.documentElement) as HTMLElement;
+      if (se && se.scrollHeight > se.clientHeight + 2) return se;
+      if (document.body.scrollHeight > document.body.clientHeight + 2) return document.body;
+      return se || document.documentElement;
+    }
+
     let scrollRaf = 0;
     function smoothScrollToY(destY: number, duration = 620) {
-      const startY = window.scrollY || window.pageYOffset;
-      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const scroller = getScroller();
+      const startY = scroller.scrollTop;
+      const max = scroller.scrollHeight - scroller.clientHeight;
       const target = Math.max(0, Math.min(destY, max));
       const dist = target - startY;
       if (Math.abs(dist) < 2) return;
@@ -816,9 +956,9 @@ const navItems = [
       cancelAnimationFrame(scrollRaf);
       const step = (now: number) => {
         const p = Math.min(1, (now - t0) / duration);
-        // behavior:"auto" overrides CSS `scroll-behavior:smooth`, else each
-        // per-frame scrollTo would restart a native smooth tween and stall.
-        window.scrollTo({ top: startY + dist * ease(p), left: 0, behavior: "auto" });
+        // Set scrollTop directly (not scrollTo{behavior}), else CSS
+        // scroll-behavior:smooth restarts a native tween each frame and stalls.
+        scroller.scrollTop = startY + dist * ease(p);
         if (p < 1) scrollRaf = requestAnimationFrame(step);
       };
       scrollRaf = requestAnimationFrame(step);
@@ -849,7 +989,7 @@ const navItems = [
       // touch so it sits a bit lower than the very top on mobile.
       const cs = getComputedStyle(target);
       const marginTop = parseInt(cs.scrollMarginTop || "0", 10) || 0;
-      const destY = window.scrollY + target.getBoundingClientRect().top - marginTop;
+      const destY = getScroller().scrollTop + target.getBoundingClientRect().top - marginTop;
       smoothScrollToY(destY);
       history.pushState(null, "", href);
       return true;
@@ -865,32 +1005,57 @@ const navItems = [
     } catch {}
 
     const subTitle = document.getElementById("mn-sub-title");
+    const subGlyph = document.getElementById("mn-sub-glyph");
+    const subSubtitle = document.getElementById("mn-sub-subtitle");
     const subList = document.getElementById("mn-sub-list");
     const subGoto = document.getElementById("mn-sub-goto");
     let subSectionHref = "";
+
+    // X glyph for the red close button.
+    const CLOSE_SVG =
+      `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>`;
 
     function openSubmenu(sectionId: string, sectionHref: string) {
       const items = subData.subsections[sectionId];
       if (!items || !subList) return;
       subSectionHref = sectionHref;
-      if (subTitle) subTitle.textContent = subData.sectionTitles[sectionId] || sectionId;
+      const title = subData.sectionTitles[sectionId] || sectionId;
+      if (subTitle) subTitle.textContent = title;
+      if (subGlyph) subGlyph.textContent = title.charAt(0).toUpperCase();
+      if (subSubtitle)
+        subSubtitle.textContent = `${items.length} ${items.length === 1 ? "section" : "sections"}`;
 
       subList.innerHTML = "";
-      items.forEach((it) => {
-        const a = document.createElement("a");
-        a.href = it.href;
-        a.className = "mn-sub-item";
-        a.innerHTML =
-          `<span class="mn-sub-item-title"></span><span class="mn-sub-item-desc"></span>`;
-        (a.querySelector(".mn-sub-item-title") as HTMLElement).textContent = it.title;
-        (a.querySelector(".mn-sub-item-desc") as HTMLElement).textContent = it.desc;
-        a.addEventListener("click", (e) => {
+      // One round button per subsection (alternating light/dark like the ref).
+      items.forEach((it, i) => {
+        const btn = document.createElement("a");
+        btn.href = it.href;
+        btn.className = "mn-sub-btn " + (i % 2 === 0 ? "is-light" : "is-dark");
+        btn.innerHTML =
+          `<span class="mn-sub-btn-circle"><span class="mn-sub-btn-glyph"></span></span>` +
+          `<span class="mn-sub-btn-label"></span>`;
+        (btn.querySelector(".mn-sub-btn-glyph") as HTMLElement).textContent =
+          it.title.charAt(0).toUpperCase();
+        (btn.querySelector(".mn-sub-btn-label") as HTMLElement).textContent = it.title;
+        btn.addEventListener("click", (e) => {
           morphTo("nav");
           navigateHref(it.href, e);
         });
-        subList.appendChild(a);
+        subList.appendChild(btn);
       });
-      if (subList) subList.scrollTop = 0;
+
+      // Red close button → dismiss the pill back to nav.
+      const close = document.createElement("button");
+      close.type = "button";
+      close.className = "mn-sub-btn is-red";
+      close.setAttribute("aria-label", "Close");
+      close.innerHTML =
+        `<span class="mn-sub-btn-circle">${CLOSE_SVG}</span>` +
+        `<span class="mn-sub-btn-label">Close</span>`;
+      close.addEventListener("click", () => morphTo("nav"));
+      subList.appendChild(close);
+
+      subList.scrollTop = 0;
       morphTo("submenu");
     }
 
@@ -902,24 +1067,24 @@ const navItems = [
         window.location.href = subSectionHref;
       }
     });
-    pill.querySelector("[data-mn-back]")?.addEventListener("click", () => morphTo("menu"));
 
+    // Row tap → smooth-scroll to the section (or navigate cross-page).
     pill.querySelectorAll(".mn-link").forEach((link) => {
       link.addEventListener("click", (e) => {
         const href = link.getAttribute("href") || "";
-        const id = link.getAttribute("data-mn-link") || "";
-
-        // Section with subsections → open submenu instead of navigating.
-        // Stop the desktop Header click handler from scrolling the page.
-        if (link.getAttribute("data-mn-sub") === "true") {
-          e.preventDefault();
-          e.stopPropagation();
-          openSubmenu(id, href);
-          return;
-        }
-
         morphTo("nav");
         navigateHref(href, e);
+      });
+    });
+    // Caret tap → open the subsection submenu (doesn't trigger the row scroll).
+    pill.querySelectorAll("[data-mn-caret]").forEach((caret) => {
+      caret.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const id = caret.getAttribute("data-mn-caret") || "";
+        const link = caret.closest("li")?.querySelector(".mn-link");
+        const href = link?.getAttribute("href") || "";
+        openSubmenu(id, href);
       });
     });
     document.addEventListener("pointerdown", (e) => {
@@ -1006,6 +1171,55 @@ const navItems = [
           attributes: true, attributeFilter: ["class"],
         });
       }
+    }
+
+    /* ── Merch collection wiring (proxies to the hidden merch dock on merch
+       view pages). The standalone [data-vw-dock] is hidden on mobile (see the
+       merch view CSS); we surface its prev / dots / next here and forward taps
+       to the real controls, mirroring the active item back. ── */
+    const merchDock = document.querySelector("[data-vw-dock]");
+    const merchBtn = document.getElementById("mn-merch-btn");
+    if (merchDock && merchBtn) {
+      merchBtn.classList.remove("hidden");
+      merchBtn.classList.add("flex");
+      merchBtn.addEventListener("click", () => morphTo("merch"));
+
+      const realDots = Array.from(merchDock.querySelectorAll("[data-nav]")) as HTMLElement[];
+      const realPrev = merchDock.querySelector('[data-arrow="prev"]') as HTMLElement | null;
+      const realNext = merchDock.querySelector('[data-arrow="next"]') as HTMLElement | null;
+      const dotsWrap = document.getElementById("mn-merch-dots");
+      const merchName = document.getElementById("mn-merch-name");
+
+      // Build one mirror dot per real nav dot (same accent + label).
+      realDots.forEach((rd, i) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "mn-merch-dot";
+        b.setAttribute("aria-label", rd.getAttribute("aria-label") || `Item ${i + 1}`);
+        b.style.setProperty("--dot-c", rd.style.getPropertyValue("--dot-c") || "#f95f4a");
+        b.innerHTML = "<span></span>";
+        b.addEventListener("click", () => rd.click());
+        dotsWrap?.appendChild(b);
+      });
+
+      const mirrorDots = Array.from(dotsWrap?.querySelectorAll(".mn-merch-dot") || []) as HTMLElement[];
+      function syncMerch() {
+        let activeIdx = 0;
+        realDots.forEach((rd, i) => {
+          const on = rd.classList.contains("active");
+          mirrorDots[i]?.classList.toggle("is-active", on);
+          if (on) activeIdx = i;
+        });
+        if (merchName)
+          merchName.textContent = realDots[activeIdx]?.getAttribute("aria-label") || "-";
+      }
+      realDots.forEach((rd) =>
+        new MutationObserver(syncMerch).observe(rd, { attributes: true, attributeFilter: ["class"] }),
+      );
+      syncMerch();
+
+      document.getElementById("mn-merch-prev")?.addEventListener("click", () => realPrev?.click());
+      document.getElementById("mn-merch-next")?.addEventListener("click", () => realNext?.click());
     }
 
     /* ── Music player wiring (controls existing CassettePlayer audio + state) ── */
