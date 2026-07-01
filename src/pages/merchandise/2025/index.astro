@@ -302,20 +302,41 @@ import AnimatedButton from "../../../components/ui/AnimatedButton.astro";
     .m25-htee--2 { right: 2%; width: clamp(130px, 28vw, 180px); }
     .m25-htee--3 { display: none; }
     .m25-badge { display: none; }
-    .m25-hero-info { max-width: 55%; }
+    .m25-hero-info { max-width: 55%; bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
     .m25-hero-info__body { font-size: 0.72rem; max-width: 100%; }
   }
 
+  /* Phones: stack the hero vertically so nothing overlaps the CTA or navbar */
   @media (max-width: 480px) {
-    .m25-year { font-size: 26vw; }
-    .m25-htee--2 { display: none; }
-    .m25-htee--1 {
-      left: 50%;
-      top: 45%;
-      width: 52vw;
-      transform: translateX(-50%) translateY(-50%) rotate(-4deg);
+    .m25-hero {
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 0;
+      padding: 5.5rem 1.25rem calc(104px + env(safe-area-inset-bottom, 0px));
     }
-    .m25-hero-info { max-width: 90%; left: 1rem; bottom: 2.5rem; }
+    .m25-line--2 { display: none; }
+    .m25-year { font-size: 24vw; }
+    .m25-center-col { order: 2; margin-top: 0.5rem; gap: 1rem; }
+    .m25-htee--2,
+    .m25-htee--3 { display: none; }
+    .m25-htee--1 {
+      order: 1;
+      position: relative;
+      left: auto;
+      top: auto;
+      width: 58vw;
+      max-width: 240px;
+      margin: 0 auto;
+      transform: rotate(-4deg);
+    }
+    .m25-hero-info {
+      order: 3;
+      position: relative;
+      left: auto;
+      bottom: auto;
+      max-width: 100%;
+      margin-top: 1.75rem;
+    }
   }
 
   /* ══════ LIGHT THEME ══════ */

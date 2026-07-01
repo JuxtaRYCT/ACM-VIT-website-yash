@@ -248,15 +248,40 @@ import Footer from "../../../layouts/Footer.astro";
     .ot-tee--label { right: -4%; width: 42vw; bottom: 4%; }
     .ot-tee--plain { right: 36%; width: 46vw; bottom: 6%; }
     .ot-badge { display: none; }
-    .ot-hero-info { max-width: 55%; }
+    .ot-hero-info { max-width: 55%; bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
     .ot-hero-info__body { font-size: 0.72rem; max-width: 100%; }
   }
 
+  /* Phones: stack the hero vertically so the tee and info never overlap */
   @media (max-width: 480px) {
+    .ot-hero {
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 0;
+      padding: 5.5rem 1.25rem calc(104px + env(safe-area-inset-bottom, 0px));
+    }
+    .ot-line--2 { display: none; }
     .ot-title { font-size: 26vw; }
-    .ot-tee--label { right: -6%; width: 56vw; bottom: 2%; }
+    .ot-center-col { order: 1; }
     .ot-tee--plain { display: none; }
-    .ot-hero-info { max-width: 90%; left: 1rem; bottom: 2.5rem; }
+    .ot-tee--label {
+      order: 2;
+      position: relative;
+      right: auto;
+      bottom: auto;
+      width: 60vw;
+      max-width: 240px;
+      margin: 1.25rem auto 0;
+      transform: rotate(-4deg);
+    }
+    .ot-hero-info {
+      order: 3;
+      position: relative;
+      left: auto;
+      bottom: auto;
+      max-width: 100%;
+      margin-top: 1.75rem;
+    }
   }
 
   :global(html[data-theme="light"]) .ot-title { color: rgba(249, 95, 74, 0.14); }

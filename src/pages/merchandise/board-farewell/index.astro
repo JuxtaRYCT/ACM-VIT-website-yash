@@ -287,14 +287,39 @@ import Footer from "../../../layouts/Footer.astro";
     .bf-title { font-size: clamp(2.4rem, 11vw, 4rem); }
     .bf-tee { right: -4%; width: 60vw; bottom: 4%; }
     .bf-badge { display: none; }
-    .bf-hero-info { max-width: 55%; }
+    .bf-hero-info { max-width: 55%; bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
     .bf-hero-info__body { font-size: 0.72rem; max-width: 100%; }
   }
 
+  /* Phones: stack the hero vertically so the tee and info never overlap */
   @media (max-width: 480px) {
+    .bf-hero {
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 0;
+      padding: 5.5rem 1.25rem calc(104px + env(safe-area-inset-bottom, 0px));
+    }
+    .bf-line--2 { display: none; }
     .bf-title { font-size: clamp(2rem, 12vw, 3rem); }
-    .bf-tee { right: -10%; width: 75vw; bottom: 2%; }
-    .bf-hero-info { max-width: 92%; left: 1rem; bottom: 2.5rem; }
+    .bf-center-col { order: 1; }
+    .bf-tee {
+      order: 2;
+      position: relative;
+      right: auto;
+      bottom: auto;
+      width: 68vw;
+      max-width: 280px;
+      margin: 1.5rem auto 0;
+      transform: rotate(4deg);
+    }
+    .bf-hero-info {
+      order: 3;
+      position: relative;
+      left: auto;
+      bottom: auto;
+      max-width: 100%;
+      margin-top: 1.75rem;
+    }
   }
 
   :global(html[data-theme="light"]) .bf-title { color: rgba(214, 152, 0, 0.18); }
