@@ -220,6 +220,22 @@ const { slug, title } = Astro.props;
   [data-blog-dock-root][data-dock-state="booting"] {
     visibility: hidden;
   }
+
+  /* ── Mobile: the dock pill is replaced by the bottom nav's blog panel
+     (MobileNavbar proxies Listen/Notes/Share to the hidden buttons here).
+     Keep the root + scratchpad functional, just hide the pill and lift the
+     scratchpad above the mobile navbar. ── */
+  @media (max-width: 952px) {
+    [data-blog-dock-root] {
+      bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+    [data-blog-dock-root] .dock-pill {
+      display: none !important;
+    }
+    [data-blog-dock-root] [data-scratchpad] {
+      width: min(340px, calc(100vw - 24px));
+    }
+  }
 </style>
 
 <script>

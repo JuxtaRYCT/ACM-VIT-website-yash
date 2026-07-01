@@ -14,6 +14,76 @@ const { pageTitle } = Astro.props;
 const initialLabel = pageTitle || "Home";
 const lockedLabel = !!pageTitle;
 
+// Subsections mirror the desktop megamenu (Header.astro `dropdowns`).
+// Sections listed here show a caret and open a submenu on tap.
+interface SubItem { title: string; desc: string; href: string; }
+const subsections: Record<string, SubItem[]> = {
+  about: [
+    { title: "ACM-VIT", desc: "Our chapter's mission & culture", href: "/#about-acmvit" },
+    { title: "VIT University", desc: "One of India's top tech universities", href: "/#about-vit" },
+    { title: "ACM Global", desc: "World's largest computing society", href: "/#about-acm" },
+  ],
+  domains: [
+    { title: "Tech", desc: "App Dev, Web, FOSS, DevOps", href: "/domains/tech" },
+    { title: "Competitive Coding", desc: "Codeforces, ICPC, C++", href: "/domains/cc" },
+    { title: "Design", desc: "UI/UX, Motion Graphics, 3D", href: "/domains/design" },
+    { title: "Research", desc: "AI/ML, Blockchain, Quantum", href: "/domains/research" },
+    { title: "Management", desc: "Operations & coordination", href: "/domains/management" },
+  ],
+  events: [
+    { title: "Code2Create", desc: "24-hour hackathon", href: "/#events" },
+    { title: "Cryptic Hunt", desc: "Online cryptographic treasure hunt", href: "/#events" },
+    { title: "inspiHer", desc: "Celebrating women in technology", href: "/#events" },
+    { title: "Forktober", desc: "Open source contribution drive", href: "/#events" },
+    { title: "The Neural Hack", desc: "Deep dive into AI & ML", href: "/#events" },
+  ],
+  projects: [
+    { title: "ACMOne", desc: "Centralized chapter management platform", href: "/#projects" },
+    { title: "ExamCooker", desc: "Exam prep hub for VIT students", href: "/#projects" },
+    { title: "CLI RPG", desc: "Terminal-based role-playing game", href: "/#projects" },
+    { title: "UniPool", desc: "Campus carpooling made easy", href: "/#projects" },
+    { title: "Localhost", desc: "Local development toolkit", href: "/#projects" },
+    { title: "OCS Website", desc: "Open community showcase site", href: "/#projects" },
+  ],
+  "acm-w": [
+    { title: "Our Mission", desc: "Supporting women in computing", href: "/#acm-w" },
+    { title: "Initiatives", desc: "Programs & activities", href: "/#acm-w-content" },
+    { title: "Showcase", desc: "Highlights of our work", href: "/#acm-w-bento" },
+  ],
+  community: [
+    { title: "Outreach", desc: "Beyond The Norm workshops for schools", href: "/community#community-outreach" },
+    { title: "SDG Initiative", desc: "Digital learning for rural communities", href: "/community#community-sdg" },
+    { title: "International Award", desc: "Outstanding School Service", href: "/community#community-award" },
+    { title: "Code of Conduct", desc: "ACM ethical principles & values", href: "/community#community-conduct" },
+    { title: "ACM-W", desc: "Inclusion & women in tech", href: "/community#acm-w" },
+  ],
+  team: [
+    { title: "Faculty", desc: "Dr. Aswani Kumar Cherukuri", href: "/#team" },
+    { title: "Board", desc: "Core leadership team", href: "/#team" },
+    { title: "ACM-W Board", desc: "Women's chapter leadership", href: "/#team" },
+  ],
+  blogs: [
+    { title: "All Blogs", desc: "Browse every article we've published", href: "/blogs" },
+    { title: "Hashnode", desc: "Our latest technical deep-dives", href: "/blogs#all-blogs" },
+    { title: "Medium", desc: "Earlier publications & tutorials", href: "/blogs#all-blogs" },
+  ],
+  more: [
+    { title: "Code of Conduct", desc: "ACM ethical principles & values", href: "/code-of-conduct" },
+    { title: "Merchandise", desc: "Official ACM-VIT merch & collectibles", href: "/merchandise" },
+    { title: "GREP Newsletter", desc: "Our bi-annual technical newsletter", href: "/grep" },
+    { title: "z0d1ak", desc: "ACM-VIT's competitive CTF team", href: "/z0d1ak" },
+    { title: "Achievements", desc: "Awards, recognitions & milestones", href: "/more" },
+    { title: "Cassette Builder", desc: "Design your own custom cassette", href: "/cassette-builder" },
+    { title: "Calendar", desc: "Upcoming events & important dates", href: "/calendar" },
+  ],
+};
+
+// Section labels used by the submenu header (title-case).
+const sectionTitles: Record<string, string> = {
+  about: "About", domains: "Domains", events: "Events", projects: "Projects",
+  "acm-w": "ACM-W", community: "Community", team: "Team", blogs: "Blogs", more: "More",
+};
+
 const navItems = [
   { id: "about", label: "About", href: "/#about" },
   { id: "domains", label: "Domains", href: "/#domains" },
@@ -27,7 +97,7 @@ const navItems = [
   { id: "gallery", label: "Gallery", href: "/#gallery" },
   { id: "contact", label: "Contact", href: "/#contact" },
   { id: "more", label: "More", href: "/more" },
-];
+].map((item) => ({ ...item, hasSub: !!subsections[item.id] }));
 ---
 
 <div
@@ -51,6 +121,16 @@ const navItems = [
         >
       </div>
       <div class="flex flex-shrink-0 items-center gap-1.5">
+        <button
+          id="mn-blog-btn"
+          aria-label="Article tools"
+          class="mn-blog-btn mn-btn hidden h-9 w-9 flex-shrink-0 items-center justify-center rounded-full transition-transform active:scale-90"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+        </button>
         <button
           id="mn-menu-btn"
           aria-label="Open menu"
@@ -145,17 +225,68 @@ const navItems = [
             <a
               href={item.href}
               data-mn-link={item.id}
+              data-mn-sub={item.hasSub ? "true" : undefined}
               class="mn-link flex items-center gap-2.5 rounded-2xl px-3 py-2.5 text-[#FEFCD9] active:bg-white/10"
             >
               <span class="mn-link-dot h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#F95F4A]/55"></span>
-              <span class="text-[11px] font-['PolySans_Trial'] uppercase tracking-[0.1em]">
+              <span class="min-w-0 flex-1 truncate text-[11px] font-['PolySans_Trial'] uppercase tracking-[0.1em]">
                 {item.label}
               </span>
+              {item.hasSub && (
+                <svg
+                  class="mn-link-caret h-3 w-3 flex-shrink-0 text-[#FEFCD9]/40"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M9 6l6 6-6 6" />
+                </svg>
+              )}
             </a>
           </li>
         ))}
       </ul>
     </div>
+
+    <!-- ── SUBMENU state: section subsections (built from data) ── -->
+    <div data-panel="submenu" class="mn-panel mn-panel-sub hidden flex-col gap-2 px-3 py-3">
+      <div class="flex items-center justify-between px-1 pb-0.5">
+        <button
+          data-mn-back
+          aria-label="Back to menu"
+          class="mn-close flex h-7 w-7 items-center justify-center rounded-full transition-transform active:scale-90"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+        <span id="mn-sub-title" class="text-[10px] font-['PolySans_Trial'] uppercase tracking-[0.22em] text-[#FEFCD9]/55">-</span>
+        <button
+          data-mn-close
+          aria-label="Close"
+          class="mn-close flex h-7 w-7 items-center justify-center rounded-full transition-transform active:scale-90"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <button id="mn-sub-goto" class="mn-sub-goto flex items-center justify-center gap-2 rounded-2xl px-3 py-2.5">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 5v14M5 12l7 7 7-7" />
+        </svg>
+        <span class="text-[11px] font-['PolySans_Trial'] uppercase tracking-[0.1em]">Go to section</span>
+      </button>
+      <ul id="mn-sub-list" class="flex max-h-[46vh] flex-col gap-1.5 overflow-y-auto"></ul>
+    </div>
+
+    <!-- Subsection data for client submenu build -->
+    <script type="application/json" id="mn-sub-data" set:html={JSON.stringify({ subsections, sectionTitles })}></script>
 
     <!-- ── MUSIC state: compact player ── -->
     <div data-panel="music" class="mn-panel mn-panel-music hidden flex-col gap-3 px-4 py-3">
@@ -208,6 +339,94 @@ const navItems = [
           </svg>
         </button>
       </div>
+    </div>
+
+    <!-- ── BLOG state: article tools (proxies to hidden BlogDock) ── -->
+    <div data-panel="blog" class="mn-panel mn-panel-blog hidden flex-col gap-3 px-4 py-3">
+      <div class="flex items-center justify-between px-1">
+        <span class="text-[10px] font-['PolySans_Trial'] uppercase tracking-[0.22em] text-[#FEFCD9]/55">Article</span>
+        <button
+          data-mn-close
+          aria-label="Close"
+          class="mn-close flex h-7 w-7 items-center justify-center rounded-full transition-transform active:scale-90"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="flex items-center justify-around gap-2 pb-1">
+        <button id="mn-blog-listen" class="mn-blog-ctl flex flex-col items-center gap-1.5">
+          <span class="mn-blog-icon flex h-12 w-12 items-center justify-center rounded-full">
+            <svg id="mn-blog-listen-play" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+            </svg>
+            <svg id="mn-blog-listen-stop" class="hidden" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="6" y="4" width="4" height="16" rx="1" />
+              <rect x="14" y="4" width="4" height="16" rx="1" />
+            </svg>
+          </span>
+          <span id="mn-blog-listen-label" class="text-[9px] font-['PolySans_Trial'] uppercase tracking-[0.12em] text-[#FEFCD9]/60">Listen</span>
+        </button>
+        <button id="mn-blog-notes" class="mn-blog-ctl flex flex-col items-center gap-1.5">
+          <span class="mn-blog-icon flex h-12 w-12 items-center justify-center rounded-full">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+            </svg>
+          </span>
+          <span class="text-[9px] font-['PolySans_Trial'] uppercase tracking-[0.12em] text-[#FEFCD9]/60">Notes</span>
+        </button>
+        <button id="mn-blog-share" class="mn-blog-ctl flex flex-col items-center gap-1.5">
+          <span class="mn-blog-icon flex h-12 w-12 items-center justify-center rounded-full">
+            <svg id="mn-blog-share-default" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+            </svg>
+            <svg id="mn-blog-share-copied" class="hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </span>
+          <span id="mn-blog-share-label" class="text-[9px] font-['PolySans_Trial'] uppercase tracking-[0.12em] text-[#FEFCD9]/60">Share</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── NOTES state: in-pill scratchpad (synced to hidden BlogDock notes) ── -->
+    <div data-panel="notes" class="mn-panel mn-panel-notes hidden flex-col gap-2 px-3 py-3">
+      <div class="flex items-center justify-between px-1">
+        <button
+          data-mn-notes-back
+          aria-label="Back to article tools"
+          class="mn-close flex h-7 w-7 items-center justify-center rounded-full transition-transform active:scale-90"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+        <span class="text-[10px] font-['PolySans_Trial'] uppercase tracking-[0.22em] text-[#FEFCD9]/55">Scratchpad</span>
+        <button
+          data-mn-close
+          aria-label="Close"
+          class="mn-close flex h-7 w-7 items-center justify-center rounded-full transition-transform active:scale-90"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <textarea
+        id="mn-notes-input"
+        placeholder="Write a quick note..."
+        class="mn-notes-input h-[150px] w-full resize-none rounded-2xl px-3 py-2.5 text-[12px] leading-relaxed text-[#FEFCD9] outline-none"
+      ></textarea>
     </div>
   </div>
 </div>
@@ -311,6 +530,99 @@ const navItems = [
     box-shadow: 0 0 6px rgba(255, 0, 122, 0.55);
   }
 
+  /* Menu caret (has-subsections indicator) */
+  .mn-link-caret { transition: transform 0.28s cubic-bezier(0.25, 0.1, 0.25, 1), color 0.2s ease; }
+  .mn-link:active .mn-link-caret { transform: translateX(2px); color: #f95f4a; }
+
+  /* Submenu: "Go to section" primary button */
+  .mn-sub-goto {
+    background: rgba(249, 95, 74, 0.14);
+    color: #f95f4a;
+    border: 1px solid rgba(249, 95, 74, 0.3);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.2s ease;
+  }
+  .mn-sub-goto:active { background: rgba(249, 95, 74, 0.24); }
+
+  /* Submenu subsection tiles (built in JS → need :global so Astro scoping
+     doesn't strip these; dynamically created nodes lack the scope attribute). */
+  :global(.mn-sub-item) {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border-radius: 16px;
+    padding: 10px 12px;
+    text-decoration: none;
+    background: rgba(254, 252, 217, 0.04);
+    border: 1px solid rgba(254, 252, 217, 0.06);
+    -webkit-tap-highlight-color: transparent;
+  }
+  :global(.mn-sub-item:active) { background: rgba(254, 252, 217, 0.1); }
+  :global(.mn-sub-item-title) {
+    font-family: "PolySans Trial", sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #fefcd9;
+  }
+  :global(.mn-sub-item-desc) {
+    font-family: "PolySans Trial", sans-serif;
+    font-size: 10.5px;
+    line-height: 1.3;
+    color: rgba(254, 252, 217, 0.45);
+  }
+  #mn-sub-list { scrollbar-width: none; }
+  #mn-sub-list::-webkit-scrollbar { display: none; }
+
+  /* Blog button attention pulse (invites first click; removed after use) */
+  .mn-blog-btn.mn-attn {
+    background: #f95f4a;
+    color: #fefcd9;
+    border-color: rgba(254, 252, 217, 0.25);
+    animation: mnBlogPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes mnBlogPulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(249, 95, 74, 0.5), 0 4px 12px rgba(249, 95, 74, 0.32);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 0 0 7px rgba(249, 95, 74, 0), 0 4px 12px rgba(249, 95, 74, 0.32);
+      transform: scale(1.08);
+    }
+  }
+
+  /* Blog tools controls */
+  .mn-blog-ctl {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mn-blog-icon {
+    background: rgba(254, 252, 217, 0.08);
+    color: #fefcd9;
+    border: 1px solid rgba(254, 252, 217, 0.06);
+    transition: transform 0.18s cubic-bezier(0.25, 0.1, 0.25, 1), background 0.2s ease, color 0.2s ease;
+  }
+  .mn-blog-ctl:active .mn-blog-icon { transform: scale(0.9); }
+  .mn-blog-ctl.is-active .mn-blog-icon {
+    background: #f95f4a;
+    color: #fefcd9;
+    border-color: rgba(254, 252, 217, 0.25);
+    box-shadow: 0 4px 12px rgba(249, 95, 74, 0.32);
+  }
+
+  /* Notes textarea */
+  .mn-notes-input {
+    background: rgba(254, 252, 217, 0.05);
+    border: 1px solid rgba(254, 252, 217, 0.08);
+    font-family: "PolySans Mono", monospace;
+  }
+  .mn-notes-input::placeholder { color: rgba(254, 252, 217, 0.25); }
+  .mn-notes-input:focus { border-color: rgba(249, 95, 74, 0.4); }
+
   /* Music EQ */
   .mn-music-eq.is-playing { display: inline-flex; }
   .mn-music-eq.is-playing ~ #mn-music-note { display: none; }
@@ -375,7 +687,11 @@ const navItems = [
     const panelNav = pill.querySelector('[data-panel="nav"]') as HTMLElement;
     const panelMenu = pill.querySelector('[data-panel="menu"]') as HTMLElement;
     const panelMusic = pill.querySelector('[data-panel="music"]') as HTMLElement;
-    const panels = { nav: panelNav, menu: panelMenu, music: panelMusic };
+    const panelSub = pill.querySelector('[data-panel="submenu"]') as HTMLElement;
+    const panelBlog = pill.querySelector('[data-panel="blog"]') as HTMLElement;
+    const panelNotes = pill.querySelector('[data-panel="notes"]') as HTMLElement;
+    const panels = { nav: panelNav, menu: panelMenu, music: panelMusic, submenu: panelSub, blog: panelBlog, notes: panelNotes };
+    type PanelState = keyof typeof panels;
 
     const labelMap: Record<string, string> = {
       home: "Home", about: "About", domains: "Domains", events: "Events",
@@ -410,8 +726,8 @@ const navItems = [
 
     /* ── Morph between states (Flip) ── */
     let morphing = false;
-    function morphTo(nextState: "nav" | "menu" | "music") {
-      const cur = pill.dataset.state as "nav" | "menu" | "music";
+    function morphTo(nextState: PanelState) {
+      const cur = pill.dataset.state as PanelState;
       if (morphing || cur === nextState) return;
       morphing = true;
 
@@ -450,8 +766,11 @@ const navItems = [
     syncThemeIcons();
     themeBtn?.addEventListener("click", () => {
       const fn = (window as any).acmToggleTheme;
-      if (typeof fn === "function") fn();
-      else {
+      if (typeof fn === "function") {
+        // Reveal from the theme button's center, not the desktop bulb.
+        const r = themeBtn.getBoundingClientRect();
+        fn(r.left + r.width / 2, r.top + r.height / 2);
+      } else {
         // Fallback: flip data-theme directly
         const html = document.documentElement;
         if (html.getAttribute("data-theme") === "light") {
@@ -479,31 +798,128 @@ const navItems = [
     pill.querySelectorAll("[data-mn-close]").forEach((btn) => {
       btn.addEventListener("click", () => morphTo("nav"));
     });
+
+    /* ── Deterministic rAF smooth scroll ──
+       scrollIntoView({behavior:"smooth"}) is unreliable on mobile Safari (often
+       jumps instantly). Animate window.scrollTo ourselves so it's smooth on
+       every mobile browser, and recompute target top at click time. */
+    let scrollRaf = 0;
+    function smoothScrollToY(destY: number, duration = 620) {
+      const startY = window.scrollY || window.pageYOffset;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const target = Math.max(0, Math.min(destY, max));
+      const dist = target - startY;
+      if (Math.abs(dist) < 2) return;
+      const t0 = performance.now();
+      const ease = (p: number) =>
+        p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; // easeInOutCubic
+      cancelAnimationFrame(scrollRaf);
+      const step = (now: number) => {
+        const p = Math.min(1, (now - t0) / duration);
+        // behavior:"auto" overrides CSS `scroll-behavior:smooth`, else each
+        // per-frame scrollTo would restart a native smooth tween and stall.
+        window.scrollTo({ top: startY + dist * ease(p), left: 0, behavior: "auto" });
+        if (p < 1) scrollRaf = requestAnimationFrame(step);
+      };
+      scrollRaf = requestAnimationFrame(step);
+    }
+
+    /* ── Navigate helper (smooth same-page scroll, else default nav) ──
+       Same-page hash links (e.g. "/#partners") scroll smoothly in-page.
+       Cross-page links (e.g. "/blogs", or "/#x" when not on that page) fall
+       through to default navigation. Returns true if handled locally. */
+    function navigateHref(href: string, e?: Event) {
+      const hashIdx = href.indexOf("#");
+      if (hashIdx === -1) return false;
+
+      const path = href.slice(0, hashIdx);
+      const id = href.slice(hashIdx + 1);
+      if (!id) return false;
+
+      const samePage = path === "" || path === window.location.pathname;
+      const target = samePage ? document.getElementById(id) : null;
+      if (!target) return false;
+
+      // Handle it ourselves; stop the desktop Header click handler from also
+      // firing its own (conflicting) scrollIntoView on the same target.
+      e?.preventDefault();
+      e?.stopPropagation();
+
+      // Offset for the section's scroll-margin (page-section = 84px), minus a
+      // touch so it sits a bit lower than the very top on mobile.
+      const cs = getComputedStyle(target);
+      const marginTop = parseInt(cs.scrollMarginTop || "0", 10) || 0;
+      const destY = window.scrollY + target.getBoundingClientRect().top - marginTop;
+      smoothScrollToY(destY);
+      history.pushState(null, "", href);
+      return true;
+    }
+
+    /* ── Submenu (subsections of a section, mirrors desktop megamenu) ── */
+    let subData: { subsections: Record<string, any[]>; sectionTitles: Record<string, string> } = {
+      subsections: {}, sectionTitles: {},
+    };
+    try {
+      const raw = document.getElementById("mn-sub-data")?.textContent;
+      if (raw) subData = JSON.parse(raw);
+    } catch {}
+
+    const subTitle = document.getElementById("mn-sub-title");
+    const subList = document.getElementById("mn-sub-list");
+    const subGoto = document.getElementById("mn-sub-goto");
+    let subSectionHref = "";
+
+    function openSubmenu(sectionId: string, sectionHref: string) {
+      const items = subData.subsections[sectionId];
+      if (!items || !subList) return;
+      subSectionHref = sectionHref;
+      if (subTitle) subTitle.textContent = subData.sectionTitles[sectionId] || sectionId;
+
+      subList.innerHTML = "";
+      items.forEach((it) => {
+        const a = document.createElement("a");
+        a.href = it.href;
+        a.className = "mn-sub-item";
+        a.innerHTML =
+          `<span class="mn-sub-item-title"></span><span class="mn-sub-item-desc"></span>`;
+        (a.querySelector(".mn-sub-item-title") as HTMLElement).textContent = it.title;
+        (a.querySelector(".mn-sub-item-desc") as HTMLElement).textContent = it.desc;
+        a.addEventListener("click", (e) => {
+          morphTo("nav");
+          navigateHref(it.href, e);
+        });
+        subList.appendChild(a);
+      });
+      if (subList) subList.scrollTop = 0;
+      morphTo("submenu");
+    }
+
+    subGoto?.addEventListener("click", () => {
+      morphTo("nav");
+      // Cross-page (or non-hash) section links: navigateHref can't smooth-scroll,
+      // so fall back to a real navigation.
+      if (!navigateHref(subSectionHref) && subSectionHref) {
+        window.location.href = subSectionHref;
+      }
+    });
+    pill.querySelector("[data-mn-back]")?.addEventListener("click", () => morphTo("menu"));
+
     pill.querySelectorAll(".mn-link").forEach((link) => {
       link.addEventListener("click", (e) => {
-        morphTo("nav");
-
-        // For same-page hash links (e.g. "/#partners"), native hash-scroll can
-        // be flaky/instant on mobile. Do an explicit smooth scrollIntoView,
-        // which recomputes the target position at click time. Cross-page links
-        // (e.g. "/blogs", or "/#x" when not on that page) fall through to the
-        // default navigation.
         const href = link.getAttribute("href") || "";
-        const hashIdx = href.indexOf("#");
-        if (hashIdx === -1) return;
+        const id = link.getAttribute("data-mn-link") || "";
 
-        const path = href.slice(0, hashIdx);
-        const id = href.slice(hashIdx + 1);
-        if (!id) return;
+        // Section with subsections → open submenu instead of navigating.
+        // Stop the desktop Header click handler from scrolling the page.
+        if (link.getAttribute("data-mn-sub") === "true") {
+          e.preventDefault();
+          e.stopPropagation();
+          openSubmenu(id, href);
+          return;
+        }
 
-        const samePage =
-          path === "" || path === window.location.pathname;
-        const target = samePage ? document.getElementById(id) : null;
-        if (!target) return;
-
-        e.preventDefault();
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-        history.pushState(null, "", href);
+        morphTo("nav");
+        navigateHref(href, e);
       });
     });
     document.addEventListener("pointerdown", (e) => {
@@ -514,6 +930,83 @@ const navItems = [
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && pill.dataset.state !== "nav") morphTo("nav");
     });
+
+    /* ── Blog tools wiring (proxies to the hidden BlogDock on blog pages) ──
+       On mobile the standalone dock pill is hidden (see BlogDock.astro); we
+       surface its Listen / Notes / Share actions here and forward clicks to the
+       dock's real buttons, mirroring their state back. ── */
+    const blogBtn = document.getElementById("mn-blog-btn");
+    const dock = document.querySelector("[data-blog-dock-root]");
+    if (blogBtn && dock) {
+      blogBtn.classList.remove("hidden");
+      blogBtn.classList.add("flex");
+
+      const dockListen = dock.querySelector("[data-listen-btn]") as HTMLElement | null;
+      const dockShare = dock.querySelector("[data-share-btn]") as HTMLElement | null;
+
+      const listenCtl = document.getElementById("mn-blog-listen");
+      const listenPlay = document.getElementById("mn-blog-listen-play");
+      const listenStop = document.getElementById("mn-blog-listen-stop");
+      const listenLabel = document.getElementById("mn-blog-listen-label");
+      const shareDefault = document.getElementById("mn-blog-share-default");
+      const shareCopied = document.getElementById("mn-blog-share-copied");
+      const shareLabel = document.getElementById("mn-blog-share-label");
+
+      // Attention pulse until the user opens the tools the first time.
+      blogBtn.classList.add("mn-attn");
+      blogBtn.addEventListener("click", () => {
+        blogBtn.classList.remove("mn-attn");
+        morphTo("blog");
+      });
+
+      // Listen: forward to dock, mirror active state via its button's class.
+      listenCtl?.addEventListener("click", () => dockListen?.click());
+      function syncListen() {
+        const on = !!dockListen?.classList.contains("is-active");
+        listenCtl?.classList.toggle("is-active", on);
+        listenPlay?.classList.toggle("hidden", on);
+        listenStop?.classList.toggle("hidden", !on);
+        if (listenLabel) listenLabel.textContent = on ? "Stop" : "Listen";
+      }
+      if (dockListen) {
+        new MutationObserver(syncListen).observe(dockListen, {
+          attributes: true, attributeFilter: ["class"],
+        });
+        syncListen();
+      }
+
+      // Notes: morph the pill into an in-pill scratchpad, synced to the dock's
+      // hidden textarea (which persists to localStorage).
+      const dockNotesInput = dock.querySelector("[data-scratchpad-input]") as HTMLTextAreaElement | null;
+      const notesInput = document.getElementById("mn-notes-input") as HTMLTextAreaElement | null;
+      document.getElementById("mn-blog-notes")?.addEventListener("click", () => {
+        if (notesInput && dockNotesInput) notesInput.value = dockNotesInput.value;
+        morphTo("notes");
+        setTimeout(() => notesInput?.focus(), 320);
+      });
+      pill.querySelector("[data-mn-notes-back]")?.addEventListener("click", () => morphTo("blog"));
+      // Mirror typing into the dock textarea + fire its input handler to save.
+      notesInput?.addEventListener("input", () => {
+        if (!dockNotesInput) return;
+        dockNotesInput.value = notesInput.value;
+        dockNotesInput.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+
+      // Share: forward + mirror the copied confirmation.
+      document.getElementById("mn-blog-share")?.addEventListener("click", () => {
+        dockShare?.click();
+      });
+      if (dockShare) {
+        new MutationObserver(() => {
+          const copied = !dock.querySelector("[data-share-icon-copied]")?.classList.contains("hidden");
+          shareDefault?.classList.toggle("hidden", copied);
+          shareCopied?.classList.toggle("hidden", !copied);
+          if (shareLabel) shareLabel.textContent = copied ? "Copied" : "Share";
+        }).observe(dock.querySelector("[data-share-icon-copied]") as HTMLElement, {
+          attributes: true, attributeFilter: ["class"],
+        });
+      }
+    }
 
     /* ── Music player wiring (controls existing CassettePlayer audio + state) ── */
     const audio = document.getElementById("cp-audio") as HTMLAudioElement | null;
