@@ -1011,6 +1011,57 @@ const dropdowns: Record<string, DropdownItem[]> = {
     sections.forEach((s) => observer.observe(s));
     window.addEventListener("scroll", scheduleNavUpdate, { passive: true });
 
+    // The document scroll lives on <body> here (overflow-y: auto), not the
+    // window - so window.scrollTo is a no-op. Find the element that actually
+    // scrolls before tweening.
+    function getScroller(): HTMLElement {
+      const candidates = [
+        document.scrollingElement,
+        document.documentElement,
+        document.body,
+      ].filter(Boolean) as HTMLElement[];
+      for (const el of candidates) {
+        if (el.scrollHeight > el.clientHeight + 4) return el;
+      }
+      return (document.scrollingElement as HTMLElement) || document.documentElement;
+    }
+
+    // Self-correcting smooth scroll: re-reads the target's live position each
+    // frame, so lazy content settling below doesn't leave it landing short.
+    function smoothScrollToSection(target: Element) {
+      const scroller = getScroller();
+      const finalTargetY = () =>
+        scroller.scrollTop + target.getBoundingClientRect().top;
+
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+      if (reduceMotion) {
+        scroller.scrollTop = finalTargetY();
+        return;
+      }
+
+      const startY = scroller.scrollTop;
+      const duration = 800;
+      const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+      // Bypass CSS scroll-behavior so our per-frame writes aren't double-eased.
+      const prevBehavior = scroller.style.scrollBehavior;
+      scroller.style.scrollBehavior = "auto";
+
+      let start: number | undefined;
+      const step = (ts: number) => {
+        if (start === undefined) start = ts;
+        const p = Math.min((ts - start) / duration, 1);
+        scroller.scrollTop = startY + (finalTargetY() - startY) * ease(p);
+        if (p < 1) {
+          requestAnimationFrame(step);
+        } else {
+          scroller.style.scrollBehavior = prevBehavior;
+        }
+      };
+      requestAnimationFrame(step);
+    }
+
     // ── Smooth scroll ──
     document.addEventListener("click", (e) => {
       const el = e.target instanceof Element ? e.target.closest('a[href*="#"]') : null;
@@ -1034,10 +1085,11 @@ const dropdowns: Record<string, DropdownItem[]> = {
 
       // Contact (200vh) and More (curtain + pinned boombox below it) sit below
       // lazy-loaded content, so a captured scrollIntoView target goes stale and
-      // lands short. Hash nav lets the browser resolve the correct position - CSS
-      // scroll-behavior: smooth keeps it smooth.
+      // lands short. Tween manually, re-reading the target position every frame
+      // so it self-corrects as content below settles - and stays smooth.
       if (id === "contact" || id === "more") {
-        window.location.hash = id;
+        smoothScrollToSection(target);
+        history.replaceState(null, "", window.location.pathname);
         applyNavState(id);
         currentSectionId = id;
         return;

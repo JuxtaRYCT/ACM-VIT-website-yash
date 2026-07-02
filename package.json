@@ -37,6 +37,8 @@
     "dotenv": "^17.2.3",
     "mime-types": "^3.0.2",
     "p-limit": "^6.2.0",
-    "sass-embedded": "^1.93.3"
+    "playwright-core": "1.48",
+    "sass-embedded": "^1.93.3",
+    "wrangler": "^4.106.0"
   }
 }
