@@ -486,9 +486,12 @@ const navItems = [
     .mn-root { display: none; }
   }
 
-  /* Mobile body reserve */
+  /* Clearance for the floating navbar pill below the last content.
+     Applied to the footer (solid black) instead of the body so the reserved
+     strip matches the footer, rather than exposing the greenish page canvas
+     (#0d0e0d) past it - which looked like the page flowed past the footer. */
   @media (max-width: 1024px) {
-    :global(body) {
+    :global(footer#footer) {
       padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
     }
   }
