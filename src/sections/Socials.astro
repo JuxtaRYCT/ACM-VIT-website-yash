@@ -701,6 +701,7 @@ const ICON_SVGS: Record<string, string> = {
     justify-content: center;
     flex: 1;
     min-height: 0;
+    overflow: hidden;
   }
 
   /* Slot: clips the cassette so only the top ~60% peeks out */
@@ -708,6 +709,7 @@ const ICON_SVGS: Record<string, string> = {
     position: relative;
     width: 100%;
     max-width: 480px;
+    max-height: 100%;
     aspect-ratio: 280 / 120;
     overflow: hidden;
     border-radius: 14px 14px 0 0;

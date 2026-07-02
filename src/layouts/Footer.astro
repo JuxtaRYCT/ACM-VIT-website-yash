@@ -253,6 +253,9 @@ const footerColumnsHtml = footerNav
         <div class="footer-video-tint" aria-hidden="true"></div>
         <div class="footer-video-fade" aria-hidden="true"></div>
         <span class="footer-wordmark">because technology matters</span>
+        <div class="footer-acm-block" aria-hidden="true">
+          <span class="footer-acm-mark">acm</span>
+        </div>
 
         <!-- Copyright pinned bottom-left -->
         <p class="absolute bottom-3 left-12 z-30 text-[10px] lg:text-xs font-light text-white">
@@ -261,7 +264,7 @@ const footerColumnsHtml = footerNav
 
         <!-- Location pinned bottom-right -->
         <p class="absolute bottom-3 right-12 z-30 text-[10px] lg:text-xs font-light text-white">
-          Vellore, Tamiml Nadu, India
+          Vellore, Tamil Nadu, India
         </p>
 
         <!-- Bottom section overlaid on the video, pushed lower -->
@@ -574,6 +577,35 @@ const footerColumnsHtml = footerNav
     user-select: none;
   }
 
+  /* Big 'acm' wordmark, right side of footer video */
+  .footer-acm-block {
+    position: absolute;
+    right: 10rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    pointer-events: none;
+    user-select: none;
+  }
+  .footer-acm-mark {
+    font-family: "PolySans Bulky Wide", sans-serif;
+    font-weight: 700;
+    text-transform: lowercase;
+    line-height: 0.9;
+    font-size: clamp(6rem, 16vw, 16rem);
+    letter-spacing: -0.03em;
+    color: rgba(255, 255, 255, 0.9);
+    overflow: hidden;
+  }
+  .footer-acm-letter {
+    display: inline-block;
+    transform-origin: 50% 100%;
+    will-change: transform, opacity;
+  }
+
   /* Social icons: inline Simple Icons SVG. Uniform box, currentColor fill,
      slow ease to website orange on hover. */
   :global(.footer-social) {
@@ -642,3 +674,65 @@ const footerColumnsHtml = footerNav
     pointer-events: none;
   }
 </style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const initFooterAcm = () => {
+    const marks = document.querySelectorAll<HTMLElement>(".footer-acm-mark");
+    marks.forEach((mark) => {
+      if (mark.dataset.acmInit === "1") return;
+      mark.dataset.acmInit = "1";
+
+      // Split into per-letter spans
+      const text = mark.textContent || "";
+      mark.textContent = "";
+      const letters: HTMLElement[] = [];
+      [...text].forEach((ch) => {
+        const span = document.createElement("span");
+        span.className = "footer-acm-letter";
+        span.textContent = ch;
+        mark.appendChild(span);
+        letters.push(span);
+      });
+
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      if (reduceMotion) {
+        gsap.set(letters, { yPercent: 0, opacity: 1 });
+        return;
+      }
+
+      gsap.set(letters, { yPercent: 120, rotation: -6, opacity: 0 });
+
+      ScrollTrigger.create({
+        trigger: mark,
+        start: "top 90%",
+        once: true,
+        onEnter: () => {
+          gsap.to(letters, {
+            yPercent: 0,
+            rotation: 0,
+            opacity: 1,
+            duration: 0.85,
+            ease: "power3.out",
+            stagger: 0.08,
+          });
+        },
+      });
+    });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initFooterAcm);
+  } else {
+    initFooterAcm();
+  }
+  // Re-init when variant templates mount (variant host)
+  document.addEventListener("variants-mounted", initFooterAcm);
+</script>
