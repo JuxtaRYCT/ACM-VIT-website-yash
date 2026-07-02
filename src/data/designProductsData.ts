@@ -431,8 +431,8 @@ export const productGuides: ProductGuide[] = [
       { label: "Read at", value: "acmvit.in/grep" },
     ],
     logos: [
-      { label: "Pixel wordmark", src: "/grep/grep-wordmark.png", width: 170, bg: "#FEFBE7", fg: "#2023FE" },
-      { label: "Reversed - paper on cobalt", text: { content: "GREP", css: "'ChessType DS', monospace", size: "44px" }, bg: "#2023FE", fg: "#FEFBE7" },
+      { label: "Pixel wordmark", src: "/grep/grep-wordmark.png", width: 170, bg: "#2023FE", fg: "#FEFBE7" },
+      { label: "Cobalt on paper", text: { content: "GREP", css: "'ChessType DS', monospace", size: "44px" }, bg: "#FEFBE7", fg: "#2023FE" },
     ],
     logoNote:
       "The wordmark is typeset, not drawn: GREP in ChessType's pixel-LED dots, usually stacked GR over EP on covers, with 'by acm-vit' underneath in Borel script. Two colorways exist - cobalt on paper, paper on cobalt - and no third. Never anti-alias it into softness; the hard pixel edge is the point.",

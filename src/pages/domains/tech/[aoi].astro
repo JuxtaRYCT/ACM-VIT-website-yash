@@ -31,7 +31,10 @@ const otherAOIs = techAOIs.filter((a) => a.key !== aoiSlug);
 ---
 
 <Layout pageTitle={aoiData.title} backHref="/domains/tech">
-  <div style={`--domain-color: ${TECH_THEME_COLOR};`}>
+  <div
+    style={`--domain-color: ${TECH_THEME_COLOR};`}
+    data-egg-track={aoiData.key === "gamestudios" ? "GTA San Andreas Theme" : undefined}
+  >
 
     <section class="dsg-hero" style="min-height: 70vh;">
       <div class="dsg-hero-inner">
@@ -193,6 +196,39 @@ const otherAOIs = techAOIs.filter((a) => a.key !== aoiSlug);
   import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
   gsap.registerPlugin(ScrollTrigger);
+
+  /* ── Easter egg: Game Studios AOI cues the GTA San Andreas theme in the
+     site's cassette player, expanded, low in the mix. Autoplay-with-sound is
+     blocked until a user gesture, so we arm on the first interaction. Only
+     fires if the user hasn't already started their own track. ── */
+  (() => {
+    const track = document
+      .querySelector("[data-egg-track]")
+      ?.getAttribute("data-egg-track");
+    if (!track) return;
+
+    let done = false;
+    const trigger = () => {
+      if (done) return;
+      const cp = (window as any).acmCassette;
+      if (!cp) return; // player not initialised yet - wait for the next gesture
+      const ok = cp.playByTitle(track, {
+        volume: 0.18,
+        expand: true,
+        onlyIfPaused: true,
+      });
+      if (ok) {
+        done = true;
+        ["pointerdown", "keydown", "touchstart", "wheel"].forEach((ev) =>
+          window.removeEventListener(ev, trigger)
+        );
+      }
+    };
+
+    ["pointerdown", "keydown", "touchstart", "wheel"].forEach((ev) =>
+      window.addEventListener(ev, trigger, { passive: true })
+    );
+  })();
 
   const entry = gsap.timeline({ defaults: { ease: "power3.out" }, paused: true });
 
