@@ -1,6 +1,9 @@
 ---
 // Footer.astro
 import { getAssetUrl, getMediaUrl } from "../utils/cdn";
+import { techAOIs } from "../data/techDomainData";
+import { designAOIs } from "../data/designDomainData";
+import { researchAOIs } from "../data/researchDomainData";
 
 const currentYear = new Date().getFullYear();
 
@@ -50,6 +53,13 @@ const socialLinksHtml = socials
 type FooterLink = { label: string; href: string };
 type FooterColumn = { title: string; links: FooterLink[] };
 
+// AOI columns derive from the same data that builds /domains/*/[aoi] pages,
+// so footer links never drift from real routes.
+const aoiLinks = (
+  aois: { key: string; title: string }[],
+  base: string
+): FooterLink[] => aois.map((a) => ({ label: a.title, href: `${base}/${a.key}` }));
+
 const footerNav: FooterColumn[] = [
   {
     title: "Explore",
@@ -60,6 +70,10 @@ const footerNav: FooterColumn[] = [
       { label: "Projects", href: "/#projects" },
       { label: "ACM-W", href: "/#acm-w" },
       { label: "Community", href: "/#community" },
+      { label: "Blogs", href: "/#blogs" },
+      { label: "Partners", href: "/#partners" },
+      { label: "Gallery", href: "/#gallery" },
+      { label: "Contact", href: "/#contact" },
     ],
   },
   {
@@ -72,6 +86,9 @@ const footerNav: FooterColumn[] = [
       { label: "Research", href: "/domains/research" },
     ],
   },
+  { title: "Tech", links: aoiLinks(techAOIs, "/domains/tech") },
+  { title: "Design", links: aoiLinks(designAOIs, "/domains/design") },
+  { title: "Research", links: aoiLinks(researchAOIs, "/domains/research") },
   {
     title: "Events",
     links: [
@@ -111,12 +128,26 @@ const footerNav: FooterColumn[] = [
   {
     title: "Community",
     links: [
+      { label: "Community Hub", href: "/community" },
+      { label: "Outreach", href: "/community#community-outreach" },
+      { label: "SDG Initiative", href: "/community#community-sdg" },
+      { label: "Fresher Initiative", href: "/community#community-ksl" },
+      { label: "Bootcamps", href: "/community#community-bootcamp" },
+      { label: "Open Source", href: "/community#community-opensource" },
+      { label: "ACM-W", href: "/community#acm-w" },
+      { label: "International Award", href: "/community#community-award" },
+    ],
+  },
+  {
+    title: "More",
+    links: [
       { label: "Team", href: "/team" },
       { label: "Partners", href: "/partners" },
       { label: "z0d1ak", href: "/z0d1ak" },
       { label: "Calendar", href: "/calendar" },
       { label: "FAQs", href: "/faqs" },
       { label: "Code of Conduct", href: "/code-of-conduct" },
+      { label: "Sitemap", href: "/sitemap" },
     ],
   },
 ];
@@ -184,46 +215,65 @@ const footerColumnsHtml = footerNav
               >
             </a>
 
-            <a href="/sitemap" class="footer-sitemap-btn group">
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <rect x="3" y="3" width="7" height="7" rx="1" />
-                <rect x="14" y="3" width="7" height="7" rx="1" />
-                <rect x="3" y="14" width="7" height="7" rx="1" />
-                <rect x="14" y="14" width="7" height="7" rx="1" />
-              </svg>
-              <span>View sitemap</span>
-              <svg
-                class="footer-sitemap-arrow"
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </a>
+            <div class="flex flex-wrap items-center gap-3">
+              <a href="/sitemap" class="footer-sitemap-btn group">
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="3" width="7" height="7" rx="1" />
+                  <rect x="14" y="3" width="7" height="7" rx="1" />
+                  <rect x="3" y="14" width="7" height="7" rx="1" />
+                  <rect x="14" y="14" width="7" height="7" rx="1" />
+                </svg>
+                <span>View sitemap</span>
+                <svg
+                  class="footer-sitemap-arrow"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+              <a href="/sitemap.xml" class="footer-sitemap-btn group">
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="16 18 22 12 16 6" />
+                  <polyline points="8 6 2 12 8 18" />
+                </svg>
+                <span>sitemap.xml</span>
+              </a>
+            </div>
           </div>
 
           <!-- Link grid -->
           <nav
             aria-label="Footer navigation"
-            class="grid grow grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-3 xl:grid-cols-6"
+            class="grid grow grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
             set:html={footerColumnsHtml}
           >
           </nav>
@@ -318,40 +368,59 @@ const footerColumnsHtml = footerNav
         >
         </nav>
 
-        <a href="/sitemap" class="footer-sitemap-btn group self-start">
-          <svg
-            width="15"
-            height="15"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <rect x="3" y="3" width="7" height="7" rx="1" />
-            <rect x="14" y="3" width="7" height="7" rx="1" />
-            <rect x="3" y="14" width="7" height="7" rx="1" />
-            <rect x="14" y="14" width="7" height="7" rx="1" />
-          </svg>
-          <span>View sitemap</span>
-          <svg
-            class="footer-sitemap-arrow"
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <line x1="5" y1="12" x2="19" y2="12" />
-            <polyline points="12 5 19 12 12 19" />
-          </svg>
-        </a>
+        <div class="flex flex-wrap items-center gap-3 self-start">
+          <a href="/sitemap" class="footer-sitemap-btn group">
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+              <rect x="14" y="14" width="7" height="7" rx="1" />
+            </svg>
+            <span>View sitemap</span>
+            <svg
+              class="footer-sitemap-arrow"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </a>
+          <a href="/sitemap.xml" class="footer-sitemap-btn group">
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <polyline points="16 18 22 12 16 6" />
+              <polyline points="8 6 2 12 8 18" />
+            </svg>
+            <span>sitemap.xml</span>
+          </a>
+        </div>
       </div>
 
       <!-- Copyright + socials above the video -->

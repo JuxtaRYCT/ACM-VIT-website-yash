@@ -3,9 +3,18 @@ export const prerender = true;
 import Layout from "../layouts/Layout.astro";
 import "../styles/globals.css";
 import Footer from "../layouts/Footer.astro";
+import { techAOIs } from "../data/techDomainData";
+import { designAOIs } from "../data/designDomainData";
+import { researchAOIs } from "../data/researchDomainData";
+import { productGuides } from "../data/designProductsData";
 
 type Link = { label: string; href: string; external?: boolean };
 type Group = { title: string; links: Link[] };
+
+const aoiLinks = (
+  aois: { key: string; title: string }[],
+  base: string
+): Link[] => aois.map((a) => ({ label: a.title, href: `${base}/${a.key}` }));
 
 const groups: Group[] = [
   {
@@ -33,6 +42,9 @@ const groups: Group[] = [
       { label: "Research", href: "/domains/research" },
     ],
   },
+  { title: "Tech AOIs", links: aoiLinks(techAOIs, "/domains/tech") },
+  { title: "Design AOIs", links: aoiLinks(designAOIs, "/domains/design") },
+  { title: "Research AOIs", links: aoiLinks(researchAOIs, "/domains/research") },
   {
     title: "Events",
     links: [
@@ -84,6 +96,44 @@ const groups: Group[] = [
       { label: "Cassette Builder", href: "/cassette-builder" },
       { label: "Design Guide", href: "/design" },
       { label: "Calendar", href: "/calendar" },
+    ],
+  },
+  {
+    title: "Design Guide",
+    links: [
+      { label: "Overview", href: "/design" },
+      { label: "Logo", href: "/design/logo" },
+      { label: "Color", href: "/design/color" },
+      { label: "Typography", href: "/design/typography" },
+      { label: "Grid & Layout", href: "/design/grid" },
+      { label: "Spacing", href: "/design/spacing" },
+      { label: "Motion", href: "/design/motion" },
+      { label: "Styles", href: "/design/styles" },
+      { label: "Social Media", href: "/design/social" },
+      { label: "Voice & Tone", href: "/design/voice" },
+      { label: "Website", href: "/design/website" },
+      { label: "Footers", href: "/design/footers" },
+      { label: "Resources", href: "/design/resources" },
+    ],
+  },
+  {
+    title: "Product Design Guides",
+    links: productGuides.map((p) => ({
+      label: p.name,
+      href: `/design/products/${p.slug}`,
+    })),
+  },
+  {
+    title: "Community",
+    links: [
+      { label: "Community Hub", href: "/community" },
+      { label: "Outreach", href: "/community#community-outreach" },
+      { label: "SDG Initiative", href: "/community#community-sdg" },
+      { label: "Fresher Initiative", href: "/community#community-ksl" },
+      { label: "Bootcamps", href: "/community#community-bootcamp" },
+      { label: "Open Source", href: "/community#community-opensource" },
+      { label: "ACM-W", href: "/community#acm-w" },
+      { label: "International Award", href: "/community#community-award" },
     ],
   },
   {
