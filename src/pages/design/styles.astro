@@ -14,7 +14,7 @@ const radii = [
 
 <DesignLayout
   title="Shape & Styles"
-  description="Corner radii, elevation, borders, iconography, and imagery treatment for ACM-VIT."
+  description="Corner radii, elevation, iconography, buttons, and imagery treatment for ACM-VIT."
   current="/design/styles"
 >
   <section class="ds-hero">
@@ -100,9 +100,58 @@ const radii = [
     </div>
   </section>
 
-  <!-- 04 · Imagery -->
+  <!-- 04 · Buttons -->
+  <section class="ds-section" id="buttons">
+    <div class="ds-sec-head"><span class="ds-sec-num">04</span><h2 class="ds-h2">Buttons</h2></div>
+    <p class="ds-body">
+      Pills by default - <span class="ds-mono">r-full</span> - but a softer
+      rectangle on the 4pt scale works too: <span class="ds-mono">r-sm (12px)</span>
+      is the standard stop. Hierarchy comes from fill, not size: one primary
+      action per view, everything else steps down to outline.
+    </p>
+    <div class="ds-bento">
+      <div class="ds-card ds-card-tonal ds-b8 ds-reveal" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:16px; min-height:170px;">
+        <button class="ds-btn ds-btn-primary">Primary</button>
+        <button class="ds-btn ds-btn-accent">Accent</button>
+        <button class="ds-btn ds-btn-outline">Outline</button>
+        <button class="ds-btn ds-btn-primary ds-btn-sm">Small</button>
+        <button class="ds-btn ds-btn-outline" style="border-radius:12px;">Rectangular</button>
+        <span class="ds-dl"><a href="#buttons">SVG</a><a href="#buttons">PNG</a><a href="#buttons">WebP</a></span>
+      </div>
+      <div class="ds-card ds-b4 ds-reveal">
+        <h3 class="ds-h4">Anatomy</h3>
+        <ul class="ds-y-list" style="margin-top:10px">
+          <li>Radius: <span class="ds-mono">r-full</span> pill or <span class="ds-mono">r-sm (12px)</span> rectangle.</li>
+          <li>Padding <span class="ds-mono">11px 22px</span>; small variant <span class="ds-mono">7px 15px</span>.</li>
+          <li>Label: DM Sans <span class="ds-mono">14px / 600</span>; small <span class="ds-mono">13px</span>.</li>
+          <li>Icon sits before the label with an <span class="ds-mono">8px</span> gap, 16px size.</li>
+          <li>Hover: lift <span class="ds-mono">-1px</span> + soft shadow, <span class="ds-mono">0.16s ease</span>.</li>
+        </ul>
+      </div>
+      <div class="ds-card ds-b6 ds-reveal">
+        <span class="ds-chip ds-chip-do" style="margin-bottom:12px">Do</span>
+        <ul class="ds-y-list">
+          <li>Ink primary by default; accent only for the brand CTA.</li>
+          <li>One primary per view - siblings go outline.</li>
+          <li>Verb-first labels: "Download assets", not "Assets".</li>
+          <li>Related actions of equal weight join a split-button.</li>
+        </ul>
+      </div>
+      <div class="ds-card ds-b6 ds-reveal">
+        <span class="ds-chip ds-chip-dont" style="margin-bottom:12px">Don't</span>
+        <ul class="ds-y-list">
+          <li>No off-scale radii - <span class="ds-mono">r-full</span> or a 4pt stop.</li>
+          <li>No two filled buttons side by side.</li>
+          <li>No colors outside Ink, the accent, and surface tones.</li>
+          <li>No all-caps labels or letterspacing on buttons.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · Imagery -->
   <section class="ds-section" id="imagery">
-    <div class="ds-sec-head"><span class="ds-sec-num">04</span><h2 class="ds-h2">Imagery</h2></div>
+    <div class="ds-sec-head"><span class="ds-sec-num">05</span><h2 class="ds-h2">Imagery</h2></div>
     <div class="ds-bento">
       <div class="ds-card ds-b6 ds-reveal">
         <span class="ds-chip ds-chip-do" style="margin-bottom:12px">Do</span>
