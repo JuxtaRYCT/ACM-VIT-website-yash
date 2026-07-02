@@ -417,17 +417,15 @@ html[data-theme="light"] [style*="text-shadow"] {
   text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6) !important;
 }
 
-/* ── Footer ── */
-html[data-theme="light"] footer .bg-gradient-to-b {
-  opacity: 0.15 !important;
+/* ── Footer: theme-immune. Footer is always dark, so undo the generic
+   light-theme utility recolors for anything inside it. ── */
+html[data-theme="light"] #footer .text-white {
+  color: #fff !important;
 }
-html[data-theme="light"] footer img:not([alt="Footer Background"]) {
-  filter: brightness(0.2);
-  transition: filter 0.3s ease;
-}
-html[data-theme="light"] footer img[alt="Footer Background"] {
-  filter: invert(0.85) sepia(0.3) saturate(0.5) hue-rotate(-10deg);
-  opacity: 0.6;
+html[data-theme="light"] #footer .text-yellow-50,
+html[data-theme="light"] #footer .text-\[\#FEFCD9\],
+html[data-theme="light"] #footer .text-\[\#fefcd9\] {
+  color: #fefcd9 !important;
 }
 
 /* ── Preloader ── */
