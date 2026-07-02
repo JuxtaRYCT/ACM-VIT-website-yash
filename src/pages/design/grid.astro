@@ -1,0 +1,216 @@
+---
+export const prerender = true;
+import DesignLayout from "../../layouts/DesignLayout.astro";
+
+// Column specs from the ACM-VIT Website 2025 Figma file (Grids page):
+// desktop frames at 1512 use 12 / 20 / 108, tablet at 834 uses 8 / 16 / 32,
+// mobile at 440 uses 4 / 8 / 16, all over an 8px baseline row grid.
+const breakpoints = [
+  { name: "xs", min: "0", cols: 4, margin: "16", gutter: "8", note: "Phones (Figma ref: iPhone 16 Pro Max, 440)" },
+  { name: "sm", min: "480", cols: 4, margin: "16", gutter: "8", note: "Large phones" },
+  { name: "md", min: "640", cols: 8, margin: "32", gutter: "16", note: "Small tablets" },
+  { name: "lg", min: "768", cols: 8, margin: "32", gutter: "16", note: "Tablets (Figma ref: iPad Pro 11\", 834)" },
+  { name: "xl", min: "1024", cols: 12, margin: "108", gutter: "20", note: "Laptops - chrome and layout flip here" },
+  { name: "2xl", min: "1280", cols: 12, margin: "108 / auto", gutter: "20", note: "Desktops (Figma ref: MacBook Pro 14\", 1512)" },
+];
+---
+
+<DesignLayout
+  title="Grid & Layout"
+  description="ACM-VIT layout grids: columns, margins, gutters, breakpoints, and container rules."
+  current="/design/grid"
+>
+  <section class="ds-hero">
+    <div class="ds-kicker"><span class="ds-kicker-pill">Foundations · Grid</span></div>
+    <h1 class="ds-h1">Twelve columns, one rhythm.</h1>
+    <p class="ds-body-lg">
+      Layouts build on a column grid that grows from 4 columns on phones to 12
+      on desktop, with every measurement snapped to the 4pt rhythm. The same
+      grid drives the website, decks, and print.
+    </p>
+  </section>
+
+  <!-- 01 · Live grid -->
+  <section class="ds-section" id="columns">
+    <div class="ds-sec-head"><span class="ds-sec-num">01</span><h2 class="ds-h2">The column grid</h2></div>
+    <p class="ds-body">
+      This diagram is live - resize the window and watch the column count step
+      down at each breakpoint.
+    </p>
+    <div class="ds-card ds-reveal" style="margin-top:24px;">
+      <div class="ds-grid-demo" id="grid-demo" aria-hidden="true"></div>
+      <p class="ds-small" style="margin-top:14px; text-align:center;" id="grid-label"></p>
+    </div>
+  </section>
+
+  <!-- 02 · Breakpoints -->
+  <section class="ds-section" id="breakpoints">
+    <div class="ds-sec-head"><span class="ds-sec-num">02</span><h2 class="ds-h2">Breakpoints</h2></div>
+    <p class="ds-body">
+      Six canonical stops, matching the Tailwind config used on the website
+      and the reference frames in the ACM-VIT Website 2025 Figma file. The
+      important one is <span class="ds-mono">1024</span>: navigation chrome,
+      docks, and split layouts all flip between mobile and desktop there -
+      never at 768. Vertically, everything sits on an
+      <span class="ds-mono">8px baseline row grid</span>.
+    </p>
+    <div class="ds-card ds-reveal" style="margin-top:24px; padding:0; overflow-x:auto;">
+      <table class="ds-table" style="margin-top:0">
+        <thead>
+          <tr><th>Token</th><th>Min width</th><th>Columns</th><th>Margin</th><th>Gutter</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          {
+            breakpoints.map((b) => (
+              <tr>
+                <td class="ds-mono">{b.name}</td>
+                <td class="ds-mono">{b.min}px</td>
+                <td class="ds-mono">{b.cols}</td>
+                <td class="ds-mono">{b.margin}</td>
+                <td class="ds-mono">{b.gutter}</td>
+                <td>{b.note}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 03 · Containers -->
+  <section class="ds-section" id="containers">
+    <div class="ds-sec-head"><span class="ds-sec-num">03</span><h2 class="ds-h2">Containers</h2></div>
+    <div class="ds-bento">
+      <div class="ds-card ds-b4 ds-reveal">
+        <h3 class="ds-h4">Reading container</h3>
+        <p class="ds-body" style="margin-top:6px">
+          <span class="ds-mono">max-width: 720px</span> - long-form text:
+          blogs, codes of conduct, articles.
+        </p>
+      </div>
+      <div class="ds-card ds-b4 ds-reveal">
+        <h3 class="ds-h4">Content container</h3>
+        <p class="ds-body" style="margin-top:6px">
+          <span class="ds-mono">max-width: 1024px</span> - default page
+          content, forms, mixed sections.
+        </p>
+      </div>
+      <div class="ds-card ds-b4 ds-reveal">
+        <h3 class="ds-h4">Wide container</h3>
+        <p class="ds-body" style="margin-top:6px">
+          <span class="ds-mono">max-width: 1280px</span> - galleries, bento
+          grids, hero compositions.
+        </p>
+      </div>
+    </div>
+    <div class="ds-card ds-card-tonal ds-reveal" style="margin-top:14px;">
+      <div class="ds-container-demo" aria-hidden="true">
+        <div style="width:100%"><span>wide · 1280</span></div>
+        <div style="width:80%"><span>content · 1024</span></div>
+        <div style="width:56%"><span>reading · 720</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · Rules -->
+  <section class="ds-section" id="rules">
+    <div class="ds-sec-head"><span class="ds-sec-num">04</span><h2 class="ds-h2">Layout rules</h2></div>
+    <div class="ds-bento">
+      <div class="ds-card ds-b6 ds-reveal">
+        <span class="ds-chip ds-chip-do" style="margin-bottom:12px">Do</span>
+        <ul class="ds-g-list">
+          <li>Span whole columns; never split a gutter.</li>
+          <li>Flip navigation and split layouts at <span class="ds-mono">1024</span>.</li>
+          <li>Let bento tiles span 4 / 6 / 8 / 12 columns.</li>
+          <li>Keep vertical section spacing on the 4pt scale (see Spacing).</li>
+          <li>Design mobile-first; the grid grows, it doesn't shrink.</li>
+        </ul>
+      </div>
+      <div class="ds-card ds-b6 ds-reveal">
+        <span class="ds-chip ds-chip-dont" style="margin-bottom:12px">Don't</span>
+        <ul class="ds-g-list">
+          <li>No arbitrary breakpoints ("looks right at 937px").</li>
+          <li>No full-bleed text - text always sits inside a container.</li>
+          <li>No 5- or 7-column arrangements; factors of 12 only.</li>
+          <li>No horizontal scroll, ever, at any width.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</DesignLayout>
+
+<style>
+  .ds-grid-demo {
+    display: grid;
+    gap: var(--demo-gutter, 24px);
+    grid-template-columns: repeat(var(--demo-cols, 12), 1fr);
+    min-height: 180px;
+  }
+  .ds-grid-demo :global(span) {
+    background: var(--ds-purple-tonal);
+    border: 1px solid #e3d3f7;
+    border-radius: 8px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 8px;
+    font-size: 11px;
+    font-weight: 640;
+    color: var(--ds-purple);
+  }
+  .ds-container-demo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  .ds-container-demo > div {
+    background: var(--ds-surface);
+    border: 1px solid var(--ds-line-2);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+  }
+  .ds-container-demo span {
+    font-size: 12px;
+    font-weight: 620;
+    color: var(--ds-ink-3);
+    font-family: var(--ds-mono);
+  }
+  .ds-g-list {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--ds-ink-2);
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
+  .ds-g-list li + li {
+    margin-top: 6px;
+  }
+</style>
+
+<script>
+  const demo = document.getElementById("grid-demo");
+  const label = document.getElementById("grid-label");
+  const stops = [
+    { min: 1024, cols: 12, gutter: 20, name: "xl / 2xl" },
+    { min: 640, cols: 8, gutter: 16, name: "md / lg" },
+    { min: 0, cols: 4, gutter: 8, name: "xs / sm" },
+  ];
+  const render = () => {
+    if (!demo || !label) return;
+    const w = demo.clientWidth;
+    // demo mirrors viewport tiers at reduced widths
+    const stop =
+      w >= 820 ? stops[0] : w >= 480 ? stops[1] : stops[2];
+    demo.style.setProperty("--demo-cols", String(stop.cols));
+    demo.style.setProperty("--demo-gutter", stop.gutter + "px");
+    demo.innerHTML = Array.from(
+      { length: stop.cols },
+      (_, i) => `<span>${i + 1}</span>`,
+    ).join("");
+    label.textContent = `${stop.cols} columns · ${stop.gutter}px gutters (${stop.name})`;
+  };
+  render();
+  addEventListener("resize", render);
+</script>

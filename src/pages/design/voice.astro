@@ -1,0 +1,128 @@
+---
+export const prerender = true;
+import DesignLayout from "../../layouts/DesignLayout.astro";
+
+const traits = [
+  {
+    name: "Confident, not boastful",
+    desc: "We state what we built and let specifics carry the weight. Numbers beat adjectives.",
+  },
+  {
+    name: "Dry, self-aware wit",
+    desc: "We can laugh at ourselves. Humor is seasoning, never the dish.",
+  },
+  {
+    name: "Direct and concrete",
+    desc: "Short sentences. Active voice. A reader should never wonder what we mean.",
+  },
+  {
+    name: "Warm to newcomers",
+    desc: "No gatekeeping, no acronym walls. First-years are the audience that matters most.",
+  },
+];
+
+const rewrites = [
+  {
+    bad: "We are thrilled to announce our flagship annual mega-event is back, bigger and better than ever!!!",
+    good: "Cryptic Hunt returns on 14 March. 36 hours, 1,200 hunters last year. Bring a team.",
+  },
+  {
+    bad: "Leveraging cutting-edge technologies to synergize innovative solutions for tomorrow's problems.",
+    good: "We build tools students actually use - starting with the ones we needed ourselves.",
+  },
+  {
+    bad: "Registrations are now live!!! Hurry, limited slots available, don't miss out!!!",
+    good: "Registrations are open until Friday. 200 seats.",
+  },
+];
+---
+
+<DesignLayout
+  title="Voice & Tone"
+  description="How ACM-VIT writes: confident, concrete, warm, and a little wry."
+  current="/design/voice"
+>
+  <section class="ds-hero">
+    <div class="ds-kicker"><span class="ds-kicker-pill">Brand · Voice</span></div>
+    <h1 class="ds-h1">Say it like a builder.</h1>
+    <p class="ds-body-lg">
+      The visual system says who we are; the words prove it. ACM-VIT copy is
+      written by people who ship - specific, unhurried, and allergic to hype.
+    </p>
+  </section>
+
+  <section class="ds-section" id="traits">
+    <div class="ds-sec-head"><span class="ds-sec-num">01</span><h2 class="ds-h2">Four traits</h2></div>
+    <div class="ds-bento">
+      {
+        traits.map((t) => (
+          <div class="ds-card ds-card-tonal ds-b6 ds-reveal">
+            <h3 class="ds-h4">{t.name}</h3>
+            <p class="ds-body" style="margin-top:6px">{t.desc}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="ds-section" id="rewrites">
+    <div class="ds-sec-head"><span class="ds-sec-num">02</span><h2 class="ds-h2">Before and after</h2></div>
+    <p class="ds-body">The fastest way to hear the voice is a rewrite:</p>
+    <div style="display:grid; gap:14px; margin-top:24px;">
+      {
+        rewrites.map((r) => (
+          <div class="ds-bento" style="margin-top:0">
+            <div class="ds-card ds-b6 ds-reveal" style="border-color:var(--ds-accent-tonal); background:color-mix(in srgb, var(--ds-accent-tonal) 40%, white); background-color:#fff5f3;">
+              <span class="ds-chip ds-chip-dont" style="margin-bottom:10px">Before</span>
+              <p class="ds-body">{r.bad}</p>
+            </div>
+            <div class="ds-card ds-b6 ds-reveal" style="background-color:#f2faf7;">
+              <span class="ds-chip ds-chip-do" style="margin-bottom:10px">After</span>
+              <p class="ds-body">{r.good}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="ds-section" id="mechanics">
+    <div class="ds-sec-head"><span class="ds-sec-num">03</span><h2 class="ds-h2">House mechanics</h2></div>
+    <div class="ds-bento">
+      <div class="ds-card ds-b6 ds-reveal">
+        <span class="ds-chip ds-chip-do" style="margin-bottom:12px">Always</span>
+        <ul class="ds-v-list">
+          <li>Plain dashes for breaks in a sentence - like this. Never em dashes.</li>
+          <li>Sentence case everywhere: headings, buttons, subject lines.</li>
+          <li>Specific numbers over vague scale ("1,200 hunters", not "massive turnout").</li>
+          <li>"ACM-VIT" with the hyphen, every single time; "acm" lowercase only inside the mark.</li>
+          <li>The sign-off is "crafted with love by ACM-VIT" - crafted, never made. See <a href="/design/footers" style="color:var(--ds-accent-ink); font-weight:600;">Footers & Sign-offs</a>.</li>
+          <li>One exclamation mark per publication, if you must.</li>
+        </ul>
+      </div>
+      <div class="ds-card ds-b6 ds-reveal">
+        <span class="ds-chip ds-chip-dont" style="margin-bottom:12px">Never</span>
+        <ul class="ds-v-list">
+          <li>"Flagship" for every event - save the word for when it is true.</li>
+          <li>Corporate filler: "leverage", "synergy", "cutting-edge", "revolutionary".</li>
+          <li>Copy that could belong to any other club with a find-and-replace.</li>
+          <li>FOMO pressure: "hurry", "don't miss out", "last chance!!!".</li>
+          <li>Unexplained internal jargon in public posts.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</DesignLayout>
+
+<style>
+  .ds-v-list {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--ds-ink-2);
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
+  .ds-v-list li + li {
+    margin-top: 6px;
+  }
+</style>

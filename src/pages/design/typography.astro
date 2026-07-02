@@ -1,0 +1,150 @@
+---
+export const prerender = true;
+import DesignLayout from "../../layouts/DesignLayout.astro";
+
+const scale = [
+  { name: "Display", px: "64 / 68", weight: "640", track: "-3%", use: "Hero statements, one per page", cls: "ds-display", sample: "Diamond" },
+  { name: "Heading 1", px: "48 / 52", weight: "620", track: "-2.5%", use: "Page titles", cls: "ds-h1", sample: "We build in public" },
+  { name: "Heading 2", px: "32 / 36", weight: "600", track: "-2%", use: "Section titles", cls: "ds-h2", sample: "Research, build, ship" },
+  { name: "Heading 3", px: "24 / 28", weight: "600", track: "-1.2%", use: "Card titles, sub-sections", cls: "ds-h3", sample: "Open source at heart" },
+  { name: "Body large", px: "18 / 28", weight: "400", track: "0", use: "Lead paragraphs", cls: "ds-body-lg", sample: "The chapter turns twenty this year, and the mixtape keeps rolling." },
+  { name: "Body", px: "16 / 26", weight: "400", track: "0", use: "Default running text", cls: "ds-body", sample: "ACM-VIT is the official student chapter of the Association for Computing Machinery at VIT Vellore." },
+  { name: "Caption", px: "13 / 20", weight: "400", track: "0", use: "Metadata, footnotes", cls: "ds-small", sample: "Photographed at Anna Auditorium, Riviera 2025." },
+];
+
+const weights = [
+  { w: 400, name: "Regular", use: "Body text" },
+  { w: 500, name: "Medium", use: "UI labels, nav" },
+  { w: 600, name: "SemiBold", use: "Headings, buttons" },
+  { w: 700, name: "Bold", use: "The wordmark weight, emphasis" },
+];
+---
+
+<DesignLayout
+  title="Typography"
+  description="DM Sans is the official ACM-VIT typeface. Scale, weights, and typesetting rules."
+  current="/design/typography"
+>
+  <section class="ds-hero">
+    <div class="ds-kicker"><span class="ds-kicker-pill">Brand · Typography</span></div>
+    <h1 class="ds-h1">One typeface: DM Sans.</h1>
+    <p class="ds-body-lg">
+      DM Sans is the ACM-VIT typeface - it is the letterform inside the
+      diamond and the voice of everything we publish. A low-contrast geometric
+      sans, warm without being soft. Use it everywhere; you rarely need a
+      second family.
+    </p>
+  </section>
+
+  <!-- 01 · Specimen -->
+  <section class="ds-section" id="specimen">
+    <div class="ds-sec-head"><span class="ds-sec-num">01</span><h2 class="ds-h2">The typeface</h2></div>
+    <div class="ds-card ds-card-tonal ds-reveal" style="margin-top:24px; padding:clamp(28px,4vw,52px);">
+      <p style="font-size:clamp(40px,7.5vw,84px); font-weight:640; letter-spacing:-0.035em; line-height:1.02;">
+        AaBbCcDdEe<br />1234567890
+      </p>
+      <p class="ds-body" style="margin-top:22px; max-width:60ch;">
+        DM Sans, designed by Colophon Foundry and Jonny Pinhorn, published by
+        Google Fonts under the Open Font License. Free for print, web, and
+        product use - no licensing questions, ever.
+      </p>
+      <div style="display:flex; gap:12px; margin-top:20px; flex-wrap:wrap;">
+        <a class="ds-btn ds-btn-outline ds-btn-sm" href="https://fonts.google.com/specimen/DM+Sans" target="_blank" rel="noopener">Get DM Sans ↗</a>
+        <span class="ds-chip">Variable · weight 100 to 1000</span>
+        <span class="ds-chip">Optical sizing 9 to 40</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 · Scale -->
+  <section class="ds-section" id="scale">
+    <div class="ds-sec-head"><span class="ds-sec-num">02</span><h2 class="ds-h2">Type scale</h2></div>
+    <p class="ds-body">
+      Sizes and line heights sit on the 4pt rhythm. Values are desktop
+      reference sizes; they scale down fluidly on smaller screens.
+    </p>
+    <div class="ds-card ds-reveal" style="margin-top:24px; padding:0; overflow-x:auto;">
+      <table class="ds-table" style="margin-top:0">
+        <thead>
+          <tr><th style="width:36%">Sample</th><th>Style</th><th>Size / Line</th><th>Weight</th><th>Tracking</th><th>Use</th></tr>
+        </thead>
+        <tbody>
+          {
+            scale.map((s) => (
+              <tr>
+                <td style="overflow:hidden">
+                  <span class={s.cls} style="color:var(--ds-ink); white-space:nowrap; display:block; overflow:hidden; text-overflow:ellipsis;">{s.sample}</span>
+                </td>
+                <td>{s.name}</td>
+                <td class="ds-mono">{s.px}</td>
+                <td class="ds-mono">{s.weight}</td>
+                <td class="ds-mono">{s.track}</td>
+                <td>{s.use}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 03 · Weights -->
+  <section class="ds-section" id="weights">
+    <div class="ds-sec-head"><span class="ds-sec-num">03</span><h2 class="ds-h2">Weights</h2></div>
+    <p class="ds-body">
+      The variable font covers 100 to 1000; we use four stops. Headline
+      weights lean slightly heavier than default to match the wordmark.
+    </p>
+    <div class="ds-bento">
+      {
+        weights.map((w) => (
+          <div class="ds-card ds-b3 ds-reveal">
+            <span style={`font-size:44px; font-weight:${w.w}; letter-spacing:-0.02em; display:block; line-height:1.1;`}>Aa</span>
+            <h3 class="ds-h4" style="margin-top:12px">{w.name} · {w.w}</h3>
+            <p class="ds-small" style="margin-top:4px">{w.use}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 04 · Rules -->
+  <section class="ds-section" id="rules">
+    <div class="ds-sec-head"><span class="ds-sec-num">04</span><h2 class="ds-h2">Typesetting rules</h2></div>
+    <div class="ds-bento">
+      <div class="ds-card ds-b6 ds-reveal">
+        <span class="ds-chip ds-chip-do" style="margin-bottom:12px">Do</span>
+        <ul class="ds-t-list">
+          <li>Tighten tracking as size grows: <span class="ds-mono">-2%</span> to <span class="ds-mono">-3%</span> on display sizes.</li>
+          <li>Sentence case for headings and buttons.</li>
+          <li>Keep line length between 45 and 75 characters.</li>
+          <li>Use real quotes and plain dashes - like this.</li>
+          <li>Tabular figures for tables and countdowns.</li>
+        </ul>
+      </div>
+      <div class="ds-card ds-b6 ds-reveal">
+        <span class="ds-chip ds-chip-dont" style="margin-bottom:12px">Don't</span>
+        <ul class="ds-t-list">
+          <li>No faux bold or faux italic - the variable font has real ones.</li>
+          <li>No all-caps body text; caps are for small labels only.</li>
+          <li>No stretched or condensed type, ever.</li>
+          <li>No second typeface without a product-level reason (z0d1ak's display serif is the sanctioned exception).</li>
+          <li>No em dashes - a spaced plain dash is the house style.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</DesignLayout>
+
+<style>
+  .ds-t-list {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--ds-ink-2);
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
+  .ds-t-list li + li {
+    margin-top: 6px;
+  }
+</style>

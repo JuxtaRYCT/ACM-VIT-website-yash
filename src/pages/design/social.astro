@@ -1,0 +1,305 @@
+---
+export const prerender = true;
+import DesignLayout from "../../layouts/DesignLayout.astro";
+import { getAssetUrl } from "../../utils/cdn";
+
+const igSizes = [
+  { name: "Portrait post", px: "1080 × 1350", ratio: "4:5", w: 4, h: 5, note: "The default for feed posts. Grid preview crops it to 3:4 - keep key content in the safe zone." },
+  { name: "Grid-native post", px: "1080 × 1440", ratio: "3:4", w: 3, h: 4, note: "Matches the profile grid exactly - zero cropping. Use for grid-critical series." },
+  { name: "Square post", px: "1080 × 1080", ratio: "1:1", w: 1, h: 1, note: "Legacy format. Fine in feed, loses height in the grid. Avoid for new templates." },
+  { name: "Story / Reel", px: "1080 × 1920", ratio: "9:16", w: 9, h: 16, note: "Full-bleed vertical. Keep text out of the top and bottom 250px - UI overlaps it." },
+];
+
+const platforms = [
+  {
+    name: "Instagram",
+    handle: "@acmvit",
+    items: [
+      ["Feed post (recommended)", "1080 × 1350", "4:5"],
+      ["Grid-native post", "1080 × 1440", "3:4"],
+      ["Story / Reel", "1080 × 1920", "9:16"],
+      ["Carousel", "1080 × 1350", "4:5, every slide identical"],
+      ["Profile picture", "1080 × 1080", "shown as a circle - center the diamond"],
+    ],
+  },
+  {
+    name: "LinkedIn",
+    handle: "ACM-VIT",
+    items: [
+      ["Post image", "1200 × 627", "1.91:1"],
+      ["Square post", "1080 × 1080", "1:1 also performs well"],
+      ["Article cover", "1920 × 1080", "16:9"],
+      ["Page banner", "1128 × 191", "text-free - it crops unpredictably"],
+      ["Logo", "300 × 300", "diamond mark on Ink or white"],
+    ],
+  },
+  {
+    name: "X (Twitter)",
+    handle: "@acm_vit",
+    items: [
+      ["Post image", "1600 × 900", "16:9"],
+      ["Header", "1500 × 500", "3:1, keep center-weighted"],
+      ["Profile picture", "400 × 400", "circle crop"],
+    ],
+  },
+  {
+    name: "YouTube",
+    handle: "ACM-VIT",
+    items: [
+      ["Thumbnail", "1280 × 720", "16:9, readable at 120px wide"],
+      ["Channel banner", "2560 × 1440", "safe area only 1546 × 423 in the center"],
+      ["Video", "1920 × 1080", "16:9, 30fps minimum"],
+    ],
+  },
+];
+---
+
+<DesignLayout
+  title="Social Media"
+  description="Sizing, grids, and per-platform standards for ACM-VIT social media."
+  current="/design/social"
+>
+  <section class="ds-hero">
+    <div class="ds-kicker"><span class="ds-kicker-pill">Platforms · Social</span></div>
+    <h1 class="ds-h1">Design for the crop.</h1>
+    <p class="ds-body-lg">
+      Every platform reframes your work - grids crop, circles crop, banners
+      crop. These are the current sizes we design to, updated for Instagram's
+      3:4 profile grid. Older chapter templates predate this change; when in
+      doubt, this page wins.
+    </p>
+  </section>
+
+  <!-- 01 · Instagram sizes -->
+  <section class="ds-section" id="instagram">
+    <div class="ds-sec-head"><span class="ds-sec-num">01</span><h2 class="ds-h2">Instagram canvas sizes</h2></div>
+    <p class="ds-body">
+      Instagram now previews every profile grid tile at
+      <span class="ds-mono">3:4</span> - including old square posts. Design at
+      <span class="ds-mono">4:5</span> and protect the middle, or go
+      grid-native at <span class="ds-mono">3:4</span>.
+    </p>
+    <div class="ds-bento">
+      {
+        igSizes.map((s) => (
+          <div class="ds-card ds-b3 ds-reveal" style="display:flex; flex-direction:column;">
+            <div style="display:flex; align-items:center; justify-content:center; min-height:170px;">
+              <div
+                class="ds-frame"
+                style={`aspect-ratio:${s.w}/${s.h}; ${s.h > s.w * 1.5 ? "height:150px" : "height:130px"}`}
+              >
+                <span class="ds-mono">{s.ratio}</span>
+              </div>
+            </div>
+            <h3 class="ds-h4" style="margin-top:10px">{s.name}</h3>
+            <code class="ds-mono ds-small" style="display:block; margin-top:2px;">{s.px}</code>
+            <p class="ds-small" style="margin-top:8px">{s.note}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 02 · Safe zone -->
+  <section class="ds-section" id="safezone">
+    <div class="ds-sec-head"><span class="ds-sec-num">02</span><h2 class="ds-h2">The grid safe zone</h2></div>
+    <p class="ds-body">
+      A <span class="ds-mono">4:5</span> post loses its top and bottom edges
+      in the <span class="ds-mono">3:4</span> grid preview. Anything that must
+      survive - faces, titles, the mark - stays inside the dashed region.
+    </p>
+    <div class="ds-bento">
+      <div class="ds-card ds-card-tonal ds-b6 ds-reveal" style="display:flex; align-items:center; justify-content:center; padding:32px;">
+        <svg viewBox="0 0 240 330" style="width:100%; max-width:250px" role="img" aria-label="4:5 post with 3:4 grid crop safe zone">
+          <rect x="10" y="5" width="216" height="270" rx="10" fill="#ffffff" stroke="#d4cfc6" />
+          <rect x="10" y="21.4" width="216" height="237.2" fill="#ffeae5" opacity="0.55" />
+          <rect x="10" y="21.4" width="216" height="237.2" fill="none" stroke="#f95f4a" stroke-width="1.6" stroke-dasharray="7 5" />
+          <g font-family="DM Sans, sans-serif" font-size="11" font-weight="620">
+            <text x="118" y="16.5" text-anchor="middle" fill="#79746e">cropped in grid</text>
+            <text x="118" y="146" text-anchor="middle" fill="#b3341f">3:4 safe zone</text>
+            <text x="118" y="270.5" text-anchor="middle" fill="#79746e">cropped in grid</text>
+          </g>
+          <g font-family="DM Sans, sans-serif" font-size="11.5" fill="#79746e">
+            <text x="118" y="308" text-anchor="middle">4:5 canvas · 1080 × 1350</text>
+            <text x="118" y="324" text-anchor="middle">grid shows center 1080 × 1440-equivalent</text>
+          </g>
+        </svg>
+      </div>
+      <div class="ds-card ds-b6 ds-reveal">
+        <h3 class="ds-h4">Story & Reel safe zones</h3>
+        <ul class="ds-so-list" style="margin-top:10px">
+          <li>Top <span class="ds-mono">250px</span>: profile chip, camera, flash UI.</li>
+          <li>Bottom <span class="ds-mono">250px</span>: reply bar, CTA, share sheet.</li>
+          <li>Right edge on Reels: like / comment / share rail - keep 120px clear.</li>
+          <li>Design full-bleed backgrounds edge to edge; keep type centered.</li>
+        </ul>
+        <h3 class="ds-h4" style="margin-top:22px">Carousel rules</h3>
+        <ul class="ds-so-list" style="margin-top:10px">
+          <li>Every slide the same size - mixed ratios get letterboxed.</li>
+          <li>Slide 1 works alone; not everyone swipes.</li>
+          <li>Mark on the first and last slide only.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · Per-platform -->
+  <section class="ds-section" id="platforms">
+    <div class="ds-sec-head"><span class="ds-sec-num">03</span><h2 class="ds-h2">Platform reference</h2></div>
+    <div class="ds-bento">
+      {
+        platforms.map((p) => (
+          <div class="ds-card ds-b6 ds-reveal" style="padding:0; overflow:hidden;">
+            <div style="padding:20px 24px 6px; display:flex; align-items:baseline; justify-content:space-between;">
+              <h3 class="ds-h3">{p.name}</h3>
+              <span class="ds-small ds-mono">{p.handle}</span>
+            </div>
+            <table class="ds-table" style="margin-top:8px">
+              <tbody>
+                {p.items.map(([what, px, note]) => (
+                  <tr>
+                    <td>{what}</td>
+                    <td class="ds-mono" style="white-space:nowrap">{px}</td>
+                    <td class="ds-small">{note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 04 · Feed discipline -->
+  <section class="ds-section" id="feed">
+    <div class="ds-sec-head"><span class="ds-sec-num">04</span><h2 class="ds-h2">Feed discipline</h2></div>
+    <p class="ds-body">
+      The profile grid is a composition of its own - rules straight from the
+      chapter's design templates:
+    </p>
+    <div class="ds-bento">
+      <div class="ds-card ds-b4 ds-reveal">
+        <div class="ds-feed-demo" aria-hidden="true">
+          {Array.from({ length: 3 }).map(() => (<span class="ds-feed-a" />))}
+          {Array.from({ length: 6 }).map(() => (<span />))}
+        </div>
+        <h3 class="ds-h4" style="margin-top:14px">Theme changes in rows of three</h3>
+        <p class="ds-small" style="margin-top:4px">
+          A new visual theme enters as a full row - multiples of 3 - so the
+          grid never shows a half-switched theme.
+        </p>
+      </div>
+      <div class="ds-card ds-b4 ds-reveal">
+        <div class="ds-feed-demo" aria-hidden="true">
+          <span class="ds-feed-x" />
+          {Array.from({ length: 8 }).map(() => (<span />))}
+        </div>
+        <h3 class="ds-h4" style="margin-top:14px">No lone off-theme posts</h3>
+        <p class="ds-small" style="margin-top:4px">
+          One random accent tile breaks the whole grid. Keep the running theme
+          consistent between planned switches.
+        </p>
+      </div>
+      <div class="ds-card ds-b4 ds-reveal">
+        <div style="display:flex; gap:10px; align-items:center; justify-content:center; min-height:96px;">
+          <span style="width:34px;height:34px;border-radius:8px;background:#1c1b1a"></span>
+          <span style="width:34px;height:34px;border-radius:8px;background:#F95F4A"></span>
+          <span style="width:34px;height:34px;border-radius:8px;background:#FEFCD9;border:1px solid var(--ds-line-2)"></span>
+        </div>
+        <h3 class="ds-h4" style="margin-top:14px">Three colors per theme, max</h3>
+        <p class="ds-small" style="margin-top:4px">
+          A series picks at most three colors and repeats them. Repeated
+          elements (speaker cards, countdowns) stay grouped and identical.
+        </p>
+      </div>
+    </div>
+    <p class="ds-body" style="margin-top:20px">
+      Template frame furniture - the VIT logo, lockup, "An ACM-VIT
+      Initiative" end mark, and handles - is specified in
+      <a href="/design/footers" style="color:var(--ds-accent-ink); font-weight:600;">Footers & Sign-offs</a>.
+    </p>
+  </section>
+
+  <!-- 05 · Identity on social -->
+  <section class="ds-section" id="identity">
+    <div class="ds-sec-head"><span class="ds-sec-num">05</span><h2 class="ds-h2">Identity rules on social</h2></div>
+    <div class="ds-bento">
+      <div class="ds-card ds-b6 ds-reveal">
+        <span class="ds-chip ds-chip-do" style="margin-bottom:12px">Do</span>
+        <ul class="ds-so-list">
+          <li>Diamond mark as the profile picture everywhere, on Ink or white.</li>
+          <li>DM Sans for all text on graphics.</li>
+          <li>One accent per post; series share a single accent.</li>
+          <li>Export at exact pixel sizes, sRGB, under 8 MB.</li>
+          <li>Alt text on every post - it is part of the design.</li>
+        </ul>
+      </div>
+      <div class="ds-card ds-b6 ds-reveal">
+        <span class="ds-chip ds-chip-dont" style="margin-bottom:12px">Don't</span>
+        <ul class="ds-so-list">
+          <li>Don't reuse a story layout as a feed post - redesign for the ratio.</li>
+          <li>Don't put text in the outer 10% of any canvas.</li>
+          <li>Don't screenshot posters into stories - rebuild at 9:16.</li>
+          <li>Don't stack every accent color into one graphic.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ds-card ds-card-tonal ds-reveal" style="margin-top:14px; display:flex; align-items:center; gap:22px; flex-wrap:wrap;">
+      <div style="width:76px; height:76px; border-radius:50%; background:#1c1b1a; display:flex; align-items:center; justify-content:center; flex:none;">
+        <img src={getAssetUrl("/design/logos/acm-diamond-white.svg")} alt="" style="width:44px;" />
+      </div>
+      <p class="ds-body" style="max-width:52ch">
+        Profile pictures crop to a circle: use the white diamond centered on
+        Ink, sized so the diamond spans about 60% of the circle. Never use a
+        lockup as a profile picture - the text does not survive the crop.
+      </p>
+    </div>
+  </section>
+</DesignLayout>
+
+<style>
+  .ds-frame {
+    border: 1.5px solid var(--ds-pink);
+    background: var(--ds-pink-tonal);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ds-frame span {
+    font-size: 12px;
+    font-weight: 640;
+    color: var(--ds-pink);
+  }
+  .ds-feed-demo {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    max-width: 190px;
+    margin: 0 auto;
+  }
+  .ds-feed-demo span {
+    aspect-ratio: 3/4;
+    border-radius: 5px;
+    background: #3a3835;
+  }
+  .ds-feed-demo .ds-feed-a {
+    background: var(--ds-accent);
+  }
+  .ds-feed-demo .ds-feed-x {
+    background: var(--ds-accent);
+    outline: 2px solid var(--ds-accent-ink);
+    outline-offset: 1px;
+  }
+  .ds-so-list {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--ds-ink-2);
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
+  .ds-so-list li + li {
+    margin-top: 6px;
+  }
+</style>

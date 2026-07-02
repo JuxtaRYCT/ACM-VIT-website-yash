@@ -1,0 +1,140 @@
+---
+export const prerender = true;
+import DesignLayout from "../../layouts/DesignLayout.astro";
+
+const radii = [
+  { token: "r-xs", px: 8, use: "Chips, inputs, small tags" },
+  { token: "r-sm", px: 12, use: "Buttons (rectangular), thumbnails" },
+  { token: "r-md", px: 16, use: "Inner panels, media frames" },
+  { token: "r-lg", px: 24, use: "Cards, bento tiles" },
+  { token: "r-xl", px: 32, use: "Hero surfaces, modals" },
+  { token: "r-full", px: 999, use: "Pills, avatars, dock buttons" },
+];
+---
+
+<DesignLayout
+  title="Shape & Styles"
+  description="Corner radii, elevation, borders, iconography, and imagery treatment for ACM-VIT."
+  current="/design/styles"
+>
+  <section class="ds-hero">
+    <div class="ds-kicker"><span class="ds-kicker-pill">Foundations · Styles</span></div>
+    <h1 class="ds-h1">Soft geometry, flat by default.</h1>
+    <p class="ds-body-lg">
+      Rounded corners echo the diamond's soft edges; depth comes from tone
+      before shadow. These are the surface-level decisions that make ACM-VIT
+      material recognizable at a glance.
+    </p>
+  </section>
+
+  <!-- 01 · Radii -->
+  <section class="ds-section" id="radius">
+    <div class="ds-sec-head"><span class="ds-sec-num">01</span><h2 class="ds-h2">Corner radius</h2></div>
+    <p class="ds-body">
+      Six stops, 4pt-aligned. Nesting rule: an inner radius is its parent's
+      radius minus the gap between them, so curves stay concentric.
+    </p>
+    <div class="ds-bento">
+      {
+        radii.map((r) => (
+          <div class="ds-card ds-b4 ds-reveal" style="display:flex; gap:18px; align-items:center;">
+            <span
+              style={`flex:none; width:64px; height:64px; background:var(--ds-accent-tonal); border:1.5px solid var(--ds-accent); border-radius:${Math.min(r.px, 32)}px;`}
+            />
+            <span>
+              <span class="ds-mono" style="font-size:12px; color:var(--ds-ink-3)">{r.token}</span>
+              <span style="display:block; font-weight:640;">{r.px >= 999 ? "Full" : r.px + "px"}</span>
+              <span class="ds-small">{r.use}</span>
+            </span>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 02 · Elevation -->
+  <section class="ds-section" id="elevation">
+    <div class="ds-sec-head"><span class="ds-sec-num">02</span><h2 class="ds-h2">Elevation</h2></div>
+    <p class="ds-body">
+      Three levels. Prefer a tonal surface change over a shadow; shadows are
+      for things that actually float.
+    </p>
+    <div class="ds-bento">
+      <div class="ds-card ds-b4 ds-reveal" style="box-shadow:none;">
+        <h3 class="ds-h4">Level 0 · Rest</h3>
+        <p class="ds-body" style="margin-top:6px">Border + tone only. Cards at rest, sections, tables.</p>
+        <code class="ds-mono ds-small">border: 1px line</code>
+      </div>
+      <div class="ds-card ds-b4 ds-reveal" style="box-shadow:0 10px 34px rgba(28,27,26,.07);">
+        <h3 class="ds-h4">Level 1 · Raised</h3>
+        <p class="ds-body" style="margin-top:6px">Hover states, active tiles, docked toolbars.</p>
+        <code class="ds-mono ds-small">0 10px 34px · 7% ink</code>
+      </div>
+      <div class="ds-card ds-b4 ds-reveal" style="box-shadow:0 24px 70px rgba(28,27,26,.16);">
+        <h3 class="ds-h4">Level 2 · Floating</h3>
+        <p class="ds-body" style="margin-top:6px">Modals, menus, anything above a scrim.</p>
+        <code class="ds-mono ds-small">0 24px 70px · 16% ink</code>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · Iconography -->
+  <section class="ds-section" id="icons">
+    <div class="ds-sec-head"><span class="ds-sec-num">03</span><h2 class="ds-h2">Iconography</h2></div>
+    <div class="ds-bento">
+      <div class="ds-card ds-card-tonal ds-b6 ds-reveal" style="display:flex; align-items:center; justify-content:center; gap:26px; min-height:150px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1c1b1a" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/></svg>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1c1b1a" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5l3 2"/></svg>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1c1b1a" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17 10 11 4 5"/><path d="M12 19h8"/></svg>
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1c1b1a" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 12h6"/></svg>
+      </div>
+      <div class="ds-card ds-b6 ds-reveal">
+        <h3 class="ds-h4">Specs</h3>
+        <ul class="ds-y-list" style="margin-top:10px">
+          <li>Line icons, <span class="ds-mono">1.75px</span> stroke on a <span class="ds-mono">24px</span> grid.</li>
+          <li>Rounded caps and joins - match the type's warmth.</li>
+          <li>Sizes: 16, 20, 24, 32 - multiples of four, like everything.</li>
+          <li>Icons inherit text color; never a color of their own except in status contexts.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · Imagery -->
+  <section class="ds-section" id="imagery">
+    <div class="ds-sec-head"><span class="ds-sec-num">04</span><h2 class="ds-h2">Imagery</h2></div>
+    <div class="ds-bento">
+      <div class="ds-card ds-b6 ds-reveal">
+        <span class="ds-chip ds-chip-do" style="margin-bottom:12px">Do</span>
+        <ul class="ds-y-list">
+          <li>Real photos of real events - candid over staged.</li>
+          <li>Round media corners to <span class="ds-mono">r-md (16px)</span> inside cards.</li>
+          <li>Ship WebP with an original-format fallback.</li>
+          <li>Warm, natural grading that sits well on Ink and Paper.</li>
+        </ul>
+      </div>
+      <div class="ds-card ds-b6 ds-reveal">
+        <span class="ds-chip ds-chip-dont" style="margin-bottom:12px">Don't</span>
+        <ul class="ds-y-list">
+          <li>No generic stock photography.</li>
+          <li>No heavy filters or duotones over faces.</li>
+          <li>No text baked into photos - captions live in HTML.</li>
+          <li>No stretched, pixelated, or watermarked images.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</DesignLayout>
+
+<style>
+  .ds-y-list {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--ds-ink-2);
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
+  .ds-y-list li + li {
+    margin-top: 6px;
+  }
+</style>

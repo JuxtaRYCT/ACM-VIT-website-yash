@@ -74,6 +74,20 @@ const dontList = [
         />
       </div>
 
+      <a
+        href="/design"
+        class="dg-system-link"
+        data-reveal
+        aria-label="Open the full ACM-VIT design guidelines"
+      >
+        <span class="dg-system-link-text">
+          <strong>Looking for the full brand system?</strong>
+          Logo files, color, type, grids, motion, and social standards live in
+          the ACM-VIT Design Guidelines.
+        </span>
+        <span class="dg-system-link-cta">Open guidelines →</span>
+      </a>
+
       <!-- ─────────── Brand Marks ─────────── -->
       <section class="dg-section" id="marks" data-reveal>
         <header class="dg-head">
@@ -397,6 +411,51 @@ const dontList = [
   }
   :global(html[data-theme="light"]) .dg-hero-art::after {
     background: linear-gradient(180deg, rgba(245, 237, 228, 0) 45%, rgba(245, 237, 228, 0.9) 100%);
+  }
+
+  /* ── Link to the full design system ── */
+  .dg-system-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    margin-bottom: 4rem;
+    padding: 1.1rem 1.4rem;
+    border-radius: 16px;
+    border: 1px solid rgba(254, 252, 217, 0.16);
+    background: rgba(254, 252, 217, 0.05);
+    text-decoration: none;
+    color: rgba(254, 252, 217, 0.82);
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .dg-system-link:hover {
+    border-color: rgba(249, 95, 74, 0.55);
+    background: rgba(249, 95, 74, 0.08);
+  }
+  .dg-system-link-text {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    max-width: 46ch;
+  }
+  .dg-system-link-text strong {
+    display: block;
+    color: #fefcd9;
+    font-weight: 620;
+  }
+  .dg-system-link-cta {
+    font-weight: 640;
+    font-size: 0.9rem;
+    color: #f95f4a;
+    white-space: nowrap;
+  }
+  :global(html[data-theme="light"]) .dg-system-link {
+    border-color: rgba(26, 26, 26, 0.14);
+    background: rgba(26, 26, 26, 0.04);
+    color: rgba(26, 26, 26, 0.75);
+  }
+  :global(html[data-theme="light"]) .dg-system-link-text strong {
+    color: #1a1a1a;
   }
 
   /* ── Brand marks ── */

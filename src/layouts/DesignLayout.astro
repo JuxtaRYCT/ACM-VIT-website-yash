@@ -1,0 +1,196 @@
+---
+// Standalone shell for the ACM-VIT Design Guidelines (/design/*).
+// Deliberately independent of the main site chrome: light mode only,
+// DM Sans, persistent left rail in the style of m3.material.io.
+export const prerender = true;
+import "../styles/design-system.css";
+import { getAssetUrl } from "../utils/cdn";
+
+export interface Props {
+  title: string;
+  description?: string;
+  /** Current path, e.g. "/design/logo" - drives aria-current in the rail. */
+  current: string;
+  narrow?: boolean;
+}
+
+const {
+  title,
+  description = "The official design guidelines for ACM-VIT: brand, foundations, motion, and platform standards.",
+  current,
+  narrow = false,
+} = Astro.props;
+
+export const NAV = [
+  {
+    label: "Overview",
+    items: [{ href: "/design", title: "Home" }],
+  },
+  {
+    label: "Brand",
+    items: [
+      { href: "/design/logo", title: "Logo" },
+      { href: "/design/color", title: "Color" },
+      { href: "/design/typography", title: "Typography" },
+      { href: "/design/voice", title: "Voice & Tone" },
+      { href: "/design/footers", title: "Footers & Sign-offs" },
+    ],
+  },
+  {
+    label: "Foundations",
+    items: [
+      { href: "/design/grid", title: "Grid & Layout" },
+      { href: "/design/spacing", title: "Spacing" },
+      { href: "/design/styles", title: "Shape & Styles" },
+    ],
+  },
+  {
+    label: "Expression",
+    items: [{ href: "/design/motion", title: "Motion" }],
+  },
+  {
+    label: "Platforms",
+    items: [
+      { href: "/design/social", title: "Social Media" },
+      { href: "/design/website", title: "Website & Products" },
+    ],
+  },
+  {
+    label: "Assets",
+    items: [{ href: "/design/resources", title: "Resources" }],
+  },
+];
+
+const flat = NAV.flatMap((g) => g.items);
+const idx = flat.findIndex((i) => i.href === current);
+const prev = idx > 0 ? flat[idx - 1] : null;
+const next = idx >= 0 && idx < flat.length - 1 ? flat[idx + 1] : null;
+
+const site = Astro.site ?? new URL("https://www.acmvit.in");
+const canonicalUrl = new URL(Astro.url.pathname, site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/webp" href={getAssetUrl("/favicon.webp")} />
+    <title>{title} - ACM-VIT Design</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:title" content={`${title} - ACM-VIT Design`} />
+    <meta property="og:description" content={description} />
+    <meta name="theme-color" content="#faf9f7" />
+    <link
+      rel="preload"
+      href={getAssetUrl("/design/fonts/dm-sans-latin.woff2")}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+  </head>
+  <body class="ds-root" style="margin:0">
+    <header class="ds-topbar">
+      <button class="ds-menu-btn" id="ds-menu" aria-label="Open navigation">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <path d="M2 4.5h14M2 9h14M2 13.5h14"></path>
+        </svg>
+      </button>
+      <a href="/design" class="ds-topbar-brand">
+        <img src={getAssetUrl("/design/logos/acm-diamond-dark.svg")} alt="ACM-VIT" width="30" height="30" />
+        <span>ACM-VIT <span class="ds-brand-sub">Design</span></span>
+      </a>
+      <div class="ds-topbar-actions">
+        <a class="ds-topbar-link" href="/design/resources">Download assets</a>
+        <a class="ds-topbar-link" href="/" target="_blank" rel="noopener">acmvit.in ↗</a>
+      </div>
+    </header>
+
+    <div class="ds-shell">
+      <nav class="ds-rail" id="ds-rail" aria-label="Design guidelines">
+        {
+          NAV.map((group) => (
+            <div class="ds-rail-group">
+              <span class="ds-rail-label">{group.label}</span>
+              {group.items.map((item) => (
+                <a
+                  href={item.href}
+                  aria-current={item.href === current ? "page" : undefined}
+                >
+                  <span class="ds-rail-dot" aria-hidden="true" />
+                  {item.title}
+                </a>
+              ))}
+            </div>
+          ))
+        }
+      </nav>
+      <div class="ds-scrim" id="ds-scrim"></div>
+
+      <main class:list={["ds-main", narrow && "ds-main-narrow"]}>
+        <slot />
+
+        {
+          (prev || next) && (
+            <nav class="ds-pager" aria-label="Section pager">
+              {prev ? (
+                <a href={prev.href}>
+                  <span class="ds-pager-label">Previous</span>
+                  <span class="ds-pager-title">← {prev.title}</span>
+                </a>
+              ) : (
+                <span />
+              )}
+              {next && (
+                <a href={next.href} class="ds-pager-next">
+                  <span class="ds-pager-label">Next</span>
+                  <span class="ds-pager-title">{next.title} →</span>
+                </a>
+              )}
+            </nav>
+          )
+        }
+
+        <footer class="ds-footer">
+          <span>
+            ACM-VIT Student Chapter · Vellore Institute of Technology
+          </span>
+          <span>
+            Maintained by the Design Team ·
+            <a href="mailto:outreach@acmvit.in"> outreach@acmvit.in</a>
+          </span>
+        </footer>
+      </main>
+    </div>
+
+    <script>
+      const rail = document.getElementById("ds-rail");
+      const scrim = document.getElementById("ds-scrim");
+      const btn = document.getElementById("ds-menu");
+      const toggle = (open?: boolean) => {
+        const on = open ?? !rail?.classList.contains("is-open");
+        rail?.classList.toggle("is-open", on);
+        scrim?.classList.toggle("is-open", on);
+      };
+      btn?.addEventListener("click", () => toggle());
+      scrim?.addEventListener("click", () => toggle(false));
+
+      // subtle scroll reveal
+      if (matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add("is-in");
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { rootMargin: "0px 0px -8% 0px" },
+        );
+        document.querySelectorAll(".ds-reveal").forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>
