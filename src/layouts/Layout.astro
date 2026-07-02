@@ -206,14 +206,16 @@ const isLandingPage = Astro.url.pathname === "/";
     >
     </div>
     <div class="brand-logos" aria-label={isLandingPage ? "ACM-VIT and VIT" : "ACM-VIT"}>
-      <img
-        src={getAssetUrl("/logos/logos-acm-topleft.webp")}
-        alt="ACM-VIT"
-        class="acm-logo"
-        loading="eager"
-        decoding="async"
-        fetchpriority="high"
-      />
+      <a href="/" class="acm-logo-link" aria-label="ACM-VIT home">
+        <img
+          src={getAssetUrl("/logos/logos-acm-topleft.webp")}
+          alt="ACM-VIT"
+          class="acm-logo"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </a>
       {
         isLandingPage && (
           <img
@@ -742,6 +744,13 @@ const isLandingPage = Astro.url.pathname === "/";
     transition:
       opacity 180ms ease,
       transform 160ms ease;
+  }
+
+  .acm-logo-link {
+    display: inline-flex;
+    line-height: 0;
+    pointer-events: auto;
+    cursor: pointer;
   }
 
   .acm-logo {

@@ -105,6 +105,8 @@ export const designAOIs: DesignAOI[] = [
   },
 ];
 
+export const designHero = "The visual voice of ACM-VIT, shaping how the chapter looks, moves and communicates across every surface.";
+
 export const designDescription = [
   "We craft visual experiences that bring our ideas and events to life, from UI/UX design and motion graphics to social media posts and video edits. With a focus on aesthetics, usability, and storytelling, we shape how the world sees ACM-VIT.",
   "Led by the Design Lead, with the Creative Lead and ACM-W Design Lead working alongside, our team blends art with purpose to create meaningful designs. Whether it is building brand identity or designing user-first interfaces, every pixel, frame, and layout is intentional. Great design is not just seen, it is felt.",
@@ -112,7 +114,6 @@ export const designDescription = [
 
 export const designStats = [
   { value: "5", label: "AOIs" },
-  { value: "100+", label: "Designs Created" },
 ];
 
 export const designFooterMessage = "Every pixel placed with purpose. Now go make something beautiful.";

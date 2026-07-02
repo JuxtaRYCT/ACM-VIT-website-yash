@@ -10,6 +10,7 @@ import ToolCard from "../../components/ToolCard.astro";
 import {
   MANAGEMENT_THEME_COLOR,
   mgmtTools,
+  mgmtHero,
   mgmtDescription,
   mgmtStats,
   mgmtEvents,
@@ -45,7 +46,7 @@ for (const size of pyramidSizes) {
           MANAGEMENT
         </h1>
         <p class="dsg-hero-desc" data-dsg-animate="fade-up">
-          {mgmtDescription[0]}
+          {mgmtHero}
         </p>
         <div data-dsg-animate="fade-up">
           <a href="#mgmt-events" class="dsg-hero-cta">

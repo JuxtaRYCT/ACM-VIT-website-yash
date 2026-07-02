@@ -54,6 +54,8 @@ export const mgmtTools: MgmtTool[] = [
   t("Zoom", "zoom", "#0B5CFF", { monochrome: true }),
 ];
 
+export const mgmtHero = "The operational backbone of ACM-VIT, driving sponsorships, logistics, outreach and content behind every event.";
+
 export const mgmtDescription = [
   "Nothing comes together on its own, and we are the ones making sure every part is in place. Management handles sponsorships, logistics, outreach and content with precision and intent.",
   "Some days it is drafting timelines and emails, other days it is finding the perfect hook for a campaign or navigating a last-minute surprise on event day. We work across teams, juggle priorities, and keep the chaos in check so every event runs smoothly from start to finish.",

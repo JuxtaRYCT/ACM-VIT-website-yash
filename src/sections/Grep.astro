@@ -11,44 +11,48 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
     <img src="/grep/grep-mailbox.svg" alt="" class="w-40 sm:w-56 md:w-64" />
   </div>
 
-  <!-- Content -->
-  <div class="relative z-10 flex flex-col items-center text-center px-6">
-    <h2 class="grep-title text-[#2023FE] leading-[0.85]">
+  <!-- Content: wordmark locked to viewport centre (grid row 1fr / auto / 1fr) so it
+       always shares a centre with the keyboard background; everything else flows below. -->
+  <div class="grep-content relative z-10 grid w-full min-h-screen px-6">
+    <div aria-hidden="true"></div>
+    <h2 class="grep-title text-[#2023FE] leading-[0.85] text-center justify-self-center self-center">
       <span class="block">gr</span>
       <span class="block">ep</span>
     </h2>
-    <p class="grep-by mt-4 text-[#efefef] text-lg sm:text-xl">
-      by acm-vit
-    </p>
-    <p class="grep-desc mt-5 max-w-md text-[#efefef] text-sm sm:text-base leading-relaxed">
-      ACM-VIT's quarterly newsletter - your one-stop source for community updates, event recaps, tech deep-dives, and everything happening at ACM-VIT.
-    </p>
+    <div class="grep-below flex flex-col items-center text-center justify-self-center w-full">
+      <p class="grep-by mt-3 text-[#efefef] text-lg sm:text-xl">
+        by acm-vit
+      </p>
+      <p class="grep-desc mt-5 max-w-md text-[#efefef] text-sm sm:text-base leading-relaxed">
+        ACM-VIT's quarterly newsletter - your one-stop source for community updates, event recaps, tech deep-dives, and everything happening at ACM-VIT.
+      </p>
 
-    <!-- Email signup -->
-    <form class="grep-email-form mt-8 flex flex-col sm:flex-row items-center gap-3 w-full max-w-md" id="grep-subscribe-form">
-      <input
-        type="email"
-        name="email"
-        required
-        placeholder="Enter your email to subscribe"
-        class="w-full flex-1 rounded-lg border border-[#2023FE]/30 bg-white/5 px-4 py-2.5 text-sm text-[#efefef] placeholder:text-[#efefef]/30 outline-none transition-colors focus:border-[#2023FE] focus:bg-white/[0.08]"
-      />
-      <button
-        type="submit"
-        class="rounded-lg bg-[#2023FE] px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[#1a1cf0] active:scale-[0.97] whitespace-nowrap"
-      >
-        Subscribe
-      </button>
-    </form>
-    <p class="grep-subscribe-status mt-2 text-xs text-[#efefef] hidden"></p>
+      <!-- Email signup -->
+      <form class="grep-email-form mt-8 flex flex-col sm:flex-row items-center gap-3 w-full max-w-md" id="grep-subscribe-form">
+        <input
+          type="email"
+          name="email"
+          required
+          placeholder="Enter your email to subscribe"
+          class="w-full flex-1 rounded-lg border border-[#2023FE]/30 bg-white/5 px-4 py-2.5 text-sm text-[#efefef] placeholder:text-[#efefef]/30 outline-none transition-colors focus:border-[#2023FE] focus:bg-white/[0.08]"
+        />
+        <button
+          type="submit"
+          class="grep-subscribe-btn rounded-lg bg-[#2023FE] px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[#1a1cf0] active:scale-[0.97] whitespace-nowrap"
+        >
+          Subscribe
+        </button>
+      </form>
+      <p class="grep-subscribe-status mt-2 text-xs text-[#efefef] hidden"></p>
 
-    <div class="mt-8">
-      <AnimatedButton
-        text="Learn More"
-        href="/grep-reader"
-        class="grep-btn"
-        iconBg="#2023FE"
-      />
+      <div class="mt-8">
+        <AnimatedButton
+          text="Learn More"
+          href="/grep-reader"
+          class="grep-btn"
+          iconBg="#2023FE"
+        />
+      </div>
     </div>
   </div>
 </section>
@@ -67,6 +71,24 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
   .grep-section ::selection {
     background: var(--selection-color);
     color: white;
+  }
+
+  /* Centre the GREP wordmark in the viewport so it always shares a centre
+     with the keyboard background; the rest of the content flows in the row below. */
+  .grep-content {
+    grid-template-rows: 1fr auto 1fr;
+  }
+
+  /* On larger screens nudge the wordmark above centre so the copy + form below
+     balance the composition. */
+  @media (min-width: 768px) {
+    .grep-content {
+      grid-template-rows: 0.7fr auto 1.3fr;
+    }
+  }
+
+  .grep-below {
+    align-self: start;
   }
 
   .grep-title {
@@ -147,6 +169,12 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
 
   :global(html[data-theme="light"]) .grep-email-form input::placeholder {
     color: rgba(0, 0, 0, 0.35);
+  }
+
+  /* Keep the subscribe button label white in light mode (a global light-mode
+     rule otherwise darkens button text). */
+  :global(html[data-theme="light"]) .grep-section .grep-subscribe-btn {
+    color: #fff !important;
   }
 
   :global(html[data-theme="light"]) .keyboard-bg :global(rect) {

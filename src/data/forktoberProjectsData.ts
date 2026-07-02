@@ -1,6 +1,6 @@
 // Forktober project entries. Auto-generated from GitHub API data.
 // Source repo names + counts (contributors, PRs, commits) pulled from api.github.com.
-// Do not edit by hand — regenerate when participating repos change.
+// Do not edit by hand - regenerate when participating repos change.
 
 import type { ProjectDetail } from "./projectDetailsData";
 

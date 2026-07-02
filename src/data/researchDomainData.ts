@@ -129,6 +129,8 @@ export const researchAOIs: ResearchAOI[] = [
   },
 ];
 
+export const researchHero = "The oldest and largest research community on campus, working across six fields where new ideas take shape.";
+
 export const researchDescription = [
   "Research is the oldest research domain at VIT and the largest research domain on campus, a community of students who treat curiosity as a discipline. We work across six areas of interest, AI/ML, Cybersecurity, Bioinformatics, IoT, Blockchain and Quantum Computing, and we are the ones who keep the chapter plugged into whatever new field of study is taking shape.",
   "The whole domain runs System's Reading Groups on a regular cadence, peer-led deep dives into landmark papers and emerging topics across every AOI. These sessions are open to anyone who wants to sit in, regardless of domain or experience level. Beyond the reading groups, members do original research, ship projects, and pull the rest of the chapter into whatever interesting rabbit hole is opening up next.",

@@ -26,6 +26,16 @@ if (!data) return Astro.redirect("/projects");
 const theme = data.themeColor;
 const themeSecondary = data.themeColorSecondary ?? theme;
 
+// The hero already shows the tagline + shortDescription. Some entries
+// (notably the auto-generated Forktober imports) repeat that same line as
+// longDescription[0]. Drop any About paragraph that duplicates the hero copy
+// so the page never says the same thing twice.
+const normalizeCopy = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+const heroCopy = new Set(
+  [data.shortDescription, data.tagline].filter(Boolean).map((s) => normalizeCopy(s as string))
+);
+const aboutParagraphs = data.longDescription.filter((p) => !heroCopy.has(normalizeCopy(p)));
+
 const titleArt = titleToArt(data.title);
 
 // Deterministic commit graph (53 weeks * 7 days).
@@ -294,7 +304,7 @@ const hasTechStack = data.techStack.some((g) => g.slugs.length > 0);
         </h2>
       </div>
       <div class="proj-prose" data-anim="up">
-        {data.longDescription.map((p) => <p>{p}</p>)}
+        {aboutParagraphs.map((p) => <p>{p}</p>)}
       </div>
     </section>
 
@@ -1362,7 +1372,7 @@ const hasTechStack = data.techStack.some((g) => g.slugs.length > 0);
       if (icon) gsap.to(icon, { y: -10, duration: 3, ease: "sine.inOut", yoyo: true, repeat: -1 });
     }
 
-    // Intersection-observer-based reveal — avoids gsap.ticker autoSleep races on this page.
+    // Intersection-observer-based reveal - avoids gsap.ticker autoSleep races on this page.
     const revealEls = document.querySelectorAll(
       '.proj-section [data-anim="up"], .proj-section-narrow [data-anim="up"], .proj-endroad[data-anim="up"]'
     );

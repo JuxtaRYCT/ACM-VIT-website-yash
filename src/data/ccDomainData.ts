@@ -47,6 +47,8 @@ export const ccTools: CcTool[] = [
   t("Linux", "linux", "#FCC624"),
 ];
 
+export const ccHero = "Where ACM-VIT trains for the contest circuit, turning consistent practice into competitive results.";
+
 export const ccDescription = [
   "Competitive Coding is where ACM-VIT members sharpen their algorithms muscle the hard way, by showing up to contests on a regular basis across LeetCode, Codeforces, CodeChef, AtCoder and more.",
   "Beyond personal practice, the domain owns ACM-VIT's flagship competitive programming events. Reverse Coding is VIT's largest CP event, and Code++ is a focused four-hour sprint that pushes participants to ship clean code under the clock.",

@@ -24,29 +24,15 @@ const themeHexMap: Record<string, string> = {
 const domainStats: Record<string, { value: string; label: string }[]> = {
   tech: [
     { value: "5", label: "AOIs" },
-    { value: "20+", label: "Technologies" },
-    { value: "6+", label: "Projects Shipped" },
   ],
-  cc: [
-    { value: "4", label: "Platforms" },
-    { value: "50+", label: "Problems Crafted" },
-    { value: "∞", label: "Logic Puzzles" },
-  ],
+  cc: [],
   design: [
     { value: "5", label: "AOIs" },
-    { value: "6+", label: "Tools" },
-    { value: "100+", label: "Designs Created" },
   ],
   research: [
     { value: "6", label: "AOIs" },
-    { value: "9+", label: "Technologies" },
-    { value: "10+", label: "Papers & Blogs" },
   ],
-  management: [
-    { value: "6", label: "Tools" },
-    { value: "5+", label: "Events Managed" },
-    { value: "∞", label: "Emails Sent" },
-  ],
+  management: [],
 };
 
 export function getStaticPaths() {
