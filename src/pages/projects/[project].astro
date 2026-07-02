@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 
+import { titleToArt } from "../../utils/titleArt";
 import Layout from "../../layouts/Layout.astro";
 import Footer from "../../layouts/Footer.astro";
 import "../../styles/globals.css";
@@ -24,6 +25,8 @@ if (!data) return Astro.redirect("/projects");
 
 const theme = data.themeColor;
 const themeSecondary = data.themeColorSecondary ?? theme;
+
+const titleArt = titleToArt(data.title);
 
 // Deterministic commit graph (53 weeks * 7 days).
 const COLS = 53;
@@ -126,6 +129,9 @@ const hasTechStack = data.techStack.some((g) => g.slugs.length > 0);
 ---
 
 <Layout pageTitle={data.title} backHref="/projects">
+  <script is:inline define:vars={{ themeColor: theme, titleArt }}>
+    console.log("%c" + titleArt, "color:" + themeColor + ";font-family:monospace;line-height:1;");
+  </script>
   <div class="proj-root" data-slug={data.slug} style={`--proj-color: ${theme}; --proj-color-secondary: ${themeSecondary};`}>
 
     <!-- HERO -->

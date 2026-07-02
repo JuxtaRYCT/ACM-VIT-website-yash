@@ -222,9 +222,9 @@ html[data-theme="light"] .nav-item.active.pink-mode .nav-label {
 
 /* ── Megamenu - dark in both modes ── */
 html[data-theme="light"] .megamenu-panel {
-  background: rgba(20, 20, 24, 0.55) !important;
-  backdrop-filter: blur(40px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(40px) saturate(180%) !important;
+  background: #1e1e1e !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   border-color: rgba(249, 95, 74, 0.35) !important;
   box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.18),
@@ -235,10 +235,10 @@ html[data-theme="light"] .megamenu-panel::after {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent) !important;
 }
 html[data-theme="light"] .megamenu-tile {
-  background: rgba(255, 255, 255, 0.06) !important;
+  background: #262626 !important;
   border-color: rgba(254, 252, 217, 0.08) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 html[data-theme="light"] .megamenu-tile:hover {
   background: rgba(249, 95, 74, 0.10) !important;
@@ -260,6 +260,10 @@ html[data-theme="light"] .megamenu-tile:hover .tile-desc {
 html[data-theme="light"] .tile-img {
   opacity: 0.55 !important;
   filter: saturate(0.7) !important;
+}
+html[data-theme="light"] .tile-img[src*="acm-logo-black"],
+html[data-theme="light"] .megamenu-tile:hover .tile-img[src*="acm-logo-black"] {
+  filter: invert(1) !important;
 }
 html[data-theme="light"] .megamenu-tile:hover .tile-img {
   opacity: 1 !important;

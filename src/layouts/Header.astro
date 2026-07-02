@@ -20,6 +20,8 @@ interface DropdownItem {
   href: string;
   img: string;
   color?: string;
+  /** Full-width "view all" CTA tile - text only, spans the whole panel row. */
+  all?: boolean;
 }
 
 const dropdowns: Record<string, DropdownItem[]> = {
@@ -43,19 +45,21 @@ const dropdowns: Record<string, DropdownItem[]> = {
     { title: "Management", desc: "Operations & coordination", href: "/domains/management", img: "/cassettes/cassettes-cassette-management.webp", color: "#008080" },
   ],
   events: [
-    { title: "Code2Create", desc: "Flagship 24-hour hackathon", href: "/#events", img: "/events/events-c2c-cassette.webp" },
-    { title: "Cryptic Hunt", desc: "Online cryptographic treasure hunt", href: "/#events", img: "/events/events-cryptic-hunt-cassette.webp" },
-    { title: "inspiHer", desc: "Celebrating women in technology", href: "/#events", img: "/events/events-inspiher-cassette.webp" },
-    { title: "Forktober", desc: "Open source contribution drive", href: "/#events", img: "/events/events-forktober-cassette.webp" },
-    { title: "The Neural Hack", desc: "Deep dive into AI & ML", href: "/#events", img: "/events/events-neural-hack-cassette.webp" },
+    { title: "Code2Create", desc: "24-hour hackathon", href: "/events/code2create", img: "/events/events-c2c-cassette.webp" },
+    { title: "Cryptic Hunt", desc: "Online cryptographic treasure hunt", href: "/events/cryptic-hunt", img: "/events/events-cryptic-hunt-cassette.webp" },
+    { title: "inspiHer", desc: "Celebrating women in technology", href: "/events/inspiher", img: "/events/events-inspiher-cassette.webp" },
+    { title: "Forktober", desc: "Open source contribution drive", href: "/events/forktober", img: "/events/events-forktober-cassette.webp" },
+    { title: "The Neural Hack", desc: "Deep dive into AI & ML", href: "/events/neural-hack", img: "/events/events-neural-hack-cassette.webp" },
+    { title: "All Events", desc: "Browse every event we run", href: "/events", img: "", all: true },
   ],
   projects: [
-    { title: "ACMOne", desc: "Centralized chapter management platform", href: "/#projects", img: "/projects/projects-acmone.svg" },
-    { title: "ExamCooker", desc: "Exam prep hub for VIT students", href: "/#projects", img: "/projects/projects-examcooker.svg" },
-    { title: "CLI RPG", desc: "Terminal-based role-playing game", href: "/#projects", img: "/projects/projects-cli-rpg.svg" },
-    { title: "UniPool", desc: "Campus carpooling made easy", href: "/#projects", img: "/projects/projects-unipool.svg" },
-    { title: "Localhost", desc: "Local development toolkit", href: "/#projects", img: "/projects/projects-localhost.svg" },
-    { title: "OCS Website", desc: "Open community showcase site", href: "/#projects", img: "/projects/projects-cover.svg" },
+    { title: "ACMOne", desc: "Centralized chapter management platform", href: "/projects/acmone", img: "/projects/projects-acmone.svg" },
+    { title: "ExamCooker", desc: "Exam prep hub for VIT students", href: "/projects/examcooker", img: "/projects/projects-examcooker.svg" },
+    { title: "CLI RPG", desc: "Terminal-based role-playing game", href: "/projects/cli-rpg", img: "/projects/projects-cli-rpg.svg" },
+    { title: "UniPool", desc: "Campus carpooling made easy", href: "/projects/unipool", img: "/projects/projects-unipool.svg" },
+    { title: "Localhost", desc: "Local development toolkit", href: "/projects/localhost", img: "/projects/projects-localhost.svg" },
+    { title: "OCS Website", desc: "Open community showcase site", href: "/projects/ocs-26", img: "/projects/projects-cover.svg" },
+    { title: "All Projects", desc: "Browse every project we build", href: "/projects", img: "", all: true },
   ],
   "acm-w": [
     { title: "Our Mission", desc: "Supporting women in computing", href: "/#acm-w", img: "/logos/logos-acmw-logo.webp" },
@@ -74,12 +78,12 @@ const dropdowns: Record<string, DropdownItem[]> = {
   ],
   more: [
     { title: "Code of Conduct", desc: "ACM ethical principles & values", href: "/code-of-conduct", img: "/logos/logos-acm-logo-black.webp" },
-    { title: "Merchandise", desc: "Official ACM-VIT merch & collectibles", href: "/merchandise", img: "/logos/logos-acm-topleft.webp" },
-    { title: "GREP Newsletter", desc: "Our bi-annual technical newsletter", href: "/grep", img: "/ui/ui-bloglayout.webp" },
-    { title: "z0d1ak", desc: "ACM-VIT's competitive CTF team", href: "/z0d1ak", img: "/icons/icons-github-orange.webp" },
-    { title: "Achievements", desc: "Awards, recognitions & milestones", href: "/achievements", img: "/ui/ui-acm-celeb.webp" },
+    { title: "Merchandise", desc: "Official ACM-VIT merch & collectibles", href: "/merchandise", img: "/merch/2025/black-back/merch-2025-black-back-design.webp" },
+    { title: "GREP Newsletter", desc: "Our bi-annual technical newsletter", href: "/grep", img: "/grep/grep-wordmark.png" },
+    { title: "z0d1ak", desc: "ACM-VIT's competitive CTF team", href: "/z0d1ak", img: "/z0d1ak/z0d1ak-logo.svg" },
+    { title: "Achievements", desc: "Awards, recognitions & milestones", href: "/achievements", img: "/ui/ui-trophy.webp" },
     { title: "Cassette Builder", desc: "Design your own custom cassette", href: "/cassette-builder", img: "/cassettes/cassettes-cassette-tech.webp" },
-    { title: "Calendar", desc: "Upcoming events & important dates", href: "/calendar", img: "/ui/ui-acm-celeb.webp" },
+    { title: "Calendar", desc: "Upcoming events & important dates", href: "/calendar", img: "/icons/icons-calendar.svg" },
   ],
 };
 ---
@@ -180,7 +184,14 @@ const dropdowns: Record<string, DropdownItem[]> = {
           {Object.entries(dropdowns).map(([key, items]) => (
             <div class="megamenu-panel" data-panel={key}>
               <div class="megamenu-grid">
-                {items.map((item, i) => (
+                {items.map((item, i) => item.all ? (
+                  <a href={item.href} class="megamenu-tile all-tile" style={`--tile-i: ${i}`}>
+                    <span class="all-tile-label">{item.title}</span>
+                    <svg class="all-tile-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none">
+                      <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                ) : (
                   <a
                     href={item.href}
                     class="megamenu-tile"
@@ -678,6 +689,56 @@ const dropdowns: Record<string, DropdownItem[]> = {
     opacity: 1;
     transform: rotate(0deg) scale(1.08);
     filter: saturate(1.1);
+  }
+
+  /* ── Full-width "view all" CTA tile ── */
+  .all-tile {
+    grid-column: 1 / -1 !important;
+    min-height: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px;
+    color: #fefcd9;
+  }
+
+  .all-tile-label {
+    font-family: "PolySans Trial", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: color 0.2s ease;
+  }
+
+  .all-tile-arrow {
+    transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1), color 0.2s ease;
+  }
+
+  .all-tile:hover .all-tile-label {
+    color: #f95f4a;
+  }
+
+  .all-tile:hover .all-tile-arrow {
+    color: #f95f4a;
+    transform: translateX(4px);
+  }
+
+  /* Black acm logo invisible on dark tile - invert to white */
+  .tile-img[src*="acm-logo-black"] {
+    filter: invert(1);
+  }
+  .megamenu-tile:hover .tile-img[src*="acm-logo-black"] {
+    filter: invert(1);
+  }
+
+  /* GREP wordmark - smaller than default tile img */
+  .tile-img[src*="grep-wordmark"] {
+    width: 88px;
+    padding: 30px 22px;
+  }
+  .megamenu-tile:hover .tile-img[src*="grep-wordmark"] {
+    transform: scale(1.04);
   }
 
   /* ── Pill progress bar ── */

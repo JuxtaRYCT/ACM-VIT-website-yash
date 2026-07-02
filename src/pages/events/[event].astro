@@ -1,6 +1,7 @@
 ---
 export const prerender = true;
 
+import { titleToArt } from "../../utils/titleArt";
 import Layout from "../../layouts/Layout.astro";
 import Footer from "../../layouts/Footer.astro";
 import "../../styles/globals.css";
@@ -23,6 +24,8 @@ if (!data) return Astro.redirect("/");
 const themeColor = data.themeColor ?? getEventThemeHex(data.themeKey);
 const themeColorSecondary = data.themeColorSecondary ?? themeColor;
 
+const titleArt = titleToArt(data.title);
+
 const titleWords = data.title.split(" ");
 const titleMain = titleWords[0];
 const titleAccent = titleWords.length > 1 ? titleWords.slice(1).join(" ") : "";
@@ -33,6 +36,9 @@ const otherEvents = Object.values(eventDetails)
 ---
 
 <Layout pageTitle={data.title} backHref="/#work">
+  <script is:inline define:vars={{ themeColor, titleArt }}>
+    console.log("%c" + titleArt, "color:" + themeColor + ";font-family:monospace;line-height:1;");
+  </script>
   <div style={`--event-color: ${themeColor}; --event-color-secondary: ${themeColorSecondary};`}>
 
     <!-- Hero -->
