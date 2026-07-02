@@ -68,27 +68,42 @@ import AnimatedButton from "../components/ui/AnimatedButton.astro";
     --selection-color: #2023FE;
   }
 
+  /* Mobile: the page <main> adds pt-28 (112px) for the fixed header, which
+     offsets this 100vh section's centre downward. Cancel it so the wordmark +
+     copy centre in the true viewport instead of sitting low. */
+  @media (max-width: 767px) {
+    .grep-section {
+      margin-top: -7rem;
+      min-height: 100svh;
+    }
+  }
+
   .grep-section ::selection {
     background: var(--selection-color);
     color: white;
   }
 
-  /* Centre the GREP wordmark in the viewport so it always shares a centre
-     with the keyboard background; the rest of the content flows in the row below. */
+  /* Mobile: centre the whole group (wordmark + copy + form) in the viewport.
+     Overrides the Tailwind `grid` utility so the block isn't bottom-heavy. */
   .grep-content {
-    grid-template-rows: 1fr auto 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
   }
 
-  /* On larger screens nudge the wordmark above centre so the copy + form below
-     balance the composition. */
+  /* Desktop: lock the wordmark to viewport centre so it shares a centre with the
+     keyboard background; copy + form flow in the row below, nudged for balance. */
   @media (min-width: 768px) {
     .grep-content {
+      display: grid;
       grid-template-rows: 0.7fr auto 1.3fr;
     }
-  }
 
-  .grep-below {
-    align-self: start;
+    .grep-below {
+      align-self: start;
+    }
   }
 
   .grep-title {

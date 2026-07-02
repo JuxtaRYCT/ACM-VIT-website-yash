@@ -451,10 +451,10 @@ const footerColumnsHtml = footerNav
         </video>
         <div class="footer-video-tint" aria-hidden="true"></div>
         <div class="footer-video-fade" aria-hidden="true"></div>
-        <span class="footer-wordmark">because technology matters</span>
+        <span class="footer-wordmark footer-wordmark--mobile">because technology matters</span>
 
-        <!-- Bottom section overlaid on the video, pushed lower -->
-        <div class="absolute inset-0 z-20 flex w-full flex-col items-center justify-end px-4 pb-12">
+        <!-- Bottom section overlaid on the video, lifted clear of the wordmark -->
+        <div class="absolute inset-0 z-20 flex w-full flex-col items-center justify-end px-4 pb-[4.5rem]">
         <div
           class="flex flex-col items-center justify-center gap-3 z-30 relative"
         >
@@ -647,6 +647,14 @@ const footerColumnsHtml = footerNav
     color: rgba(255, 255, 255, 0.75);
     pointer-events: none;
     user-select: none;
+  }
+
+  /* Mobile footer video is short (~210px); shrink the wordmark and pin it
+     tight to the bottom so the "crafted with love" line clears it. */
+  .footer-wordmark--mobile {
+    font-size: 1rem;
+    bottom: 0.6rem;
+    letter-spacing: 0.02em;
   }
 
   /* Big 'acm' wordmark, right side of footer video */

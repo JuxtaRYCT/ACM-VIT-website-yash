@@ -5,6 +5,8 @@
 //   music - track info + transport controls + progress + close
 // Solid #1e1e1e fill. GSAP morph between states.
 
+import { getAssetUrl } from "../../utils/cdn";
+
 export interface Props {
   /** Static label for subpages (e.g. "Z0D1AK"). Falls back to live section in nav state. */
   pageTitle?: string;
@@ -16,7 +18,15 @@ const lockedLabel = !!pageTitle;
 
 // Subsections mirror the desktop megamenu (Header.astro `dropdowns`).
 // Sections listed here show a caret and open a submenu on tap.
-interface SubItem { title: string; desc: string; href: string; }
+interface SubItem {
+  title: string;
+  desc: string;
+  href: string;
+  /** Square brand mark shown in the round button instead of the letter glyph. */
+  icon?: string;
+  /** Theme color fill for the round button (letter glyph stays). */
+  color?: string;
+}
 const subsections: Record<string, SubItem[]> = {
   about: [
     { title: "ACM-VIT", desc: "Our chapter's mission & culture", href: "/#about-acmvit" },
@@ -24,26 +34,28 @@ const subsections: Record<string, SubItem[]> = {
     { title: "ACM Global", desc: "World's largest computing society", href: "/#about-acm" },
   ],
   domains: [
-    { title: "Tech", desc: "App Dev, Web, FOSS, DevOps", href: "/domains/tech" },
-    { title: "Competitive Coding", desc: "Codeforces, ICPC, C++", href: "/domains/cc" },
-    { title: "Design", desc: "UI/UX, Motion Graphics, 3D", href: "/domains/design" },
-    { title: "Research", desc: "AI/ML, Blockchain, Quantum", href: "/domains/research" },
-    { title: "Management", desc: "Operations & coordination", href: "/domains/management" },
+    { title: "Tech", desc: "App Dev, Web, FOSS, DevOps", href: "/domains/tech", color: "#9B51E0" },
+    { title: "Competitive Coding", desc: "Codeforces, ICPC, C++", href: "/domains/cc", color: "#42CD9D" },
+    { title: "Design", desc: "UI/UX, Motion Graphics, 3D", href: "/domains/design", color: "#FF0054" },
+    { title: "Research", desc: "AI/ML, Blockchain, Quantum", href: "/domains/research", color: "#135DE2" },
+    { title: "Management", desc: "Operations & coordination", href: "/domains/management", color: "#008080" },
   ],
   events: [
-    { title: "Code2Create", desc: "24-hour hackathon", href: "/#events" },
-    { title: "Cryptic Hunt", desc: "Online cryptographic treasure hunt", href: "/#events" },
-    { title: "inspiHer", desc: "Celebrating women in technology", href: "/#events" },
-    { title: "Forktober", desc: "Open source contribution drive", href: "/#events" },
-    { title: "The Neural Hack", desc: "Deep dive into AI & ML", href: "/#events" },
+    { title: "All Events", desc: "Browse every event we run", href: "/events" },
+    { title: "Code2Create", desc: "24-hour hackathon", href: "/events/code2create", icon: getAssetUrl("/icons/icons-mn-code2create.svg") },
+    { title: "Cryptic Hunt", desc: "Online cryptographic treasure hunt", href: "/events/cryptic-hunt", icon: getAssetUrl("/icons/icons-mn-cryptic-hunt.svg") },
+    { title: "inspiHer", desc: "Celebrating women in technology", href: "/events/inspiher", icon: getAssetUrl("/icons/icons-mn-inspiher.svg") },
+    { title: "Forktober", desc: "Open source contribution drive", href: "/events/forktober", icon: getAssetUrl("/icons/icons-mn-forktober.svg") },
+    { title: "The Neural Hack", desc: "Deep dive into AI & ML", href: "/events/neural-hack", icon: getAssetUrl("/icons/icons-mn-neural-hack.svg") },
   ],
   projects: [
-    { title: "ACMOne", desc: "Centralized chapter management platform", href: "/#projects" },
-    { title: "ExamCooker", desc: "Exam prep hub for VIT students", href: "/#projects" },
-    { title: "CLI RPG", desc: "Terminal-based role-playing game", href: "/#projects" },
-    { title: "UniPool", desc: "Campus carpooling made easy", href: "/#projects" },
-    { title: "Localhost", desc: "Local development toolkit", href: "/#projects" },
-    { title: "OCS Website", desc: "Open community showcase site", href: "/#projects" },
+    { title: "All Projects", desc: "Browse every project we build", href: "/projects" },
+    { title: "ACMOne", desc: "Centralized chapter management platform", href: "/projects/acmone" },
+    { title: "ExamCooker", desc: "Exam prep hub for VIT students", href: "/projects/examcooker" },
+    { title: "CLI RPG", desc: "Terminal-based role-playing game", href: "/projects/cli-rpg" },
+    { title: "UniPool", desc: "Campus carpooling made easy", href: "/projects/unipool" },
+    { title: "Localhost", desc: "Local development toolkit", href: "/projects/localhost" },
+    { title: "OCS Website", desc: "Open community showcase site", href: "/projects/ocs-25" },
   ],
   "acm-w": [
     { title: "Our Mission", desc: "Supporting women in computing", href: "/#acm-w" },
@@ -666,6 +678,15 @@ const navItems = [
     color: #fefcd9;
     box-shadow: 0 4px 12px rgba(245, 71, 61, 0.35);
   }
+  /* Domain-tinted circle (bg set inline from item color) */
+  :global(.mn-sub-btn.is-tinted .mn-sub-btn-glyph) { color: #fff; }
+  /* Brand-mark icon inside the circle (event logos etc.) */
+  :global(.mn-sub-btn-icon) {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+    display: block;
+  }
 
   #mn-sub-list { scrollbar-width: none; }
   #mn-sub-list::-webkit-scrollbar { display: none; }
@@ -854,11 +875,15 @@ const navItems = [
     window.addEventListener("nav:section", (e: any) => setActiveSection(e.detail?.id));
 
     /* ── Morph between states (Flip) ── */
-    let morphing = false;
+    // Interrupt an in-flight morph instead of swallowing the tap - a quick
+    // menu-open -> item-tap otherwise left the pill stuck on the old panel.
+    let flipAnim: ReturnType<typeof Flip.from> | null = null;
+    let fadeAnim: gsap.core.Tween | null = null;
     function morphTo(nextState: PanelState) {
       const cur = pill.dataset.state as PanelState;
-      if (morphing || cur === nextState) return;
-      morphing = true;
+      if (cur === nextState) return;
+      flipAnim?.kill();
+      fadeAnim?.kill();
 
       const curPanel = panels[cur];
       const nextPanel = panels[nextState];
@@ -868,15 +893,15 @@ const navItems = [
       nextPanel.style.display = "flex";
       pill.dataset.state = nextState;
 
-      Flip.from(state, {
+      flipAnim = Flip.from(state, {
         duration: 0.42,
         ease: "power3.out",
         absolute: false,
-        onComplete: () => { morphing = false; },
+        onComplete: () => { flipAnim = null; },
       });
 
       // Fade panel contents in
-      gsap.fromTo(
+      fadeAnim = gsap.fromTo(
         nextPanel.children,
         { opacity: 0, y: 8 },
         { opacity: 1, y: 0, duration: 0.28, stagger: 0.035, ease: "power2.out", delay: 0.05 },
@@ -1026,20 +1051,40 @@ const navItems = [
         subSubtitle.textContent = `${items.length} ${items.length === 1 ? "section" : "sections"}`;
 
       subList.innerHTML = "";
-      // One round button per subsection (alternating light/dark like the ref).
+      // One round button per subsection. Brand-mark icon > theme-color letter >
+      // alternating light/dark letter (fallback).
       items.forEach((it, i) => {
         const btn = document.createElement("a");
         btn.href = it.href;
-        btn.className = "mn-sub-btn " + (i % 2 === 0 ? "is-light" : "is-dark");
+        btn.className = "mn-sub-btn " + (it.icon ? "is-dark has-icon" : i % 2 === 0 ? "is-light" : "is-dark");
         btn.innerHTML =
           `<span class="mn-sub-btn-circle"><span class="mn-sub-btn-glyph"></span></span>` +
           `<span class="mn-sub-btn-label"></span>`;
-        (btn.querySelector(".mn-sub-btn-glyph") as HTMLElement).textContent =
-          it.title.charAt(0).toUpperCase();
+        const circle = btn.querySelector(".mn-sub-btn-circle") as HTMLElement;
+        if (it.icon) {
+          const img = document.createElement("img");
+          img.src = it.icon;
+          img.alt = "";
+          img.className = "mn-sub-btn-icon";
+          circle.replaceChildren(img);
+        } else {
+          if (it.color) {
+            btn.classList.remove("is-light", "is-dark");
+            btn.classList.add("is-tinted");
+            circle.style.background = it.color;
+          }
+          (btn.querySelector(".mn-sub-btn-glyph") as HTMLElement).textContent =
+            it.title.charAt(0).toUpperCase();
+        }
         (btn.querySelector(".mn-sub-btn-label") as HTMLElement).textContent = it.title;
         btn.addEventListener("click", (e) => {
           morphTo("nav");
-          navigateHref(it.href, e);
+          // Cross-page links: navigate explicitly rather than relying on the
+          // anchor default surviving the pill morph.
+          if (!navigateHref(it.href, e) && it.href) {
+            e.preventDefault();
+            window.location.href = it.href;
+          }
         });
         subList.appendChild(btn);
       });
@@ -1073,7 +1118,10 @@ const navItems = [
       link.addEventListener("click", (e) => {
         const href = link.getAttribute("href") || "";
         morphTo("nav");
-        navigateHref(href, e);
+        if (!navigateHref(href, e) && href) {
+          e.preventDefault();
+          window.location.href = href;
+        }
       });
     });
     // Caret tap → open the subsection submenu (doesn't trigger the row scroll).
