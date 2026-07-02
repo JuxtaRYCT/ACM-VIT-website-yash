@@ -271,6 +271,15 @@ const misuse = [
         ))
       }
     </div>
+    <div class="ds-card ds-reveal ds-domain-lockups" style="margin-top:14px;">
+      {
+        domainMarks.map((d) => (
+          <div class="ds-domain-lockup-cell">
+            <img src={logos(`acm-horizontal-${d.file.replace("acm-diamond-", "")}.svg`)} alt={`ACM-VIT horizontal lockup in ${d.name} ${d.hex}`} loading="lazy" />
+          </div>
+        ))
+      }
+    </div>
   </section>
 
   <!-- 06 · ACM International compliance -->
@@ -397,6 +406,20 @@ const misuse = [
   }
   .ds-domain-cell .ds-h4 {
     font-size: 14px;
+  }
+  .ds-domain-lockups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 26px 20px;
+    align-items: center;
+  }
+  .ds-domain-lockup-cell {
+    display: flex;
+    justify-content: center;
+  }
+  .ds-domain-lockup-cell img {
+    width: 100%;
+    max-width: 230px;
   }
   .ds-l-list {
     margin: 0;

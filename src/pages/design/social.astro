@@ -4,10 +4,11 @@ import DesignLayout from "../../layouts/DesignLayout.astro";
 import { getAssetUrl } from "../../utils/cdn";
 
 const igSizes = [
-  { name: "Portrait post", px: "1080 × 1350", ratio: "4:5", w: 4, h: 5, note: "The default for feed posts. Grid preview crops it to 3:4 - keep key content in the safe zone." },
+  { name: "Portrait post", px: "1080 × 1350", ratio: "4:5", w: 4, h: 5, note: "The default for feed posts. The grid trims the sides to 3:4 - keep key content inside the middle 1015 px." },
   { name: "Grid-native post", px: "1080 × 1440", ratio: "3:4", w: 3, h: 4, note: "Matches the profile grid exactly - zero cropping. Use for grid-critical series." },
-  { name: "Square post", px: "1080 × 1080", ratio: "1:1", w: 1, h: 1, note: "Legacy format. Fine in feed, loses height in the grid. Avoid for new templates." },
+  { name: "Square post", px: "1080 × 1080", ratio: "1:1", w: 1, h: 1, note: "Legacy format. Fine in feed, but the grid crops its sides hard. Avoid for new templates." },
   { name: "Story / Reel", px: "1080 × 1920", ratio: "9:16", w: 9, h: 16, note: "Full-bleed vertical. Keep text out of the top and bottom 250px - UI overlaps it." },
+  { name: "Landscape post", px: "1080 × 566", ratio: "1.91:1", w: 191, h: 100, note: "Weakest format - short in feed, brutal 3:4 grid crop. Only for cross-posted wide media." },
 ];
 
 const platforms = [
@@ -18,8 +19,10 @@ const platforms = [
       ["Feed post (recommended)", "1080 × 1350", "4:5"],
       ["Grid-native post", "1080 × 1440", "3:4"],
       ["Story / Reel", "1080 × 1920", "9:16"],
-      ["Carousel", "1080 × 1350", "4:5, every slide identical"],
-      ["Profile picture", "1080 × 1080", "shown as a circle - center the diamond"],
+      ["Landscape post", "1080 × 566", "1.91:1, avoid - weakest grid presence"],
+      ["Grid-connected series", "1015 × 1350", "artwork zone, centered on the 1080 × 1350 canvas"],
+      ["Carousel", "1080 × 1350", "4:5, up to 20 slides, slide 1 sets the ratio"],
+      ["Profile picture", "1080 × 1080", "displays at 320 × 320 in a circle - center the diamond"],
     ],
   },
   {
@@ -47,7 +50,9 @@ const platforms = [
     handle: "ACM-VIT",
     items: [
       ["Thumbnail", "1280 × 720", "16:9, readable at 120px wide"],
-      ["Channel banner", "2560 × 1440", "safe area only 1546 × 423 in the center"],
+      ["Channel banner", "2560 × 1440", "16:9, minimum 2048 × 1152, under 6 MB"],
+      ["Banner safe area", "1546 × 423", "centered - the only region every device shows"],
+      ["Profile picture", "800 × 800", "circle crop - center the diamond"],
       ["Video", "1920 × 1080", "16:9, 30fps minimum"],
     ],
   },
@@ -86,7 +91,7 @@ const platforms = [
             <div style="display:flex; align-items:center; justify-content:center; min-height:170px;">
               <div
                 class="ds-frame"
-                style={`aspect-ratio:${s.w}/${s.h}; ${s.h > s.w * 1.5 ? "height:150px" : "height:130px"}`}
+                style={`aspect-ratio:${s.w}/${s.h}; ${s.w > s.h ? "width:100%; max-width:180px" : s.h > s.w * 1.5 ? "height:150px" : "height:130px"}`}
               >
                 <span class="ds-mono">{s.ratio}</span>
               </div>
@@ -97,6 +102,14 @@ const platforms = [
           </div>
         ))
       }
+      <div class="ds-card ds-card-tonal ds-b3 ds-reveal">
+        <h3 class="ds-h4">File specs</h3>
+        <ul class="ds-so-list" style="margin-top:10px">
+          <li>Photos: <span class="ds-mono">JPG</span> or <span class="ds-mono">PNG</span>, sRGB, under 8 MB.</li>
+          <li>Reels: <span class="ds-mono">MP4</span> or <span class="ds-mono">MOV</span>, 15 s to 15 min.</li>
+          <li>Reel cover: <span class="ds-mono">1080 × 1920</span>, center-weighted - the grid crops it hard.</li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -104,24 +117,29 @@ const platforms = [
   <section class="ds-section" id="safezone">
     <div class="ds-sec-head"><span class="ds-sec-num">02</span><h2 class="ds-h2">The grid safe zone</h2></div>
     <p class="ds-body">
-      A <span class="ds-mono">4:5</span> post loses its top and bottom edges
-      in the <span class="ds-mono">3:4</span> grid preview. Anything that must
-      survive - faces, titles, the mark - stays inside the dashed region.
+      A <span class="ds-mono">4:5</span> post loses its left and right edges
+      in the <span class="ds-mono">3:4</span> grid preview - about
+      <span class="ds-mono">32 px</span> per side, never the top or bottom.
+      Anything that must survive - faces, titles, the mark - stays inside the
+      dashed region.
     </p>
     <div class="ds-bento">
       <div class="ds-card ds-card-tonal ds-b6 ds-reveal" style="display:flex; align-items:center; justify-content:center; padding:32px;">
-        <svg viewBox="0 0 240 330" style="width:100%; max-width:250px" role="img" aria-label="4:5 post with 3:4 grid crop safe zone">
-          <rect x="10" y="5" width="216" height="270" rx="10" fill="#ffffff" stroke="#d4cfc6" />
-          <rect x="10" y="21.4" width="216" height="237.2" fill="#ffeae5" opacity="0.55" />
-          <rect x="10" y="21.4" width="216" height="237.2" fill="none" stroke="#f95f4a" stroke-width="1.6" stroke-dasharray="7 5" />
+        <svg viewBox="0 0 240 330" style="width:100%; max-width:250px" role="img" aria-label="4:5 post with left and right strips trimmed in the 3:4 grid preview">
+          <rect x="12" y="30" width="216" height="270" rx="10" fill="#ffffff" stroke="#d4cfc6" />
+          <rect x="18.75" y="30" width="202.5" height="270" fill="#ffeae5" opacity="0.55" />
+          <rect x="18.75" y="30" width="202.5" height="270" fill="none" stroke="#f95f4a" stroke-width="1.6" stroke-dasharray="7 5" />
+          <g stroke="#79746e" stroke-width="1">
+            <line x1="15.4" y1="21" x2="15.4" y2="33" />
+            <line x1="224.6" y1="21" x2="224.6" y2="33" />
+          </g>
           <g font-family="DM Sans, sans-serif" font-size="11" font-weight="620">
-            <text x="118" y="16.5" text-anchor="middle" fill="#79746e">cropped in grid</text>
-            <text x="118" y="146" text-anchor="middle" fill="#b3341f">3:4 safe zone</text>
-            <text x="118" y="270.5" text-anchor="middle" fill="#79746e">cropped in grid</text>
+            <text x="120" y="17" text-anchor="middle" fill="#79746e">sides cropped in grid · ~32 px each</text>
+            <text x="120" y="172" text-anchor="middle" fill="#b3341f">3:4 safe zone · full height</text>
           </g>
           <g font-family="DM Sans, sans-serif" font-size="11.5" fill="#79746e">
-            <text x="118" y="308" text-anchor="middle">4:5 canvas · 1080 × 1350</text>
-            <text x="118" y="324" text-anchor="middle">grid shows center 1080 × 1440-equivalent</text>
+            <text x="120" y="314" text-anchor="middle">4:5 canvas · 1080 × 1350</text>
+            <text x="120" y="329" text-anchor="middle">grid shows the center 1015 × 1350</text>
           </g>
         </svg>
       </div>
@@ -135,9 +153,46 @@ const platforms = [
         </ul>
         <h3 class="ds-h4" style="margin-top:22px">Carousel rules</h3>
         <ul class="ds-so-list" style="margin-top:10px">
-          <li>Every slide the same size - mixed ratios get letterboxed.</li>
-          <li>Slide 1 works alone; not everyone swipes.</li>
+          <li>Slide 1 locks the ratio - Instagram crops every later slide to match it. Export all slides at the same size.</li>
+          <li>Up to 20 slides, but front-load: slide 1 works alone; not everyone swipes.</li>
           <li>Mark on the first and last slide only.</li>
+        </ul>
+      </div>
+      <div class="ds-card ds-card-tonal ds-b6 ds-reveal" style="display:flex; align-items:center; justify-content:center; padding:28px;">
+        <svg viewBox="0 0 360 210" style="width:100%; max-width:400px" role="img" aria-label="Three grid tiles with one continuous artwork spanning the 1015px connectivity zones">
+          {
+            [0, 1, 2].map((i) => {
+              const tx = 20 + i * 110;
+              const zx = tx + 3;
+              const y1 = 142 - i * 94 * 0.248;
+              const y2 = 142 - (i + 1) * 94 * 0.248;
+              return (
+                <g>
+                  <rect x={tx} y={30} width={100} height={125} rx={6} fill="#ffffff" stroke="#d4cfc6" />
+                  <polygon points={`${zx},${y1} ${zx + 94},${y2} ${zx + 94},${y2 + 24} ${zx},${y1 + 24}`} fill="#ffeae5" stroke="#f95f4a" stroke-width="1.4" />
+                  <rect x={zx} y={31} width={94} height={123} fill="none" stroke="#f95f4a" stroke-width="1.2" stroke-dasharray="6 4" opacity="0.65" />
+                </g>
+              );
+            })
+          }
+          <g font-family="DM Sans, sans-serif" font-size="11.5" fill="#79746e">
+            <text x="180" y="18" text-anchor="middle">one artwork, sliced across three posts</text>
+            <text x="180" y="178" text-anchor="middle">canvas 1080 × 1350 · artwork zone 1015 × 1350</text>
+            <text x="180" y="196" text-anchor="middle" fill="#b3341f">seams align at the dashed zone, not the canvas edge</text>
+          </g>
+        </svg>
+      </div>
+      <div class="ds-card ds-b6 ds-reveal">
+        <h3 class="ds-h4">Grid connectivity</h3>
+        <p class="ds-small" style="margin-top:8px">
+          For artwork that continues across posts - theme rows, banners split
+          into three - the canvas and the visible tile are not the same width.
+        </p>
+        <ul class="ds-so-list" style="margin-top:12px">
+          <li>Actual post size: <span class="ds-mono">1080 × 1350</span> - what you upload.</li>
+          <li>Grid connectivity zone: <span class="ds-mono">1015 × 1350</span>, centered - the grid trims about 32 px from the left and right edges only. The full 1350 height stays.</li>
+          <li>Design the continuous artwork as <span class="ds-mono">1015</span>-wide slices and align seams to the zone edges, or the art misaligns at every gutter.</li>
+          <li>Connected art enters as a full row of three, same as theme changes.</li>
         </ul>
       </div>
     </div>
@@ -168,6 +223,28 @@ const platforms = [
           </div>
         ))
       }
+      <div class="ds-card ds-card-tonal ds-reveal" style="display:flex; align-items:center; gap:28px; flex-wrap:wrap; padding:28px;">
+        <svg viewBox="0 0 512 288" style="flex:1 1 300px; max-width:440px" role="img" aria-label="YouTube banner: full 2560 by 1440 canvas, desktop strip, and centered 1546 by 423 safe area">
+          <rect x="1" y="1" width="510" height="286" rx="8" fill="#ffffff" stroke="#d4cfc6" />
+          <rect x="1" y="101.7" width="510" height="84.6" fill="#efece7" />
+          <rect x="101.4" y="101.7" width="309.2" height="84.6" fill="#ffeae5" />
+          <rect x="101.4" y="101.7" width="309.2" height="84.6" fill="none" stroke="#f95f4a" stroke-width="1.6" stroke-dasharray="7 5" />
+          <g font-family="DM Sans, sans-serif" font-size="13" font-weight="620">
+            <text x="256" y="30" text-anchor="middle" fill="#79746e">TV · full 2560 × 1440</text>
+            <text x="52" y="149" text-anchor="middle" fill="#79746e">desktop</text>
+            <text x="256" y="149" text-anchor="middle" fill="#b3341f">safe area · 1546 × 423</text>
+          </g>
+        </svg>
+        <div style="flex:1 1 260px; min-width:240px;">
+          <h3 class="ds-h4">The YouTube banner trap</h3>
+          <ul class="ds-so-list" style="margin-top:10px">
+            <li>Upload <span class="ds-mono">2560 × 1440</span> (16:9). Minimum <span class="ds-mono">2048 × 1152</span>, under <span class="ds-mono">6 MB</span>.</li>
+            <li>Only the center <span class="ds-mono">1546 × 423</span> is visible on every device - the lockup, text, and handles all stay inside it.</li>
+            <li>TV shows the full canvas, desktop a center strip. Treat everything outside the safe area as background texture, never content.</li>
+            <li>Absolute floor for critical elements: <span class="ds-mono">1235 × 338</span>.</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 

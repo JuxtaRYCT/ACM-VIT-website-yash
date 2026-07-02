@@ -942,3 +942,110 @@ html[data-theme="light"] .dsg-footer-section {
 html[data-theme="light"] .dsg-divider {
   border-color: rgba(0, 0, 0, 0.1);
 }
+
+/* ── AOI works (video thumbnails) ── */
+.dsg-works-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.dsg-work-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: 0.75rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(13, 14, 13, 0.4);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.dsg-work-card:hover {
+  border-color: var(--domain-color, #FF0054); /* fallback: WebKit <16.2 lacks color-mix */
+  border-color: color-mix(in srgb, var(--domain-color, #FF0054) 30%, transparent);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.dsg-work-thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000;
+}
+
+.dsg-work-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.dsg-work-card:hover .dsg-work-thumb img {
+  transform: scale(1.05);
+}
+
+.dsg-work-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  display: grid;
+  place-items: center;
+  color: #fffdd0;
+  transition: background 0.3s ease;
+}
+
+.dsg-work-card:hover .dsg-work-play {
+  background: var(--domain-color, #FF0054);
+}
+
+.dsg-work-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-family: 'PolySans Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fffdd0;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+}
+
+.dsg-work-card h4 {
+  font-family: 'PolySans Trial', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #FFFDD0;
+  padding: 0 0.15rem 0.15rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+html[data-theme="light"] .dsg-work-card {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+html[data-theme="light"] .dsg-work-card:hover {
+  border-color: var(--domain-color, #FF0054); /* fallback: WebKit <16.2 lacks color-mix */
+  border-color: color-mix(in srgb, var(--domain-color, #FF0054) 40%, transparent);
+}
+
+html[data-theme="light"] .dsg-work-card h4 {
+  color: #1a1a1a;
+}

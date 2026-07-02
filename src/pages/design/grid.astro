@@ -5,6 +5,45 @@ import DesignLayout from "../../layouts/DesignLayout.astro";
 // Column specs from the ACM-VIT Website 2025 Figma file (Grids page):
 // desktop frames at 1512 use 12 / 20 / 108, tablet at 834 uses 8 / 16 / 32,
 // mobile at 440 uses 4 / 8 / 16, all over an 8px baseline row grid.
+// Exact layout-grid values from the Figma Grids page (node 115:107),
+// pulled via the REST API: frames "MacBook Pro 14" (1512 x 982),
+// "iPad Pro 11" (834 x 1194), "iPhone 16 Pro Max" (440 x 956).
+const figmaGrids = [
+  {
+    device: "Desktop",
+    frame: "MacBook Pro 14\"",
+    size: "1512 × 982",
+    w: 1512,
+    h: 982,
+    count: 12,
+    gutter: 20,
+    margin: 108,
+    colw: "≈ 89.7",
+  },
+  {
+    device: "Tablet",
+    frame: "iPad Pro 11\"",
+    size: "834 × 1194",
+    w: 834,
+    h: 1194,
+    count: 8,
+    gutter: 16,
+    margin: 32,
+    colw: "82.25",
+  },
+  {
+    device: "Mobile",
+    frame: "iPhone 16 Pro Max",
+    size: "440 × 956",
+    w: 440,
+    h: 956,
+    count: 4,
+    gutter: 8,
+    margin: 16,
+    colw: "96",
+  },
+];
+
 const breakpoints = [
   { name: "xs", min: "0", cols: 4, margin: "16", gutter: "8", note: "Phones (Figma ref: iPhone 16 Pro Max, 440)" },
   { name: "sm", min: "480", cols: 4, margin: "16", gutter: "8", note: "Large phones" },
@@ -77,9 +116,72 @@ const breakpoints = [
     </div>
   </section>
 
-  <!-- 03 · Containers -->
+  <!-- 03 · Figma setup -->
+  <section class="ds-section" id="figma">
+    <div class="ds-sec-head"><span class="ds-sec-num">03</span><h2 class="ds-h2">Setting it up in Figma</h2></div>
+    <p class="ds-body">
+      The reference frames live on the <em>Grids</em> page of the ACM-VIT
+      Website 2025 Figma file. To recreate them, add a
+      <span class="ds-mono">Layout grid</span> to each device frame with
+      exactly these values - the diagrams below are drawn to scale from those
+      frames.
+    </p>
+    <div class="ds-bento">
+      {
+        figmaGrids.map((g) => (
+          <div class="ds-card ds-b4 ds-reveal" style="display:flex; flex-direction:column;">
+            <div style="display:flex; align-items:center; justify-content:center; min-height:255px;">
+              <div
+                class="ds-fig-frame"
+                style={`width:${g.w / 5}px; aspect-ratio:${g.w}/${g.h}; --n:${g.count}; --g:${((g.gutter / g.w) * 100).toFixed(2)}%; --m:${((g.margin / g.w) * 100).toFixed(2)}%;`}
+                aria-hidden="true"
+              >
+                {Array.from({ length: g.count }).map(() => (<span />))}
+              </div>
+            </div>
+            <h3 class="ds-h4" style="margin-top:12px">{g.device}</h3>
+            <p class="ds-small" style="margin-top:2px">
+              {g.frame} frame · <span class="ds-mono">{g.size}</span>
+            </p>
+            <table class="ds-table ds-fig-table" style="margin-top:12px">
+              <tbody>
+                <tr><td>Grid</td><td class="ds-mono">Columns</td></tr>
+                <tr><td>Count</td><td class="ds-mono">{g.count}</td></tr>
+                <tr><td>Type</td><td class="ds-mono">Stretch</td></tr>
+                <tr><td>Width</td><td class="ds-mono">Auto (renders {g.colw})</td></tr>
+                <tr><td>Gutter</td><td class="ds-mono">{g.gutter}</td></tr>
+                <tr><td>Margin</td><td class="ds-mono">{g.margin}</td></tr>
+              </tbody>
+            </table>
+          </div>
+        ))
+      }
+      <div class="ds-card ds-card-tonal ds-reveal">
+        <h3 class="ds-h4">The baseline rows grid</h3>
+        <p class="ds-body" style="margin-top:6px">
+          Every frame also carries a second layout grid for the
+          <span class="ds-mono">8px</span> vertical rhythm - same values at
+          every size. Add it as:
+        </p>
+        <div class="ds-fig-rows">
+          <span>Grid <b class="ds-mono">Rows</b></span>
+          <span>Count <b class="ds-mono">Auto</b></span>
+          <span>Type <b class="ds-mono">Top</b></span>
+          <span>Height <b class="ds-mono">8</b></span>
+          <span>Gutter <b class="ds-mono">8</b></span>
+          <span>Offset <b class="ds-mono">0</b></span>
+        </div>
+        <p class="ds-small" style="margin-top:12px">
+          Grid color for both layers: <span class="ds-mono">#FF0000</span> at
+          <span class="ds-mono">10%</span> opacity.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · Containers -->
   <section class="ds-section" id="containers">
-    <div class="ds-sec-head"><span class="ds-sec-num">03</span><h2 class="ds-h2">Containers</h2></div>
+    <div class="ds-sec-head"><span class="ds-sec-num">04</span><h2 class="ds-h2">Containers</h2></div>
     <div class="ds-bento">
       <div class="ds-card ds-b4 ds-reveal">
         <h3 class="ds-h4">Reading container</h3>
@@ -112,9 +214,9 @@ const breakpoints = [
     </div>
   </section>
 
-  <!-- 04 · Rules -->
+  <!-- 05 · Rules -->
   <section class="ds-section" id="rules">
-    <div class="ds-sec-head"><span class="ds-sec-num">04</span><h2 class="ds-h2">Layout rules</h2></div>
+    <div class="ds-sec-head"><span class="ds-sec-num">05</span><h2 class="ds-h2">Layout rules</h2></div>
     <div class="ds-bento">
       <div class="ds-card ds-b6 ds-reveal">
         <span class="ds-chip ds-chip-do" style="margin-bottom:12px">Do</span>
@@ -157,6 +259,50 @@ const breakpoints = [
     font-size: 11px;
     font-weight: 640;
     color: var(--ds-purple);
+  }
+  .ds-fig-frame {
+    display: grid;
+    grid-template-columns: repeat(var(--n), 1fr);
+    gap: var(--g);
+    padding-inline: var(--m);
+    background: #ffffff;
+    border: 1px solid var(--ds-line-2);
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(28, 27, 26, 0.07);
+    background-image: repeating-linear-gradient(
+      to bottom,
+      rgba(255, 0, 0, 0.05) 0,
+      rgba(255, 0, 0, 0.05) 1.6px,
+      transparent 1.6px,
+      transparent 3.2px
+    );
+  }
+  .ds-fig-frame span {
+    background: rgba(255, 0, 0, 0.1);
+  }
+  .ds-fig-table td {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    font-size: 13px;
+  }
+  .ds-fig-rows {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .ds-fig-rows span {
+    background: var(--ds-surface);
+    border: 1px solid var(--ds-line-2);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: var(--ds-ink-2);
+  }
+  .ds-fig-rows b {
+    color: var(--ds-ink);
+    font-weight: 660;
+    margin-left: 4px;
   }
   .ds-container-demo {
     display: flex;

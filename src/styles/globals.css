@@ -245,10 +245,10 @@ html[data-theme="light"] .megamenu-tile:hover {
   border-color: rgba(249, 95, 74, 0.30) !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
 }
-html[data-theme="light"] .tile-title {
+html[data-theme="light"] .megamenu-tile .tile-title {
   color: #FEFCD9 !important;
 }
-html[data-theme="light"] .tile-desc {
+html[data-theme="light"] .megamenu-tile .tile-desc {
   color: rgba(254, 252, 217, 0.45) !important;
 }
 html[data-theme="light"] .megamenu-tile:hover .tile-title {

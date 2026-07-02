@@ -89,6 +89,42 @@ const otherAOIs = designAOIs.filter((a) => a.key !== aoiSlug);
       </section>
     )}
 
+    {aoiData.works && aoiData.works.length > 0 && (
+      <>
+        <hr class="dsg-divider" />
+        <section class="dsg-events">
+          <div class="dsg-events-header">
+            <p class="dsg-events-label" data-dsg-animate="fade-up">Projects</p>
+            <h2 class="dsg-events-title" data-dsg-animate="fade-up">What We've Made</h2>
+          </div>
+          <div class="dsg-works-grid" data-dsg-animate="fade-up">
+            {aoiData.works.map((work) => (
+              <a
+                href={work.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="dsg-work-card"
+              >
+                <span class="dsg-work-thumb">
+                  <img
+                    src={getAssetUrl(work.thumb)}
+                    alt={work.title ?? "Instagram reel by ACM-VIT"}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span class="dsg-work-play" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </span>
+                  <span class="dsg-work-badge">{work.platform === "youtube" ? "YouTube" : "Instagram"}</span>
+                </span>
+                <h4>{work.title ?? "Instagram Reel"}</h4>
+              </a>
+            ))}
+          </div>
+        </section>
+      </>
+    )}
+
     <hr class="dsg-divider" />
 
     <!-- Other AOIs -->
